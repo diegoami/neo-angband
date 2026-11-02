@@ -76,6 +76,12 @@ export const FIRST_PARTY_ORIGINS: readonly FirstPartyOrigin[] = Object.freeze([
     marksSave: [TRUTH_MAP],
   },
   { id: "borg", repo: "neostryder/neo-angband-mod-borg", seams: [TRUTH_MAP, TRUTH_MONSTERS, "profiles:manage"] },
+  /* LOCAL LAB BRANCH ONLY (never pushed): the Warrior Borg fork,
+   * diegoami/neowarrior-borg, trusted as its own first-party origin so its
+   * restart loop (saves:manage), title row (profiles:manage) and danger
+   * vision (truth) run in lab builds. Same shape as the borg's entry: no
+   * marksSave, so the save's determinism ratchet stays untripped. */
+  { id: "neowarrior", repo: "diegoami/neowarrior-borg", seams: [TRUTH_MAP, TRUTH_MONSTERS, "profiles:manage", "saves:manage"] },
   { id: "squire", repo: "neostryder/neo-angband-mod-squire", seams: ["profiles:manage"] },
   { id: "forge", repo: "neostryder/neo-angband-mod-forge", seams: ["mod:session", "mod:install", "mod:authoring"] },
   { id: "qol", repo: "neostryder/neo-angband-mod-qol", seams: [] },

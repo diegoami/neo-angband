@@ -54,7 +54,7 @@ describe("engine consent", () => {
   });
 
   it("requires recorded digests for each of the nine named first-party repos", () => {
-    expect(FIRST_PARTY_ORIGINS.map((origin) => origin.id).sort()).toEqual(["anybandui", "borg", "bug-fixes", "feature-restoration", "forge", "linoleum", "qol", "squire", "upstream-catchup"]);
+    expect(FIRST_PARTY_ORIGINS.map((origin) => origin.id).sort()).toEqual(["anybandui", "borg", "bug-fixes", "feature-restoration", "forge", "linoleum", "neowarrior", "qol", "squire", "upstream-catchup"]);
     for (const origin of FIRST_PARTY_ORIGINS) {
       expect(assignTier(installed({ id: origin.id, repo: origin.repo })).trust).toBe("first-party");
       expect(assignTier(installed({ id: origin.id, repo: origin.repo, digestsMatch: false })).trust).toBe("sideloaded");
