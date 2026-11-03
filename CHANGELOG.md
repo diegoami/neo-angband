@@ -48,6 +48,10 @@ still calls itself.
 
 ## [Unreleased]
 
+### Added
+
+- [Visible] [Modding-API] **The run report names the seed the run ran on.** `RunReport.seed` carries the master seed - what `?seed=` set, else the crypto-random draw - so a mod that journals runs records the one number that replays them: `?seed=<seed>` re-establishes the run from birth. The same value the lab hook's `seed()` hands a harness (#431).
+
 ### Fixed
 
 - [Visible] [Modding-API] **Mods now receive the `input-flush` event.** `disturb()` ends by signalling it, as upstream's does (player-util.c:1674), so a mod with `event:input-flush` hears every disturbance - a run stopping, a rest reaching its condition, a hit landing - and can stop a multi-step action on it. The event was declared and grantable before, but nothing ever fired it. A handler that throws is logged and the disturbance still completes (#414).
