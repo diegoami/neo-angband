@@ -85,7 +85,7 @@ export const FIRST_PARTY_ORIGINS: readonly FirstPartyOrigin[] = Object.freeze([
   /* LOCAL LAB BRANCH ONLY (never pushed): Mandos, the neowarrior fork's
    * successor (unified repo, renamed 2026-11-03) - the same trust, one
    * write with the final id (#19). */
-  { id: "mandos", repo: "diegoami/mandos", seams: [TRUTH_MAP, TRUTH_MONSTERS, "profiles:manage", "saves:manage"] },
+  { id: "mandos", repo: "diegoami/mandos", seams: [TRUTH_MAP, TRUTH_MONSTERS, "profiles:manage", "saves:manage", "session:control"] },
   { id: "squire", repo: "neostryder/neo-angband-mod-squire", seams: ["profiles:manage"] },
   { id: "forge", repo: "neostryder/neo-angband-mod-forge", seams: ["mod:session", "mod:install", "mod:authoring"] },
   { id: "qol", repo: "neostryder/neo-angband-mod-qol", seams: [] },
