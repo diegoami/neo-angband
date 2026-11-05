@@ -17,9 +17,10 @@ Angband remain unchanged; this branch adds repair-session bootstrap docs.
 ```sh
 cmake -S . -B build/session -DSUPPORT_BORG=ON -DSUPPORT_TEST_FRONTEND=ON
 cmake --build build/session --parallel 2
-ctest --test-dir build/session --output-on-failure
+cmake --build build/session --target alltests --parallel 2
 ```
 
+This project defines alltests/allunittests custom targets (not a CTest suite).
 These are the original C CMake options, not Rust harness flags or Neo package
 commands. Add the issue's legal game scenario and before/after controls to the
 unit/build checks. Coordinate builds with the shared validation lock.
