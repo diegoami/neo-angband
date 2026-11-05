@@ -14,3 +14,8 @@ an unchanged reference. Never post to angband/angband under the owner pause.
 The canonical C catalogue and watch scripts are on this fork's master in
 the engine workspace. Check shared issue state first and preserve the
 running lab and old reference checkouts. See docs/SESSION.md for routing.
+
+Source review from this native tree: node ../../tools/borg-rs-watch.mjs uses
+the combined session’s API/file/issue intake. The canonical C issue list
+and evidence snapshot are on the parent master workspace, not copied into
+this source worktree as another live queue.
