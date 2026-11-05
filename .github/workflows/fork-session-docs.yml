@@ -1,5 +1,12 @@
 name: fork-session-docs
-on: [push, pull_request]
+on:
+  pull_request:
+  push:
+    branches: [master, workbench/c-borg]
+  workflow_dispatch:
+concurrency:
+  group: session-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 jobs:
   session:
     runs-on: ubuntu-latest
@@ -9,10 +16,18 @@ jobs:
         with:
           node-version: 22
       - run: node tools/check-session.mjs
-      - run: node tools/check-fork-workflows.mjs
+      - if: ${{ hashFiles('tools/check-fork-workflows.mjs') != '' }}
+        run: node tools/check-fork-workflows.mjs
       - if: ${{ hashFiles('tools/c-bugs.mjs') != '' }}
         run: node tools/c-bugs.mjs --check
       - if: ${{ hashFiles('tools/c-bugs-source.node-test.mjs') != '' }}
         run: node --test tools/c-bugs-source.node-test.mjs
       - if: ${{ hashFiles('tools/borg-rs-watch.node-test.mjs') != '' }}
         run: node --test tools/borg-rs-watch.node-test.mjs
+      - if: ${{ hashFiles('tools/ci-scope.node-test.mjs') != '' }}
+        run: node --test tools/ci-scope.node-test.mjs
+      - if: ${{ hashFiles('tools/private-scan.mjs') != '' }}
+        run: node tools/private-scan.mjs
+      # Native C metadata branches can retain the legacy source-test filename.
+      - if: ${{ hashFiles('tools/c-bugs-source.test.mjs') != '' }}
+        run: node --test tools/c-bugs-source.test.mjs
