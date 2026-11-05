@@ -59,3 +59,11 @@
 13. Current work is bugs, triage, workflow maintenance and owner-requested
     rework. Backlogged gameplay strategies/learning/unattended stage-resume
     features stay parked unless the owner explicitly changes that scope.
+
+14. Owner intake policy (2026-11-06): borg-rs posts C leads directly as issues
+    on diegoami/neo-angband-tracker. Review and deduplicate those board reports;
+    do not routinely fetch/watch the borg-rs repository, bug file or issue feed.
+    Retain historical source attribution and CBUG IDs. A direct report remains
+    a lead until independently validated against native C. Revisit the Rust
+    repository only for an explicit owner request or a specific investigation
+    that requires its historical evidence.

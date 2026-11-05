@@ -1,6 +1,6 @@
 # Native C Borg and Angband repair worktree
 
-This is the native C side of diegoami/neo-angband-tracker's combined repair session.
+This is the dedicated native C lane of diegoami/neo-angband-tracker.
 The same fork also hosts the Neo engine source on master; C and Neo use
 different bases/builds. Start with AGENTS.md, RULES.md, PLAN.md and this fork's
 checkpoint. Catalogue/patches/trackers are owned by the fork's master; access
@@ -28,3 +28,6 @@ unit/build checks. Coordinate builds with the shared validation lock.
 Local bootstrap installed CMake3.31.10 as a user tool via uv; GCC/Make/pkg-config
 were already present. On another host install a C compiler, Make and CMake
 first. No privileged system package or owner lab/data change is required.
+
+Native C checkpoint: https://github.com/diegoami/neo-angband-tracker/issues/207.
+borg-rs supplies leads directly on our issue board; see RULES.md for intake.
