@@ -35,6 +35,8 @@ export default defineConfig({
        */
       "**/dist/**",
       "**/.claude/worktrees/**",
+      // Owned task/native C worktrees are separate source/build contexts.
+      "**/.worktrees/**",
       // Sibling checkouts from the pre-.claude/worktrees era.
       "na-wt-*/**",
       ".integration-*/**",

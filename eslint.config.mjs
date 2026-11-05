@@ -25,6 +25,7 @@ export default tseslint.config(
       // tree would otherwise be linted a second time with no tsconfig behind
       // it - 1400+ parser errors that say nothing about the source.
       "**/.claude/worktrees/**",
+      "**/.worktrees/**",
     ],
   },
   {

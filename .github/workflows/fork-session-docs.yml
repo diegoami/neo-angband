@@ -11,7 +11,7 @@ jobs:
       - run: node tools/check-session.mjs
       - if: ${{ hashFiles('tools/c-bugs.mjs') != '' }}
         run: node tools/c-bugs.mjs --check
-      - if: ${{ hashFiles('tools/c-bugs-source.test.mjs') != '' }}
-        run: node --test tools/c-bugs-source.test.mjs
-      - if: ${{ hashFiles('tools/borg-rs-watch.test.mjs') != '' }}
-        run: node --test tools/borg-rs-watch.test.mjs
+      - if: ${{ hashFiles('tools/c-bugs-source.node-test.mjs') != '' }}
+        run: node --test tools/c-bugs-source.node-test.mjs
+      - if: ${{ hashFiles('tools/borg-rs-watch.node-test.mjs') != '' }}
+        run: node --test tools/borg-rs-watch.node-test.mjs

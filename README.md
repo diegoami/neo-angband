@@ -35,7 +35,7 @@ Neo source/toolchain: Node22+, pnpm version from package.json; pnpm install
 --frozen-lockfile, pnpm typecheck/build/test as appropriate. C uses its own
 CMake/Make build and native regression scenarios; never run Neo pnpm commands
 in the C tree. Documentation/catalogue gates: node tools/check-session.mjs,
-node tools/c-bugs.mjs --check, node --test tools/c-bugs-source.test.mjs.
+node tools/c-bugs.mjs --check, node --test tools/c-bugs-source.node-test.mjs.
 See PLAN for exact baseline/consumer and proposal checks.
 
 Original upstream credits, licence and legal policies remain in their files.
