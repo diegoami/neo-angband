@@ -59,3 +59,10 @@
 13. Current work is bugs, triage, workflow maintenance and owner-requested
     rework. Backlogged gameplay strategies/learning/unattended stage-resume
     features stay parked unless the owner explicitly changes that scope.
+
+14. Before pushing an upstream refresh, audit every new or changed Actions
+    workflow and trigger. Inherited product jobs are FORK-guarded to their
+    original repository; run node tools/check-fork-workflows.mjs. The owned
+    source tracker blocks v* tag creation/update/deletion by ruleset; do not
+    bypass it or import product tags. CI remains active. Mandos intentionally
+    retains its own product-release workflows under its separate session.
