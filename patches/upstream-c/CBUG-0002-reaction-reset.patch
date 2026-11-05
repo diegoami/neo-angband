@@ -1,0 +1,27 @@
+From 32ab6823c6a993d94ce382b72f8a855a20f7911c Mon Sep 17 00:00:00 2001
+From: Diego Amicabile <diego.amicabile@soprasteria.com>
+Date: Fri, 6 Nov 2026 00:17:38 +0100
+Subject: [PATCH] Borg: clear the reaction gate after a message batch
+
+FORK: reset borg_dont_react, the global used by borg_react, rather than the unused struct field. A knockout otherwise suppresses later combat reactions after recovery. Investigates diegoami/neo-angband-tracker#14 / CBUG-0002, originally reported by borg-rs. Native knockout/recovery/combat fails before and passes after; heavy-stun, paralysis and unaffected controls retain identical logs. Local proposal only; no upstream C submission.
+---
+ src/borg/borg.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/borg/borg.c b/src/borg/borg.c
+index fa2c8d47..3c11f708 100644
+--- a/src/borg/borg.c
++++ b/src/borg/borg.c
+@@ -309,7 +309,8 @@ static struct keypress generate_keypress(int flush_first)
+ 
+     /* Flush messages */
+     borg_parse(NULL);
+-    borg.dont_react = false;
++    /* FORK (CBUG-0002): reset the message gate read by borg_react(). */
++    borg_dont_react = false;
+ 
+     /* Check for key on the queue */
+     borg_ch = borg_inkey(true);
+-- 
+2.53.0
+
