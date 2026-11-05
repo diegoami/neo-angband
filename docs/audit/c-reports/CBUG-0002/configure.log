@@ -1,0 +1,7 @@
+-- Could NOT find Sphinx (missing: SPHINX_EXECUTABLE) 
+-- Support for X11 front end - Ready
+-- Support for spoiler front end - Ready
+-- Support for test front end - Ready
+-- Configuring done (34.6s)
+-- Generating done (1.4s)
+-- Build files have been written to: /tmp/angband-c-reaction-build
