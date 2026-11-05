@@ -79,7 +79,7 @@ validateSourceSnapshot(data, readFileSync(join(root, data.sources.borg_rs.snapsh
 
 const issueBoard = "https://github.com/diegoami/neo-angband-tracker/issues?q=is%3Aissue+label%3Aupstream-c+label%3Afinding";
 const rendered = [
-  "# Angband C Borg findings and candidates", "",
+  "# Angband C findings and candidates", "",
   "## Easy method: open a PR from an existing C proposal branch", "",
   "[Compare the map-dump correction with Angband master](https://github.com/angband/angband/compare/master...diegoami:neo-angband-tracker:pr/c-borg-map-dump-cancel)", "",
   "Review the diff and choose **Create pull request** if your account has the required permissions. Opening the comparison submits nothing. [Copy/patch alternatives and follow-up details](c-fix-handoff.md).", "",

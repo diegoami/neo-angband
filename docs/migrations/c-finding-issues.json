@@ -1145,6 +1145,87 @@
       "url": "https://github.com/diegoami/neo-angband-tracker/issues/159",
       "mode": "created",
       "url_at_creation": "https://github.com/diegoami/neo-angband/issues/159"
+    },
+    {
+      "id": "CBUG-0144",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 160,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/160",
+      "mode": "created"
+    },
+    {
+      "id": "CBUG-0145",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 161,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/161",
+      "mode": "created"
+    },
+    {
+      "id": "CBUG-0146",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 162,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/162",
+      "mode": "created"
+    },
+    {
+      "id": "CBUG-0147",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 163,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/163",
+      "mode": "created"
+    },
+    {
+      "id": "CBUG-0148",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 164,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/164",
+      "mode": "created"
+    },
+    {
+      "id": "CBUG-0149",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 165,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/165",
+      "mode": "created"
+    },
+    {
+      "id": "CBUG-0150",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 166,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/166",
+      "mode": "created"
+    },
+    {
+      "id": "CBUG-0151",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 167,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/167",
+      "mode": "created"
+    },
+    {
+      "id": "CBUG-0152",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 168,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/168",
+      "mode": "created"
+    }
+  ],
+  "additional_imports": [
+    {
+      "source_commit": "c375a82456741f7e4d4d410b27390ba68077ba9c",
+      "source_group": 41,
+      "findings": [
+        "CBUG-0144",
+        "CBUG-0145",
+        "CBUG-0146",
+        "CBUG-0147",
+        "CBUG-0148",
+        "CBUG-0149",
+        "CBUG-0150",
+        "CBUG-0151",
+        "CBUG-0152"
+      ],
+      "confidence": "reported-lead"
     }
   ]
 }

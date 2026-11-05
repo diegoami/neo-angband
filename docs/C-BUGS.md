@@ -1,4 +1,4 @@
-# Angband C Borg findings and candidates
+# Angband C findings and candidates
 
 ## Easy method: open a PR from an existing C proposal branch
 
