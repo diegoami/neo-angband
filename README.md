@@ -31,7 +31,7 @@ verified defects. Metadata is split by stable finding ID; live issue status
 belongs on our issue board. [Reuse a C proposal](docs/c-fix-handoff.md).
 No angband/angband submissions from us under the standing owner pause.
 
-Neo source/toolchain: Node22+, pnpm version from package.json; pnpm install
+Neo source/toolchain: Node26 (the .nvmrc line), pnpm12.3.4 from package.json; pnpm install
 --frozen-lockfile, pnpm typecheck/build/test as appropriate. C uses its own
 CMake/Make build and native regression scenarios; never run Neo pnpm commands
 in the C tree. Documentation/catalogue gates: node tools/check-session.mjs,
@@ -69,3 +69,12 @@ git worktree add -b workbench/c-borg .worktrees/angband-c origin/workbench/c-bor
 Skip remotes/branches already present. Start the session from this master
 workspace; the C worktree shares this repository's issue board/rules. Source
 fix task branches still use pristine upstream/master or angband/master.
+
+## Neo desktop build/install reference
+
+For a locally tested or upstream unsigned macOS build, use System Settings →
+**Privacy & Security** → **Open Anyway** after the initial launch refusal.
+Apple Silicon machines need the **arm64** build; Intel machines use x64.
+See [the installation guide](docs/INSTALL.md) and the retained upstream README
+for the full supported procedure. This tracker does not publish a new desktop
+release merely by documenting/testing an upstream build.
