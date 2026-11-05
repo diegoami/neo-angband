@@ -1,0 +1,19 @@
+{
+  "schema": "angband/repository-renames@1",
+  "repositories": [
+    {
+      "from": "diegoami/neo-angband",
+      "to": "diegoami/neo-angband-tracker",
+      "id": 1443412722,
+      "node_id": "R_kgDOVgi68g",
+      "default_branch": "master"
+    },
+    {
+      "from": "diegoami/neo-angband-mod-borg",
+      "to": "diegoami/neo-angband-borg-mod-tracker",
+      "id": 1443412775,
+      "node_id": "R_kgDOVgi7Jw",
+      "default_branch": "master"
+    }
+  ]
+}

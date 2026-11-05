@@ -1,0 +1,27 @@
+name: Neo Angband engine defect
+description: TypeScript game engine/API issue; not the Borg mod
+labels: [upstream, bug]
+body:
+  - type: input
+    id: source
+    attributes:
+      label: Source/version and existing upstream report
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction, actual versus expected result, and controls
+    validations:
+      required: true
+  - type: textarea
+    id: consumer
+    attributes:
+      label: Linked downstream integration
+      description: "Consumer carried/fixed state belongs in a linked Mandos issue."
+  - type: textarea
+    id: threads
+    attributes:
+      label: Linked source or proposal threads
+      description: "Replace none yet with qualified owner/repo#number references; keep the Threads prefix."
+      value: "**Threads**: none yet"

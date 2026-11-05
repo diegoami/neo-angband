@@ -1,0 +1,45 @@
+name: Original Angband C finding
+description: C Borg or C game lead, including borg-rs reports
+labels: [upstream-c, finding, candidate, "evidence:reported-lead"]
+body:
+  - type: markdown
+    attributes:
+      value: "Source defect only. Do not apply carried/fixed consumer tags. Neo engine and Neo Borg port work have different owners; no official C submission is implied."
+  - type: input
+    id: source
+    attributes:
+      label: Original source and stable ID
+      description: "borg-rs issue/file+commit, existing CBUG ID, or independent discovery. Check existing findings first."
+    validations:
+      required: true
+  - type: dropdown
+    id: component
+    attributes:
+      label: C component
+      options: [C Borg, C Angband game]
+    validations:
+      required: true
+  - type: textarea
+    id: consequence
+    attributes:
+      label: Human consequence and evidence confidence
+      description: "Distinguish reported lead, source check and native game outcome. Rust-only failures are not automatically C defects."
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: C pin, source lines, legal scenario and controls
+    validations:
+      required: true
+  - type: textarea
+    id: consumers
+    attributes:
+      label: Related proposals or independent consumers
+      description: "Link Mandos TS translation/adoption or borg-rs Rust translation where applicable. The fidelity-only port does not translate proposed C corrections."
+  - type: textarea
+    id: threads
+    attributes:
+      label: Linked source or proposal threads
+      description: "Replace none yet with qualified owner/repo#number references; keep the Threads prefix."
+      value: "**Threads**: none yet"

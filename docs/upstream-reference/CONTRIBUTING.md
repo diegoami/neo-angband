@@ -1,0 +1,308 @@
+Upstream reference snapshot; session instructions are in the root AGENTS/RULES/PLAN.
+
+# Contributing to Neo Angband
+
+Neo Angband is a faithful but moddable port of Angband, meant to be playable almost anywhere. Most of the code is TypeScript, but code in any language that compiles to JavaScript or WebAssembly can go into the codebase or ship in a mod. Thanks for helping.
+This page is the short version of how the project is built and the rules that
+keep it faithful. Read it once before your first change.
+
+> **Not sure yet, or stuck on something?** Come to
+> [the RPGM Tools Discord](https://discord.gg/YegtwbHTBQ) and ask. "Is this
+> worth a PR?" and "why won't this build?" are both good questions there, and
+> the answer usually arrives faster than on an issue. For anything you would
+> rather not write in public - including a security report - email
+> **strider-angband (at) rpgm.tools**; see [SECURITY.md](https://github.com/neostryder/neo-angband/blob/0cc75b4af/SECURITY.md).
+>
+> **Playing rather than building?** Everything you need is in the
+> [README](https://github.com/neostryder/neo-angband/blob/0cc75b4af/README.md), and
+> [opening an issue](https://github.com/neostryder/neo-angband/issues/new/choose)
+> needs none of what follows.
+>
+> **Asking about AI use, or whether it disqualifies a contribution?**
+> [AI_USAGE_POLICY.md](https://github.com/neostryder/neo-angband/blob/0cc75b4af/AI_USAGE_POLICY.md) covers it; the short version is that
+> a PR is judged by whether it is correct, tested and faithful, not by how it
+> was typed.
+
+## Prerequisites
+
+- **Node** `>=22` (the `.nvmrc` pins `26`; use it if you run `nvm`). CI runs 26 here and the mod repositories run 22, so the `>=22` floor is tested as well.
+- **pnpm** `12.3.4`, the version in the root `package.json` `packageManager` field. Install it with **`npm install -g @pnpm/exe`** and let that field choose the version: pnpm reads it on every run when `manage-package-manager-versions` is enabled, which is the default, so you never track this number by hand.
+
+  `corepack enable pnpm` no longer works. Corepack was removed from Node in 25, so the pinned 26 does not have it, and instructions elsewhere that still recommend it were written before the removal.
+
+  `pnpm self-update` cannot take a pnpm 10 install to 12. pnpm 10 fetches its own binary from `@pnpm/win-x64`, which stopped publishing at `11.26.0`, while 12.x ships as `@pnpm/exe`, so the attempt fails with `No matching version found for @pnpm/win-x64@12.3.4`. An earlier failure of the same kind can also leave a half-written copy under `<pnpm home>/.tools` that reports `Failed to switch pnpm to v<version> ... pnpm CLI is missing` on every command afterwards; deleting that `.tools` directory clears it. `npx pnpm@12.3.4 <cmd>` works in a pinch without installing anything.
+
+This is a pnpm workspace (`pnpm-workspace.yaml`); all packages live under
+`packages/`.
+
+Changes to data files, preferences, or exports use the envelope and serializer in [JSON document style](https://github.com/neostryder/neo-angband/blob/0cc75b4af/docs/JSON_STYLE.md).
+
+## Setup and core commands
+
+```sh
+pnpm install        # install the whole workspace
+pnpm build          # tsc -b: typecheck and build every package
+pnpm typecheck      # tsc -b (build is the typecheck; same command)
+pnpm test           # vitest run across all packages
+pnpm check:private  # refuse private information in a public repo (see below)
+```
+
+Enable the repository's git hooks once per clone:
+
+```sh
+git config core.hooksPath .githooks
+```
+
+That installs a `pre-commit` gate which runs `pnpm check:private` over the
+**staged** content. The same hook gates a `neo-angband-mod-*` clone if you point
+that clone's `core.hooksPath` at this one's `.githooks` - it needs no files of its
+own. See [Keeping the repository publishable](#keeping-the-repository-publishable).
+
+Run one area's tests by passing a path filter to the root test script:
+
+```sh
+pnpm test packages/core          # only the core engine tests
+pnpm test packages/core/src/rng  # narrow to a file or name fragment
+```
+
+Package-specific scripts you may need (run with `pnpm --filter <name> <script>`):
+
+- `@rpgm-tools/neo-angband-web` - `dev` (Vite dev server), `bundle` (Vite/PWA build).
+- `@rpgm-tools/neo-angband-cli` - `scenarios` (golden parity scenarios), `stats`,
+  `stats:baseline`, `spoil`.
+- `@rpgm-tools/neo-angband-content` - `compile` (build the core content pack).
+- `@rpgm-tools/neo-angband-desktop` - `start` / `dev` (Electron), `dist` (packaged app).
+- `@rpgm-tools/neo-angband-linoleum` - the `neo-linoleum` tile-pack converter.
+
+## Repository layout
+
+The full package table lives in the [README](https://github.com/neostryder/neo-angband/blob/0cc75b4af/README.md#repository-layout) and
+[docs/ARCHITECTURE.md](https://github.com/neostryder/neo-angband/blob/0cc75b4af/docs/ARCHITECTURE.md). In brief, the workspace holds:
+`core` (headless engine), `content` (Angband 4.2.6 gamedata as the core pack),
+`mod-sdk` (pack schemas, validation, tooling), `web` (web + PWA front-end),
+`cli` (terminal front-end and dev/stats harness), `desktop` (Electron wrapper),
+`linoleum` (tile-pack converter), and `mcp` (the MCP server that lets an agent
+play the game). The Borg autoplayer is not in here: it ships from its own
+repository as a mod, like every other mod.
+
+## The cardinal rule: faithfulness to Angband 4.2.6
+
+The base game is a behavioral/gameplay-faithful port of Angband 4.2.6 - not a
+redesign, and not a claim of bit-exactness. See
+[docs/PARITY.md](https://github.com/neostryder/neo-angband/blob/0cc75b4af/docs/PARITY.md) for exactly what "faithful" means here and how
+it is measured.
+
+- The original C tree lives buildable in [`reference/`](https://github.com/neostryder/neo-angband/blob/0cc75b4af/reference/) as the
+  read-only golden-master oracle. **Never edit anything under `reference/`.**
+- Ported code cites its upstream source in doc comments as `file:line`
+  (relative to `reference/`), so any behavior can be traced back to the C that
+  it locks in.
+- When behavior and "improvement" disagree, faithfulness wins.
+
+## Faithful core vs. mods
+
+New behavior and UI-level quality-of-life do not go into the core. The base
+game stays faithful; anything that adds or changes behavior ships as a **mod**.
+
+- The base game is itself a content pack loaded through the same pipeline as
+  any third-party mod.
+- Conveniences, tweaks, and new systems live as mods - see
+  [docs/MODS.md](https://github.com/neostryder/neo-angband/blob/0cc75b4af/docs/MODS.md) and the modding guides in
+  [docs/modding/](https://github.com/neostryder/neo-angband/blob/0cc75b4af/docs/modding/).
+- The first-party mods are the worked examples of this boundary: `qol` (conveniences), `bug-fixes` (optional fixes for 4.2.6's own defects), `feature-restoration`, shown as Cutting Room Floor (features later Angband versions dropped, plus content upstream wrote but never switched on, brought back as toggles), `linoleum` (an alternative tile engine and six converted tile packs), `borg` (the autoplayer), and `forge` (a workshop inside the game for building other mods).
+- **No mod is bundled into the build.** `mods/registry.json` names mod
+  repositories and nothing else; every fact about a mod - its id, version,
+  payload and the engine range it supports - comes from that repository's own
+  manifest at a tag. A first-party mod arrives by exactly the path a
+  third-party mod does.
+
+## Parity provenance ledger
+
+Every ported module is mapped to its upstream source in the parity ledger
+under [`parity/`](https://github.com/neostryder/neo-angband/blob/0cc75b4af/parity/README.md): one YAML file per module in
+`parity/ledger/`, pinned to the `4.2.6` baseline. Add or update an entry
+before a module's phase completes.
+
+Status vocabulary (from [parity/README.md](https://github.com/neostryder/neo-angband/blob/0cc75b4af/parity/README.md)):
+
+- `planned` - entry exists, port not started.
+- `partial` - some upstream items ported, more remain.
+- `ported` - behavior ported, not yet verified against the harness.
+- `verified` - confirmed by at least one `verified-by` harness check.
+
+New original code (UI, mod-sdk) needs no ledger entry.
+
+## Code style
+
+- **TypeScript strict** everywhere - the shared `tsconfig.base.json` turns on
+  `strict`, `noUncheckedIndexedAccess`, `noImplicitOverride`,
+  `exactOptionalPropertyTypes`, and `verbatimModuleSyntax`, among others.
+  Keep the build clean with no new errors.
+- **Formatting** per `.editorconfig`: UTF-8, LF line endings, final newline,
+  tabs at width 4 for code; 2-space indent for JSON, YAML, and Markdown.
+- **Plain ASCII punctuation** in source and docs - no smart quotes, no
+  ellipsis character, no em dash or en dash. An em dash gets reworded away
+  rather than swapped for a hyphen or comma, since a substitution leaves the
+  same sentence shape behind; an en dash becomes a hyphen. This is a rule
+  about prose, not about data: a quoted string, a unit symbol, or example
+  text in another language keeps whatever character its source actually
+  uses.
+- **Lint** with `pnpm lint` (ESLint + typescript-eslint, flat config in
+  `eslint.config.mjs`). It must report zero errors; the remaining warnings flag
+  known parity idioms and are acceptable. CI runs it as a gate.
+
+## Testing expectations
+
+- New ported behavior gets vitest coverage that cites the C lines it locks in,
+  the same way the ported code does.
+- CI (`.github/workflows/ci.yml`) runs on Node 26 and must stay green: it does
+  `pnpm build`, `pnpm lint`, the web `bundle`, `pnpm test`, and the CLI parity
+  `scenarios` as a standalone run.
+- Run `pnpm test` (and, for engine changes, `pnpm --filter @rpgm-tools/neo-angband-cli
+  scenarios`) locally before opening a pull request.
+- **Prove the test bites.** Revert your fix, confirm the new test fails, then put
+  the fix back. A test that passes either way documents nothing. (If you are
+  testing core from a web test, remember `packages/web` imports the *built*
+  core - run `npx tsc -b packages/core` first or the mutation is invisible.)
+
+## The text census
+
+`packages/cli/src/text-census.test.ts` is a CI gate on missing player-visible
+text. It reads every string literal the C hands to `msg` / `msgt` / `get_check` /
+`get_string` / `get_quantity` and fails if the port does not contain it.
+
+It exists because reviewing code does not find code that was never written: this
+port was declared complete several times and then found, by playing it, to be
+missing messages nobody could see the absence of. So if you add a message the C
+has, the gate goes quiet on its own; if you find one that is missing and *not*
+listed, that is a real find.
+
+```sh
+pnpm --filter @rpgm-tools/neo-angband-cli census    # the current list, grouped by C file
+```
+
+Everything still absent is in `KNOWN_ABSENT` with the reason - host file I/O the
+browser has no equivalent for, upstream's own malformed-gamedata diagnostics,
+dead code in the C itself, a ratified divergence, or a tracked `GAP:` with what
+it needs. The gate fails in **both** directions, so once you port a message you
+must also delete its entry.
+
+What it does not prove: that a message fires on the right event, in the right
+order, with the right message type. Presence is a floor, not parity.
+
+## The call-site census
+
+`packages/cli/src/call-census.test.ts` is the companion gate. Where the text
+census catches a message the port never says, this catches a *caller the port
+never wires*: a function that IS ported, correct and tested, whose caller does
+not exist. That is the shape of most of the bugs found by playing, because
+reviewing the ported function finds nothing wrong with it.
+
+```sh
+pnpm --filter @rpgm-tools/neo-angband-cli call-census              # tier 1, the gate
+pnpm --filter @rpgm-tools/neo-angband-cli call-census --shortfall  # + fewer-calls report
+pnpm --filter @rpgm-tools/neo-angband-cli call-census --unmatched  # + unmatched report
+```
+
+Tier 1 is "the port defines a function of this upstream name and nothing in the
+port mentions it". Everything it reports must be in `KNOWN_UNUSED` with a
+reason - `renamed` / `reduced` / `host` / `dead-in-c`, or a tracked `LEAD` that
+has not been run to ground yet. It fails in both directions, so wiring a caller
+means deleting its entry.
+
+Names are matched by stripping everything but letters and digits and
+lowercasing, so `calc_inventory` and `calcInventory` are the same key. Tiers 2
+and 3 (fewer call sites; no port symbol of that name) are reports, not gates -
+too much of both is legitimate shape difference.
+
+## Keeping the repository publishable
+
+This repository is public, and a small set of strings must never appear in it:
+the maintainer's legal name, work email or employer, private project codenames,
+paths inside the private workspace, and absolute paths that name a machine's
+user account. All of them are natural things to type while working - a code
+comment attributing a decision, a hardcoded tool path in a throwaway script -
+which is exactly why the rule needs a machine behind it.
+
+```sh
+node tools/private-scan.mjs            # every tracked file (the CI gate)
+node tools/private-scan.mjs --staged   # what is about to be committed (the hook)
+```
+
+Two rule tiers, in `tools/private-scan.mjs`:
+
+- **Always** - terms with no legitimate use here. Any hit fails.
+- **Baselined** - terms that ARE legitimate in specific places and private
+  elsewhere. One codename is also upstream Angband content: it is a syllable in
+  `names.txt` and part of an artifact description in `artifact.txt`, both of which
+  the port mirrors verbatim. Likewise an absolute path under a user profile is a
+  leak in a build script and a perfectly good invented test fixture. These are
+  accounted for per file, with a count and a reason, in
+  `tools/private-scan-baseline.json`.
+
+  (This section deliberately does not spell those terms out - it would trip the
+  scan it is describing, and baselining the documentation would put noise in the
+  file that is supposed to hold only real exceptions.)
+
+The baseline fails in **both** directions: an unlisted occurrence fails, and so
+does an entry that no longer matches. A one-way allowlist keeps passing long
+after the thing it excused is gone, and then quietly excuses whatever moved into
+the same file. Raising a count is a deliberate act - say why in the entry.
+
+`reference/**` is exempt: it is upstream Angband, vendored verbatim and never
+edited. `tools/private-scan*` is exempt too, because it has to contain the
+patterns in order to test for them - a real hole, stated rather than hidden.
+
+### The two gates cover different things
+
+`packages/cli/src/private-scan.test.ts` runs the whole-tree scan in CI. It also plants known-bad fixtures to check that the detector still fires, since a scanner broken to always pass would satisfy a clean-tree assertion by itself.
+
+The whole-tree scan lists files with `git ls-files`, so it cannot see a brand-new file until that file is committed, and in a public repository a file that has been committed and pushed has already leaked. The `pre-commit` hook reads the staged blobs, which makes it the only gate that sees a new file in time. In one check, a fixture naming the private workspace passed the tree scan and was caught by the hook in the same working state, and each result was correct for what that gate reads.
+
+Neither gate replaces the other. The hook has to be enabled per clone and `git commit --no-verify` skips it; the CI scan later catches whatever got past it.
+
+### The mod repositories use this same scanner
+
+`neo-angband-mod-*` are public too, and the terms leak into them for the same
+reasons. They do **not** get a copy of the scanner: two copies of a rule list
+drift, and the copy that quietly stops matching is the one nobody opens. Both
+gates reach them from here.
+
+The hook needs no file in the mod repository at all - point `core.hooksPath` at
+this checkout, once per clone:
+
+```sh
+git config core.hooksPath /path/to/neo-angband/.githooks
+```
+
+The hook resolves the scanner relative to itself and passes the repository being
+committed to as `--root`. If it cannot find the scanner it **fails the commit**
+rather than exiting 0: a hook that silently passes reports success forever, and
+the first anyone hears of it is after the leak.
+
+For CI, a mod repository's workflow uses the composite action, which pins the
+action and the scanner to one ref because GitHub checks this whole repository out
+to run it:
+
+```yaml
+- uses: actions/checkout@v4
+- uses: neostryder/neo-angband/.github/actions/private-scan@master
+```
+
+Scanning another tree by hand:
+
+```sh
+node tools/private-scan.mjs --root ../neo-angband-mod-linoleum
+```
+
+The rules are shared; the **baseline is per-root**
+(`<root>/tools/private-scan-baseline.json`), because what is legitimately
+present differs by repository. A `--root` that is not a directory is refused
+outright - falling back to this repository would report a pass for a tree nobody
+asked about.
+
+## Attribution
+
+Neo Angband is built and maintained by neostryder at RPGM Tools. It is a
+community port; all honor to the upstream Angband maintainers and contributors
+whose work this builds on.
