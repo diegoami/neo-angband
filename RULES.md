@@ -6,6 +6,8 @@
 2. Current bug state and upstream-board/source review comes first; then
    triage/evidence and list maintenance, then fixes. Do not turn a reported
    lead into a verified defect. A closed upstream thread is not proof of a fix.
+   Priority applies within this session's component; the independent C/engine
+   stream does not wait for the port-repair queue to become empty.
 3. One canonical defect issue in its owner repository. Link other repository
    work as a distinct integration/adoption task; do not copy live defect state.
    Preserve transferred issue history and old redirects; qualify cross-repo

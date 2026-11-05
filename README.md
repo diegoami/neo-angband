@@ -24,3 +24,7 @@ This project defines alltests/allunittests custom targets (not a CTest suite).
 These are the original C CMake options, not Rust harness flags or Neo package
 commands. Add the issue's legal game scenario and before/after controls to the
 unit/build checks. Coordinate builds with the shared validation lock.
+
+Local bootstrap installed CMake3.31.10 as a user tool via uv; GCC/Make/pkg-config
+were already present. On another host install a C compiler, Make and CMake
+first. No privileged system package or owner lab/data change is required.
