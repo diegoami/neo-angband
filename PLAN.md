@@ -9,7 +9,9 @@
    Rust-only issues and progress notes. Do not proactively fetch/poll the
    borg-rs repository, docs/c-bugs.md or its external issue board. Retained
    snapshots/watch tooling are legacy/manual evidence, not a live intake queue.
-   No Rust worker/adoption task or new managed clone is created here.
+   No Rust worker/adoption task or new managed clone is created here. Keep
+   Rust provenance in Source/discovery fields, not watched Threads references;
+   do not run monitors that would indirectly poll Rust status.
 3. Choose the source tree before implementation. Neo tasks use pristine
    upstream/master from neostryder/neo-angband. C tasks use angband/master at
    the recorded C pin, via the same fork's native C worktree. Read that tree's

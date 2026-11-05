@@ -61,14 +61,12 @@
 13. Current work is bugs, triage, workflow maintenance and owner-requested
     rework. Backlogged gameplay strategies/learning/unattended stage-resume
     features stay parked unless the owner explicitly changes that scope.
-
 14. Before pushing an upstream refresh, audit every new or changed Actions
     workflow and trigger. Inherited product jobs are FORK-guarded to their
     original repository; run node tools/check-fork-workflows.mjs. The owned
     source tracker blocks v* tag creation/update/deletion by ruleset; do not
     bypass it or import product tags. CI remains active. Mandos intentionally
     retains its own product-release workflows under its separate session.
-
 15. borg-rs reports directly to diegoami/neo-angband-tracker. Triage and
     deduplicate those posted reports normally; verify C-versus-Rust attribution
     and evidence before making a source-defect claim. Do not proactively poll
@@ -76,3 +74,6 @@
     another managed reference clone. Existing snapshots/watch implementation
     remain legacy/manual evidence only; they are not a startup/end-of-session
     obligation. Rust source work and managed Rust adoption tasks are out of scope.
+    This prohibition includes indirect monitor follows. Keep Rust provenance
+    in Source/discovery fields, not watched Threads status references; verify
+    monitor scope before running inherited tooling (see docs/BORG-RS-INTAKE.md).

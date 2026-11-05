@@ -23,6 +23,19 @@ verification remain in scope. Rust-only findings do not authorize Rust work.
 No automatic issue creation, closure, translation, fix application or official
 C posting follows from a directly posted report.
 
+## Provenance and monitor routing
+
+Keep Rust provenance in **Source** or discovery fields, not a watched
+**Threads** status reference. Routine Rust polling is prohibited even when
+it would happen indirectly through another monitor. The inherited
+upstream-watch.mjs follows every external Threads reference without a source
+allowlist; selecting a tracker repository alone does not filter its external
+references. Before running it, verify the selected trackers have no Rust
+Threads references. If that cannot be established, use scoped manual Neo/C
+status checks and report the monitor limitation instead of running a broad
+audit. A future allowlist/code correction is a separately scoped change;
+this documentation update does not change the watcher implementation.
+
 ## Retained historical/manual evidence
 
 Do not proactively poll/fetch the borg-rs repository, docs/c-bugs.md or its

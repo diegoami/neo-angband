@@ -11,14 +11,16 @@ git status --short
 git remote -v
 gh issue view 25 -R diegoami/neo-angband-tracker --comments
 node tools/check-session.mjs
-node tools/upstream-watch.mjs
+# Run upstream-watch.mjs only after verifying selected Threads exclude Rust refs.
 node tools/c-upstream-watch.mjs
 ```
 
 borg-rs reports directly to this repository. Triage those posted reports under
 [the intake contract](docs/BORG-RS-INTAKE.md); do not proactively fetch/poll
 borg-rs source, docs/c-bugs.md or its external issue board. Its old watch tool
-and snapshots are legacy/manual evidence, not startup work. No Rust worker,
+and snapshots are legacy/manual evidence, not startup work. Keep Rust
+provenance in Source/discovery fields rather than watched Threads references;
+no routine Rust polling includes indirect monitor follows. No Rust worker,
 adoption task or new reference clone is managed here.
 
 Use this repository's issue board, not Mandos's former upstream queue.
