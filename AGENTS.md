@@ -9,6 +9,9 @@ git status --short
 git remote -v
 gh issue list -R diegoami/neo-angband-tracker --label checkpoint --state open
 node tools/check-session.mjs
+node tools/upstream-watch.mjs
+node tools/c-upstream-watch.mjs
+node tools/borg-rs-watch.mjs
 ```
 
 Use this repository's issue board, not Mandos's former upstream queue.

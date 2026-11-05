@@ -54,3 +54,18 @@ it has a TS counterpart, translates it there with scenario controls and
 carries it under a linked consumer issue. borg-rs handles its own Rust
 translation/carry. The Neo Borg mod tracker restores C fidelity and is not
 asked to translate proposed C corrections as a separate repair service.
+
+## Fresh clone setup
+
+```sh
+git remote add upstream https://github.com/neostryder/neo-angband.git
+git remote add angband https://github.com/angband/angband.git
+git fetch upstream master
+git fetch angband master
+git fetch origin workbench/c-borg
+git worktree add -b workbench/c-borg .worktrees/angband-c origin/workbench/c-borg
+```
+
+Skip remotes/branches already present. Start the session from this master
+workspace; the C worktree shares this repository's issue board/rules. Source
+fix task branches still use pristine upstream/master or angband/master.
