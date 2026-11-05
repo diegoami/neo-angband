@@ -67,3 +67,21 @@
     a lead until independently validated against native C. Revisit the Rust
     repository only for an explicit owner request or a specific investigation
     that requires its historical evidence.
+
+15. For every defect investigated or fixed by this session, include a self-contained
+    "Human verification" section in BOTH the canonical issue and fix PR. Write
+    it for a skeptical maintainer who has not read the conversation. State the
+    observable problem, intended behavior and exact source/build pins; give
+    copyable commands a human can run, the actual relevant output, and explain
+    what each result proves and does not prove. For claims such as an unused
+    field or wrong variable, show a scoped exhaustive symbol search, classify
+    declarations/reads/writes and inspect the decisive call-site context. Do not
+    substitute an assertion, test name, green CI summary or evidence link for
+    this explanation. Provide a reproducible before/failure and after/success
+    sequence with unchanged conditions, negative controls and their outcomes;
+    expose synthetic interventions, reachability assumptions and practical
+    limits. Link immutable full logs/fixtures/patches as supporting detail and
+    explain how the human can inspect or rerun them. Verbosity is welcome where
+    it makes the reasoning checkable. Update this account when evidence or the
+    patch changes. Passing automation is not human acceptance: keep readiness
+    for the owner's external filing explicitly subject to their assessment.
