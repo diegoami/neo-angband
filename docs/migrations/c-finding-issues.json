@@ -1,0 +1,1150 @@
+{
+  "schema": "angband/c-finding-issues@1",
+  "source_commit": "3fed84b19506ea9cc9d5d07fc3de213856a39a7f",
+  "findings": [
+    {
+      "id": "CBUG-0001",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 13,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/13",
+      "mode": "reused",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/13"
+    },
+    {
+      "id": "CBUG-0002",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 14,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/14",
+      "mode": "reused",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/14"
+    },
+    {
+      "id": "CBUG-0003",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 10,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/10",
+      "mode": "reused",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/10"
+    },
+    {
+      "id": "CBUG-0004",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 26,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/26",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/26"
+    },
+    {
+      "id": "CBUG-0005",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 17,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/17",
+      "mode": "reused",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/17"
+    },
+    {
+      "id": "CBUG-0006",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 18,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/18",
+      "mode": "reused",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/18"
+    },
+    {
+      "id": "CBUG-0007",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 19,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/19",
+      "mode": "reused",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/19"
+    },
+    {
+      "id": "CBUG-0008",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 27,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/27",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/27"
+    },
+    {
+      "id": "CBUG-0009",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 28,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/28",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/28"
+    },
+    {
+      "id": "CBUG-0010",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 29,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/29",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/29"
+    },
+    {
+      "id": "CBUG-0011",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 30,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/30",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/30"
+    },
+    {
+      "id": "CBUG-0012",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 31,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/31",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/31"
+    },
+    {
+      "id": "CBUG-0013",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 20,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/20",
+      "mode": "reused",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/20"
+    },
+    {
+      "id": "CBUG-0014",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 32,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/32",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/32"
+    },
+    {
+      "id": "CBUG-0015",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 33,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/33",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/33"
+    },
+    {
+      "id": "CBUG-0016",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 34,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/34",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/34"
+    },
+    {
+      "id": "CBUG-0017",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 35,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/35",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/35"
+    },
+    {
+      "id": "CBUG-0018",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 21,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/21",
+      "mode": "reused",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/21"
+    },
+    {
+      "id": "CBUG-0019",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 23,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/23",
+      "mode": "reused",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/23"
+    },
+    {
+      "id": "CBUG-0020",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 36,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/36",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/36"
+    },
+    {
+      "id": "CBUG-0021",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 37,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/37",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/37"
+    },
+    {
+      "id": "CBUG-0022",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 38,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/38",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/38"
+    },
+    {
+      "id": "CBUG-0023",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 39,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/39",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/39"
+    },
+    {
+      "id": "CBUG-0024",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 40,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/40",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/40"
+    },
+    {
+      "id": "CBUG-0025",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 41,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/41",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/41"
+    },
+    {
+      "id": "CBUG-0026",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 42,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/42",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/42"
+    },
+    {
+      "id": "CBUG-0027",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 43,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/43",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/43"
+    },
+    {
+      "id": "CBUG-0028",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 44,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/44",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/44"
+    },
+    {
+      "id": "CBUG-0029",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 45,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/45",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/45"
+    },
+    {
+      "id": "CBUG-0030",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 46,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/46",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/46"
+    },
+    {
+      "id": "CBUG-0031",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 47,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/47",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/47"
+    },
+    {
+      "id": "CBUG-0032",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 48,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/48",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/48"
+    },
+    {
+      "id": "CBUG-0033",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 49,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/49",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/49"
+    },
+    {
+      "id": "CBUG-0034",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 50,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/50",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/50"
+    },
+    {
+      "id": "CBUG-0035",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 51,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/51",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/51"
+    },
+    {
+      "id": "CBUG-0036",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 52,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/52",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/52"
+    },
+    {
+      "id": "CBUG-0037",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 53,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/53",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/53"
+    },
+    {
+      "id": "CBUG-0038",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 54,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/54",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/54"
+    },
+    {
+      "id": "CBUG-0039",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 55,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/55",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/55"
+    },
+    {
+      "id": "CBUG-0040",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 56,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/56",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/56"
+    },
+    {
+      "id": "CBUG-0041",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 57,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/57",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/57"
+    },
+    {
+      "id": "CBUG-0042",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 58,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/58",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/58"
+    },
+    {
+      "id": "CBUG-0043",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 59,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/59",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/59"
+    },
+    {
+      "id": "CBUG-0044",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 60,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/60",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/60"
+    },
+    {
+      "id": "CBUG-0045",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 61,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/61",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/61"
+    },
+    {
+      "id": "CBUG-0046",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 62,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/62",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/62"
+    },
+    {
+      "id": "CBUG-0047",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 63,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/63",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/63"
+    },
+    {
+      "id": "CBUG-0048",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 64,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/64",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/64"
+    },
+    {
+      "id": "CBUG-0049",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 65,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/65",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/65"
+    },
+    {
+      "id": "CBUG-0050",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 66,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/66",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/66"
+    },
+    {
+      "id": "CBUG-0051",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 67,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/67",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/67"
+    },
+    {
+      "id": "CBUG-0052",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 68,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/68",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/68"
+    },
+    {
+      "id": "CBUG-0053",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 69,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/69",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/69"
+    },
+    {
+      "id": "CBUG-0054",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 70,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/70",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/70"
+    },
+    {
+      "id": "CBUG-0055",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 71,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/71",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/71"
+    },
+    {
+      "id": "CBUG-0056",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 72,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/72",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/72"
+    },
+    {
+      "id": "CBUG-0057",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 73,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/73",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/73"
+    },
+    {
+      "id": "CBUG-0058",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 74,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/74",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/74"
+    },
+    {
+      "id": "CBUG-0059",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 75,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/75",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/75"
+    },
+    {
+      "id": "CBUG-0060",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 76,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/76",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/76"
+    },
+    {
+      "id": "CBUG-0061",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 77,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/77",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/77"
+    },
+    {
+      "id": "CBUG-0062",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 78,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/78",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/78"
+    },
+    {
+      "id": "CBUG-0063",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 79,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/79",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/79"
+    },
+    {
+      "id": "CBUG-0064",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 80,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/80",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/80"
+    },
+    {
+      "id": "CBUG-0065",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 81,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/81",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/81"
+    },
+    {
+      "id": "CBUG-0066",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 82,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/82",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/82"
+    },
+    {
+      "id": "CBUG-0067",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 83,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/83",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/83"
+    },
+    {
+      "id": "CBUG-0068",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 84,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/84",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/84"
+    },
+    {
+      "id": "CBUG-0069",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 85,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/85",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/85"
+    },
+    {
+      "id": "CBUG-0070",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 86,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/86",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/86"
+    },
+    {
+      "id": "CBUG-0071",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 87,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/87",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/87"
+    },
+    {
+      "id": "CBUG-0072",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 88,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/88",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/88"
+    },
+    {
+      "id": "CBUG-0073",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 89,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/89",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/89"
+    },
+    {
+      "id": "CBUG-0074",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 90,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/90",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/90"
+    },
+    {
+      "id": "CBUG-0075",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 91,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/91",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/91"
+    },
+    {
+      "id": "CBUG-0076",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 92,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/92",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/92"
+    },
+    {
+      "id": "CBUG-0077",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 93,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/93",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/93"
+    },
+    {
+      "id": "CBUG-0078",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 94,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/94",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/94"
+    },
+    {
+      "id": "CBUG-0079",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 95,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/95",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/95"
+    },
+    {
+      "id": "CBUG-0080",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 96,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/96",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/96"
+    },
+    {
+      "id": "CBUG-0081",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 97,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/97",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/97"
+    },
+    {
+      "id": "CBUG-0082",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 98,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/98",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/98"
+    },
+    {
+      "id": "CBUG-0083",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 99,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/99",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/99"
+    },
+    {
+      "id": "CBUG-0084",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 100,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/100",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/100"
+    },
+    {
+      "id": "CBUG-0085",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 101,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/101",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/101"
+    },
+    {
+      "id": "CBUG-0086",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 102,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/102",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/102"
+    },
+    {
+      "id": "CBUG-0087",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 103,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/103",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/103"
+    },
+    {
+      "id": "CBUG-0088",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 104,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/104",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/104"
+    },
+    {
+      "id": "CBUG-0089",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 105,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/105",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/105"
+    },
+    {
+      "id": "CBUG-0090",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 106,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/106",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/106"
+    },
+    {
+      "id": "CBUG-0091",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 107,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/107",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/107"
+    },
+    {
+      "id": "CBUG-0092",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 108,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/108",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/108"
+    },
+    {
+      "id": "CBUG-0093",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 109,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/109",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/109"
+    },
+    {
+      "id": "CBUG-0094",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 110,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/110",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/110"
+    },
+    {
+      "id": "CBUG-0095",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 111,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/111",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/111"
+    },
+    {
+      "id": "CBUG-0096",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 112,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/112",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/112"
+    },
+    {
+      "id": "CBUG-0097",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 113,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/113",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/113"
+    },
+    {
+      "id": "CBUG-0098",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 114,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/114",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/114"
+    },
+    {
+      "id": "CBUG-0099",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 115,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/115",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/115"
+    },
+    {
+      "id": "CBUG-0100",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 116,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/116",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/116"
+    },
+    {
+      "id": "CBUG-0101",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 117,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/117",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/117"
+    },
+    {
+      "id": "CBUG-0102",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 118,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/118",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/118"
+    },
+    {
+      "id": "CBUG-0103",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 119,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/119",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/119"
+    },
+    {
+      "id": "CBUG-0104",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 120,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/120",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/120"
+    },
+    {
+      "id": "CBUG-0105",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 121,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/121",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/121"
+    },
+    {
+      "id": "CBUG-0106",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 122,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/122",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/122"
+    },
+    {
+      "id": "CBUG-0107",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 123,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/123",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/123"
+    },
+    {
+      "id": "CBUG-0108",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 124,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/124",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/124"
+    },
+    {
+      "id": "CBUG-0109",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 125,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/125",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/125"
+    },
+    {
+      "id": "CBUG-0110",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 126,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/126",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/126"
+    },
+    {
+      "id": "CBUG-0111",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 127,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/127",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/127"
+    },
+    {
+      "id": "CBUG-0112",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 128,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/128",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/128"
+    },
+    {
+      "id": "CBUG-0113",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 129,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/129",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/129"
+    },
+    {
+      "id": "CBUG-0114",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 130,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/130",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/130"
+    },
+    {
+      "id": "CBUG-0115",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 131,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/131",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/131"
+    },
+    {
+      "id": "CBUG-0116",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 132,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/132",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/132"
+    },
+    {
+      "id": "CBUG-0117",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 133,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/133",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/133"
+    },
+    {
+      "id": "CBUG-0118",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 134,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/134",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/134"
+    },
+    {
+      "id": "CBUG-0119",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 135,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/135",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/135"
+    },
+    {
+      "id": "CBUG-0120",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 136,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/136",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/136"
+    },
+    {
+      "id": "CBUG-0121",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 137,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/137",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/137"
+    },
+    {
+      "id": "CBUG-0122",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 138,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/138",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/138"
+    },
+    {
+      "id": "CBUG-0123",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 139,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/139",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/139"
+    },
+    {
+      "id": "CBUG-0124",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 140,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/140",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/140"
+    },
+    {
+      "id": "CBUG-0125",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 141,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/141",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/141"
+    },
+    {
+      "id": "CBUG-0126",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 142,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/142",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/142"
+    },
+    {
+      "id": "CBUG-0127",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 143,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/143",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/143"
+    },
+    {
+      "id": "CBUG-0128",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 144,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/144",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/144"
+    },
+    {
+      "id": "CBUG-0129",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 145,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/145",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/145"
+    },
+    {
+      "id": "CBUG-0130",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 146,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/146",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/146"
+    },
+    {
+      "id": "CBUG-0131",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 147,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/147",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/147"
+    },
+    {
+      "id": "CBUG-0132",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 148,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/148",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/148"
+    },
+    {
+      "id": "CBUG-0133",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 149,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/149",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/149"
+    },
+    {
+      "id": "CBUG-0134",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 150,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/150",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/150"
+    },
+    {
+      "id": "CBUG-0135",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 151,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/151",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/151"
+    },
+    {
+      "id": "CBUG-0136",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 152,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/152",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/152"
+    },
+    {
+      "id": "CBUG-0137",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 153,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/153",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/153"
+    },
+    {
+      "id": "CBUG-0138",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 154,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/154",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/154"
+    },
+    {
+      "id": "CBUG-0139",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 155,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/155",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/155"
+    },
+    {
+      "id": "CBUG-0140",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 156,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/156",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/156"
+    },
+    {
+      "id": "CBUG-0141",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 157,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/157",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/157"
+    },
+    {
+      "id": "CBUG-0142",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 158,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/158",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/158"
+    },
+    {
+      "id": "CBUG-0143",
+      "repository": "diegoami/neo-angband-tracker",
+      "number": 159,
+      "url": "https://github.com/diegoami/neo-angband-tracker/issues/159",
+      "mode": "created",
+      "url_at_creation": "https://github.com/diegoami/neo-angband/issues/159"
+    }
+  ]
+}

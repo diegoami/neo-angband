@@ -1,0 +1,39 @@
+diff --git a/angband/src/main-borgh.c b/angband/src/main-borgh.c
+index 3de16a7..4c898f3 100644
+--- a/angband/src/main-borgh.c
++++ b/angband/src/main-borgh.c
+@@ -51,6 +51,7 @@
+ #include "player-calcs.h"
+ #include "ui-game.h"
+ #include "ui-term.h"
++#include "borg/borg-log.h"
+ 
+ #include <sys/time.h>
+ 
+@@ -192,6 +193,26 @@ static void borgh_key(struct keypress k)
+ 			(unsigned long)k.code, (unsigned)k.mods);
+ 	}
+ 
++
++	/* Mandos B94 diagnostic: call the real map command in a born C game.
++	 * Input only; do not alter the player, map, Borg or RNG. */
++	static bool b94_done = false;
++	const char *b94_mode = getenv("MANDOS_B94_PROMPT");
++	if (!b94_done && b94_mode && turn > 0 && player && !player->is_dead) {
++		struct keypress (*saved_hack)(int) = inkey_hack;
++		b94_done = true;
++		fprintf(stderr, "B94 before map prompt: mode=%s turn=%ld hp=%d depth=%d\\n",
++			b94_mode, (long)turn, player->chp, player->depth);
++		fflush(stderr);
++		inkey_hack = NULL;
++		Term_flush();
++		Term_keypress(streq(b94_mode, "cancel") ? ESCAPE : '\r', 0);
++		borg_write_map(true);
++		inkey_hack = saved_hack;
++		fprintf(stderr, "B94 returned from map prompt\\n");
++		fflush(stderr);
++	}
++
+ 	/* Stop conditions */
+ 	if (opt_turns > 0 && turn >= opt_turns) borgh_finish("turns");
+ 	if (player && player->is_dead) borgh_finish("death");

@@ -1,0 +1,16 @@
+{
+  "source_repository": "diegoami/neo-angband",
+  "source_pr": 1,
+  "source_commit": "540f621960e674d9fde227a175eeb1d27cc02132",
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "expected_tree": "b13edd65c8143a12828a86f59b8a5507216879a3",
+  "cherry_pick_x_tree": "b13edd65c8143a12828a86f59b8a5507216879a3",
+  "git_am_3way_tree": "b13edd65c8143a12828a86f59b8a5507216879a3",
+  "closed_pr_head_fetch_verified": true,
+  "mailbox_patch_sha256": "a7c177de4743a0085123694669c969ed9b14fb75f3b236fbccc905b2ead0f61f",
+  "files_changed": [
+    "src/borg/borg-log.c"
+  ],
+  "upstream_submission_performed": false,
+  "scope": "Copy equivalence at the pinned base only; current upstream must be rechecked and rebuilt by a contributor."
+}

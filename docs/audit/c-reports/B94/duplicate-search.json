@@ -1,0 +1,494 @@
+[
+  {
+    "query": "repo:angband/angband is:issue borg map",
+    "total": 9,
+    "results": [
+      {
+        "number": 6683,
+        "title": "borg: array access problem with big tiles?",
+        "state": "open",
+        "url": "https://github.com/angband/angband/issues/6683"
+      },
+      {
+        "number": 6766,
+        "title": "Auditing for possibly excessive redraw requests",
+        "state": "open",
+        "url": "https://github.com/angband/angband/issues/6766"
+      },
+      {
+        "number": 5931,
+        "title": "macOS crash in map_info()",
+        "state": "open",
+        "url": "https://github.com/angband/angband/issues/5931"
+      },
+      {
+        "number": 6157,
+        "title": "SIGABRT ",
+        "state": "open",
+        "url": "https://github.com/angband/angband/issues/6157"
+      },
+      {
+        "number": 6679,
+        "title": "Activation of Borg makes undesired display switch",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/issues/6679"
+      },
+      {
+        "number": 6310,
+        "title": "Borg Yearns to Mine",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/issues/6310"
+      },
+      {
+        "number": 6218,
+        "title": "Borg Lightning Strike Issues",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/issues/6218"
+      },
+      {
+        "number": 6011,
+        "title": "Ongoing Borg Issues",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/issues/6011"
+      },
+      {
+        "number": 3608,
+        "title": "Remove warnings from all compiler platforms",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/issues/3608"
+      }
+    ]
+  },
+  {
+    "query": "repo:angband/angband is:pr borg map",
+    "total": 13,
+    "results": [
+      {
+        "number": 6776,
+        "title": "borg: fix panel shifting code",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/6776"
+      },
+      {
+        "number": 6779,
+        "title": "borg: change borg_take to contain a kind index rather than a kind",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/6779"
+      },
+      {
+        "number": 6762,
+        "title": "Do not call Term_fresh() from update_maps()",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/6762"
+      },
+      {
+        "number": 6708,
+        "title": "Simplify map_info a little",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/6708"
+      },
+      {
+        "number": 6685,
+        "title": "Borg graphics1",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/6685"
+      },
+      {
+        "number": 6680,
+        "title": "borg: get rid of the option to disallow graphics",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/6680"
+      },
+      {
+        "number": 6526,
+        "title": "borg: update the docs to match new commands",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/6526"
+      },
+      {
+        "number": 6312,
+        "title": "borg: change the leash a bit",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/6312"
+      },
+      {
+        "number": 6284,
+        "title": "Remove remaining borg 'Hack --' comments + rework hacky borg comments",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/6284"
+      },
+      {
+        "number": 6261,
+        "title": "Fix formatting inconsistencies in borg log output",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/6261"
+      },
+      {
+        "number": 6298,
+        "title": "Doxygen fix errors part 1",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/6298"
+      },
+      {
+        "number": 5973,
+        "title": "borg: more tweaks for excavating vaults",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/5973"
+      },
+      {
+        "number": 5934,
+        "title": "Borg: fix dump of traits in borg_write_map()",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/5934"
+      }
+    ]
+  },
+  {
+    "query": "repo:angband/angband is:issue borg cancel",
+    "total": 1,
+    "results": [
+      {
+        "number": 6739,
+        "title": "Borg Reincarnation and OOB arrays",
+        "state": "open",
+        "url": "https://github.com/angband/angband/issues/6739"
+      }
+    ]
+  },
+  {
+    "query": "repo:angband/angband is:pr borg cancel",
+    "total": 1,
+    "results": [
+      {
+        "number": 6738,
+        "title": "borg: rewrite reincarnation to use the game UI and not internal bs",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/6738"
+      }
+    ]
+  },
+  {
+    "query": "repo:angband/angband is:issue borg dump",
+    "total": 3,
+    "results": [
+      {
+        "number": 6739,
+        "title": "Borg Reincarnation and OOB arrays",
+        "state": "open",
+        "url": "https://github.com/angband/angband/issues/6739"
+      },
+      {
+        "number": 6515,
+        "title": "Borg Died Failing to Zap a Rod of Healing with Numerous Potions Available",
+        "state": "open",
+        "url": "https://github.com/angband/angband/issues/6515"
+      },
+      {
+        "number": 3757,
+        "title": "Playable (full) troll race",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/issues/3757"
+      }
+    ]
+  },
+  {
+    "query": "repo:angband/angband is:pr borg dump",
+    "total": 5,
+    "results": [
+      {
+        "number": 6271,
+        "title": "Remove misleading \"hack\" comments from remaining legitimate borg code",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/6271"
+      },
+      {
+        "number": 6204,
+        "title": "borg: shouldn't sell potions and scrolls to the wrong store",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/6204"
+      },
+      {
+        "number": 6048,
+        "title": "borg: fix quantities when dumping the log",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/6048"
+      },
+      {
+        "number": 5981,
+        "title": "borg: add config borg_stop_on_bell and fix an selling issue",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/5981"
+      },
+      {
+        "number": 5934,
+        "title": "Borg: fix dump of traits in borg_write_map()",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/5934"
+      }
+    ]
+  },
+  {
+    "query": "repo:angband/angband is:issue borg file",
+    "total": 21,
+    "results": [
+      {
+        "number": 6668,
+        "title": "Borg Should Use Oil",
+        "state": "open",
+        "url": "https://github.com/angband/angband/issues/6668"
+      },
+      {
+        "number": 2471,
+        "title": "Too many hacks?",
+        "state": "open",
+        "url": "https://github.com/angband/angband/issues/2471"
+      },
+      {
+        "number": 6163,
+        "title": "Variable Not Define yet?",
+        "state": "open",
+        "url": "https://github.com/angband/angband/issues/6163"
+      },
+      {
+        "number": 6157,
+        "title": "SIGABRT ",
+        "state": "open",
+        "url": "https://github.com/angband/angband/issues/6157"
+      },
+      {
+        "number": 6679,
+        "title": "Activation of Borg makes undesired display switch",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/issues/6679"
+      },
+      {
+        "number": 6013,
+        "title": "Inconsistent behavior trying to cast Lightning Strike",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/issues/6013"
+      },
+      {
+        "number": 6362,
+        "title": "Divide by zero issue",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/issues/6362"
+      },
+      {
+        "number": 6253,
+        "title": "Suggestion: Add Borg overview to developer documentation",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/issues/6253"
+      },
+      {
+        "number": 6214,
+        "title": "Borg Selling Loop",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/issues/6214"
+      },
+      {
+        "number": 6120,
+        "title": "Borg Trouble with Targeting",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/issues/6120"
+      },
+      {
+        "number": 6103,
+        "title": "Borg Questionable Store Scumming",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/issues/6103"
+      },
+      {
+        "number": 6078,
+        "title": "Borg Perplexed By Potions",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/issues/6078"
+      },
+      {
+        "number": 6097,
+        "title": "Borg Priest Struggling",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/issues/6097"
+      },
+      {
+        "number": 6102,
+        "title": "Borg Problems With Staffing",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/issues/6102"
+      },
+      {
+        "number": 6038,
+        "title": "Borg Mangling Log Files",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/issues/6038"
+      },
+      {
+        "number": 5531,
+        "title": "Should we kill main-ibm.c?",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/issues/5531"
+      },
+      {
+        "number": 5718,
+        "title": "Overflow of p in borg_crush_hole()",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/issues/5718"
+      },
+      {
+        "number": 3308,
+        "title": "Remove hard-coded limits",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/issues/3308"
+      },
+      {
+        "number": 3757,
+        "title": "Playable (full) troll race",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/issues/3757"
+      },
+      {
+        "number": 3495,
+        "title": "Various issues with plural handling",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/issues/3495"
+      },
+      {
+        "number": 3608,
+        "title": "Remove warnings from all compiler platforms",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/issues/3608"
+      }
+    ]
+  },
+  {
+    "query": "repo:angband/angband is:pr borg file",
+    "total": 21,
+    "results": [
+      {
+        "number": 6784,
+        "title": "borg: off by one error reporting on best",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/6784"
+      },
+      {
+        "number": 6706,
+        "title": "Borg reorg1",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/6706"
+      },
+      {
+        "number": 6756,
+        "title": "Correct typos, grammar and factual errors in game text",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/6756"
+      },
+      {
+        "number": 6738,
+        "title": "borg: rewrite reincarnation to use the game UI and not internal bs",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/6738"
+      },
+      {
+        "number": 6674,
+        "title": "borg: get borg.txt into the delivery",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/6674"
+      },
+      {
+        "number": 6584,
+        "title": "borg: wrong pointer used to determine uniqueness ",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/6584"
+      },
+      {
+        "number": 6504,
+        "title": "borg: rewrote some borg commands",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/6504"
+      },
+      {
+        "number": 6284,
+        "title": "Remove remaining borg 'Hack --' comments + rework hacky borg comments",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/6284"
+      },
+      {
+        "number": 6275,
+        "title": "borg.txt reorganize existing content",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/6275"
+      },
+      {
+        "number": 6282,
+        "title": "Remove borg 'Hack --' comments pt 3",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/6282"
+      },
+      {
+        "number": 6271,
+        "title": "Remove misleading \"hack\" comments from remaining legitimate borg code",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/6271"
+      },
+      {
+        "number": 6261,
+        "title": "Fix formatting inconsistencies in borg log output",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/6261"
+      },
+      {
+        "number": 6269,
+        "title": "Clean more with \"make clean-coverage\"",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/6269"
+      },
+      {
+        "number": 6381,
+        "title": "Switch from Autotools to CMake+Ninja",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/6381"
+      },
+      {
+        "number": 6298,
+        "title": "Doxygen fix errors part 1",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/6298"
+      },
+      {
+        "number": 6140,
+        "title": "borg: move some borg files to the archive directory",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/6140"
+      },
+      {
+        "number": 5985,
+        "title": "Borg merge issue",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/5985"
+      },
+      {
+        "number": 5805,
+        "title": "borg format and add eol",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/5805"
+      },
+      {
+        "number": 5791,
+        "title": "Borgsource",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/5791"
+      },
+      {
+        "number": 5676,
+        "title": "Borg 4x",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/5676"
+      },
+      {
+        "number": 5733,
+        "title": "a temporary fix to the activation of something that allows selection",
+        "state": "closed",
+        "url": "https://github.com/angband/angband/pull/5733"
+      }
+    ]
+  }
+]
