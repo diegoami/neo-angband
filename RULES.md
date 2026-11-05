@@ -1,7 +1,8 @@
 # Working rules
 
 1. Work only in this session's repository and scope. Read AGENTS.md, this
-   file, PLAN.md, session.json and the latest checkpoint issue before acting.
+   file, PLAN.md, session.json and the lane checkpoint before acting: Neo engine
+   uses #25; the independently owned native C session uses #207 (session:c).
    The umbrella is a router, not a shared repository or shared task scope.
 2. Current bug state and upstream-board/source review comes first; then
    triage/evidence and list maintenance, then fixes. Do not turn a reported
@@ -17,8 +18,9 @@
    A faithful copy of a C defect belongs to the engine/C repository; the Neo
    port follows C. Do not use the mod tracker as a C-correction translation
    service. Mandos independently translates applicable C fixes into its own
-   TS derivative; borg-rs independently translates/adopts them in Rust. Neither
-   translation is a port-fidelity defect. Mark Mandos departures explicitly.
+   TS derivative. Any Rust translation/adoption remains external to this
+   workspace; we manage no Rust worker or adoption task. A consumer
+   translation is not a port-fidelity defect. Mark Mandos departures explicitly.
 5. No angband/angband issues, PRs or comments from us under the standing pause.
    Keep C proposals in diegoami repositories with reproducible native legal
    scenarios, controls, human consequence and patch links. Confirmed Neo
@@ -59,10 +61,19 @@
 13. Current work is bugs, triage, workflow maintenance and owner-requested
     rework. Backlogged gameplay strategies/learning/unattended stage-resume
     features stay parked unless the owner explicitly changes that scope.
-
 14. Before pushing an upstream refresh, audit every new or changed Actions
     workflow and trigger. Inherited product jobs are FORK-guarded to their
     original repository; run node tools/check-fork-workflows.mjs. The owned
     source tracker blocks v* tag creation/update/deletion by ruleset; do not
     bypass it or import product tags. CI remains active. Mandos intentionally
     retains its own product-release workflows under its separate session.
+15. borg-rs reports directly to diegoami/neo-angband-tracker. Triage and
+    deduplicate those posted reports normally; verify C-versus-Rust attribution
+    and evidence before making a source-defect claim. Do not proactively poll
+    or fetch its repository, docs/c-bugs.md or external issue board, or create
+    another managed reference clone. Existing snapshots/watch implementation
+    remain legacy/manual evidence only; they are not a startup/end-of-session
+    obligation. Rust source work and managed Rust adoption tasks are out of scope.
+    This prohibition includes indirect monitor follows. Keep Rust provenance
+    in Source/discovery fields, not watched Threads status references; verify
+    monitor scope before running inherited tooling (see docs/BORG-RS-INTAKE.md).
