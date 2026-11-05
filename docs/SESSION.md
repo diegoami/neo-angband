@@ -26,7 +26,8 @@ migration ledger and each checkpoint for exact current issue numbers.
 ## C correction flow and independent Rust peer
 
 The engine/C tracker proves/proposes C fixes and retrieves C leads from
-borg-rs (file, issues, or direct source-attributed reports). Mandos independently
+borg-rs through direct source-attributed issues on this tracker. Routine
+fetching/watching of its repository, bug file and issue feed is retired. Mandos independently
 translates applicable C corrections into TS and carries/adopts them. The
 fidelity-only Neo Borg mod tracker does not perform that translation service.
 borg-rs independently translates/adopts C corrections in Rust, without a Neo

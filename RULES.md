@@ -66,3 +66,11 @@
     source tracker blocks v* tag creation/update/deletion by ruleset; do not
     bypass it or import product tags. CI remains active. Mandos intentionally
     retains its own product-release workflows under its separate session.
+
+14. Owner intake policy (2026-11-06): borg-rs posts C leads directly as issues
+    on diegoami/neo-angband-tracker. Review and deduplicate those board reports;
+    do not routinely fetch/watch the borg-rs repository, bug file or issue feed.
+    Retain historical source attribution and CBUG IDs. A direct report remains
+    a lead until independently validated against native C. Revisit the Rust
+    repository only for an explicit owner request or a specific investigation
+    that requires its historical evidence.

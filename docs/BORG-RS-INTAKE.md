@@ -1,29 +1,30 @@
-# borg-rs intake and independent C-fix consumption
+# Direct borg-rs reports and independent C-fix consumption
 
-borg-rs is an independent Rust Borg port. It supplies C defect leads and may
-carry/translate C fixes into Rust. It has no Neo Angband responsibility.
-This engine/C session fetches it read-only; it does not alter or push Rust
-code. The dedicated reference clone has push disabled.
+Owner policy updated 2026-11-06: borg-rs posts C leads directly as issues on
+**diegoami/neo-angband-tracker**. Review that board as the intake source.
+Do not routinely fetch/watch the Rust repository, docs/c-bugs.md or its issue
+feed, and do not run tools/borg-rs-watch.mjs at session start/end or after
+source changes. The script and prior snapshots remain historical tooling and
+provenance; their presence does not authorize routine monitoring. Consult the
+Rust repository only for an explicit owner request or historical evidence
+needed by a specific investigation.
 
-Run node tools/borg-rs-watch.mjs at session start/end and after source changes.
-It inspects default-branch head, docs/c-bugs.md when present and the GitHub
-issue feed when enabled. Missing file + available issues is a supported
-transition, not evidence that old reports vanished. API failures retain the
-last successful baseline; a feed window limit is reported as incomplete.
+Direct reports use source:borg-rs, upstream-c/finding and an appropriate
+evidence/candidate label. Preserve supplied source IDs, commits, C pins and
+CBUG IDs. Search existing source issues before creating a finding; reuse the
+canonical issue for a duplicate. Missing provenance should be recorded as a
+limitation, not invented. A reported native test remains source-reported until
+independently validated here. Distinguish C defects from Rust-only behavior.
 
-New/edited leads require C-vs-Rust-only classification, source/version/line
-or issue evidence, human consequence and duplicate checks against existing
-CBUG IDs/source URLs. Rust-reported native tests are source-reported evidence
-until independently verified here; never silently promote candidates.
+Retain human consequence, legal native reproduction, controls and evidence
+confidence on the canonical issue. No automatic closure, fix application or
+official Angband posting is authorized by intake. Historical import records
+and file snapshots remain unchanged and are not a second live queue.
 
-If borg-rs posts directly here, use source:borg-rs plus upstream-c/finding and
-an appropriate evidence/candidate label, include source repository, issue/commit,
-C pin, repro/controls and existing CBUG ID where known. Reuse/comment on the
-canonical issue instead of creating another source defect. No automatic issue
-creation, closure, translation, fix application or official C posting.
+The C source issue links local proposals/native receipts and distinct consumer
+records where useful. Mandos independently translates/adopts applicable C
+corrections to TS; borg-rs independently translates/adopts them to Rust. Neither
+is the Neo mod's fidelity task. Consumers do not duplicate source state;
+carried/fixed/patch-active labels belong only on the relevant consumer records.
 
-The canonical C source issue links proposals/native receipts and, when useful,
-separate consumer records: Mandos for applicable TS translations/adoption;
-borg-rs for Rust translation/adoption. Consumers do not duplicate source state.
-Only Mandos issues have its carried/fixed/patch-active tags. Port-fidelity
-work remains in neo-angband-borg-mod-tracker, not a C-correction translator.
+Native C checkpoint: https://github.com/diegoami/neo-angband-tracker/issues/207.

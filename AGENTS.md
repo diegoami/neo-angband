@@ -11,7 +11,6 @@ gh issue list -R diegoami/neo-angband-tracker --label checkpoint --state open
 node tools/check-session.mjs
 node tools/upstream-watch.mjs
 node tools/c-upstream-watch.mjs
-node tools/borg-rs-watch.mjs
 ```
 
 Use this repository's issue board, not Mandos's former upstream queue.
@@ -24,3 +23,9 @@ in RULES take precedence over historical upstream roadmap/reference prose.
 
 [Upstream technical README](docs/upstream-reference/README.md) is reference
 material, not this fork's task queue or autonomous feature authorization.
+
+Native C is an owner-authorized independent worker lane in the existing C
+worktree; its checkpoint is https://github.com/diegoami/neo-angband-tracker/issues/207.
+Neo engine checkpoint #25 remains separate. borg-rs supplies leads directly
+on this issue board; do not routinely watch its repository/file/issue feed.
+See RULES.md and docs/BORG-RS-INTAKE.md for the direct-report policy.

@@ -3,12 +3,10 @@
 1. Read the current checkpoint and open issues here. Review official C and Neo
    engine boards/source and our linked proposals first. Preserve existing
    linked Mandos consumer receipts; no issue closure by upstream title alone.
-2. Fetch/watch borg-rs read-only, including its current bug file and issue
-   feed (or direct reports in this tracker). Follow docs/BORG-RS-INTAKE.md;
-   deduplicate by source issue/anchor/CBUG ID. Triage reported C leads apart
-   from verified faults, Rust-only issues and unrelated progress notes. The
-   C page points to the issue board; split records are historical provenance,
-   not a second live list. Do not assume borg-rs needs or tracks Neo.
+2. Review C leads posted directly to this tracker by borg-rs. Follow
+   docs/BORG-RS-INTAKE.md; deduplicate by source issue/anchor/CBUG ID. Do not
+   routinely fetch/watch the Rust repository, bug file or issue feed. Preserve
+   historical provenance and distinguish reported leads from verified C faults.
 3. Choose the source tree before implementation. Neo tasks use pristine
    upstream/master from neostryder/neo-angband. C tasks use angband/master at
    the recorded C pin, via the same fork's native C worktree. Read that tree's
