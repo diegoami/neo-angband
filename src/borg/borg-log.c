@@ -199,6 +199,10 @@ void borg_write_map(bool ask)
     } else if (!ask)
         borg_map_file = file_open(buf2, MODE_WRITE, FTYPE_TEXT);
 
+    /* A cancelled prompt or failed open leaves no file to write. */
+    if (!borg_map_file)
+        return;
+
     file_putf(borg_map_file, "%s the %s %s, Level %d/%d\n", player->full_name,
         player->race->name, player->class->name, player->lev, player->max_lev);
 
