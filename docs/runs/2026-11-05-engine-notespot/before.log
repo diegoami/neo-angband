@@ -1,0 +1,100 @@
+
+ RUN  v4.1.11 <ENGINE_TASK>
+
+vitest: packages/web/public/tiles is empty; running sync-tiles
+sync-tiles: 21 copied, 0 already current
+ × packages/core/src/game/set-feat-memory.test.ts > live setFeat memory (engine #4 / upstream #429) > immediately remembers seen terrain 3 6ms
+   → expected 1 to be 3 // Object.is equality
+ × packages/core/src/game/set-feat-memory.test.ts > live setFeat memory (engine #4 / upstream #429) > immediately remembers seen terrain 21 1ms
+   → expected 1 to be 21 // Object.is equality
+ × packages/core/src/game/set-feat-memory.test.ts > live setFeat memory (engine #4 / upstream #429) > remembers the player's own square even when it is not seen 1ms
+   → expected 1 to be 3 // Object.is equality
+ ✓ packages/core/src/game/set-feat-memory.test.ts > live setFeat memory (engine #4 / upstream #429) > does not reveal an unseen remote change (previously known: false) 1ms
+ ✓ packages/core/src/game/set-feat-memory.test.ts > live setFeat memory (engine #4 / upstream #429) > does not reveal an unseen remote change (previously known: true) 1ms
+ ✓ packages/core/src/game/set-feat-memory.test.ts > live setFeat memory (engine #4 / upstream #429) > generation without a live hook clears wall flags without memorizing 1ms
+ × packages/core/src/game/set-feat-memory.test.ts > live setFeat memory (engine #4 / upstream #429) > legal close/open commands keep remembered doors current before the next command 2ms
+   → expected 3 to be 2 // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  packages/core/src/game/set-feat-memory.test.ts > live setFeat memory (engine #4 / upstream #429) > immediately remembers seen terrain 3
+AssertionError: expected 1 to be 3 // Object.is equality
+
+- Expected
++ Received
+
+- 3
++ 1
+
+ ❯ packages/core/src/game/set-feat-memory.test.ts:26:36
+     24|
+     25|     expect(state.chunk.feat(grid)).toBe(feat);
+     26|     expect(knownFeat(state, grid)).toBe(feat);
+       |                                    ^
+     27|   });
+     28|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  packages/core/src/game/set-feat-memory.test.ts > live setFeat memory (engine #4 / upstream #429) > immediately remembers seen terrain 21
+AssertionError: expected 1 to be 21 // Object.is equality
+
+- Expected
++ Received
+
+- 21
++ 1
+
+ ❯ packages/core/src/game/set-feat-memory.test.ts:26:36
+     24|
+     25|     expect(state.chunk.feat(grid)).toBe(feat);
+     26|     expect(knownFeat(state, grid)).toBe(feat);
+       |                                    ^
+     27|   });
+     28|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  packages/core/src/game/set-feat-memory.test.ts > live setFeat memory (engine #4 / upstream #429) > remembers the player's own square even when it is not seen
+AssertionError: expected 1 to be 3 // Object.is equality
+
+- Expected
++ Received
+
+- 3
++ 1
+
+ ❯ packages/core/src/game/set-feat-memory.test.ts:38:36
+     36|     state.chunk.setFeat(grid, FEAT.OPEN);
+     37|
+     38|     expect(knownFeat(state, grid)).toBe(FEAT.OPEN);
+       |                                    ^
+     39|   });
+     40|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  packages/core/src/game/set-feat-memory.test.ts > live setFeat memory (engine #4 / upstream #429) > legal close/open commands keep remembered doors current before the next command
+AssertionError: expected 3 to be 2 // Object.is equality
+
+- Expected
++ Received
+
+- 2
++ 3
+
+ ❯ packages/core/src/game/set-feat-memory.test.ts:94:38
+     92|       expect(state.actor.grid).toEqual(loc(5, 5));
+     93|       expect(state.chunk.feat(grid)).toBe(feat);
+     94|       expect(knownFeat(state, grid)).toBe(feat);
+       |                                      ^
+     95|     }
+     96|     expect(run("open")).toBe(0);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 3 passed (7)
+   Start at  23:23:44
+   Duration  1.16s (transform 810ms, setup 0ms, import 998ms, tests 13ms, environment 0ms)

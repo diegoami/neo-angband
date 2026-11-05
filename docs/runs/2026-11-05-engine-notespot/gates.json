@@ -1,0 +1,113 @@
+[
+  {
+    "stage": "build",
+    "command": [
+      "pnpm",
+      "build"
+    ],
+    "exit": 0,
+    "seconds": 18.95
+  },
+  {
+    "stage": "lint",
+    "command": [
+      "pnpm",
+      "lint"
+    ],
+    "exit": 0,
+    "seconds": 13.59
+  },
+  {
+    "stage": "bundle",
+    "command": [
+      "pnpm",
+      "--dir",
+      "packages/web",
+      "bundle"
+    ],
+    "exit": 0,
+    "seconds": 2.13
+  },
+  {
+    "stage": "test",
+    "command": [
+      "pnpm",
+      "test"
+    ],
+    "exit": 0,
+    "seconds": 159.01
+  },
+  {
+    "stage": "scenarios",
+    "command": [
+      "pnpm",
+      "--filter",
+      "@rpgm-tools/neo-angband-cli",
+      "scenarios"
+    ],
+    "exit": 0,
+    "seconds": 0.5
+  },
+  {
+    "stage": "pack",
+    "command": [
+      "pnpm",
+      "check:npm"
+    ],
+    "exit": 0,
+    "seconds": 3.46
+  },
+  {
+    "stage": "mcp",
+    "command": [
+      "node",
+      "packages/mcp/tools/smoke.mjs"
+    ],
+    "exit": 0,
+    "seconds": 0.64
+  },
+  {
+    "stage": "desktop",
+    "command": [
+      "pnpm",
+      "--filter",
+      "@rpgm-tools/neo-angband-desktop",
+      "build"
+    ],
+    "exit": 0,
+    "seconds": 0.13
+  },
+  {
+    "stage": "smoke-self",
+    "command": [
+      "node",
+      "tools/play-smoke.mjs",
+      "--self-check"
+    ],
+    "exit": 0,
+    "seconds": 0.02
+  },
+  {
+    "stage": "smoke-self-nosandbox",
+    "command": [
+      "node",
+      "tools/play-smoke.mjs",
+      "--self-check",
+      "--no-sandbox"
+    ],
+    "exit": 0,
+    "seconds": 0.02
+  },
+  {
+    "stage": "play",
+    "command": [
+      "xvfb-run",
+      "-a",
+      "node",
+      "tools/play-smoke.mjs",
+      "--no-sandbox"
+    ],
+    "exit": 0,
+    "seconds": 28.67
+  }
+]

@@ -1,0 +1,5 @@
+$ node dist/main-scenarios.js
+PASS  birth-and-wait
+PASS  quaff-berserk
+PASS  descend
+scenarios: 3/3 passed

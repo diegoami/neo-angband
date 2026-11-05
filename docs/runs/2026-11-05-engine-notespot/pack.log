@@ -1,0 +1,12 @@
+$ node tools/check-npm-package.mjs
+[npm-package] npm 11.20.0 on node v26.13.0
+[npm-package] @rpgm-tools/neo-angband-content@1.23.0-beta.2: 118 files, 0.3 MiB packed
+[npm-package] content: node imported "@rpgm-tools/neo-angband-content" -> 7 exports
+[npm-package] content: node imported "@rpgm-tools/neo-angband-content/pack" -> 5 exports
+[npm-package] content: node imported "@rpgm-tools/neo-angband-content/pack/activation.json" -> 1 exports
+[npm-package] content: node imported "@rpgm-tools/neo-angband-content/package.json" -> 1 exports
+[npm-package] @rpgm-tools/neo-angband-core@1.23.0-beta.2: 1525 files, 4.8 MiB packed
+[npm-package] core: SKIPPED the isolated import check - declares @rpgm-tools/neo-angband-mod-sdk
+[npm-package] @rpgm-tools/neo-angband-mod-sdk@1.23.0-beta.2: 480 files, 1.0 MiB packed
+[npm-package] mod-sdk: SKIPPED the isolated import check - declares acorn
+[npm-package] 3 package(s) OK

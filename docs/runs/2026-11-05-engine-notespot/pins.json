@@ -1,0 +1,25 @@
+{
+  "engine_base": "0cc75b4afcbe6f5128730e4b910408c7be4ac5c5",
+  "owned_base": "313ecb0784c0dea097b323d48ba3c3305b977e34",
+  "proposal": "2553cb496da46692fd64eade5f089acecdc5088e",
+  "validated_integration": "fbc7e02b95fa8b48b58b7a2e28ab3e07b7790285",
+  "core_tree": "b70fb735a44e75aa4fb8dc2a6fdf8930c574f9ce",
+  "sdk_tree": "dc7f491841ffa412cbde81269375ea66a3b0735f",
+  "content_pack_tree": "d72413a575ea48cb94da046ce5e47370e2932a97",
+  "workspace_versions": "1.23.0-beta.2",
+  "port_upstream": "74a017d2f695939eb2f046b7c9ff286ef1e82568",
+  "port_owned_observed": "f8e7845acafa24d4f3971342c80cfaed76b0e03e",
+  "port_draft67": "1d1793258b887efae5c862a15a92683b8258c33c",
+  "port_core_sdk_content": "1.23.0-beta.1",
+  "node": "26.13.0",
+  "pnpm": "12.3.4",
+  "typescript": "5.9.3",
+  "vitest": "4.1.11",
+  "npm": "11.20.0",
+  "sha256": {
+    "pnpm-lock.yaml": "b2bf577d19eeb97cd94a9a3f106d09025f2416e9b74a195c0eaf4bff260d9bb8",
+    "packages/core/src/game/trap.ts": "6d283e4e31848e288adf35dc87ff2d559d2bffc7db6589b942a30a4626d1c423",
+    "packages/core/src/game/set-feat-memory.test.ts": "03ee90935598d2d98e45b568ae272392772e22800abb4a72a1b8c93b2f74eb73",
+    "patches/upstream-neo/429-square-note-spot.patch": "65be30563810b7820edd9189ac47af1c2ee48d38b99ba39d39ca7e00109b1798"
+  }
+}

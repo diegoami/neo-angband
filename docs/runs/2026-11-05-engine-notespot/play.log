@@ -1,0 +1,17 @@
+Downloading Electron binary...
+attached to neo-angband://game/
+00-title            68c337d888b5836c  8871 bytes
+01-choose-vanilla-look163ca010298197be  changed
+02-new-game         3ad83cf6ef2fb565  changed
+03-random-character 76cb40f8ddeee214  changed
+04-accept-character c279a02335accfa2  changed
+05-descend          fe882ddab9173d50  changed
+06-dismiss-more     7c5a009a07973f11  changed
+07-walk             f6a49a534cb5b7ec  changed
+08-inventory        e658dbf3d1322a09  changed
+09-close-inventory  96892cc13c81d6f7  changed
+10-character-sheet  258f71e5cd6378db  changed
+11-close-sheet      247e6a13b6e56d21  changed
+
+play-smoke OK: played 11 steps, no exceptions, no error logs
+Screenshots: <ENGINE_TASK>/smoke-shots
