@@ -72,7 +72,7 @@ export function versionSites() {
     {
       file: "packages/core/README.md",
       what: "the ENGINE_VERSION example output",
-      pattern: /(console\.log\(ENGINE_VERSION, PARITY_BASELINE\); \/\/ )(\d+\.\d+\.\d+(?:-[0-9A-Za-z.]+)?)( )/u,
+      pattern: /(console\.log\(ENGINE_VERSION, PARITY_BASELINE\); \/\/ )(\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?)( )/u,
     },
     /* CHANGELOG.md is deliberately NOT a site. It was one: the file opened with a
      * single "Current state of the project at version `X`" greeting, and that
@@ -110,12 +110,12 @@ export function versionSites() {
     {
       file: "docs/RELEASING.md",
       what: "every example tag in the runbook",
-      pattern: /(git tag v)(\d+\.\d+\.\d+(?:-[0-9A-Za-z.]+)?)()/gu,
+      pattern: /(git tag v)(\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?)()/gu,
     },
     {
       file: "docs/RELEASING.md",
       what: "every example tag push in the runbook",
-      pattern: /(git push origin (?:master )?v)(\d+\.\d+\.\d+(?:-[0-9A-Za-z.]+)?)()/gu,
+      pattern: /(git push origin (?:master )?v)(\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?)()/gu,
     },
   );
   return sites;
@@ -156,7 +156,8 @@ export function versionDrift() {
   return drift;
 }
 
-const SEMVER = /^(\d+)\.(\d+)\.(\d+)(?:-([0-9A-Za-z.]+))?$/u;
+// FORK: Mandos #99 accepts the hyphen in its lab prerelease identifier.
+const SEMVER = /^(\d+)\.(\d+)\.(\d+)(?:-([0-9A-Za-z.-]+))?$/u;
 const BETA = /^beta\.(\d+)$/u;
 
 function parse(version) {

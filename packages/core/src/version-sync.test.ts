@@ -148,7 +148,7 @@ describe("the release runbook quotes the version this repository is at", () => {
      * reused - so a stale example tag in it is worse than a stale one anywhere
      * else. It is prose, so nothing else checks it. */
     const runbook = readFileSync(join(repoRoot, "docs", "RELEASING.md"), "utf8");
-    const tags = [...runbook.matchAll(/git tag v(\d+\.\d+\.\d+(?:-[0-9A-Za-z.]+)?)/gu)].map((m) => m[1]);
+    const tags = [...runbook.matchAll(/git tag v(\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?)/gu)].map((m) => m[1]);
     expect(tags.length).toBeGreaterThan(0);
     expect([...new Set(tags)]).toEqual([projectVersion()]);
   });
