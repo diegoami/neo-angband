@@ -102,3 +102,14 @@ playwright-report/
 
 # Python bytecode from the font scripts in packages/web/scripts
 __pycache__/
+
+# Local task worktrees
+.worktrees/
+
+# Read-only session watch baselines
+.upstream-watch.json
+.borg-rs-watch.json
+artifacts/
+
+# Shared agent entry is intentionally public for fork sessions
+!CLAUDE.md

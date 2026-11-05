@@ -1,0 +1,18 @@
+name: fork-session-docs
+on: [push, pull_request]
+jobs:
+  session:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - run: node tools/check-session.mjs
+      - run: node tools/check-fork-workflows.mjs
+      - if: ${{ hashFiles('tools/c-bugs.mjs') != '' }}
+        run: node tools/c-bugs.mjs --check
+      - if: ${{ hashFiles('tools/c-bugs-source.node-test.mjs') != '' }}
+        run: node --test tools/c-bugs-source.node-test.mjs
+      - if: ${{ hashFiles('tools/borg-rs-watch.node-test.mjs') != '' }}
+        run: node --test tools/borg-rs-watch.node-test.mjs

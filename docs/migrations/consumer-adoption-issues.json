@@ -1,0 +1,395 @@
+{
+  "schema": "angband/consumer-adoption@1",
+  "issues": [
+    {
+      "original_number": 4,
+      "source": {
+        "repository": "diegoami/neo-angband-borg-mod-tracker",
+        "number": 2,
+        "url": "https://github.com/diegoami/neo-angband-borg-mod-tracker/issues/2"
+      },
+      "consumer": {
+        "repository": "diegoami/mandos",
+        "number": 125,
+        "url": "https://github.com/diegoami/mandos/issues/125"
+      },
+      "consumer_label_at_split": "partially-carried",
+      "consumer_state_at_split": "OPEN"
+    },
+    {
+      "original_number": 13,
+      "source": {
+        "repository": "diegoami/neo-angband-tracker",
+        "number": 4,
+        "url": "https://github.com/diegoami/neo-angband-tracker/issues/4"
+      },
+      "consumer": {
+        "repository": "diegoami/mandos",
+        "number": 126,
+        "url": "https://github.com/diegoami/mandos/issues/126"
+      },
+      "consumer_label_at_split": "carried",
+      "consumer_state_at_split": "OPEN"
+    },
+    {
+      "original_number": 14,
+      "source": {
+        "repository": "diegoami/neo-angband-borg-mod-tracker",
+        "number": 3,
+        "url": "https://github.com/diegoami/neo-angband-borg-mod-tracker/issues/3"
+      },
+      "consumer": {
+        "repository": "diegoami/mandos",
+        "number": 127,
+        "url": "https://github.com/diegoami/mandos/issues/127"
+      },
+      "consumer_label_at_split": "fixed",
+      "consumer_state_at_split": "CLOSED"
+    },
+    {
+      "original_number": 41,
+      "source": {
+        "repository": "diegoami/neo-angband-tracker",
+        "number": 5,
+        "url": "https://github.com/diegoami/neo-angband-tracker/issues/5"
+      },
+      "consumer": {
+        "repository": "diegoami/mandos",
+        "number": 128,
+        "url": "https://github.com/diegoami/mandos/issues/128"
+      },
+      "consumer_label_at_split": "carried",
+      "consumer_state_at_split": "OPEN"
+    },
+    {
+      "original_number": 42,
+      "source": {
+        "repository": "diegoami/neo-angband-tracker",
+        "number": 6,
+        "url": "https://github.com/diegoami/neo-angband-tracker/issues/6"
+      },
+      "consumer": {
+        "repository": "diegoami/mandos",
+        "number": 129,
+        "url": "https://github.com/diegoami/mandos/issues/129"
+      },
+      "consumer_label_at_split": "carried",
+      "consumer_state_at_split": "OPEN"
+    },
+    {
+      "original_number": 43,
+      "source": {
+        "repository": "diegoami/neo-angband-tracker",
+        "number": 7,
+        "url": "https://github.com/diegoami/neo-angband-tracker/issues/7"
+      },
+      "consumer": {
+        "repository": "diegoami/mandos",
+        "number": 130,
+        "url": "https://github.com/diegoami/mandos/issues/130"
+      },
+      "consumer_label_at_split": "not-carried",
+      "consumer_state_at_split": "OPEN"
+    },
+    {
+      "original_number": 44,
+      "source": {
+        "repository": "diegoami/neo-angband-borg-mod-tracker",
+        "number": 5,
+        "url": "https://github.com/diegoami/neo-angband-borg-mod-tracker/issues/5"
+      },
+      "consumer": {
+        "repository": "diegoami/mandos",
+        "number": 131,
+        "url": "https://github.com/diegoami/mandos/issues/131"
+      },
+      "consumer_label_at_split": "fixed",
+      "consumer_state_at_split": "CLOSED"
+    },
+    {
+      "original_number": 45,
+      "source": {
+        "repository": "diegoami/neo-angband-tracker",
+        "number": 8,
+        "url": "https://github.com/diegoami/neo-angband-tracker/issues/8"
+      },
+      "consumer": {
+        "repository": "diegoami/mandos",
+        "number": 132,
+        "url": "https://github.com/diegoami/mandos/issues/132"
+      },
+      "consumer_label_at_split": "partially-carried",
+      "consumer_state_at_split": "OPEN"
+    },
+    {
+      "original_number": 49,
+      "source": {
+        "repository": "diegoami/neo-angband-borg-mod-tracker",
+        "number": 7,
+        "url": "https://github.com/diegoami/neo-angband-borg-mod-tracker/issues/7"
+      },
+      "consumer": {
+        "repository": "diegoami/mandos",
+        "number": 133,
+        "url": "https://github.com/diegoami/mandos/issues/133"
+      },
+      "consumer_label_at_split": "fixed",
+      "consumer_state_at_split": "CLOSED"
+    },
+    {
+      "original_number": 50,
+      "source": {
+        "repository": "diegoami/neo-angband-borg-mod-tracker",
+        "number": 8,
+        "url": "https://github.com/diegoami/neo-angband-borg-mod-tracker/issues/8"
+      },
+      "consumer": {
+        "repository": "diegoami/mandos",
+        "number": 134,
+        "url": "https://github.com/diegoami/mandos/issues/134"
+      },
+      "consumer_label_at_split": "fixed",
+      "consumer_state_at_split": "CLOSED"
+    },
+    {
+      "original_number": 55,
+      "source": {
+        "repository": "diegoami/neo-angband-borg-mod-tracker",
+        "number": 9,
+        "url": "https://github.com/diegoami/neo-angband-borg-mod-tracker/issues/9"
+      },
+      "consumer": {
+        "repository": "diegoami/mandos",
+        "number": 135,
+        "url": "https://github.com/diegoami/mandos/issues/135"
+      },
+      "consumer_label_at_split": "fixed",
+      "consumer_state_at_split": "CLOSED"
+    },
+    {
+      "original_number": 57,
+      "source": {
+        "repository": "diegoami/neo-angband-borg-mod-tracker",
+        "number": 10,
+        "url": "https://github.com/diegoami/neo-angband-borg-mod-tracker/issues/10"
+      },
+      "consumer": {
+        "repository": "diegoami/mandos",
+        "number": 136,
+        "url": "https://github.com/diegoami/mandos/issues/136"
+      },
+      "consumer_label_at_split": "fixed",
+      "consumer_state_at_split": "CLOSED"
+    },
+    {
+      "original_number": 58,
+      "source": {
+        "repository": "diegoami/neo-angband-borg-mod-tracker",
+        "number": 11,
+        "url": "https://github.com/diegoami/neo-angband-borg-mod-tracker/issues/11"
+      },
+      "consumer": {
+        "repository": "diegoami/mandos",
+        "number": 137,
+        "url": "https://github.com/diegoami/mandos/issues/137"
+      },
+      "consumer_label_at_split": "fixed",
+      "consumer_state_at_split": "CLOSED"
+    },
+    {
+      "original_number": 59,
+      "source": {
+        "repository": "diegoami/neo-angband-borg-mod-tracker",
+        "number": 12,
+        "url": "https://github.com/diegoami/neo-angband-borg-mod-tracker/issues/12"
+      },
+      "consumer": {
+        "repository": "diegoami/mandos",
+        "number": 138,
+        "url": "https://github.com/diegoami/mandos/issues/138"
+      },
+      "consumer_label_at_split": "fixed",
+      "consumer_state_at_split": "CLOSED"
+    },
+    {
+      "original_number": 64,
+      "source": {
+        "repository": "diegoami/neo-angband-borg-mod-tracker",
+        "number": 14,
+        "url": "https://github.com/diegoami/neo-angband-borg-mod-tracker/issues/14"
+      },
+      "consumer": {
+        "repository": "diegoami/mandos",
+        "number": 139,
+        "url": "https://github.com/diegoami/mandos/issues/139"
+      },
+      "consumer_label_at_split": "fixed",
+      "consumer_state_at_split": "CLOSED"
+    },
+    {
+      "original_number": 65,
+      "source": {
+        "repository": "diegoami/neo-angband-borg-mod-tracker",
+        "number": 15,
+        "url": "https://github.com/diegoami/neo-angband-borg-mod-tracker/issues/15"
+      },
+      "consumer": {
+        "repository": "diegoami/mandos",
+        "number": 140,
+        "url": "https://github.com/diegoami/mandos/issues/140"
+      },
+      "consumer_label_at_split": "partially-carried",
+      "consumer_state_at_split": "OPEN"
+    },
+    {
+      "original_number": 68,
+      "source": {
+        "repository": "diegoami/neo-angband-borg-mod-tracker",
+        "number": 16,
+        "url": "https://github.com/diegoami/neo-angband-borg-mod-tracker/issues/16"
+      },
+      "consumer": {
+        "repository": "diegoami/mandos",
+        "number": 141,
+        "url": "https://github.com/diegoami/mandos/issues/141"
+      },
+      "consumer_label_at_split": "fixed",
+      "consumer_state_at_split": "CLOSED"
+    },
+    {
+      "original_number": 69,
+      "source": {
+        "repository": "diegoami/neo-angband-borg-mod-tracker",
+        "number": 17,
+        "url": "https://github.com/diegoami/neo-angband-borg-mod-tracker/issues/17"
+      },
+      "consumer": {
+        "repository": "diegoami/mandos",
+        "number": 142,
+        "url": "https://github.com/diegoami/mandos/issues/142"
+      },
+      "consumer_label_at_split": "fixed",
+      "consumer_state_at_split": "CLOSED"
+    },
+    {
+      "original_number": 75,
+      "source": {
+        "repository": "diegoami/neo-angband-borg-mod-tracker",
+        "number": 19,
+        "url": "https://github.com/diegoami/neo-angband-borg-mod-tracker/issues/19"
+      },
+      "consumer": {
+        "repository": "diegoami/mandos",
+        "number": 143,
+        "url": "https://github.com/diegoami/mandos/issues/143"
+      },
+      "consumer_label_at_split": "fixed",
+      "consumer_state_at_split": "CLOSED"
+    },
+    {
+      "original_number": 79,
+      "source": {
+        "repository": "diegoami/neo-angband-borg-mod-tracker",
+        "number": 20,
+        "url": "https://github.com/diegoami/neo-angband-borg-mod-tracker/issues/20"
+      },
+      "consumer": {
+        "repository": "diegoami/mandos",
+        "number": 144,
+        "url": "https://github.com/diegoami/mandos/issues/144"
+      },
+      "consumer_label_at_split": "fixed",
+      "consumer_state_at_split": "CLOSED"
+    },
+    {
+      "original_number": 80,
+      "source": {
+        "repository": "diegoami/neo-angband-borg-mod-tracker",
+        "number": 21,
+        "url": "https://github.com/diegoami/neo-angband-borg-mod-tracker/issues/21"
+      },
+      "consumer": {
+        "repository": "diegoami/mandos",
+        "number": 145,
+        "url": "https://github.com/diegoami/mandos/issues/145"
+      },
+      "consumer_label_at_split": "fixed",
+      "consumer_state_at_split": "CLOSED"
+    },
+    {
+      "original_number": 81,
+      "source": {
+        "repository": "diegoami/neo-angband-borg-mod-tracker",
+        "number": 22,
+        "url": "https://github.com/diegoami/neo-angband-borg-mod-tracker/issues/22"
+      },
+      "consumer": {
+        "repository": "diegoami/mandos",
+        "number": 146,
+        "url": "https://github.com/diegoami/mandos/issues/146"
+      },
+      "consumer_label_at_split": "partially-carried",
+      "consumer_state_at_split": "OPEN"
+    },
+    {
+      "original_number": 100,
+      "source": {
+        "repository": "diegoami/neo-angband-tracker",
+        "number": 15,
+        "url": "https://github.com/diegoami/neo-angband-tracker/issues/15"
+      },
+      "consumer": {
+        "repository": "diegoami/mandos",
+        "number": 147,
+        "url": "https://github.com/diegoami/mandos/issues/147"
+      },
+      "consumer_label_at_split": "fixed",
+      "consumer_state_at_split": "CLOSED"
+    },
+    {
+      "original_number": 108,
+      "source": {
+        "repository": "diegoami/neo-angband-borg-mod-tracker",
+        "number": 23,
+        "url": "https://github.com/diegoami/neo-angband-borg-mod-tracker/issues/23"
+      },
+      "consumer": {
+        "repository": "diegoami/mandos",
+        "number": 148,
+        "url": "https://github.com/diegoami/mandos/issues/148"
+      },
+      "consumer_label_at_split": "carried",
+      "consumer_state_at_split": "OPEN"
+    },
+    {
+      "original_number": 114,
+      "source": {
+        "repository": "diegoami/neo-angband-borg-mod-tracker",
+        "number": 24,
+        "url": "https://github.com/diegoami/neo-angband-borg-mod-tracker/issues/24"
+      },
+      "consumer": {
+        "repository": "diegoami/mandos",
+        "number": 149,
+        "url": "https://github.com/diegoami/mandos/issues/149"
+      },
+      "consumer_label_at_split": "carried",
+      "consumer_state_at_split": "OPEN"
+    },
+    {
+      "original_number": 123,
+      "source": {
+        "repository": "diegoami/neo-angband-borg-mod-tracker",
+        "number": 25,
+        "url": "https://github.com/diegoami/neo-angband-borg-mod-tracker/issues/25"
+      },
+      "consumer": {
+        "repository": "diegoami/mandos",
+        "number": 150,
+        "url": "https://github.com/diegoami/mandos/issues/150"
+      },
+      "consumer_label_at_split": "partially-carried",
+      "consumer_state_at_split": "OPEN"
+    }
+  ]
+}

@@ -466,12 +466,15 @@ describe("the updater's two halves name the same repository", () => {
      * condition, and the step that dispatches Pages. Any lines between the
      * header and the `if:` must be comments or the job's name and needs. */
     const guard = String.raw`\s*if: \$\{\{ !contains\(github\.event\.inputs\.tag \|\| github\.ref_name, '-'\) \}\}`;
-    expect(release).toMatch(new RegExp(String.raw`\n  itch:\n(?:    (?:#|name:|needs:)[^\n]*\n)*` + guard, "u"));
+    // FORK: the tracker adds an upstream-only job guard; retain the beta
+    // exclusion and require both predicates rather than loosening the contract.
+    const forkGuard = String.raw`\s*if: \$\{\{ github\.repository == 'neostryder/neo-angband' && \(!contains\(github\.event\.inputs\.tag \|\| github\.ref_name, '-'\)\) \}\}`;
+    expect(release).toMatch(new RegExp(String.raw`\n  itch:\n(?:    (?:#|name:|needs:)[^\n]*\n)*` + forkGuard, "u"));
     expect(release).toMatch(new RegExp(String.raw`- name: Trigger Pages[^\n]*\n(?:\s*#[^\n]*\n)*` + guard, "u"));
     /* Pages also refuses a suffixed tag given to a manual run, not only a
      * release event's tag. */
     expect(read(".github/workflows/pages.yml")).toContain(
-      "if: ${{ !contains(github.event.release.tag_name || github.event.inputs.tag, '-') }}",
+      "if: ${{ github.repository == 'neostryder/neo-angband' && (!contains(github.event.release.tag_name || github.event.inputs.tag, '-')) }}",
     );
     const npm = read(".github/workflows/publish-npm.yml");
     expect(npm).toMatch(/\*-\*\) dist_tag=next/u);

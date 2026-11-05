@@ -1,0 +1,22 @@
+{
+  "schema": "angband/session@1",
+  "repository": "diegoami/neo-angband-tracker",
+  "role": "engine-and-c-fixes",
+  "scope": "C Borg, Angband game and Neo Angband engine fixes",
+  "issue_repositories": [
+    "diegoami/neo-angband-tracker",
+    "diegoami/neo-angband-borg-mod-tracker",
+    "diegoami/mandos"
+  ],
+  "catalogue_repository": "diegoami/neo-angband-tracker",
+  "upstreams": {
+    "engine": "neostryder/neo-angband",
+    "port": "neostryder/neo-angband-mod-borg",
+    "c": "angband/angband"
+  },
+  "baselines": {
+    "engine": "0cc75b4afcbe6f5128730e4b910408c7be4ac5c5",
+    "port": "74a017d2f695939eb2f046b7c9ff286ef1e82568",
+    "c": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3"
+  }
+}
