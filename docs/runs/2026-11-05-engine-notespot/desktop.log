@@ -1,0 +1,11 @@
+$ node scripts/build.mjs
+
+  dist/main.cjs      226.7kb
+  dist/main.cjs.map  643.3kb
+
+⚡ Done in 37ms
+
+  dist/preload.cjs       6.2kb
+  dist/preload.cjs.map  19.8kb
+
+⚡ Done in 1ms

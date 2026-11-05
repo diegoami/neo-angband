@@ -1,0 +1,30 @@
+$ node scripts/sync-tiles.mjs && vite build
+sync-tiles: 0 copied, 21 already current
+vite v8.2.0 building client environment for production...
+[2K
+transforming...
+fonts/angband-8x13.woff2 referenced in fonts/angband-8x13.woff2 didn't resolve at build time, it will remain unchanged to be resolved at runtime
+✓ 681 modules transformed.
+rendering chunks...
+computing gzip size...
+dist-web/build-id.json                   0.11 kB │ gzip:     0.11 kB
+dist-web/registerSW.js                   0.13 kB
+dist-web/manifest.webmanifest            0.53 kB
+dist-web/assets/sandbox-CJQp7Xkf.js      3.70 kB
+dist-web/index.html                     18.52 kB │ gzip:     3.56 kB
+dist-web/assets/index-CNBtQOlz.css       5.25 kB │ gzip:     1.58 kB
+dist-web/assets/index-B8D_g9LG.js    3,804.53 kB │ gzip: 1,078.15 kB
+
+✓ built in 725ms
+[plugin builtin:vite-reporter]
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+
+PWA v1.3.0
+mode      generateSW
+precache  258 entries (26158.84 KiB)
+files generated
+  dist-web/sw.js
+  dist-web/workbox-9c191d2f.js

@@ -1,0 +1,17 @@
+[smoke] ok   initialize
+[smoke] ok   instructions are sent (a client with none has to guess how to play)
+[smoke] ok   tools/list returns the whole table
+[smoke] ok   tools/list includes new_game
+[smoke] ok   tools/list includes map
+[smoke] ok   tools/list includes status
+[smoke] ok   tools/list includes walk
+[smoke] ok   tools/list includes act
+[smoke] ok   tools/list includes commands
+[smoke] ok   read-only tools are annotated as such
+[smoke] ok   tools/call new_game boots a real game
+[smoke] ok   and the map is not blank (the derived-view regression)
+[smoke] ok   resources/list offers the current game
+[smoke] ok   a command reports the engine's own messages
+[smoke] ok   nothing but JSON-RPC reached stdout
+[smoke] ok   the ready line went to stderr
+[smoke] the MCP server speaks the protocol

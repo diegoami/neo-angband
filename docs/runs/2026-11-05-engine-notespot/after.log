@@ -1,0 +1,156 @@
+
+ RUN  v4.1.11 <ENGINE_TASK>
+
+ ✓ packages/core/src/game/set-feat-memory.test.ts > live setFeat memory (engine #4 / upstream #429) > immediately remembers seen terrain 3 3ms
+ ✓ packages/core/src/game/set-feat-memory.test.ts > live setFeat memory (engine #4 / upstream #429) > immediately remembers seen terrain 21 1ms
+ ✓ packages/core/src/game/set-feat-memory.test.ts > live setFeat memory (engine #4 / upstream #429) > remembers the player's own square even when it is not seen 1ms
+ ✓ packages/core/src/game/set-feat-memory.test.ts > live setFeat memory (engine #4 / upstream #429) > does not reveal an unseen remote change (previously known: false) 1ms
+ ✓ packages/core/src/game/set-feat-memory.test.ts > live setFeat memory (engine #4 / upstream #429) > does not reveal an unseen remote change (previously known: true) 1ms
+ ✓ packages/core/src/game/set-feat-memory.test.ts > live setFeat memory (engine #4 / upstream #429) > generation without a live hook clears wall flags without memorizing 1ms
+ ✓ packages/core/src/game/set-feat-memory.test.ts > live setFeat memory (engine #4 / upstream #429) > legal close/open commands keep remembered doors current before the next command 6ms
+ ✓ packages/core/src/game/known-pile.test.ts > object_list_collect reports knowledge, not the level > an object dropped out of view is NOT listed 5ms
+ ✓ packages/core/src/game/known-pile.test.ts > object_list_collect reports knowledge, not the level > an object taken out of view is STILL listed, until the grid is re-seen 1ms
+ ✓ packages/core/src/game/known-pile.test.ts > object_list_collect reports knowledge, not the level > every object of a seen pile gets its own row 1ms
+ ✓ packages/core/src/game/known-pile.test.ts > map_info's object loop (cave-map.c:155-169) > sets multiple_objects for a remembered pile of two 1ms
+ ✓ packages/core/src/game/known-pile.test.ts > map_info's object loop (cave-map.c:155-169) > one remembered object is not a pile 1ms
+ ✓ packages/core/src/game/known-pile.test.ts > map_info's object loop (cave-map.c:155-169) > an ignored item on top falls through to the one under it 1ms
+ ✓ packages/core/src/game/known-pile.test.ts > map_info's object loop (cave-map.c:155-169) > a grid whose every remembered object is ignored draws nothing 1ms
+ ✓ packages/core/src/game/known-pile.test.ts > map_info's object loop (cave-map.c:155-169) > a sensed marker outranks an exact memory on the same grid 1ms
+ ✓ packages/core/src/game/known-pile.test.ts > map_info's object loop (cave-map.c:155-169) > sensed money takes the gold star over the item star 1ms
+ ✓ packages/core/src/game/known-pile.test.ts > map_info's object loop (cave-map.c:155-169) > seeing a sensed pile upgrades the marker to the real kind 1ms
+ ✓ packages/core/src/game/known-pile.test.ts > map_info's object loop (cave-map.c:155-169) > sensing a pile already SEEN does not downgrade it back to a star 1ms
+ ✓ packages/core/src/game/known-pile.test.ts > forget_remembered_objects respects the predicate > a know of one class does not clear another class's memory 1ms
+ ✓ packages/core/src/game/trap.test.ts > bindTraps (trap.txt) > binds the full kind table with flags, power and effects 1ms
+ ✓ packages/core/src/game/trap.test.ts > bindTraps (trap.txt) > lookupTrap finds kinds by description 0ms
+ ✓ packages/core/src/game/trap.test.ts > placeTrap / pickTrap > places a specific trap kind on a grid 3ms
+ ✓ packages/core/src/game/trap.test.ts > placeTrap / pickTrap > picks a random player trap by rarity at depth; none in town 1ms
+ ✓ packages/core/src/game/trap.test.ts > squareRevealTrap > reveals when the search skill beats the trap power 1ms
+ ✓ packages/core/src/game/trap.test.ts > hitTrap > a pit damages the player through the effect stack 2ms
+ ✓ packages/core/src/game/trap.test.ts > hitTrap > the FEATHER save flag evades the pit entirely 1ms
+ ✓ packages/core/src/game/trap.test.ts > hitTrap > a trap door signals a level change 1ms
+ ✓ packages/core/src/game/trap.test.ts > hitTrap > a disabled trap does not fire 1ms
+ ✓ packages/core/src/game/trap.test.ts > door locks (trap.c L706) > locks a closed door and reads back the power 1ms
+ ✓ packages/core/src/game/trap.test.ts > door locks (trap.c L706) > calcUnlockingChance matches the upstream formula 1ms
+ ✓ packages/core/src/game/trap.test.ts > disarm and the step hook > a skilled player disarms a visible trap 1ms
+ ✓ packages/core/src/game/trap.test.ts > disarm and the step hook > installTraps refuses to disarm an invisible trap (visibility guard) 1ms
+ ✓ packages/core/src/game/trap.test.ts > disarm and the step hook > stepping onto a trap triggers it through the walk wiring 1ms
+ ✓ packages/core/src/game/trap.test.ts > disarm and the step hook > TRF_DELAY fires on leave via player_leaving (mon-util.c:503-515) 1ms
+ ✓ packages/core/src/game/trap.test.ts > disarm and the step hook > TRF_DELAY fires when thrust leaves the square (monster_swap player_leaving) 1ms
+ ✓ packages/core/src/game/trap.test.ts > disarm and the step hook > disarmAux applies no_light penalty (cmd-cave.c:812-817 / cave-view.c:914-917) 1ms
+ ✓ packages/core/src/game/trap.test.ts > disarm and the step hook > setFeat to non-trappable terrain destroys traps (cave-square.c:1256-1259) 1ms
+ ✓ packages/core/src/game/trap.test.ts > disarm and the step hook > squareIsWarded is only glyph of warding, not decoy (cave-square.c:751-755) 1ms
+ ✓ packages/core/src/game/trap.test.ts > run web ordering (cmd-cave.c:1368-1381) > clears a web before refusing a confused run 1ms
+ ✓ packages/core/src/game/known.test.ts > terrain memory (square_memorize / square_forget) > remembers and forgets terrain 3ms
+ ✓ packages/core/src/game/known.test.ts > terrain memory (square_memorize / square_forget) > memory goes stale when the world changes (square_ismemorybad) 1ms
+ ✓ packages/core/src/game/known.test.ts > square_know_pile find-on-sight (object_touch, obj-knowledge.c L971) > logs an artifact the player steps onto (its own grid) 2ms
+ ✓ packages/core/src/game/known.test.ts > square_know_pile find-on-sight (object_touch, obj-knowledge.c L971) > does NOT log an artifact merely seen at a distance 1ms
+ ✓ packages/core/src/game/known.test.ts > square_know_pile find-on-sight (object_touch, obj-knowledge.c L971) > fires the mod behaviour seam's artifactIdentified (mod/hooks.ts) through state.modHooks 1ms
+ ✓ packages/core/src/game/known.test.ts > cave_illuminate (cave-map.c L555, runtime) > relights an interior floor grid at the day/night boundary and updates knowledge 4ms
+ ✓ packages/core/src/game/known.test.ts > cave_illuminate (cave-map.c L555, runtime) > is RNG-free 3ms
+ ✓ packages/core/src/game/known.test.ts > cave_known (cave-map.c:633-659) > memorizes everything except walls surrounded by walls 2ms
+ ✓ packages/core/src/game/known.test.ts > cave_known (cave-map.c:633-659) > upstream order leaves a NIGHT town's boring floors forgotten 3ms
+ ✓ packages/core/src/game/known.test.ts > cave_known (cave-map.c:633-659) > upstream order leaves a DAYTIME town's floors known 2ms
+ ✓ packages/core/src/game/known.test.ts > object memory (square_know_pile / square_sense_pile) > knowPile remembers the pile head and forgets stale memories 1ms
+ ✓ packages/core/src/game/known.test.ts > object memory (square_know_pile / square_sense_pile) > sensePile marks an unknown something without identifying it 1ms
+ ✓ packages/core/src/game/known.test.ts > object memory (square_know_pile / square_sense_pile) > a sensed pile of MONEY takes unknown_gold_kind, not unknown_item_kind 1ms
+ ✓ packages/core/src/game/known.test.ts > object memory (square_know_pile / square_sense_pile) > a predicate restricts what is remembered 1ms
+ ✓ packages/core/src/game/known.test.ts > noteSpots (note_spot + update_mon) > memorizes seen grids with their piles 1ms
+ ✓ packages/core/src/game/known.test.ts > noteSpots (note_spot + update_mon) > keeps monster visibility flags in step with the view 2ms
+ ✓ packages/core/src/game/known.test.ts > noteSpots (note_spot + update_mon) > an illuminated monster records a fresh sighting in the lore 1ms
+ ✓ packages/core/src/game/known.test.ts > noteSpots (note_spot + update_mon) > blind forget drops a non-passable remembered player grid (cave-view.c:894-897) 1ms
+ ✓ packages/core/src/game/known.test.ts > update_mon telepathy > senses an out-of-LOS non-empty-mind monster (visible, not in view) 1ms
+ ✓ packages/core/src/game/known.test.ts > update_mon telepathy > does not sense an EMPTY_MIND monster 1ms
+ ✓ packages/core/src/game/known.test.ts > update_mon telepathy > is suppressed on a NO_ESP square 0ms
+ ✓ packages/core/src/game/known.test.ts > update_mon infravision > reveals a warm-blooded monster in the dark within radius 1ms
+ ✓ packages/core/src/game/known.test.ts > update_mon infravision > does not reveal a cold-blooded monster in the dark 1ms
+ ✓ packages/core/src/game/known.test.ts > update_mon fires monsterBecameVisible on the real transition (mod/hooks.ts) > fires once, with the monster as the player knows it, on the unseen-to-seen transition 2ms
+ ✓ packages/core/src/game/known.test.ts > update_mon fires monsterBecameVisible on the real transition (mod/hooks.ts) > does not fire again on a later turn where the monster simply stays visible 1ms
+ ✓ packages/core/src/game/known.test.ts > update_mon fires monsterBecameVisible on the real transition (mod/hooks.ts) > does not fire when the monster never becomes visible 1ms
+ ✓ packages/core/src/game/known.test.ts > update_mon fires monsterBecameVisible on the real transition (mod/hooks.ts) > fires again on a fresh sighting after the monster drops out of view 1ms
+ ✓ packages/core/src/game/known.test.ts > update_mon fires monsterBecameVisible on the real transition (mod/hooks.ts) > does nothing when no mod supplies the hook 1ms
+ ✓ packages/core/src/game/known.test.ts > update_mon see-invisible > hides an invisible monster in LOS without see-invisible 1ms
+ ✓ packages/core/src/game/known.test.ts > update_mon see-invisible > reveals an invisible monster in LOS with see-invisible 0ms
+ ✓ packages/core/src/game/known.test.ts > update_mon distance and determinism > full=true writes the octagonal distance, full=false leaves cdis 1ms
+ ✓ packages/core/src/game/known.test.ts > update_mon distance and determinism > draws no RNG 1ms
+ ✓ packages/core/src/game/known.test.ts > the detection fade (process_player_cleanup, game-world.c:867-908) > a detection MARK survives one refresh, then fades 1ms
+ ✓ packages/core/src/game/known.test.ts > the detection fade (process_player_cleanup, game-world.c:867-908) > update_mon only reads MARK; it never clears MARK or SHOW 1ms
+ ✓ packages/core/src/game/known.test.ts > squareForget (cave-square.c:1580) > forgets the terrain but keeps the remembered pile and DTRAP mark 1ms
+ ✓ packages/core/src/game/known.test.ts > squareApparentName / squareApparentLookPrefix / squareApparentLookInPreposition (cave-square.c) > falls back to an indefinite article when the feature has no look-prefix 1ms
+ ✓ packages/core/src/game/known.test.ts > squareApparentName / squareApparentLookPrefix / squareApparentLookInPreposition (cave-square.c) > uses the feature's own look-prefix override when it has one 0ms
+ ✓ packages/core/src/game/known.test.ts > squareApparentName / squareApparentLookPrefix / squareApparentLookInPreposition (cave-square.c) > uses the feature's own look-in-preposition override when it has one 1ms
+ ✓ packages/core/src/game/known.test.ts > squareApparentName / squareApparentLookPrefix / squareApparentLookInPreposition (cave-square.c) > defaults the look-in-preposition to 'on ' otherwise 1ms
+ ✓ packages/core/src/game/known.test.ts > squareApparentName / squareApparentLookPrefix / squareApparentLookInPreposition (cave-square.c) > reads 'unknown grid' for a grid the player has never memorized 1ms
+ ✓ packages/core/src/game/known.test.ts > squareIsInteresting (cave-square.c square_isinteresting, read against knowledge) > is false for an unmemorized grid 1ms
+ ✓ packages/core/src/game/known.test.ts > squareIsInteresting (cave-square.c square_isinteresting, read against knowledge) > is true for a memorized TF_INTERESTING feature (a down staircase) 0ms
+ ✓ packages/core/src/game/known.test.ts > squareIsInteresting (cave-square.c square_isinteresting, read against knowledge) > is false for a memorized plain floor 0ms
+ ✓ packages/core/src/game/known.test.ts > update_mon and a mimic's fake item (mon-util.c L394-399, L429-433) > a mimic of a NON-ignored item is visible - the player is seeing the item 1ms
+ ✓ packages/core/src/game/known.test.ts > update_mon and a mimic's fake item (mon-util.c L394-399, L429-433) > a mimic of an IGNORED item is not seen at all 1ms
+ ✓ packages/core/src/game/known.test.ts > update_mon and a mimic's fake item (mon-util.c L394-399, L429-433) > an already-visible mimic LOSES visibility when its item becomes ignored 1ms
+ ✓ packages/core/src/game/known.test.ts > becomeAware (mon-util.c become_aware, L711) > is a no-op for a monster that is not camouflaged 0ms
+ ✓ packages/core/src/game/known.test.ts > becomeAware (mon-util.c become_aware, L711) > clears MFLAG_CAMOUFLAGE and learns RF_UNAWARE into the race's lore 1ms
+ ✓ packages/core/src/game/known.test.ts > becomeAware (mon-util.c become_aware, L711) > does not learn RF_UNAWARE for a race that lacks the flag 0ms
+ ✓ packages/core/src/game/known.test.ts > becomeAware (mon-util.c become_aware, L711) > removes a mimicked floor object, breaks the mimicry link both ways, and messages when the square is seen 2ms
+ ✓ packages/core/src/game/known.test.ts > becomeAware (mon-util.c become_aware, L711) > re-notes the grid, so the known map drops the fake object (#238) 1ms
+ ✓ packages/core/src/game/known.test.ts > becomeAware (mon-util.c become_aware, L711) > notes the grid even when the monster was already revealed 1ms
+ ✓ packages/core/src/game/known.test.ts > becomeAware (mon-util.c become_aware, L711) > still clears the mimicry link when the square is not seen, but sends no message 1ms
+ ✓ packages/core/src/game/known.test.ts > becomeAware (mon-util.c become_aware, L711) > leaves mon.mimickedObj as-is when no floor object matches the handle (defensive, unreached in play) 0ms
+ ✓ packages/core/src/game/known.test.ts > becomeAware (mon-util.c become_aware, L711) > draws no RNG (rng.getState() is unchanged across a plain reveal and a mimic reveal) 1ms
+ ✓ packages/core/src/game/known.test.ts > becomeAware (mon-util.c become_aware, L711) > RF_MIMIC_INV: gives the monster a copy of the object, still deletes the floor item, draws no RNG (mon-util.c L740-758) 3ms
+ ✓ packages/core/src/game/known.test.ts > becomeAware (mon-util.c become_aware, L711) > does NOT give a copy when the race lacks RF_MIMIC_INV 1ms
+ ✓ packages/core/src/game/known.test.ts > path_analyse (mon-util.c:209): PORT_TODO 2.8 > forgets a remembered wall that the sighting proves is not there 0ms
+ ✓ packages/core/src/game/known.test.ts > path_analyse (mon-util.c:209): PORT_TODO 2.8 > leaves a remembered FLOOR alone 0ms
+ ✓ packages/core/src/game/known.test.ts > path_analyse (mon-util.c:209): PORT_TODO 2.8 > treats an UNKNOWN intervening grid as blocking, as FEAT_NONE does 0ms
+ ✓ packages/core/src/game/known.test.ts > path_analyse (mon-util.c:209): PORT_TODO 2.8 > never touches the monster's OWN grid (the path_n - 1 bound) 0ms
+ ✓ packages/core/src/game/known.test.ts > path_analyse (mon-util.c:209): PORT_TODO 2.8 > draws no randomness 0ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > calcDiggingChances (player-calcs.c) > matches the upstream formulas and floors at zero 1ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > open / close doors > auto-selects one known closed door without a direction (cmd-cave.c:245-260) 5ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > open / close doors > does not auto-select when zero or multiple known doors are candidates 1ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > open / close doors > opens a closed door and spends a full turn 1ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > open / close doors > walking into a closed door opens it without stepping (move_player bump-to-open, cmd-cave.c L1079-1083) 1ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > open / close doors > closes an open door 1ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > open / close doors > auto-selects one known open door without a direction (cmd-cave.c:409) 1ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > open / close doors > a broken door cannot be closed 1ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > open / close doors > opening with nothing there costs no turn 1ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > open / close doors > a locked door resists until the pickLock seam succeeds 1ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > open / close doors > walking into a locked door re-queues the walk (move_player auto-repeat, cmd-cave.c L1079-1083) 2ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > open / close doors > walking into a locked door that opens does not re-queue 1ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > open / close doors > the walk-into-locked-door repeat stops when the budget is exhausted 1ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > open / close doors > a monster in the way is attacked instead 3ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > open / close doors > a camouflaged monster in the way is revealed instead of attacked (do_cmd_open, cmd-cave.c L293-298) 1ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > tunnel > a skilled digger removes magma; the wall becomes floor 1ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > tunnel > an unskilled digger chips away futilely (turn spent, wall stays) 1ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > tunnel > digging out a gold vein drops treasure on the floor 22ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > tunnel > permanent rock cannot be tunneled 9ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > tunnel - auto-repeat (cmd_set_repeat 99) > a failed dig with a chance re-queues the command with a decremented budget 1ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > tunnel - auto-repeat (cmd_set_repeat 99) > a successful dig does not re-queue 1ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > tunnel - auto-repeat (cmd_set_repeat 99) > a hopeless dig (no chance) does not re-queue 1ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > tunnel - auto-repeat (cmd_set_repeat 99) > stops when the repeat budget is exhausted, even with a chance left 1ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > tunnel - player_best_digger swap > digs with the swapped-in best digger's DIGGING, not the wielded one 1ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > tunnel - player_best_digger swap > without the swap hook only the wielded DIGGING decides (dig fails) 1ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > lock door (do_cmd_lock_door) > locks the door on success: m_bonus then randint0(100), sets the power 1ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > lock door (do_cmd_lock_door) > failure with a high skill draws the keep-trying randint1(i) 1ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > lock door (do_cmd_lock_door) > failure with a low skill (i <= 5) draws no randint1 0ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > lock door (do_cmd_lock_door) > the disarm command locks a closed, unlocked door (do_cmd_disarm L927-930) 1ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > lock door (do_cmd_lock_door) > auto-selects one known unlocked door for disarm (cmd-cave.c:874-876) 1ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > alter / stairs > alter opens a door or digs a wall by what is there 1ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > alter / stairs > descend requires a down staircase underfoot 1ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > alter / stairs > ascend requires an up staircase and not being at the surface 1ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > countFeats (cave.c:644-679) > counts only KNOWN adjacent matches, and reports the last one 1ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > countFeats (cave.c:644-679) > includes the player's own grid only when `under` is set (ddgrid_ddd[8]) 0ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > countFeats (cave.c:644-679) > combines with count_chests, including an underfoot chest 13ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > countFeats (cave.c:644-679) > treats a closed door with no lock power as unlocked (cave-square.c:791) 1ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > stairs go through dungeon_get_next_level > stops the descent on an outstanding quest level (player-util.c:1163-1165) 1ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > stairs go through dungeon_get_next_level > descends normally once the quest is cleared (level reset to 0) 1ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > stairs go through dungeon_get_next_level > refuses to descend from max_depth - 1 (cmd-cave.c:115-119) 0ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > stairs go through dungeon_get_next_level > force_descend measures the drop from max_depth (cmd-cave.c:121-128) 1ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > stairs go through dungeon_get_next_level > force_descend makes up staircases do nothing (cmd-cave.c:70-74) 0ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > alter's remaining branches (do_cmd_alter_aux L974-997) > closes an open door (L993-995) 12ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > alter's remaining branches (do_cmd_alter_aux L974-997) > disarms a floor trap (L984-986) 6ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > alter's remaining branches (do_cmd_alter_aux L974-997) > opens a closed chest (L989-991) 7ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > alter's remaining branches (do_cmd_alter_aux L974-997) > prefers a TRAPPED chest over an openable one, as the C order does 8ms
+ ✓ packages/core/src/game/cave-cmd.test.ts > alter's remaining branches (do_cmd_alter_aux L974-997) > spends a FULL TURN on the fall-through, so '+' is not a free probe 5ms
+
+ Test Files  5 passed (5)
+      Tests  148 passed (148)
+   Start at  23:24:17
+   Duration  1.19s (transform 3.35s, setup 0ms, import 4.92s, tests 236ms, environment 0ms)
