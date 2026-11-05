@@ -2,17 +2,24 @@
 
 This session owns **diegoami/neo-angband-tracker**. Start here, then read [RULES.md](RULES.md),
 [PLAN.md](PLAN.md), [session.json](session.json), [the session map](docs/SESSION.md)
-and the latest issue labelled checkpoint in this repository:
+and the latest comments on [Neo engine checkpoint #25](https://github.com/diegoami/neo-angband-tracker/issues/25).
+Native C uses its separately owned [checkpoint #207](https://github.com/diegoami/neo-angband-tracker/issues/207)
+(`checkpoint` + `session:c`); do not select a lane by the generic checkpoint label alone:
 
 ```sh
 git status --short
 git remote -v
-gh issue list -R diegoami/neo-angband-tracker --label checkpoint --state open
+gh issue view 25 -R diegoami/neo-angband-tracker --comments
 node tools/check-session.mjs
 node tools/upstream-watch.mjs
 node tools/c-upstream-watch.mjs
-node tools/borg-rs-watch.mjs
 ```
+
+borg-rs reports directly to this repository. Triage those posted reports under
+[the intake contract](docs/BORG-RS-INTAKE.md); do not proactively fetch/poll
+borg-rs source, docs/c-bugs.md or its external issue board. Its old watch tool
+and snapshots are legacy/manual evidence, not startup work. No Rust worker,
+adoption task or new reference clone is managed here.
 
 Use this repository's issue board, not Mandos's former upstream queue.
 Preserve transferred history and link component/integration work across repos.

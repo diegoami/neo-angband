@@ -18,7 +18,10 @@ The Neo Borg TypeScript mod is a different repository/session:
 Mandos product development and downstream adoption are also separate.
 
 Read [AGENTS](AGENTS.md), [RULES](RULES.md), [PLAN](PLAN.md) and the latest
-checkpoint to start a session. [Session map](docs/SESSION.md).
+[Neo engine checkpoint #25](https://github.com/diegoami/neo-angband-tracker/issues/25)
+to start a Neo session. The independently owned native C lane uses
+[checkpoint #207](https://github.com/diegoami/neo-angband-tracker/issues/207)
+(`checkpoint` + `session:c`). [Session map](docs/SESSION.md).
 
 - Default master: Neo engine source plus our session documentation.
 - c-borg-reference: separately pinned original C source, unchanged as a base.
@@ -43,17 +46,20 @@ Original upstream credits, licence and legal policies remain in their files.
 
 ## C fix consumers and borg-rs intake
 
-Track [borg-rs](https://github.com/diegoami/borg-rs) as both a source of C leads
-and an independent consumer of C corrections. It does not depend on Neo.
-Use `node tools/borg-rs-watch.mjs` to inspect the current file and issue feed;
-read-only source checkout: ../borg-rs-reference. A file-to-issues transition
-must not drop leads. [Intake contract](docs/BORG-RS-INTAKE.md).
+[borg-rs](https://github.com/diegoami/borg-rs) posts C defect leads directly to
+this repository's issue board. Triage and deduplicate those reports here;
+verify C-versus-Rust attribution and evidence before a native defect claim.
+Do not proactively fetch/poll its repository, docs/c-bugs.md or external
+issue board. Old snapshots, ../borg-rs-reference and tools/borg-rs-watch.mjs
+remain legacy/manual evidence only, with no automatic startup/end sweep.
+No Rust worker, adoption task or new managed clone belongs to this workspace.
+[Intake contract](docs/BORG-RS-INTAKE.md).
 
 This session proposes/proves the native C correction. Mandos decides whether
 it has a TS counterpart, translates it there with scenario controls and
-carries it under a linked consumer issue. borg-rs handles its own Rust
-translation/carry. The Neo Borg mod tracker restores C fidelity and is not
-asked to translate proposed C corrections as a separate repair service.
+carries it under a linked consumer issue. Any borg-rs Rust translation/carry
+is independently managed outside this workspace. The Neo Borg mod tracker
+restores C fidelity and is not asked to translate proposed C corrections as a separate repair service.
 
 ## Fresh clone setup
 
