@@ -1,6 +1,6 @@
 # Reusing a local C fix
 
-For the easy direct-compare method, start at [the C catalogue](C-BUGS.md#open-a-new-pr-directly-from-the-existing-c-branch). This page covers the alternatives and follow-up details.
+For the easy direct-compare method, start at [the C catalogue](C-BUGS.md#easy-method-open-a-pr-from-an-existing-c-proposal-branch). This page covers the alternatives and follow-up details.
 
 This guide is for another Angband contributor who chooses to propose a correction. We are not making an upstream C submission. The PR, commit, branch and patch remain usable even when our local proposal is closed unmerged.
 

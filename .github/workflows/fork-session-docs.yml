@@ -9,6 +9,7 @@ jobs:
         with:
           node-version: 22
       - run: node tools/check-session.mjs
+      - run: node tools/check-fork-workflows.mjs
       - if: ${{ hashFiles('tools/c-bugs.mjs') != '' }}
         run: node tools/c-bugs.mjs --check
       - if: ${{ hashFiles('tools/c-bugs-source.node-test.mjs') != '' }}

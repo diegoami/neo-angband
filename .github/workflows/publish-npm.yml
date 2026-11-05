@@ -54,6 +54,8 @@ concurrency:
 
 jobs:
   publish:
+    # FORK: tracker sessions must never run inherited product automation.
+    if: ${{ github.repository == 'neostryder/neo-angband' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read

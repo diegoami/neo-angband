@@ -52,6 +52,8 @@ permissions:
 
 jobs:
   desktop:
+    # FORK: tracker sessions must never run inherited product automation.
+    if: ${{ github.repository == 'neostryder/neo-angband' }}
     name: ${{ matrix.label }}
     strategy:
       # One platform failing must not cancel the other two: a Linux packaging
@@ -113,6 +115,8 @@ jobs:
             packages/desktop/dist-desktop/*.tar.gz
 
   web:
+    # FORK: tracker sessions must never run inherited product automation.
+    if: ${{ github.repository == 'neostryder/neo-angband' }}
     name: Static site
     runs-on: ubuntu-latest
     env:
@@ -148,7 +152,8 @@ jobs:
     needs: [web]
     # itch.io's html channel is the one public web build, so a pre-release tag
     # (v1.23.0-beta.1) stays off it.
-    if: ${{ !contains(github.event.inputs.tag || github.ref_name, '-') }}
+    # FORK: tracker sessions must never run inherited product automation.
+    if: ${{ github.repository == 'neostryder/neo-angband' && (!contains(github.event.inputs.tag || github.ref_name, '-')) }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v6
@@ -181,7 +186,8 @@ jobs:
     needs: [desktop, web]
     # `always()` so a single platform failing still produces a release holding
     # the platforms that worked - see fail-fast above.
-    if: always()
+    # FORK: tracker sessions must never run inherited product automation.
+    if: ${{ github.repository == 'neostryder/neo-angband' && (always()) }}
     runs-on: ubuntu-latest
     permissions:
       contents: write

@@ -41,6 +41,8 @@ permissions:
 
 jobs:
   version:
+    # FORK: tracker sessions must never run inherited product automation.
+    if: ${{ github.repository == 'neostryder/neo-angband' }}
     name: Number this build
     runs-on: ubuntu-latest
     outputs:
@@ -68,6 +70,8 @@ jobs:
           echo "tag=v$version" >> "$GITHUB_OUTPUT"
 
   desktop:
+    # FORK: tracker sessions must never run inherited product automation.
+    if: ${{ github.repository == 'neostryder/neo-angband' }}
     name: ${{ matrix.label }}
     needs: version
     strategy:
@@ -114,7 +118,8 @@ jobs:
     needs: [version, desktop]
     # A platform that failed to build must not sink the ones that worked, for the
     # same reason release.yml says so: partial artifacts beat none.
-    if: always() && needs.version.result == 'success'
+    # FORK: tracker sessions must never run inherited product automation.
+    if: ${{ github.repository == 'neostryder/neo-angband' && (always() && needs.version.result == 'success') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7

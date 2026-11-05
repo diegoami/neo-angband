@@ -51,6 +51,8 @@ concurrency:
 
 jobs:
   canary:
+    # FORK: tracker sessions must never run inherited product automation.
+    if: ${{ github.repository == 'neostryder/neo-angband' }}
     runs-on: ubuntu-latest
     env:
       MOD_CANARY: "1"
