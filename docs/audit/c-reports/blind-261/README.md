@@ -34,8 +34,8 @@ From a clone of `diegoami/neo-angband-tracker`, copy these three commands:
 
 ```sh
 git fetch https://github.com/diegoami/neo-angband-tracker.git task/blind-261-evidence
-git show PINSHA:docs/audit/c-reports/blind-261/reproduce.py > /tmp/reproduce-blind-261.py
-python3 /tmp/reproduce-blind-261.py --fixtures-ref PINSHA --full-tests
+git show da1e319cefd69054651e2f485d836503808f4cd6:docs/audit/c-reports/blind-261/reproduce.py > /tmp/reproduce-blind-261.py
+python3 /tmp/reproduce-blind-261.py --fixtures-ref da1e319cefd69054651e2f485d836503808f4cd6 --full-tests
 ```
 
 The runner builds original and corrected variants from pristine C
