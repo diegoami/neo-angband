@@ -1,0 +1,16 @@
+{
+  "stale": {
+    "exit": 0,
+    "passed": true,
+    "geometry": "target=(11,11) player=(11,11) dist=0",
+    "rating": "acted=0 keys=\"\" center_attack=0",
+    "outcome": "acted=0 keys=\"\" center_attack=0"
+  },
+  "control": {
+    "exit": 0,
+    "passed": true,
+    "geometry": "target=(12,11) player=(11,11) dist=1",
+    "rating": "acted=1 keys=\"+2\" center_attack=0",
+    "outcome": "acted=1 keys=\"+2\" center_attack=0"
+  }
+}
