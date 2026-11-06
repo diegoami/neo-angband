@@ -1,0 +1,16 @@
+{
+  "traps": {
+    "exit": 0,
+    "passed": false,
+    "geometry": "mode=traps kills_cnt=0",
+    "rating": "surrounded=1",
+    "outcome": "surrounded=1"
+  },
+  "walls": {
+    "exit": 0,
+    "passed": true,
+    "geometry": "mode=walls kills_cnt=0",
+    "rating": "surrounded=0",
+    "outcome": "surrounded=0"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "traps": {
+    "label": "Surrounded by nobody",
+    "explanation": "Three walls carrying the trap flag and three trap-only floors around the Borg - and not one monster nearby. The surrounded check counted each trapped wall twice (once as a wall, once as a trap), pushing the safe-square count below zero, so \"monsters greater than safe squares\" fired with zero monsters: the original answers surrounded. The correction counts each non-safe grid once: not surrounded.",
+    "before": {
+      "raw": "native-c/surrounded-312: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Warrior depth=30 kills=0\n  no_monsters_never_surrounded  MODE traps\nGEOMETRY mode=traps kills_cnt=0\nRATING surrounded=1\nOUTCOME surrounded=1\nFailed\n    native-c/surrounded-312:137: requirement '!surr' failed\nnative-c/surrounded-312 finished: 0/1 passed\n",
+      "passed": false,
+      "rating": "surrounded=1",
+      "outcome": "surrounded=1"
+    },
+    "after": {
+      "raw": "native-c/surrounded-312: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Warrior depth=30 kills=0\n  no_monsters_never_surrounded  MODE traps\nGEOMETRY mode=traps kills_cnt=0\nRATING surrounded=0\nOUTCOME surrounded=0\nPassed\nnative-c/surrounded-312 finished: 1/1 passed\n",
+      "passed": true,
+      "rating": "surrounded=0",
+      "outcome": "surrounded=0"
+    }
+  },
+  "walls": {
+    "label": "Control: eight plain walls",
+    "explanation": "Eight walls with no traps never touch the trap test: both variants answer not surrounded (zero monsters is never greater than zero safe squares), and the complete log is byte-identical.",
+    "before": {
+      "raw": "native-c/surrounded-312: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Warrior depth=30 kills=0\n  no_monsters_never_surrounded  MODE walls\nGEOMETRY mode=walls kills_cnt=0\nRATING surrounded=0\nOUTCOME surrounded=0\nPassed\nnative-c/surrounded-312 finished: 1/1 passed\n",
+      "passed": true,
+      "rating": "surrounded=0",
+      "outcome": "surrounded=0"
+    },
+    "after": {
+      "raw": "native-c/surrounded-312: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Warrior depth=30 kills=0\n  no_monsters_never_surrounded  MODE walls\nGEOMETRY mode=walls kills_cnt=0\nRATING surrounded=0\nOUTCOME surrounded=0\nPassed\nnative-c/surrounded-312 finished: 1/1 passed\n",
+      "passed": true,
+      "rating": "surrounded=0",
+      "outcome": "surrounded=0"
+    }
+  }
+}
