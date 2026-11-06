@@ -91,7 +91,10 @@ Captured artifacts from the verified run, **committed to the evidence branch**
    receipt. Assert against the **rendered DOM before the `<script>` tag** —
    matching the script source itself gives false passes when the JS is
    syntactically broken (this bit three replays: incomplete ternaries,
-   Python-escaped apostrophes, stray parens).
+   Python-escaped apostrophes, stray parens). Likewise run `node --check`
+   against the **generated** replay's extracted script, not the Python
+   template: Python processes `\'` escapes the JS source never sees, so a
+   template that passes can still generate broken JS (bit calfree-323).
 
 ## 4. Pinning discipline
 
