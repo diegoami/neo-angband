@@ -35,8 +35,8 @@ From a clone of `diegoami/neo-angband-tracker`, copy these three commands:
 
 ```sh
 git fetch https://github.com/diegoami/neo-angband-tracker.git task/arc-253-evidence
-git show PINSHA:docs/audit/c-reports/arc-253/reproduce.py > /tmp/reproduce-arc-253.py
-python3 /tmp/reproduce-arc-253.py --fixtures-ref PINSHA --full-tests
+git show 4af016461e556cae771c4870e5dffad27c1a3077:docs/audit/c-reports/arc-253/reproduce.py > /tmp/reproduce-arc-253.py
+python3 /tmp/reproduce-arc-253.py --fixtures-ref 4af016461e556cae771c4870e5dffad27c1a3077 --full-tests
 ```
 
 The runner builds original and corrected variants from pristine C
