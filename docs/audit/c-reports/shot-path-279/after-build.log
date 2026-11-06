@@ -1,0 +1,10 @@
+Copying needed files
+[  0%] Built target TransferLib
+[  1%] Built target OurUnitTestLib
+[  3%] Building C object CMakeFiles/OurCoreLib.dir/src/borg/borg-danger.c.o
+[  3%] Building C object CMakeFiles/OurCoreLib.dir/src/borg/borg-projection.c.o
+[ 98%] Built target OurCoreLib
+[ 98%] Linking C executable game/SHOTPATH279Observer
+[ 98%] Linking C executable game/angband
+[ 98%] Built target SHOTPATH279Observer
+[100%] Built target OurExecutable
