@@ -1,0 +1,17 @@
+native-c/CBUG-0061: starting...
+SETUP seed=1000 class=Warrior level=40 depth=30 max_hp=421 potions=8
+  potion_timing_respects_recent_use  PRIME DECISION use=1 bypass=1 keys=2 sequence=qb
+ENGINE You feel very good.
+ENGINE You are full!
+ENGINE You have 7 Potions of Cure Critical Wounds (b).
+ENGINE You are confused!
+MODE long-gap time=105 elapsed=5 available=7
+FRAME {"stage":"start","hp":321,"max_hp":421,"potions":7,"confused":10}
+DECISION use=0 bypass=0 keys=0 sequence=
+FRAME {"stage":"potion","hp":321,"max_hp":421,"potions":7,"confused":10}
+OUTCOME used=0 hp_before=321 hp_after=321 healed=0 potions_spent=0 confused=10
+Failed
+    native-c/CBUG-0061:124: requirement 'decision' == 'expected' failed
+      decision:                0
+      expected:                1
+native-c/CBUG-0061 finished: 0/1 passed
