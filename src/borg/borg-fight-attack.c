@@ -3924,8 +3924,10 @@ int borg_calculate_attack_effectiveness(int attack_type)
     case BF_SPELL_BLIND_CREATURE:
         rad = 0;
         dam = 10;
+        /* Frighten is a fear effect; scoring it as confusion made the
+         * Borg expect a confused monster where the game applies fear. */
         return (borg_attack_aux_spell_bolt(
-            FRIGHTEN, rad, dam, BORG_ATTACK_OLD_CONF, z_info->max_range, false));
+            FRIGHTEN, rad, dam, BORG_ATTACK_TURN_ALL, z_info->max_range, false));
 
     /* Druid - Trance */
     case BF_SPELL_TRANCE:
