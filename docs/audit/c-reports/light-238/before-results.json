@@ -1,0 +1,16 @@
+{
+  "phial": {
+    "exit": 0,
+    "passed": false,
+    "geometry": "light_mod=4 bi_light=8",
+    "rating": "bi_light=8",
+    "outcome": "bi_light=8"
+  },
+  "torch": {
+    "exit": 0,
+    "passed": true,
+    "geometry": "light_mod=0 bi_light=2",
+    "rating": "bi_light=2",
+    "outcome": "bi_light=2"
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "fix": "66b183340a567811051a5745c8d3a53792963860",
+  "fixtures_ref": "3c7b2c8076be2afbbb5a39857ccb851466de92c8",
+  "cases": {
+    "before": {
+      "phial": {
+        "exit": 0,
+        "passed": false,
+        "geometry": "light_mod=4 bi_light=8",
+        "rating": "bi_light=8",
+        "outcome": "bi_light=8"
+      },
+      "torch": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "light_mod=0 bi_light=2",
+        "rating": "bi_light=2",
+        "outcome": "bi_light=2"
+      }
+    },
+    "after": {
+      "phial": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "light_mod=4 bi_light=4",
+        "rating": "bi_light=4",
+        "outcome": "bi_light=4"
+      },
+      "torch": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "light_mod=0 bi_light=2",
+        "rating": "bi_light=2",
+        "outcome": "bi_light=2"
+      }
+    }
+  },
+  "identical_controls": [
+    "torch"
+  ],
+  "full_tests": {
+    "before": {
+      "units": "965/965",
+      "frontends": "5/5"
+    },
+    "after": {
+      "units": "965/965",
+      "frontends": "5/5"
+    }
+  },
+  "fixed_source_sha256": "ea64f941fe38a8f2ea8e374b232587da547a27286fd2a0f57bc50e1569b1dbeb",
+  "compiler": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+  "cmake": "cmake version 4.2.3",
+  "browser": {
+    "engine": "Google Chrome for Testing 156.0.8078.4 (headless dump-dom)",
+    "verification": "16 checks against the rendered DOM and payload: 2 situations x 2 variants; Phial bi_light 8 before vs 4 after; torch control bi_light 2 byte-identical raw logs; no n/a or undefined fields; zero console errors; generated replay JS validated with node --check"
+  },
+  "maintenance_base": "f186aa1fce2e590eb9bbcb91dc369f3f8b6af688",
+  "sha256": {
+    "README.md": "c22ac1542753558648e46b0545a4f73d4dacf30a2749aeda70b22eacf3dbaa6a",
+    "after-alltests.log": "401ccda2f8070440fa4c4e25ddbcd674ce92bc3d22b775518fc89b39323f3bab",
+    "after-build.log": "1f6ee02cd9362dc71de97f17b3631085a1b47c8b0e62879ba95a7481c5ba76da",
+    "after-phial.log": "ea7b2c06ce02ea7a60e2cff81e93bc904af678a000b385e54b73b67557801992",
+    "after-results.json": "6a98fbfff4f71b1899db810ba14a0db5c2348f6803191e69e8b6a272f9b7bf3a",
+    "after-scenarios.log": "1d1834b11bfbe6d634e10c663559b2fd9eb23270c769c6038b2a3be1518b524c",
+    "after-torch.log": "071da3cac43555e6f1751bb01b639ea5b5f6c2aa16b528ee89362fdb530e6cf8",
+    "before-alltests.log": "03d0be7b8d04c0415bf482251b5d1dbe5c40a7a2b956743c37c9d2369c6d0d10",
+    "before-build.log": "b9f13ab1230c4b2fc8ea00a5d14d81159f2fc6ba855f09cdef47d718f2aaa15c",
+    "before-phial.log": "ae1fe96e18b82f76930f0481d6685e0132cbdc0c02ec2614da243205c487ab23",
+    "before-results.json": "7d2eff055e08a0c3cf1b41d06c2f4fb214105bc550e25efe7b12bdcbacd1a916",
+    "before-scenarios.log": "af47470263d22a67426f9481d1d15b060ed1456430ea12e4194334cb4fb7aacf",
+    "before-torch.log": "071da3cac43555e6f1751bb01b639ea5b5f6c2aa16b528ee89362fdb530e6cf8",
+    "borg.txt": "80738da248ed74e343925e0348fc75da993d8c03ffff03c7bce1a9090005be47",
+    "configure.log": "b55a0e49da812bc698df0abc78674fd1c4ecc205a3da968b41d5fa6f6de3b319",
+    "make_replay.py": "5d3ca04f16791e04ba67d3c5781da470802cb846be5c389ae76f360f022b48f5",
+    "replay-data.json": "af2967b1fa337bfc723c525b3f09bb1e6b831938eefdf7d9216d70800278015b",
+    "replay.html": "073fe774f8635307d8ebf42acdbc3b8a883a3b2ab7ed28cd40662edb5de7cb93",
+    "reproduce.py": "0bf1666d7fd394dae22dd414fce63d908ea63503950a0ec74bd9d3b406d17d0e",
+    "result.json": "62c5f7ed5292e0042686e096f9e2d7c699e523a0168dfb43946d28f63c135422",
+    "run-cases.py": "79c314a5cacc53cd573718b601ed52de151fa33845673bc665725ec8fdcbad5f",
+    "scenario.c": "664f5fb89cf139a030eb1a734aa892bd5a2d245da478fc102c4ef0921db2b4cd"
+  }
+}
