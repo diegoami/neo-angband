@@ -3,18 +3,58 @@ name: CI
 on:
   push:
     branches: [master]
-    paths-ignore:
-      - "reference/**"
   pull_request:
-    paths-ignore:
-      - "reference/**"
+  workflow_dispatch:
 
 concurrency:
-  group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
+  scope:
+    runs-on: ubuntu-latest
+    outputs:
+      full: ${{ steps.scope.outputs.full }}
+      contracts: ${{ steps.scope.outputs.contracts }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 26
+      - name: Fetch exact push base when available
+        if: github.event_name == 'push'
+        env:
+          DIFF_BASE: ${{ github.event.before }}
+        # Failure is handled conservatively by the classifier, never as docs-only.
+        run: |
+          if [[ "$DIFF_BASE" =~ ^[0-9a-f]{40}$ && ! "$DIFF_BASE" =~ ^0+$ ]]; then
+            git fetch --no-tags --depth=1 origin "$DIFF_BASE" || true
+          fi
+      - id: scope
+        run: node tools/ci-scope.mjs
+
+  doc-contracts:
+    needs: scope
+    if: needs.scope.outputs.full == 'false' && needs.scope.outputs.contracts == 'true'
+    runs-on: ubuntu-latest
+    env:
+      ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 26
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec vitest run --config tools/vitest-doc-contracts.config.mjs
+
   test:
+    needs: scope
+    # A missing/failed classifier cannot suppress the existing full engine gate.
+    if: ${{ !cancelled() && needs.scope.outputs.full != 'false' }}
     runs-on: ubuntu-latest
     env:
       # pnpm-workspace.yaml allowlists Electron's postinstall so a DEVELOPER gets
@@ -97,6 +137,8 @@ jobs:
   # down. It is also the only job that runs the game as a player gets it - the
   # PRODUCTION bundle, in the desktop shell.
   play:
+    needs: scope
+    if: ${{ !cancelled() && needs.scope.outputs.full != 'false' }}
     name: Play the game
     runs-on: ubuntu-latest
     steps:
