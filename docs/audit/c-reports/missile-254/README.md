@@ -43,8 +43,8 @@ From a clone of `diegoami/neo-angband-tracker`, copy these three commands:
 
 ```sh
 git fetch https://github.com/diegoami/neo-angband-tracker.git task/missile-254-evidence
-git show EVSHA:docs/audit/c-reports/missile-254/reproduce.py > /tmp/reproduce-missile-254.py
-python3 /tmp/reproduce-missile-254.py --fixtures-ref EVSHA --full-tests
+git show 8b30eb5845ae542b41f2601d4370c044f13c21ac:docs/audit/c-reports/missile-254/reproduce.py > /tmp/reproduce-missile-254.py
+python3 /tmp/reproduce-missile-254.py --fixtures-ref 8b30eb5845ae542b41f2601d4370c044f13c21ac --full-tests
 ```
 
 The runner builds two normal variants (original, corrected) and two
