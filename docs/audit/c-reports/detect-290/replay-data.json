@@ -1,0 +1,42 @@
+{
+  "stale": {
+    "label": "A reaction queued for the previous, larger cave",
+    "explanation": "The Borg updates on the second panel row of a large cave, queues the self-reaction of a trap detection, and then the level changes to a cave exactly one panel high - the height where the old-offset reset, which compares strictly, lets the old offsets through while the panel count yields a single row pair. The queued reaction still carries the old offsets and marks one row past the resized arrays: the original reads the row pointer one past the outer array and writes through it, and crashes.",
+    "before": {
+      "raw": "native-c/detect-290: starting...\nSETUPSTEP profile\nPANELS hgt=28 wid=66\nSETUP seed=1000 class=Warrior level=1 depth=5 panels=3,8\n  queued_detection_respects_resized_arrays  MODE stale\nQUEUED panels=3,8\n",
+      "passed": false,
+      "asan": false,
+      "geometry": null,
+      "rating": null,
+      "outcome": null
+    },
+    "after": {
+      "raw": "native-c/detect-290: starting...\nSETUPSTEP profile\nPANELS hgt=28 wid=66\nSETUP seed=1000 class=Warrior level=1 depth=5 panels=3,8\n  queued_detection_respects_resized_arrays  MODE stale\nQUEUED panels=3,8\nGEOMETRY new_cave=28x28 panels=1,1 last_row_mark=0\nRATING last_row_mark=0 rows=2\nOUTCOME last_row_mark=0\nPassed\nnative-c/detect-290 finished: 1/1 passed\n",
+      "passed": true,
+      "asan": false,
+      "geometry": "new_cave=28x28 panels=1,1 last_row_mark=0",
+      "rating": "last_row_mark=0 rows=2",
+      "outcome": "last_row_mark=0"
+    }
+  },
+  "fresh": {
+    "label": "Control: a reaction queued for the current cave",
+    "explanation": "The same level change happens first, and the trap-detection reaction is queued afterwards, when the old offsets are the current ones. The next update processes it and marks the panel legitimately in both variants: the correction drops only reactions whose panel lies outside the current arrays.",
+    "before": {
+      "raw": "native-c/detect-290: starting...\nSETUPSTEP profile\nPANELS hgt=28 wid=66\nSETUP seed=1000 class=Warrior level=1 depth=5 panels=3,8\n  queued_detection_respects_resized_arrays  MODE fresh\nQUEUED panels=3,8\nGEOMETRY new_cave=28x28 panels=1,1 last_row_mark=1\nRATING last_row_mark=1 rows=2\nOUTCOME last_row_mark=1\nPassed\nnative-c/detect-290 finished: 1/1 passed\n",
+      "passed": true,
+      "asan": false,
+      "geometry": "new_cave=28x28 panels=1,1 last_row_mark=1",
+      "rating": "last_row_mark=1 rows=2",
+      "outcome": "last_row_mark=1"
+    },
+    "after": {
+      "raw": "native-c/detect-290: starting...\nSETUPSTEP profile\nPANELS hgt=28 wid=66\nSETUP seed=1000 class=Warrior level=1 depth=5 panels=3,8\n  queued_detection_respects_resized_arrays  MODE fresh\nQUEUED panels=3,8\nGEOMETRY new_cave=28x28 panels=1,1 last_row_mark=1\nRATING last_row_mark=1 rows=2\nOUTCOME last_row_mark=1\nPassed\nnative-c/detect-290 finished: 1/1 passed\n",
+      "passed": true,
+      "asan": false,
+      "geometry": "new_cave=28x28 panels=1,1 last_row_mark=1",
+      "rating": "last_row_mark=1 rows=2",
+      "outcome": "last_row_mark=1"
+    }
+  }
+}
