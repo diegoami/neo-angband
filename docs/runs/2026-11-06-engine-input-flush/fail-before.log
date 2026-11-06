@@ -1,0 +1,123 @@
+
+ RUN  v4.1.11 <ENGINE_TASK>
+
+vitest: packages/web/public/tiles is empty; running sync-tiles
+sync-tiles: 21 copied, 0 already current
+ ✓ packages/core/src/game/player-path.test.ts > run_init (player-path.c L1606) > detects a hallway (both sides walled) and clears open-area 13ms
+ ✓ packages/core/src/game/player-path.test.ts > run_init (player-path.c L1606) > treats unknown walls as open (see_wall's known-gate) 3ms
+ ✓ packages/core/src/game/player-path.test.ts > run_init (player-path.c L1606) > looks for an open area when no walls are adjacent 7ms
+ ✓ packages/core/src/game/player-path.test.ts > running down a corridor (run_test / run_step) > follows the hallway and stops before the end wall 1ms
+ ✓ packages/core/src/game/player-path.test.ts > running down a corridor (run_test / run_step) > turns to follow a corner 1ms
+ ✓ packages/core/src/game/player-path.test.ts > running stops on disturbance > stops next to a visible monster in the path 3ms
+ ✓ packages/core/src/game/player-path.test.ts > running stops on disturbance > stops at a non-ignored floor object but runs past ignored ones 1ms
+ ✓ packages/core/src/game/player-path.test.ts > running stops on disturbance > disturb() halts running and flushes the queue 1ms
+ × packages/core/src/game/player-path.test.ts > disturb() flushes the input (player-util.c:1674) > signals input-flush on the bus, once per disturbance, and needs no bus 10ms
+   → expected +0 to be 2 // Object.is equality
+ × packages/core/src/game/player-path.test.ts > disturb() flushes the input (player-util.c:1674) > signals with nothing to cancel, as upstream does 2ms
+   → expected +0 to be 1 // Object.is equality
+ × packages/core/src/game/player-path.test.ts > disturb() flushes the input (player-util.c:1674) > hands a throwing listener to onEventFault instead of its caller 4ms
+   → expected [] to deeply equal [ 'input-flush' ]
+ ✓ packages/core/src/game/player-path.test.ts > pathfind_direction_to (player-path.c L1347) > prefers diagonals within a factor of two, else a cardinal 1ms
+ ✓ packages/core/src/game/player-path.test.ts > find_path (player-path.c L1069) > returns a straight-line path down a corridor 3ms
+ ✓ packages/core/src/game/player-path.test.ts > find_path (player-path.c L1069) > reports zero for the start and -1 for the unreachable 1ms
+ ✓ packages/core/src/game/player-path.test.ts > find_path (player-path.c L1069) > A* trace: two steps east across open floor (C-derived) 3ms
+ ✓ packages/core/src/game/player-path.test.ts > find_path (player-path.c L1069) > A* trace: a diagonal-then-straight route across open floor (C-derived) 3ms
+ ✓ packages/core/src/game/player-path.test.ts > find_path (player-path.c L1069) > A* trace: picks one of two equal-cost detours round a wall (C-derived) 1ms
+ ✓ packages/core/src/game/player-path.test.ts > find_path (player-path.c L1069) > A* trace: the Chebyshev heuristic decides the route (C-derived) 3ms
+ ✓ packages/core/src/game/player-path.test.ts > find_path (player-path.c L1069) > A* trace: a grid already reached at equal cost is not re-expanded (C-derived) 3ms
+ ✓ packages/core/src/game/player-path.test.ts > find_path (player-path.c L1069) > returns a minimum-cost, contiguous, passable path over open floor 16ms
+ ✓ packages/core/src/game/player-path.test.ts > find_path (player-path.c L1069) > crosses patch boundaries (initialize_patch, 16x16 blocks) 3ms
+ ✓ packages/core/src/game/player-path.test.ts > find_path (player-path.c L1069) > falls back through a known visible trap (hit_trap retry) 6ms
+ ✓ packages/core/src/game/player-path.test.ts > find_path (player-path.c L1069) > falls back to grids the player does not remember (only_known retry) 1ms
+ ✓ packages/core/src/game/player-path.test.ts > find_path (player-path.c L1069) > never routes along the cave boundary, even when it is unremembered 1ms
+ ✓ packages/core/src/game/player-path.test.ts > do_cmd_pathfind (travel) > walks the player to a clicked destination 3ms
+ ✓ packages/core/src/game/player-path.test.ts > do_cmd_pathfind (travel) > does not start while confused 2ms
+ ✓ packages/core/src/game/player-path.test.ts > do_cmd_pathfind (travel) > auto-opens a closed door in the path and continues 3ms
+ ✓ packages/core/src/game/player-path.test.ts > do_cmd_explore (cmd-cave.c:1500) > heads for the nearest remembered grid on the unknown frontier 7ms
+ ✓ packages/core/src/game/player-path.test.ts > do_cmd_explore (cmd-cave.c:1500) > does nothing at all when autoexplore_commands is off (L1502-1505) 2ms
+ ✓ packages/core/src/game/player-path.test.ts > do_cmd_explore (cmd-cave.c:1500) > refuses while confused, and reports it (L1508-1511) 2ms
+ ✓ packages/core/src/game/player-path.test.ts > do_cmd_explore (cmd-cave.c:1500) > refuses with a monster in view (L1524-1527) 1ms
+ ✓ packages/core/src/game/player-path.test.ts > do_cmd_explore (cmd-cave.c:1500) > reports when there is nowhere left to explore (L1542) 5ms
+(node:1579141) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ × packages/web/src/input-flush-event.test.ts > a mod's input-flush subscription > hears a rest's completion disturbance, and a mod without the grant hears none 289ms
+   → expected 0 to be greater than or equal to 1
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  packages/web/src/input-flush-event.test.ts > a mod's input-flush subscription > hears a rest's completion disturbance, and a mod without the grant hears none
+AssertionError: expected 0 to be greater than or equal to 1
+ ❯ packages/web/src/input-flush-event.test.ts:86:26
+     84|     runGameLoop(game.state, game.registry);
+     85|
+     86|     expect(heard.length).toBeGreaterThanOrEqual(1);
+       |                          ^
+     87|     expect(game.state.resting).toBeUndefined();
+     88|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  packages/core/src/game/player-path.test.ts > disturb() flushes the input (player-util.c:1674) > signals input-flush on the bus, once per disturbance, and needs no bus
+AssertionError: expected +0 to be 2 // Object.is equality
+
+- Expected
++ Received
+
+- 2
++ 0
+
+ ❯ packages/core/src/game/player-path.test.ts:189:19
+    187|     disturb(state);
+    188|     disturb(state);
+    189|     expect(heard).toBe(2);
+       |                   ^
+    190|   });
+    191|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  packages/core/src/game/player-path.test.ts > disturb() flushes the input (player-util.c:1674) > signals with nothing to cancel, as upstream does
+AssertionError: expected +0 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ packages/core/src/game/player-path.test.ts:200:19
+    198|      * cancel block upstream, so a plain disturbance still reports. */
+    199|     disturb(state);
+    200|     expect(heard).toBe(1);
+       |                   ^
+    201|   });
+    202|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  packages/core/src/game/player-path.test.ts > disturb() flushes the input (player-util.c:1674) > hands a throwing listener to onEventFault instead of its caller
+AssertionError: expected [] to deeply equal [ 'input-flush' ]
+
+- Expected
++ Received
+
+- [
+-   "input-flush",
+- ]
++ []
+
+ ❯ packages/core/src/game/player-path.test.ts:214:20
+    212|      * throwing listener must not cut any of those flows short. */
+    213|     expect(() => disturb(state)).not.toThrow();
+    214|     expect(faults).toEqual(["input-flush"]);
+       |                    ^
+    215|   });
+    216| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  4 failed | 29 passed (33)
+   Start at  02:46:46
+   Duration  13.28s (transform 14.32s, setup 0ms, import 17.55s, tests 417ms, environment 0ms)

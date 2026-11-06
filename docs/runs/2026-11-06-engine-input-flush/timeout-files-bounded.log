@@ -1,0 +1,10 @@
+
+ RUN  v4.1.11 <ENGINE_TASK>
+
+(node:1605724) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+ Test Files  5 passed (5)
+      Tests  306 passed (306)
+   Start at  02:57:18
+   Duration  58.40s (transform 15.14s, setup 0ms, import 20.89s, tests 84.43s, environment 1ms)
