@@ -1,0 +1,16 @@
+{
+  "brand": {
+    "exit": 0,
+    "passed": true,
+    "geometry": "ammo_power=3 arrows=5",
+    "rating": "need_brand=10",
+    "outcome": "need_brand=10"
+  },
+  "control": {
+    "exit": 0,
+    "passed": true,
+    "geometry": "ammo_power=3 arrows=2",
+    "rating": "need_brand=0",
+    "outcome": "need_brand=0"
+  }
+}
