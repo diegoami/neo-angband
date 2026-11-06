@@ -1039,7 +1039,9 @@ int borg_calc_blows(borg_item *item)
     int div;
     int blow_energy;
 
-    int weight     = item->weight * item->iqty;
+    /* The engine weighs one weapon (object_weight_one): blows per
+     * weapon must not depend on how many weapons are stacked. */
+    int weight     = item->weight;
     int min_weight = player->class->min_weight;
 
     /* Enforce a minimum "weight" (tenth pounds) */
