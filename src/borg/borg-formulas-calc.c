@@ -706,6 +706,13 @@ void calculations_free(void)
         calc_free(calculations.items[i]);
         calculations.items[i] = NULL;
     }
+    /* Release the backing pointer array as well: borg_array_add()
+     * allocates a fresh array whenever the count is zero, so a retained
+     * pointer here would be overwritten - and leaked - by the next
+     * parse after a reload. */
+    mem_free(calculations.items);
+    calculations.items = NULL;
+    calculations.max   = 0;
     calculations.count = 0;
 }
 
