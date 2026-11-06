@@ -54,12 +54,13 @@ upstream C Borg. That commit is:
 **This commit is upstream's current `master` head.** The commit's subject is
 about `Term_clear()`/`Term_erase()` and has nothing to do with the Borg; it
 simply happens to be the newest upstream commit, and it carries `src/borg/`
-along unchanged.
+along unchanged. It was pushed on 2026-10-27, so "current" means "the tip as
+of today", not "actively developed".
 
-Three ways to re-establish the link, all of which must agree:
+One check is load-bearing and the others restate it:
 
 ```sh
-# 1. what upstream ships right now
+# 1. what upstream ships right now -- THIS is the check that matters
 gh api repos/angband/angband/commits/master --jq '.sha'
 #   -> e473720ed88a0f0c7ca66815cef3000eb4a38bc3
 
@@ -71,10 +72,21 @@ python3 -c "import json;print(json.load(open('session.json'))['baselines']['c'])
 python3 -c "import json;print(json.load(open('docs/c-bugs/catalogue.json'))['sources']['c']['commit'])"
 #   -> e473720ed88a0f0c7ca66815cef3000eb4a38bc3
 
-# and the difference between upstream now and the pin
+# 4. no drift between the pin and upstream's tip
 gh api "repos/angband/angband/compare/e473720ed88a0f0c7ca66815cef3000eb4a38bc3...master" \
   --jq '"status=\(.status) ahead=\(.ahead_by) behind=\(.behind_by)"'
 #   -> status=identical ahead=0 behind=0
+```
+
+Note that check 4 compares a commit against itself and so only says "no
+drift"; check 1 is the one that establishes "upstream's tip". The
+repository's own watcher does check 1 and compares it to the catalogue:
+
+```
+$ node tools/c-upstream-watch.mjs
+Official C master: e473720ed88a0f0c7ca66815cef3000eb4a38bc3
+Catalogue affected/reference pin: e473720ed88a0f0c7ca66815cef3000eb4a38bc3
+Official source still equals the recorded reference.
 ```
 
 **Rules that follow from the link being direct.**
@@ -83,9 +95,9 @@ gh api "repos/angband/angband/compare/e473720ed88a0f0c7ca66815cef3000eb4a38bc3..
    `master`**, not in a fork's copy of an old release. It can be filed
    upstream as-is.
 2. When upstream `master` moves, the pin moves with it. The check to repeat
-   is the comparison above, plus `node tools/c-upstream-watch.mjs`, which
-   reports the affected C files and which catalogue findings reference them.
-   A changed `src/borg/` path is a **review signal, not proof of a fix**
+   is check 1 above, plus `node tools/c-upstream-watch.mjs`, which reports
+   the affected C files and which catalogue findings reference them. A
+   changed `src/borg/` path is a **review signal, not proof of a fix**
    (the watcher's own words).
 3. The local `c-borg-reference` branch and the native C worktree
    (`.worktrees/angband-c`) carry this same commit as their C source base;
@@ -94,6 +106,10 @@ gh api "repos/angband/angband/compare/e473720ed88a0f0c7ca66815cef3000eb4a38bc3..
 4. Every finding linked from §11 must name the commit it was read at. A
    finding that survives a `master` move is re-checked at the new head; a
    finding that does not is closed as fixed *by upstream*, not by us.
+5. The two open upstream Borg PRs (#6808, #6809) are **ours**, filed from
+   this fork. Upstream `master` itself has no Borg commit newer than the
+   pin, so there is nothing upstream has already changed underneath these
+   findings.
 
 ---
 
@@ -862,12 +878,27 @@ mode:
 | 120x40 | any | 4028 .. 4641 | **overflow** |
 
 So the write past the array is reachable in an ordinary 80x24 terminal with
-the sidebar off, and in any larger terminal. The overflow corrupts adjacent
-globals, and the subsequent read loop enqueues the corrupted `(x, y)` pairs
-into the flow, so the Borg then paths to garbage grids.
+the sidebar off, and in any larger terminal.
 
-**Known defect.** A rebuild must size this array from the *terminal* or
-bound it explicitly.
+**What the overflow actually corrupts.** The two arrays are laid out
+**contiguously** in `.bss` — from the built binary's symbol table,
+`borg_glow_y` at `0x27fbc0..0x2801bf` and `borg_glow_x` at `0x2801c0..`
+— and the loop writes them **interleaved**, one `y` and one `x` per
+glowing grid. So:
+
+* `borg_glow_y[n]` for `n >= 1536` lands in `borg_glow_x[n - 1536]`
+* `borg_glow_x[n]` for `n >= 1536` lands in `borg_light_y[n - 1536]`
+
+The tail of each array ends up holding the *other* array's coordinates. The
+read-back loop then reads them back as `(y, x)` pairs, so from index 1536
+onward it enqueues **swapped** coordinates — 278 of the 1817 enqueued grids
+hold the wrong coordinates, and **212 of those are off the map panel
+entirely** (`y >= 23` or `x >= 79` for an 80x24 panel with the sidebar off).
+Those are fed into the flow's cost field and spread, so the Borg would be
+pathing towards coordinates that name no grid.
+
+**Known defect** (issue #311). A rebuild must size this array from the
+*terminal* or bound it explicitly.
 
 ### 11.9 Double counting
 

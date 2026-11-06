@@ -25,10 +25,33 @@ done
 | --- | --- | --- |
 | `recall_branch_test.c` | #310 | the branch whose comment says "Do reset Depth" queues `n` |
 | `glow_bound_test.c` | #311 | the map panel is larger than the 1536-entry glow arrays |
+| `glow_overflow_probe.c` | #311 | the overflow swaps the two arrays' coordinates and yields 212 off-map flow targets |
 | `surrounded_test.c` | #312 | the trapped-wall double count flips the surrounded verdict |
 | `blows_test.c` | #313 | the stack weight changes the blows (2 where the engine gives 3) |
 | `recharge_test.c` | #316 | an unwearable pack wand is selected and the routine gives up |
 | `teststuff_test.c`, `teststuff_test3.c` | #315 | the identify-priority score overwrites the artifact bonus |
+
+### `glow_overflow_probe.c` and the layout it depends on
+
+This one depends on the **link order** of the declarations, because that is
+what makes the two arrays contiguous in `.bss`:
+
+```c
+int16_t borg_glow_n = 0;
+uint8_t borg_glow_x[AUTO_LIGHT_MAX];
+uint8_t borg_glow_y[AUTO_LIGHT_MAX];
+```
+
+The probe declares them in the same order as
+`src/borg/borg-cave-light.c:42-45`, so the compiler lays them out the same
+way, and it reproduces the interleaved write of `borg_flow_light()` and its
+read-back loop. The layout can be confirmed against the real binary:
+
+```sh
+nm -S game/angband | grep -E ' borg_glow| borg_light'
+```
+
+which shows `borg_glow_y` ending exactly where `borg_glow_x` begins.
 
 ## How the transcriptions were checked
 
