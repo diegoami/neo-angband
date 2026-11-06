@@ -1,0 +1,34 @@
+{
+  "blind": {
+    "label": "The fear spell that promised confusion",
+    "explanation": "A level fifty necromancer stands surrounded by four young red dragons and considers its blind-creature maneuver, which casts Frighten. The original scored the cast with the confusion attack type: the borg danger model suppresses a confused dragon massively (the probe records a confusion delta of four hundred eight against a fear delta of zero), so the maneuver was valued at nine hundred fifty-five - a phantom the spell cannot deliver, and high enough to win the chooser. The correction scores the cast as the fear effect it is: the maneuver values minus five, exactly what the dedicated Frighten maneuver values.",
+    "before": {
+      "raw": "native-c/blind-261: starting...\nSETUPSTEP profile\nFEARPROBE p1=488 p2=488 fear_delta=0 conf_delta=408\nSETUP seed=1000 class=Necromancer level=50 depth=30 sp=81/81\n  los_dispel_reaches_its_blast  MODE blind\nGEOMETRY player=(5,20) jelly=(10,20) temp_n=4 avoidance=20\nRATING blind=955 frighten=-5\nOUTCOME blind=955 frighten=-5\nFailed\n    native-c/blind-261:222: requirement 'v_blind' == 'v_frighten' failed\n      v_blind:              955\n      v_frighten:               -5\nnative-c/blind-261 finished: 0/1 passed\n",
+      "passed": false,
+      "rating": "blind=955 frighten=-5",
+      "outcome": "blind=955 frighten=-5"
+    },
+    "after": {
+      "raw": "native-c/blind-261: starting...\nSETUPSTEP profile\nFEARPROBE p1=488 p2=488 fear_delta=0 conf_delta=408\nSETUP seed=1000 class=Necromancer level=50 depth=30 sp=81/81\n  los_dispel_reaches_its_blast  MODE blind\nGEOMETRY player=(5,20) jelly=(10,20) temp_n=4 avoidance=20\nRATING blind=-5 frighten=-5\nOUTCOME blind=-5 frighten=-5\nPassed\nnative-c/blind-261 finished: 1/1 passed\n",
+      "passed": true,
+      "rating": "blind=-5 frighten=-5",
+      "outcome": "blind=-5 frighten=-5"
+    }
+  },
+  "control": {
+    "label": "Control: the dedicated Frighten maneuver",
+    "explanation": "The dedicated Frighten maneuver, already scored as fear, values minus five before and after the correction with byte-identical logs: the fix changes only the mislabeled maneuver.",
+    "before": {
+      "raw": "native-c/blind-261: starting...\nSETUPSTEP profile\nFEARPROBE p1=488 p2=488 fear_delta=0 conf_delta=408\nSETUP seed=1000 class=Necromancer level=50 depth=30 sp=81/81\n  los_dispel_reaches_its_blast  MODE control\nGEOMETRY player=(5,20) jelly=(10,20) temp_n=4 avoidance=20\nRATING frighten=-5\nOUTCOME frighten=-5\nPassed\nnative-c/blind-261 finished: 1/1 passed\n",
+      "passed": true,
+      "rating": "frighten=-5",
+      "outcome": "frighten=-5"
+    },
+    "after": {
+      "raw": "native-c/blind-261: starting...\nSETUPSTEP profile\nFEARPROBE p1=488 p2=488 fear_delta=0 conf_delta=408\nSETUP seed=1000 class=Necromancer level=50 depth=30 sp=81/81\n  los_dispel_reaches_its_blast  MODE control\nGEOMETRY player=(5,20) jelly=(10,20) temp_n=4 avoidance=20\nRATING frighten=-5\nOUTCOME frighten=-5\nPassed\nnative-c/blind-261 finished: 1/1 passed\n",
+      "passed": true,
+      "rating": "frighten=-5",
+      "outcome": "frighten=-5"
+    }
+  }
+}

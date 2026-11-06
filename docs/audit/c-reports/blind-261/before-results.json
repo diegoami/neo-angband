@@ -1,0 +1,18 @@
+{
+  "blind": {
+    "exit": 0,
+    "passed": false,
+    "geometry": "player=(5,20) jelly=(10,20) temp_n=4 avoidance=20",
+    "fearprobe": "p1=488 p2=488 fear_delta=0 conf_delta=408",
+    "rating": "blind=955 frighten=-5",
+    "outcome": "blind=955 frighten=-5"
+  },
+  "control": {
+    "exit": 0,
+    "passed": true,
+    "geometry": "player=(5,20) jelly=(10,20) temp_n=4 avoidance=20",
+    "fearprobe": "p1=488 p2=488 fear_delta=0 conf_delta=408",
+    "rating": "frighten=-5",
+    "outcome": "frighten=-5"
+  }
+}

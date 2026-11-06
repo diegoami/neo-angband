@@ -1,0 +1,88 @@
+{
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "fix": "a49b7a6c15f6353cd427af28903355fe258af4d5",
+  "fixtures_ref": "9cc297fe75ad6c2dd3f9e52a06896832852b59aa",
+  "cases": {
+    "before": {
+      "blind": {
+        "exit": 0,
+        "passed": false,
+        "geometry": "player=(5,20) jelly=(10,20) temp_n=4 avoidance=20",
+        "fearprobe": "p1=488 p2=488 fear_delta=0 conf_delta=408",
+        "rating": "blind=955 frighten=-5",
+        "outcome": "blind=955 frighten=-5"
+      },
+      "control": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "player=(5,20) jelly=(10,20) temp_n=4 avoidance=20",
+        "fearprobe": "p1=488 p2=488 fear_delta=0 conf_delta=408",
+        "rating": "frighten=-5",
+        "outcome": "frighten=-5"
+      }
+    },
+    "after": {
+      "blind": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "player=(5,20) jelly=(10,20) temp_n=4 avoidance=20",
+        "fearprobe": "p1=488 p2=488 fear_delta=0 conf_delta=408",
+        "rating": "blind=-5 frighten=-5",
+        "outcome": "blind=-5 frighten=-5"
+      },
+      "control": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "player=(5,20) jelly=(10,20) temp_n=4 avoidance=20",
+        "fearprobe": "p1=488 p2=488 fear_delta=0 conf_delta=408",
+        "rating": "frighten=-5",
+        "outcome": "frighten=-5"
+      }
+    }
+  },
+  "identical_controls": [
+    "control"
+  ],
+  "full_tests": {
+    "before": {
+      "units": "965/965",
+      "frontends": "5/5"
+    },
+    "after": {
+      "units": "965/965",
+      "frontends": "5/5"
+    }
+  },
+  "fixed_source_sha256": "fc50dda2cc1fe42703fd4b6904df3e4145cb1556a4fdc10ca8f52ec292893d6d",
+  "compiler": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+  "cmake": "cmake version 4.2.3",
+  "browser": {
+    "engine": "Google Chrome for Testing 156.0.8078.4 (headless dump-dom)",
+    "verification": "17 checks against the rendered DOM: 2 situations x 2 variants; blind 955 before (the phantom confusion valuation) and -5 after (matching the dedicated maneuver); dedicated control -5/-5 byte-identical raw logs; no n/a or undefined fields; zero console errors"
+  },
+  "maintenance_base": "f186aa1fce2e590eb9bbcb91dc369f3f8b6af688",
+  "sha256": {
+    "README.md": "ee88c548d76b59835da43458f20d2796b4d0cadf721c6c0ee5c8755c508136ba",
+    "after-alltests.log": "7b339486d9347d5b45ca3b907caa532388594ad5cf56dd99bc0dad28d5aff6a5",
+    "after-blind.log": "08d1938678549023f38c42eb638d34141c68d8824f34f59ccbc58cbaadececda",
+    "after-build.log": "84b5e75ee1da420d14c1a62d96a4d9f6870abe83c6722a49d0c740a6d5712e1d",
+    "after-control.log": "4a3ffe0bcfad25d2df134d6102a0aaaa6ba750ff218a95a1f11ef3d12a03c1e7",
+    "after-results.json": "37dc565ff30a8821cefaf74231332861a2049a8aa25a5a2b75c7cfb3ea5885ea",
+    "after-scenarios.log": "8997362cb86855c863928b061e3d2501288c831a25433b0c25107dae05b1dbd1",
+    "before-alltests.log": "15867807a44d184b66c25bbcf9d319d7c55628714f76cf9c55fcf39f593d6db9",
+    "before-blind.log": "062e8581d1d80349799dd01603e0fc071c3c2ac1957b8ce4f481d027f539e342",
+    "before-build.log": "a84db2eb44a261389ac7ab7cf7bbb9db4cd995e081c904f90f29fc70e1fdf7da",
+    "before-control.log": "4a3ffe0bcfad25d2df134d6102a0aaaa6ba750ff218a95a1f11ef3d12a03c1e7",
+    "before-results.json": "8eb761fa2bb846c71a5efd24553d113412b03781ec74bfff0c37e9fe4d53441e",
+    "before-scenarios.log": "1ac26b8cbcc48884c422ccb4ace9b810ca10bf066296b5fa39672f15a5bf51d6",
+    "borg.txt": "80738da248ed74e343925e0348fc75da993d8c03ffff03c7bce1a9090005be47",
+    "configure.log": "c0b04c787dcf7dc7bf1b81d559eabb7dcdf1bd72579d59183f8c66acf4ed277b",
+    "make_replay.py": "b3ec333e2376ed690bf96a5331074abe7e5febc346c5ebe739b0d4f14414f1cd",
+    "replay-data.json": "90ae0f243aee3cf0322c976efeef1fdad5264b47a941d86979941026f09a7bea",
+    "replay.html": "5409e7bbb584e555b73fec3529c16f5acd3f27e9dcd31f30498453afcbc94ba1",
+    "reproduce.py": "0c8a2996f2ae38bf8e76b041fdc6529e4e4c488ad833fe0bb7f3341987e81366",
+    "result.json": "c9e961a13eec1be84a7e669d60148216b5e2bac9f7128ce1a6e5a89b672d905b",
+    "run-cases.py": "85f751fe821d60c91a14ffb7328bc01693c94246a242367e3fa091184f982686",
+    "scenario.c": "e38027481e421d7ede5afed2d0dca9c19a16b261355869c1fb374d41575da9ca"
+  }
+}
