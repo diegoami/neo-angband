@@ -1,0 +1,14 @@
+native-c/CBUG-0004: starting...
+SETUP seed=1000 class=Rogue level=20 depth=28 hp=130/130 sp=121/121 ammo=0 phase=1 fail=5
+THREAT name=snow troll direction=0 kill_index=1 power=142 awake=1 ranged=0 friends=1
+RESIST native_acid=50 native_cold=0 borg_acid=1 borg_cold=0 age=100
+SPEED native=110 borg=110 monster=111 individual_danger=116 fear=0/0
+  escape_uses_actual_cold_protection  MODE acid-only
+DANGER current=116 escape_threshold=104
+FRAME {"stage":"start","hp":130,"max_hp":130,"mana":121,"max_mana":121,"scrolls":1,"x":20,"y":20,"enemy_x":20,"enemy_y":21,"distance":1}
+DECISION escape=1 keys=3 sequence=mab
+FRAME {"stage":"decision","hp":130,"max_hp":130,"mana":119,"max_mana":121,"scrolls":1,"x":10,"y":21,"enemy_x":20,"enemy_y":21,"distance":10}
+FRAME {"stage":"attack","hp":130,"max_hp":130,"mana":119,"max_mana":121,"scrolls":1,"x":10,"y":21,"enemy_x":20,"enemy_y":21,"distance":10}
+OUTCOME escape=1 moved=1 distance=10 melee=0 hp_before=130 hp_after=130 hp_lost=0 mana_spent=2 scrolls_spent=0
+Passed
+native-c/CBUG-0004 finished: 1/1 passed
