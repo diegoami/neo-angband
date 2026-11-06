@@ -1524,8 +1524,6 @@ static void borg_notice_equipment(void)
             if ((item->modifiers[OBJ_MOD_LIGHT] > 0)
                 && (borg.trait[BI_CLASS] == CLASS_NECROMANCER))
                 borg.trait[BI_LIGHT]--;
-
-            borg.trait[BI_LIGHT] += item->modifiers[OBJ_MOD_LIGHT];
         }
 
         /* Boost mod moves */
