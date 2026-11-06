@@ -33,8 +33,8 @@ From a clone of `diegoami/neo-angband-tracker`, copy these three commands:
 
 ```sh
 git fetch https://github.com/diegoami/neo-angband-tracker.git task/calfree-323-evidence
-git show PINSHA:docs/audit/c-reports/calfree-323/reproduce.py > /tmp/reproduce-calfree-323.py
-python3 /tmp/reproduce-calfree-323.py --fixtures-ref PINSHA --full-tests
+git show 9c13d0adccf11567bfa588873572c452bbbb004f:docs/audit/c-reports/calfree-323/reproduce.py > /tmp/reproduce-calfree-323.py
+python3 /tmp/reproduce-calfree-323.py --fixtures-ref 9c13d0adccf11567bfa588873572c452bbbb004f --full-tests
 ```
 
 The runner builds original and corrected variants from pristine C
