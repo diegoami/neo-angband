@@ -1,0 +1,382 @@
+{
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "fix": "cedf25eb790f2ff7c7c161cd1612b18ed99fb35e",
+  "fixtures_ref": "cce1d5d92079e78e939126d3cf35e24121442734",
+  "cases": {
+    "before": {
+      "long-gap": {
+        "exit": 0,
+        "completed": true,
+        "passed": false,
+        "used": 0,
+        "hp_before": 321,
+        "hp_after": 321,
+        "healed": 0,
+        "potions_spent": 0,
+        "confused": 10
+      },
+      "recent": {
+        "exit": 0,
+        "completed": true,
+        "passed": false,
+        "used": 1,
+        "hp_before": 321,
+        "hp_after": 381,
+        "healed": 60,
+        "potions_spent": 1,
+        "confused": 0
+      },
+      "boundary-four": {
+        "exit": 0,
+        "completed": true,
+        "passed": false,
+        "used": 1,
+        "hp_before": 321,
+        "hp_after": 381,
+        "healed": 60,
+        "potions_spent": 1,
+        "confused": 0
+      },
+      "same-turn": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "used": 1,
+        "hp_before": 321,
+        "hp_after": 381,
+        "healed": 60,
+        "potions_spent": 1,
+        "confused": 0
+      },
+      "bypass-control": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "used": 1,
+        "hp_before": 321,
+        "hp_after": 381,
+        "healed": 60,
+        "potions_spent": 1,
+        "confused": 0
+      },
+      "reserve-control": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "used": 0,
+        "hp_before": 321,
+        "hp_after": 321,
+        "healed": 0,
+        "potions_spent": 0,
+        "confused": 10
+      },
+      "empty-control": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "used": 0,
+        "hp_before": 321,
+        "hp_after": 321,
+        "healed": 0,
+        "potions_spent": 0,
+        "confused": 10
+      },
+      "first-use": {
+        "exit": 0,
+        "completed": true,
+        "passed": false,
+        "used": 0,
+        "hp_before": 301,
+        "hp_after": 301,
+        "healed": 0,
+        "potions_spent": 0,
+        "confused": 10
+      },
+      "first-turn": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "used": 1,
+        "hp_before": 301,
+        "hp_after": 361,
+        "healed": 60,
+        "potions_spent": 1,
+        "confused": 0
+      }
+    },
+    "simple": {
+      "long-gap": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "used": 1,
+        "hp_before": 321,
+        "hp_after": 381,
+        "healed": 60,
+        "potions_spent": 1,
+        "confused": 0
+      },
+      "recent": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "used": 0,
+        "hp_before": 321,
+        "hp_after": 321,
+        "healed": 0,
+        "potions_spent": 0,
+        "confused": 10
+      },
+      "boundary-four": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "used": 0,
+        "hp_before": 321,
+        "hp_after": 321,
+        "healed": 0,
+        "potions_spent": 0,
+        "confused": 10
+      },
+      "same-turn": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "used": 1,
+        "hp_before": 321,
+        "hp_after": 381,
+        "healed": 60,
+        "potions_spent": 1,
+        "confused": 0
+      },
+      "bypass-control": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "used": 1,
+        "hp_before": 321,
+        "hp_after": 381,
+        "healed": 60,
+        "potions_spent": 1,
+        "confused": 0
+      },
+      "reserve-control": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "used": 0,
+        "hp_before": 321,
+        "hp_after": 321,
+        "healed": 0,
+        "potions_spent": 0,
+        "confused": 10
+      },
+      "empty-control": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "used": 0,
+        "hp_before": 321,
+        "hp_after": 321,
+        "healed": 0,
+        "potions_spent": 0,
+        "confused": 10
+      },
+      "first-use": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "used": 1,
+        "hp_before": 301,
+        "hp_after": 361,
+        "healed": 60,
+        "potions_spent": 1,
+        "confused": 0
+      },
+      "first-turn": {
+        "exit": 0,
+        "completed": true,
+        "passed": false,
+        "used": 0,
+        "hp_before": 301,
+        "hp_after": 301,
+        "healed": 0,
+        "potions_spent": 0,
+        "confused": 10
+      }
+    },
+    "after": {
+      "long-gap": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "used": 1,
+        "hp_before": 321,
+        "hp_after": 381,
+        "healed": 60,
+        "potions_spent": 1,
+        "confused": 0
+      },
+      "recent": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "used": 0,
+        "hp_before": 321,
+        "hp_after": 321,
+        "healed": 0,
+        "potions_spent": 0,
+        "confused": 10
+      },
+      "boundary-four": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "used": 0,
+        "hp_before": 321,
+        "hp_after": 321,
+        "healed": 0,
+        "potions_spent": 0,
+        "confused": 10
+      },
+      "same-turn": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "used": 1,
+        "hp_before": 321,
+        "hp_after": 381,
+        "healed": 60,
+        "potions_spent": 1,
+        "confused": 0
+      },
+      "bypass-control": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "used": 1,
+        "hp_before": 321,
+        "hp_after": 381,
+        "healed": 60,
+        "potions_spent": 1,
+        "confused": 0
+      },
+      "reserve-control": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "used": 0,
+        "hp_before": 321,
+        "hp_after": 321,
+        "healed": 0,
+        "potions_spent": 0,
+        "confused": 10
+      },
+      "empty-control": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "used": 0,
+        "hp_before": 321,
+        "hp_after": 321,
+        "healed": 0,
+        "potions_spent": 0,
+        "confused": 10
+      },
+      "first-use": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "used": 1,
+        "hp_before": 301,
+        "hp_after": 361,
+        "healed": 60,
+        "potions_spent": 1,
+        "confused": 0
+      },
+      "first-turn": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "used": 1,
+        "hp_before": 301,
+        "hp_after": 361,
+        "healed": 60,
+        "potions_spent": 1,
+        "confused": 0
+      }
+    }
+  },
+  "identical_controls": [
+    "same-turn",
+    "bypass-control",
+    "reserve-control",
+    "empty-control",
+    "first-turn"
+  ],
+  "full_tests": {
+    "before": {
+      "units": "965/965",
+      "frontends": "5/5"
+    },
+    "after": {
+      "units": "965/965",
+      "frontends": "5/5"
+    }
+  },
+  "fixed_source_sha256": "5d9abb628d37f4c09c0d030fddfa165a104aeb9862d1a736bbf7573bac4ec5dc",
+  "compiler": "Debian GCC14.2.0",
+  "cmake": "4.4.4",
+  "maintenance_base": "f186aa1fce2e590eb9bbcb91dc369f3f8b6af688",
+  "browser_verification": "Chromium HTML-content rendering: nine situations, two comparison variants, two step buttons, 72 native HP/potion/confusion/action panel checks, recent-drink tradeoff and first-use regression passed; no JavaScript errors. Managed file:// navigation is blocked; no browser policy changed.",
+  "sha256": {
+    "README.md": "f418b615c5e21d2a5dea8bf04294eba413fcc13989e20b0b3e8e343575a0fabd",
+    "after-alltests.log": "53fd55ebf5ff7b8c3320e3e3ab817ee18bc1fd2a9cc1962ae2a07302cd20a612",
+    "after-boundary-four.log": "414dc01ea056a37508112582ae893472f4bfafd42da1de23bcba9775588810dd",
+    "after-build.log": "4ba25775f545dcffbf60cc1374f14e9dfc8624edf7847330e163029b5fab904b",
+    "after-bypass-control.log": "62b9a0467c3fbeb4d6c7edda63110d6972cfef488d6e9d2dbf1795e718f525f9",
+    "after-empty-control.log": "841323e128f3042d08c589e95927776ece529823cb5d1e2e4f75b40bae8a2431",
+    "after-first-turn.log": "19f02573b9cd637ed356c7d2547b0ff082cd915d066902c086b8735506ee88bc",
+    "after-first-use.log": "4e89bf61f958e7b49dc6bb24eb3ca6a58ae2ec7b9e1a7d5de7d06b3aff995e6c",
+    "after-long-gap.log": "59bc50a2350765b885082cb175d64e8c3e86bf7319ebb7bcbba6cf9899975d59",
+    "after-recent.log": "7827ebb14b02190779fbb372dfdbaaeb08913b7e5ecfac6208068fe8b4ec39bc",
+    "after-reserve-control.log": "dace7f5c05a8f80410986c7a940b4681c3bd9b9333cdb06e51b66debe6a924e5",
+    "after-results.json": "754c961fdbf6a863bc2ad204d758bb760c0f1d1c40bfa45b9c1a92ae53fdedca",
+    "after-same-turn.log": "3618026988c5a3611ca51ff85a60575e2d9fc61b31a92ececfe615b2c845189d",
+    "after-scenarios.log": "8c241a827646852a39b96187185190ac3da22ed84dc0c1aeb1827bef4474b803",
+    "before-alltests.log": "fe66ed318c150814267407934b58cb4e1e53d4d742fa5727606cdf370709ac76",
+    "before-boundary-four.log": "36b50f8dfaf6fee973cae8744111e05d4a274d8c2a7b9f249615642a0049507d",
+    "before-build.log": "7ac85db88b9d3927ca35f7a70c2a94283d049360a37037babd789ab22ea37b3a",
+    "before-bypass-control.log": "62b9a0467c3fbeb4d6c7edda63110d6972cfef488d6e9d2dbf1795e718f525f9",
+    "before-empty-control.log": "841323e128f3042d08c589e95927776ece529823cb5d1e2e4f75b40bae8a2431",
+    "before-first-turn.log": "19f02573b9cd637ed356c7d2547b0ff082cd915d066902c086b8735506ee88bc",
+    "before-first-use.log": "bfa2c65e453847c1402ed668708c441b9567baad5ccf1973a6a19ee05164d1d6",
+    "before-long-gap.log": "9e0d83f664941a2c555b0e1d9891ef972b9c362d68a315fe7786225a0e8c8618",
+    "before-recent.log": "42a102a062c27b7597f20c2e99da064dd302edd4537e967621c5c65b2e4445ca",
+    "before-reserve-control.log": "dace7f5c05a8f80410986c7a940b4681c3bd9b9333cdb06e51b66debe6a924e5",
+    "before-results.json": "ba0fe09a71c8579c399b52664b46378c44b2a74921b5598a09a9dd4b6ea20782",
+    "before-same-turn.log": "3618026988c5a3611ca51ff85a60575e2d9fc61b31a92ececfe615b2c845189d",
+    "before-scenarios.log": "0ef64a19c37f846273b80f3ae4e7ccc2cca513914a83a4a31d1de6dab76f5605",
+    "borg.txt": "80738da248ed74e343925e0348fc75da993d8c03ffff03c7bce1a9090005be47",
+    "configure.log": "586058d280d12885eb768e204206982c744a5e12a461d0679873191c9b71b69a",
+    "make_replay.py": "60e10c40e63b703e057dae453f3601de8a2b8eea0b68e2b0b0b0579171a5a892",
+    "replay-data.json": "4b5781b8aed7cef7f3563350946db04aac94f5897760d7d8444eee051cd1aff1",
+    "replay.html": "8b61b3b0a01f70814f509985c49d38543d10d7f7613ab622b1f3ba346ac0bff3",
+    "reproduce.py": "92247196ddf1363cda1f16732e2fe5413aca7ea8e57ccdb51389c3e668d1d236",
+    "result.json": "f3e584c5df37d208e0c8c1eb5e5deef730e527f3e4cc4e4a31dcd5452fd90065",
+    "run-cases.py": "853ad52603a4210fa5e3377696f67e0b6fe34ea22b34da6838536d13b104a04f",
+    "scenario.c": "e625fb2fdcc9c2f89f2b3744539e4eea8a713d3a44966badfa4c24e3ad929fcb",
+    "simple-boundary-four.log": "414dc01ea056a37508112582ae893472f4bfafd42da1de23bcba9775588810dd",
+    "simple-build.log": "4ba25775f545dcffbf60cc1374f14e9dfc8624edf7847330e163029b5fab904b",
+    "simple-bypass-control.log": "62b9a0467c3fbeb4d6c7edda63110d6972cfef488d6e9d2dbf1795e718f525f9",
+    "simple-empty-control.log": "841323e128f3042d08c589e95927776ece529823cb5d1e2e4f75b40bae8a2431",
+    "simple-first-turn.log": "e0d1aea4387ce0645d405dcb20a99df2940ce72a8ffbb30916eee322707d313d",
+    "simple-first-use.log": "4e89bf61f958e7b49dc6bb24eb3ca6a58ae2ec7b9e1a7d5de7d06b3aff995e6c",
+    "simple-long-gap.log": "59bc50a2350765b885082cb175d64e8c3e86bf7319ebb7bcbba6cf9899975d59",
+    "simple-recent.log": "7827ebb14b02190779fbb372dfdbaaeb08913b7e5ecfac6208068fe8b4ec39bc",
+    "simple-reserve-control.log": "dace7f5c05a8f80410986c7a940b4681c3bd9b9333cdb06e51b66debe6a924e5",
+    "simple-results.json": "dfa06c5b237d1b624f0a95f409666d20c7dccc4bf38e8e9273a9ab8442625e8d",
+    "simple-same-turn.log": "3618026988c5a3611ca51ff85a60575e2d9fc61b31a92ececfe615b2c845189d",
+    "simple-scenarios.log": "7121e84bdd017df841fe7651dde4fc7529b4d4288d7819356ac6061aa048d456"
+  }
+}

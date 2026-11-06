@@ -1,0 +1,13 @@
+native-c/CBUG-0061: starting...
+SETUP seed=1000 class=Warrior level=40 depth=30 max_hp=421 potions=8
+  potion_timing_respects_recent_use  ENGINE You are confused!
+MODE first-turn time=1 elapsed=-1 available=8
+FRAME {"stage":"start","hp":301,"max_hp":421,"potions":8,"confused":10}
+DECISION use=0 bypass=0 keys=0 sequence=
+FRAME {"stage":"potion","hp":301,"max_hp":421,"potions":8,"confused":10}
+OUTCOME used=0 hp_before=301 hp_after=301 healed=0 potions_spent=0 confused=10
+Failed
+    native-c/CBUG-0061:124: requirement 'decision' == 'expected' failed
+      decision:                0
+      expected:                1
+native-c/CBUG-0061 finished: 0/1 passed

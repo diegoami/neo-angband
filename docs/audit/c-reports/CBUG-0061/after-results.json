@@ -1,0 +1,101 @@
+{
+  "long-gap": {
+    "exit": 0,
+    "completed": true,
+    "passed": true,
+    "used": 1,
+    "hp_before": 321,
+    "hp_after": 381,
+    "healed": 60,
+    "potions_spent": 1,
+    "confused": 0
+  },
+  "recent": {
+    "exit": 0,
+    "completed": true,
+    "passed": true,
+    "used": 0,
+    "hp_before": 321,
+    "hp_after": 321,
+    "healed": 0,
+    "potions_spent": 0,
+    "confused": 10
+  },
+  "boundary-four": {
+    "exit": 0,
+    "completed": true,
+    "passed": true,
+    "used": 0,
+    "hp_before": 321,
+    "hp_after": 321,
+    "healed": 0,
+    "potions_spent": 0,
+    "confused": 10
+  },
+  "same-turn": {
+    "exit": 0,
+    "completed": true,
+    "passed": true,
+    "used": 1,
+    "hp_before": 321,
+    "hp_after": 381,
+    "healed": 60,
+    "potions_spent": 1,
+    "confused": 0
+  },
+  "bypass-control": {
+    "exit": 0,
+    "completed": true,
+    "passed": true,
+    "used": 1,
+    "hp_before": 321,
+    "hp_after": 381,
+    "healed": 60,
+    "potions_spent": 1,
+    "confused": 0
+  },
+  "reserve-control": {
+    "exit": 0,
+    "completed": true,
+    "passed": true,
+    "used": 0,
+    "hp_before": 321,
+    "hp_after": 321,
+    "healed": 0,
+    "potions_spent": 0,
+    "confused": 10
+  },
+  "empty-control": {
+    "exit": 0,
+    "completed": true,
+    "passed": true,
+    "used": 0,
+    "hp_before": 321,
+    "hp_after": 321,
+    "healed": 0,
+    "potions_spent": 0,
+    "confused": 10
+  },
+  "first-use": {
+    "exit": 0,
+    "completed": true,
+    "passed": true,
+    "used": 1,
+    "hp_before": 301,
+    "hp_after": 361,
+    "healed": 60,
+    "potions_spent": 1,
+    "confused": 0
+  },
+  "first-turn": {
+    "exit": 0,
+    "completed": true,
+    "passed": true,
+    "used": 1,
+    "hp_before": 301,
+    "hp_after": 361,
+    "healed": 60,
+    "potions_spent": 1,
+    "confused": 0
+  }
+}
