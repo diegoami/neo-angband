@@ -32,8 +32,8 @@ From a clone of `diegoami/neo-angband-tracker`, copy these three commands:
 
 ```sh
 git fetch https://github.com/diegoami/neo-angband-tracker.git task/brand-240-evidence
-git show PINSHA:docs/audit/c-reports/brand-240/reproduce.py > /tmp/reproduce-brand-240.py
-python3 /tmp/reproduce-brand-240.py --fixtures-ref PINSHA --full-tests
+git show e215578134eb8118b712ec117434ae2112988c98:docs/audit/c-reports/brand-240/reproduce.py > /tmp/reproduce-brand-240.py
+python3 /tmp/reproduce-brand-240.py --fixtures-ref e215578134eb8118b712ec117434ae2112988c98 --full-tests
 ```
 
 The runner builds original and corrected variants from pristine C
