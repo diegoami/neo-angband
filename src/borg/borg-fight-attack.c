@@ -286,8 +286,12 @@ static int borg_attack_aux_thrust(void)
         int x = borg_temp_x[i];
         int y = borg_temp_y[i];
 
-        /* Require "adjacent" */
-        if (borg_distance(borg.c.y, borg.c.x, y, x) > 1)
+        /* Require "adjacent": distance exactly one.  Distance zero means
+         * the tracked monster is on the player's own grid - a stale
+         * entry, since no monster can share it; attacking it queues the
+         * center-square key, which is not a direction and trips the
+         * unexpected-direction abort. */
+        if (borg_distance(borg.c.y, borg.c.x, y, x) != 1)
             continue;
 
         /* Acquire grid */
