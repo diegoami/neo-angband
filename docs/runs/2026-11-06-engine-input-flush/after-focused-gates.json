@@ -1,0 +1,25 @@
+[
+  {
+    "stage": "corrected-build",
+    "command": [
+      "pnpm",
+      "build"
+    ],
+    "exit": 0,
+    "seconds": 5.63
+  },
+  {
+    "stage": "pass-after",
+    "command": [
+      "pnpm",
+      "exec",
+      "vitest",
+      "run",
+      "packages/core/src/game/player-path.test.ts",
+      "packages/web/src/input-flush-event.test.ts",
+      "--reporter=verbose"
+    ],
+    "exit": 0,
+    "seconds": 14.47
+  }
+]

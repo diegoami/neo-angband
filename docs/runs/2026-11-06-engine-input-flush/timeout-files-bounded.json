@@ -1,0 +1,17 @@
+{
+  "stage": "timeout-files-bounded",
+  "command": [
+    "pnpm",
+    "exec",
+    "vitest",
+    "run",
+    "packages/core/src/msg.upstream.test.ts",
+    "packages/web/src/knowledge-recall.test.ts",
+    "packages/web/src/mod-install.test.ts",
+    "packages/core/src/gen/gen.test.ts",
+    "packages/core/src/obj/object-info.test.ts",
+    "--maxWorkers=2"
+  ],
+  "exit": 0,
+  "seconds": 59.04
+}

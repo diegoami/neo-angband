@@ -1,0 +1,25 @@
+[
+  {
+    "stage": "baseline-build",
+    "command": [
+      "pnpm",
+      "build"
+    ],
+    "exit": 0,
+    "seconds": 46.88
+  },
+  {
+    "stage": "fail-before",
+    "command": [
+      "pnpm",
+      "exec",
+      "vitest",
+      "run",
+      "packages/core/src/game/player-path.test.ts",
+      "packages/web/src/input-flush-event.test.ts",
+      "--reporter=verbose"
+    ],
+    "exit": 1,
+    "seconds": 14.47
+  }
+]
