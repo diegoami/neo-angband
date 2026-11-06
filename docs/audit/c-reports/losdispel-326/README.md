@@ -47,8 +47,8 @@ From a clone of `diegoami/neo-angband-tracker`, copy these three commands:
 
 ```sh
 git fetch https://github.com/diegoami/neo-angband-tracker.git task/losdispel-326-evidence
-git show PINSHA:docs/audit/c-reports/losdispel-326/reproduce.py > /tmp/reproduce-losdispel-326.py
-python3 /tmp/reproduce-losdispel-326.py --fixtures-ref PINSHA --full-tests
+git show 6a46c46bd29192e1ccc17c5212748ed29be04020:docs/audit/c-reports/losdispel-326/reproduce.py > /tmp/reproduce-losdispel-326.py
+python3 /tmp/reproduce-losdispel-326.py --fixtures-ref 6a46c46bd29192e1ccc17c5212748ed29be04020 --full-tests
 ```
 
 The runner builds original and corrected variants from pristine C
