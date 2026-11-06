@@ -124,3 +124,12 @@ The pin itself still contains the wrong reset.
 The source issue stays open. Proposal #210 is a local draft, not an applied
 correction or consumer-ready adoption claim. Native C checkpoint #207 owns the
 next review action; the parent routes any later consumer work independently.
+
+## Corrected copy/paste replay
+
+The original manual block above assumes files already placed at placeholder
+paths and omits the native scenario's `game` working directory. Use the
+[complete replay instructions](REPRODUCE.md) and [runner](reproduce.py), added
+without changing the original run records. They fetch/extract every fixture,
+use fresh temporary directories, apply the clean one-line correction, and
+verify both native gates and the before/after controls.
