@@ -84,3 +84,5 @@ Apple Silicon machines need the **arm64** build; Intel machines use x64.
 See [the installation guide](docs/INSTALL.md) and the retained upstream README
 for the full supported procedure. This tracker does not publish a new desktop
 release merely by documenting/testing an upstream build.
+
+<!-- CI validation only: exercise the reviewed documentation contract lane. -->
