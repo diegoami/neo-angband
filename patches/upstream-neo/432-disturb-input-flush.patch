@@ -1,0 +1,185 @@
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+index 5203ffc2..952a0d49 100644
+--- a/CHANGELOG.md
++++ b/CHANGELOG.md
+@@ -50,0 +51,4 @@ still calls itself.
++### Fixed
++
++- [Visible] [Modding-API] **Mods now receive the `input-flush` event.** `disturb()` ends by signalling it, as upstream's does (player-util.c:1674), so a mod with `event:input-flush` hears every disturbance - a run stopping, a rest reaching its condition, a hit landing - and can stop a multi-step action on it. The event was declared and grantable before, but nothing ever fired it. A handler that throws is logged and the disturbance still completes (#414).
++
+diff --git a/docs/modding/MOD_SEAMS.md b/docs/modding/MOD_SEAMS.md
+index e1b209c8..5bebbd1b 100644
+--- a/docs/modding/MOD_SEAMS.md
++++ b/docs/modding/MOD_SEAMS.md
+@@ -552,0 +553,2 @@ These events contain copied coordinates and scalar values. They do not carry a l
++`input-flush` reports a disturbance: something stopped a run, cancelled a rest or flushed the queued continuations. Declare `event:input-flush` to receive it. The engine's `disturb()` ends by signalling it, as upstream's does (player-util.c:1674), so it fires for every disturbance - the character taking a hit, a monster coming into view, a rest reaching its stopping condition, a light growing dim - and also when nothing needed cancelling, because the signal sits outside every cancel branch. The event carries no payload, and a mod that runs a multi-step action can stop on it when the world changes under the character. A handler that throws is logged, and the disturbance still completes. (neostryder/neo-angband#414)
++
+diff --git a/packages/core/src/game/player-path.test.ts b/packages/core/src/game/player-path.test.ts
+index e3a9c855..33efe0c1 100644
+--- a/packages/core/src/game/player-path.test.ts
++++ b/packages/core/src/game/player-path.test.ts
+@@ -8,0 +9 @@ import type { Loc } from "../loc.js";
++import { GameEvents } from "../events.js";
+@@ -175,0 +177,41 @@ describe("running stops on disturbance", () => {
++describe("disturb() flushes the input (player-util.c:1674)", () => {
++  it("signals input-flush on the bus, once per disturbance, and needs no bus", () => {
++    const state = makeState({ w: 12, h: 7, playerGrid: loc(1, 3) });
++    /* No bus attached, the worldless harness shape: disturb() must not care,
++     * because hosts and headless cores are free to run without one. */
++    expect(() => disturb(state)).not.toThrow();
++
++    state.events = new GameEvents();
++    let heard = 0;
++    state.events.on("input-flush", () => heard++);
++    disturb(state);
++    disturb(state);
++    expect(heard).toBe(2);
++  });
++
++  it("signals with nothing to cancel, as upstream does", () => {
++    const state = makeState({ w: 12, h: 7, playerGrid: loc(1, 3) });
++    state.events = new GameEvents();
++    let heard = 0;
++    state.events.on("input-flush", () => heard++);
++    /* No run, no rest, no queued command: the signal sits outside every
++     * cancel block upstream, so a plain disturbance still reports. */
++    disturb(state);
++    expect(heard).toBe(1);
++  });
++
++  it("hands a throwing listener to onEventFault instead of its caller", () => {
++    const state = makeState({ w: 12, h: 7, playerGrid: loc(1, 3) });
++    state.events = new GameEvents();
++    const faults: string[] = [];
++    state.onEventFault = (type) => faults.push(type);
++    state.events.on("input-flush", () => {
++      throw new Error("listener failed");
++    });
++    /* disturb() runs deep inside run_step, take_hit and the world loop; a
++     * throwing listener must not cut any of those flows short. */
++    expect(() => disturb(state)).not.toThrow();
++    expect(faults).toEqual(["input-flush"]);
++  });
++});
++
+diff --git a/packages/core/src/game/player-path.ts b/packages/core/src/game/player-path.ts
+index 45c32280..41de7c20 100644
+--- a/packages/core/src/game/player-path.ts
++++ b/packages/core/src/game/player-path.ts
+@@ -107,0 +108,14 @@ export function disturb(state: GameState): void {
++  /* Flush input (player-util.c:1674): upstream's disturb() ends by signalling
++   * EVENT_INPUT_FLUSH unconditionally - outside every cancel block, so it fires
++   * whether or not anything was actually cancelled - and so does this one, so
++   * a subscriber with the event:input-flush grant hears every disturbance. A
++   * listener that throws is handed to onEventFault instead of escaping into
++   * whichever engine flow called disturb(), the same posture as the
++   * dungeonlevel sender (resolved-events.ts). */
++  if (state.events) {
++    try {
++      state.events.signal("input-flush");
++    } catch (error) {
++      state.onEventFault?.("input-flush", error);
++    }
++  }
+diff --git a/packages/mod-sdk/docs/MOD_SEAMS.md b/packages/mod-sdk/docs/MOD_SEAMS.md
+index e1b209c8..5bebbd1b 100644
+--- a/packages/mod-sdk/docs/MOD_SEAMS.md
++++ b/packages/mod-sdk/docs/MOD_SEAMS.md
+@@ -552,0 +553,2 @@ These events contain copied coordinates and scalar values. They do not carry a l
++`input-flush` reports a disturbance: something stopped a run, cancelled a rest or flushed the queued continuations. Declare `event:input-flush` to receive it. The engine's `disturb()` ends by signalling it, as upstream's does (player-util.c:1674), so it fires for every disturbance - the character taking a hit, a monster coming into view, a rest reaching its stopping condition, a light growing dim - and also when nothing needed cancelling, because the signal sits outside every cancel branch. The event carries no payload, and a mod that runs a multi-step action can stop on it when the world changes under the character. A handler that throws is logged, and the disturbance still completes. (neostryder/neo-angband#414)
++
+diff --git a/packages/web/src/input-flush-event.test.ts b/packages/web/src/input-flush-event.test.ts
+new file mode 100644
+index 00000000..aab58775
+--- /dev/null
++++ b/packages/web/src/input-flush-event.test.ts
+@@ -0,0 +1,89 @@
++/**
++ * The `input-flush` event as a mod receives it through `ctx.events`, on a real
++ * game.
++ *
++ * Upstream's disturb() ends by signalling EVENT_INPUT_FLUSH (player-util.c:1674),
++ * and the port's disturb() now does too. A disturbance is driven here through a
++ * genuine engine flow - a rest to full hitpoints, whose completion check is one
++ * of disturb()'s callers - so the test covers the shell's capability wiring, not
++ * just the bus.
++ */
++import { readFileSync } from "node:fs";
++import { describe, expect, it } from "vitest";
++import {
++  GameEvents,
++  REST_ALL_POINTS,
++  runGameLoop,
++  startGame,
++  type GamePack,
++} from "@rpgm-tools/neo-angband-core";
++import { CapabilitySet } from "@rpgm-tools/neo-angband-mod-sdk";
++import { modPluginContext } from "./mod-context";
++
++function loadJson<T>(name: string): T {
++  return JSON.parse(readFileSync(new URL(`../../content/pack/${name}.json`, import.meta.url), "utf8")) as T;
++}
++function records<T>(name: string): T[] {
++  return loadJson<{ records: T[] }>(name).records;
++}
++
++const pack: GamePack = {
++  constants: loadJson("constants"),
++  terrain: records("terrain"),
++  roomTemplates: records("room_template"),
++  vaults: records("vault"),
++  dungeonProfiles: records("dungeon_profile"),
++  obj: {
++    objectBase: loadJson("object_base"), object: loadJson("object"),
++    egoItem: loadJson("ego_item"), artifact: loadJson("artifact"),
++    curse: loadJson("curse"), brand: loadJson("brand"),
++    slay: loadJson("slay"), activation: loadJson("activation"),
++    objectProperty: loadJson("object_property"), flavor: loadJson("flavor"),
++  } as GamePack["obj"],
++  mon: {
++    pain: records("pain"), blowMethods: records("blow_methods"),
++    blowEffects: records("blow_effects"), monsterSpells: records("monster_spell"),
++    monsterBases: records("monster_base"), monsters: records("monster"),
++    summons: records("summon"), pits: records("pit"),
++  },
++  player: {
++    races: records("p_race"), classes: records("class"),
++    properties: records("player_property"), timed: records("player_timed"),
++    shapes: records("shape"), bodies: records("body"),
++    history: records("history"), realms: records("realm"),
++  },
++};
++
++function capabilities(id: string, granted: string[]): CapabilitySet {
++  return CapabilitySet.fromManifest({
++    id, name: id, version: "1.0.0", shape: "plugin", facets: ["plugin"], modApi: 1, capabilities: granted,
++  });
++}
++
++describe("a mod's input-flush subscription", () => {
++  it("hears a rest's completion disturbance, and a mod without the grant hears none", () => {
++    const game = startGame(pack, { seed: 3, depth: 0 });
++    game.state.events = new GameEvents();
++
++    const tracker = modPluginContext("tracker", {}, game.state, {}, {
++      capabilities: capabilities("tracker", ["event:input-flush"]),
++    });
++    const heard: number[] = [];
++    tracker.events!.on("input-flush", () => heard.push(game.state.turn));
++
++    const plain = modPluginContext("plain", {}, game.state, {}, { capabilities: capabilities("plain", []) });
++    expect(plain.events).toBeUndefined();
++
++    /* A rest to full hitpoints: the fresh character is already at full health,
++     * so the loop's completion check (loop.ts processPlayerChecked ->
++     * playerRestingCompleteSpecial, game-world.c:936) disturbs on the rest's
++     * first turn. At least that one disturbance is guaranteed; the world phase
++     * may bring townsperson visibility disturbances of its own, so the count is
++     * a floor, not an exact number. */
++    game.registry.get("rest")!(game.state, { code: "rest", args: { count: REST_ALL_POINTS } });
++    runGameLoop(game.state, game.registry);
++
++    expect(heard.length).toBeGreaterThanOrEqual(1);
++    expect(game.state.resting).toBeUndefined();
++  });
++});

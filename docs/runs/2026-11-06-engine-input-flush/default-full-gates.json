@@ -1,0 +1,31 @@
+[
+  {
+    "stage": "lint",
+    "command": [
+      "pnpm",
+      "lint"
+    ],
+    "exit": 0,
+    "seconds": 45.55
+  },
+  {
+    "stage": "bundle",
+    "command": [
+      "pnpm",
+      "--dir",
+      "packages/web",
+      "bundle"
+    ],
+    "exit": 0,
+    "seconds": 7.33
+  },
+  {
+    "stage": "test",
+    "command": [
+      "pnpm",
+      "test"
+    ],
+    "exit": 1,
+    "seconds": 360.15
+  }
+]

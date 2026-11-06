@@ -1,0 +1,43 @@
+
+ RUN  v4.1.11 <ENGINE_TASK>
+
+ ✓ packages/core/src/game/player-path.test.ts > run_init (player-path.c L1606) > detects a hallway (both sides walled) and clears open-area 15ms
+ ✓ packages/core/src/game/player-path.test.ts > run_init (player-path.c L1606) > treats unknown walls as open (see_wall's known-gate) 2ms
+ ✓ packages/core/src/game/player-path.test.ts > run_init (player-path.c L1606) > looks for an open area when no walls are adjacent 3ms
+ ✓ packages/core/src/game/player-path.test.ts > running down a corridor (run_test / run_step) > follows the hallway and stops before the end wall 2ms
+ ✓ packages/core/src/game/player-path.test.ts > running down a corridor (run_test / run_step) > turns to follow a corner 1ms
+ ✓ packages/core/src/game/player-path.test.ts > running stops on disturbance > stops next to a visible monster in the path 3ms
+ ✓ packages/core/src/game/player-path.test.ts > running stops on disturbance > stops at a non-ignored floor object but runs past ignored ones 2ms
+ ✓ packages/core/src/game/player-path.test.ts > running stops on disturbance > disturb() halts running and flushes the queue 1ms
+ ✓ packages/core/src/game/player-path.test.ts > disturb() flushes the input (player-util.c:1674) > signals input-flush on the bus, once per disturbance, and needs no bus 2ms
+ ✓ packages/core/src/game/player-path.test.ts > disturb() flushes the input (player-util.c:1674) > signals with nothing to cancel, as upstream does 1ms
+ ✓ packages/core/src/game/player-path.test.ts > disturb() flushes the input (player-util.c:1674) > hands a throwing listener to onEventFault instead of its caller 1ms
+ ✓ packages/core/src/game/player-path.test.ts > pathfind_direction_to (player-path.c L1347) > prefers diagonals within a factor of two, else a cardinal 0ms
+ ✓ packages/core/src/game/player-path.test.ts > find_path (player-path.c L1069) > returns a straight-line path down a corridor 2ms
+ ✓ packages/core/src/game/player-path.test.ts > find_path (player-path.c L1069) > reports zero for the start and -1 for the unreachable 0ms
+ ✓ packages/core/src/game/player-path.test.ts > find_path (player-path.c L1069) > A* trace: two steps east across open floor (C-derived) 3ms
+ ✓ packages/core/src/game/player-path.test.ts > find_path (player-path.c L1069) > A* trace: a diagonal-then-straight route across open floor (C-derived) 2ms
+ ✓ packages/core/src/game/player-path.test.ts > find_path (player-path.c L1069) > A* trace: picks one of two equal-cost detours round a wall (C-derived) 1ms
+ ✓ packages/core/src/game/player-path.test.ts > find_path (player-path.c L1069) > A* trace: the Chebyshev heuristic decides the route (C-derived) 4ms
+ ✓ packages/core/src/game/player-path.test.ts > find_path (player-path.c L1069) > A* trace: a grid already reached at equal cost is not re-expanded (C-derived) 7ms
+ ✓ packages/core/src/game/player-path.test.ts > find_path (player-path.c L1069) > returns a minimum-cost, contiguous, passable path over open floor 22ms
+ ✓ packages/core/src/game/player-path.test.ts > find_path (player-path.c L1069) > crosses patch boundaries (initialize_patch, 16x16 blocks) 3ms
+ ✓ packages/core/src/game/player-path.test.ts > find_path (player-path.c L1069) > falls back through a known visible trap (hit_trap retry) 6ms
+ ✓ packages/core/src/game/player-path.test.ts > find_path (player-path.c L1069) > falls back to grids the player does not remember (only_known retry) 1ms
+ ✓ packages/core/src/game/player-path.test.ts > find_path (player-path.c L1069) > never routes along the cave boundary, even when it is unremembered 1ms
+ ✓ packages/core/src/game/player-path.test.ts > do_cmd_pathfind (travel) > walks the player to a clicked destination 5ms
+ ✓ packages/core/src/game/player-path.test.ts > do_cmd_pathfind (travel) > does not start while confused 3ms
+ ✓ packages/core/src/game/player-path.test.ts > do_cmd_pathfind (travel) > auto-opens a closed door in the path and continues 3ms
+ ✓ packages/core/src/game/player-path.test.ts > do_cmd_explore (cmd-cave.c:1500) > heads for the nearest remembered grid on the unknown frontier 4ms
+ ✓ packages/core/src/game/player-path.test.ts > do_cmd_explore (cmd-cave.c:1500) > does nothing at all when autoexplore_commands is off (L1502-1505) 1ms
+ ✓ packages/core/src/game/player-path.test.ts > do_cmd_explore (cmd-cave.c:1500) > refuses while confused, and reports it (L1508-1511) 2ms
+ ✓ packages/core/src/game/player-path.test.ts > do_cmd_explore (cmd-cave.c:1500) > refuses with a monster in view (L1524-1527) 1ms
+ ✓ packages/core/src/game/player-path.test.ts > do_cmd_explore (cmd-cave.c:1500) > reports when there is nowhere left to explore (L1542) 4ms
+ ✓ packages/web/src/input-flush-event.test.ts > a mod's input-flush subscription > hears a rest's completion disturbance, and a mod without the grant hears none 319ms
+(node:1580690) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+ Test Files  2 passed (2)
+      Tests  33 passed (33)
+   Start at  02:47:40
+   Duration  13.50s (transform 14.67s, setup 0ms, import 18.13s, tests 435ms, environment 0ms)
