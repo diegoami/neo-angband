@@ -122,8 +122,14 @@ errr borg_what_text(int x, int y, int n, uint8_t *a, char *s)
     /* Save the attribute */
     (*a) = d_a;
 
-    /* Convert back to a char string */
-    wcstombs(s, screen_str, ABS(n) + 1);
+    /* Convert back to a char string.  Each wide character can become
+     * several bytes, so a byte limit of one per wide character can
+     * truncate exactly at the limit and leave the destination
+     * unterminated; bound the conversion by the widest encoding
+     * instead, and fall back to an empty string on a conversion
+     * error. */
+    if (wcstombs(s, screen_str, ABS(n) * MB_CUR_MAX) == (size_t)-1)
+        s[0] = '\0';
     /* Too short */
     if ((n > 0) && (i != n))
         return 1;
