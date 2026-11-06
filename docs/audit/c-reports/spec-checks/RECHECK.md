@@ -424,9 +424,9 @@ and the non-OK rows compared by (verdict, file, citation, symbol): **no row
 added, none removed**; the 108 `ANCHOR_MISMATCH` and 2 `OUT_OF_RANGE` rows
 are the pre-existing ones in the Neo port (the review counted the same 108
 on `master`). The `UNCHECKED` count fell from 4850 to 4844: the previous
-draft's plain `file.c:N` citations are gone, and this file adds one, the
-example `borg-flow.c:585` in §1, which the tool resolves against
-`reference/` and leaves unchecked.
+draft's plain `file.c:N` citations are gone; the remaining new ones are
+this file's own (its example of the plain form in §1, and this sentence),
+which the tool resolves against `reference/` and leaves unchecked.
 
 The diff against `master` touches only `docs/c-borg/BORG_SPEC.md` and
 `docs/audit/c-reports/spec-checks/`; nothing under `.github/`, no C or
