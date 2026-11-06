@@ -1,0 +1,38 @@
+{
+  "miswired": {
+    "label": "The greater acid bolt that never counted",
+    "explanation": "A mage wears a ring carrying the ACID_BOLT3 activation and faces a kobold. The ACID_BOLT3 maneuver looks up the ACID_BOLT2 activation id, so the item is never considered: the maneuver is valued at zero. The correction looks up the id the maneuver describes, and the ring is valued like the correctly-wired lesser bolt in the control.",
+    "before": {
+      "raw": "native-c/activ-260: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Mage level=41 depth=30\n  maneuvers_find_their_activations  MODE miswired\nGEOMETRY player=(11,11) target=(11,15) temp_n=0\nRATING bolt3=0 bolt2=0\nOUTCOME bolt3=0 bolt2=0\nFailed\n    native-c/activ-260:222: requirement 'v_bolt3 > 0' failed\nnative-c/activ-260 finished: 0/1 passed\n",
+      "passed": false,
+      "geometry": "player=(11,11) target=(11,15) temp_n=0",
+      "rating": "bolt3=0 bolt2=0",
+      "outcome": "bolt3=0 bolt2=0"
+    },
+    "after": {
+      "raw": "native-c/activ-260: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Mage level=41 depth=30\n  maneuvers_find_their_activations  MODE miswired\nGEOMETRY player=(11,11) target=(11,15) temp_n=0\nRATING bolt3=52 bolt2=0\nOUTCOME bolt3=52 bolt2=0\nPassed\nnative-c/activ-260 finished: 1/1 passed\n",
+      "passed": true,
+      "geometry": "player=(11,11) target=(11,15) temp_n=0",
+      "rating": "bolt3=52 bolt2=0",
+      "outcome": "bolt3=52 bolt2=0"
+    }
+  },
+  "control": {
+    "label": "Control: the correctly-wired lesser bolt",
+    "explanation": "The same mage wears a ring carrying the ACID_BOLT2 activation, whose maneuver is wired correctly. It is valued identically before and after the correction, and the complete log is byte-identical: the fix changes only the miswired lookups.",
+    "before": {
+      "raw": "native-c/activ-260: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Mage level=41 depth=30\n  maneuvers_find_their_activations  MODE control\nGEOMETRY player=(11,11) target=(11,15) temp_n=0\nRATING bolt2=52\nOUTCOME bolt2=52\nPassed\nnative-c/activ-260 finished: 1/1 passed\n",
+      "passed": true,
+      "geometry": "player=(11,11) target=(11,15) temp_n=0",
+      "rating": "bolt2=52",
+      "outcome": "bolt2=52"
+    },
+    "after": {
+      "raw": "native-c/activ-260: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Mage level=41 depth=30\n  maneuvers_find_their_activations  MODE control\nGEOMETRY player=(11,11) target=(11,15) temp_n=0\nRATING bolt2=52\nOUTCOME bolt2=52\nPassed\nnative-c/activ-260 finished: 1/1 passed\n",
+      "passed": true,
+      "geometry": "player=(11,11) target=(11,15) temp_n=0",
+      "rating": "bolt2=52",
+      "outcome": "bolt2=52"
+    }
+  }
+}
