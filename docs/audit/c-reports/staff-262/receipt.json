@@ -1,0 +1,86 @@
+{
+  "base": "53ef84c743768fdde9abaebc27bd8526b4423de9",
+  "fix": "fe34f38d0c998cf34ace02d09bf97774f38e65df",
+  "root_base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "fixtures_ref": "cf783dd629f2ee016ebb0ac2395d7b891f588e42",
+  "cases": {
+    "before": {
+      "holy": {
+        "exit": 0,
+        "passed": false,
+        "geometry": "player=(5,20) harpies=(10,20)(11,19)(11,21) temp_n=3",
+        "rating": "holy=28",
+        "outcome": "holy=28"
+      },
+      "control": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "player=(5,20) harpies=(10,20)(11,19)(11,21) temp_n=3",
+        "rating": "bolt2=28",
+        "outcome": "bolt2=28"
+      }
+    },
+    "after": {
+      "holy": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "player=(5,20) harpies=(10,20)(11,19)(11,21) temp_n=3",
+        "rating": "holy=60",
+        "outcome": "holy=60"
+      },
+      "control": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "player=(5,20) harpies=(10,20)(11,19)(11,21) temp_n=3",
+        "rating": "bolt2=28",
+        "outcome": "bolt2=28"
+      }
+    }
+  },
+  "identical_controls": [
+    "control"
+  ],
+  "full_tests": {
+    "before": {
+      "units": "965/965",
+      "frontends": "5/5"
+    },
+    "after": {
+      "units": "965/965",
+      "frontends": "5/5"
+    }
+  },
+  "fixed_source_sha256": "4a826d35cfc23e42ff0db05e192045f6f4ac02674be37bf0dcd13d7855070328",
+  "compiler": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+  "cmake": "cmake version 4.2.3",
+  "stacking": "the correction is stacked on the LOS-dispel walk correction (issue 326, commit 53ef84c7); the runner verifies the ancestry",
+  "browser": {
+    "engine": "Google Chrome for Testing 156.0.8078.4 (headless dump-dom)",
+    "verification": "17 checks against the rendered DOM: 2 situations x 2 variants; holy 28 before (bolt radius) and 60 after (LOS radius); acid-bolt control 28/28 byte-identical raw logs; no n/a or undefined fields; zero console errors"
+  },
+  "maintenance_base": "f186aa1fce2e590eb9bbcb91dc369f3f8b6af688",
+  "sha256": {
+    "README.md": "476068e476cc7273824ff2546f421cdd1c94462acf157207f9b4e417d466cc18",
+    "after-alltests.log": "1ea3afbbb3b78b5eb058f8dd207013f3d57a2af8726e8e0c2cdac408f40afdf1",
+    "after-build.log": "ead55c4023d088f88f71e98d30c0f72271fcebaaefc519bf26a8187926dd5e02",
+    "after-control.log": "2cc161ffd8caf27ac93432b39ef5f603afb1838b230075a1e2463ae4925971f4",
+    "after-holy.log": "f31cafb7a8b911911f5b63aef3821d048530eeda2119eb8cfbbf1f90fbbfca3f",
+    "after-results.json": "74d159a35490ff2b4d9fba0b502ece7bb9f39009554f65352fd6e81ef24d28e1",
+    "after-scenarios.log": "7597a2a79c0db4e01d8fbe3751950ac1422decf177590dcc39af38fe948bc596",
+    "before-alltests.log": "8be75f2c01cb22af47453cf8f618fc3d1ca5c85f07ffea3ae1432758c1b508a4",
+    "before-build.log": "4bf11da1f9b407dc52e586c6b51962c6cf759b2e8a36a1961ab35d8deca6d024",
+    "before-control.log": "2cc161ffd8caf27ac93432b39ef5f603afb1838b230075a1e2463ae4925971f4",
+    "before-holy.log": "7d518a251187db732fb37c543e54a5244e771fb30585b9ac72d8977c7129b77e",
+    "before-results.json": "fb3df9584b9ba60dd45df180770bf45c55828bacff59f25d320c65bd6afd180a",
+    "before-scenarios.log": "1b6882e08835e414007bbf59377891795a97e408ad040eaabcba0587ed2564d9",
+    "borg.txt": "80738da248ed74e343925e0348fc75da993d8c03ffff03c7bce1a9090005be47",
+    "configure.log": "040acb6e85598740d47bf177152f2caa4e845ca541e7c209fcd342c9d0cb1cbb",
+    "make_replay.py": "02714612a6aacd121727a858f2d9b5d6b30e8046483489d2968a287876dbea86",
+    "replay-data.json": "91c2f3b4bd7b97da47d3245e3dfcff2bdaad039b21698ab7d73a6db0341a9e57",
+    "replay.html": "f99d644e36adbcccb976918760ddb64803c1e3e0929aede663fffe8d2ccfe92d",
+    "reproduce.py": "5e82134691dd6711d717baf7b7fc307541ba535784ee06648a79b5fbca925dd5",
+    "result.json": "c84b0decdfaba88c23bff00db47c764d2b048c17add6b7939532b0cb1d22f3f9",
+    "run-cases.py": "57f491aba508409dd308f4067e7b4de16863e86a65b71e9b9c31cda09d89b580",
+    "scenario.c": "dca8a79c5b8ee4eef3b7706e47d933f8aead6a053a7400743d5baeb286e39021"
+  }
+}

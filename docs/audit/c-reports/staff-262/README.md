@@ -43,8 +43,8 @@ From a clone of `diegoami/neo-angband-tracker`, copy these three commands:
 
 ```sh
 git fetch https://github.com/diegoami/neo-angband-tracker.git task/staff-262-evidence
-git show PINSHA:docs/audit/c-reports/staff-262/reproduce.py > /tmp/reproduce-staff-262.py
-python3 /tmp/reproduce-staff-262.py --fixtures-ref PINSHA --full-tests
+git show 4b7fd0c88cdb59dde0ed72e456a3480332af5d91:docs/audit/c-reports/staff-262/reproduce.py > /tmp/reproduce-staff-262.py
+python3 /tmp/reproduce-staff-262.py --fixtures-ref 4b7fd0c88cdb59dde0ed72e456a3480332af5d91 --full-tests
 ```
 
 The runner verifies the ancestry (the correction is stacked on the
