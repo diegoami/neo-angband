@@ -28,3 +28,7 @@ Every bug fix must include self-contained verification in its canonical
 issue and PR: copyable pinned commands, actual results, the reasoning they
 support, before/after controls and limits. Follow the verification rule
 in RULES.md; linked logs or passing automation alone are insufficient.
+
+For a fresh cloud checkout, follow the native C setup and pinned reproduction
+in docs/SESSION.md. Read checkpoint207 for current work before starting a task;
+no workstation /tmp directory or engine checkout is required.
