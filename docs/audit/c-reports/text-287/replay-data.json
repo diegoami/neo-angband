@@ -1,0 +1,34 @@
+{
+  "multibyte": {
+    "label": "The message line that never ended",
+    "explanation": "The screen row holds eighty characters, one of them two bytes wide, so the text needs eighty-one bytes plus its terminator - one byte past the wide-count limit the conversion used. The original truncates exactly at the limit and writes no terminator, and the caller measures the buffer as a string: with the buffer junked and no zero anywhere, the measurement runs through all thousand twenty-four stale bytes. The correction bounds the conversion by the widest encoding for the same character count, so the full text converts and terminates at eighty-one.",
+    "before": {
+      "raw": "native-c/text-287: starting...\nSETUPSTEP profile\nSETUP mb_cur_max=6\n  converted_screen_text_is_terminated  MODE multibyte\nGEOMETRY rc=0 strnlen=1024 terminated=0\nRATING terminated=0 strnlen=1024\nOUTCOME terminated=0 strnlen=1024\nFailed\n    native-c/text-287:130: requirement 'terminated' failed\nnative-c/text-287 finished: 0/1 passed\n",
+      "passed": false,
+      "rating": "terminated=0 strnlen=1024",
+      "outcome": "terminated=0 strnlen=1024"
+    },
+    "after": {
+      "raw": "native-c/text-287: starting...\nSETUPSTEP profile\nSETUP mb_cur_max=6\n  converted_screen_text_is_terminated  MODE multibyte\nGEOMETRY rc=0 strnlen=81 terminated=1\nRATING terminated=1 strnlen=81\nOUTCOME terminated=1 strnlen=81\nPassed\nnative-c/text-287 finished: 1/1 passed\n",
+      "passed": true,
+      "rating": "terminated=1 strnlen=81",
+      "outcome": "terminated=1 strnlen=81"
+    }
+  },
+  "control": {
+    "label": "Control: a pure-ASCII row",
+    "explanation": "The same row with every character one byte wide fits the old limit too: both variants terminate identically at eighty, and the complete log is byte-identical.",
+    "before": {
+      "raw": "native-c/text-287: starting...\nSETUPSTEP profile\nSETUP mb_cur_max=6\n  converted_screen_text_is_terminated  MODE control\nGEOMETRY rc=0 strnlen=80 terminated=1\nRATING terminated=1 strnlen=80\nOUTCOME terminated=1 strnlen=80\nPassed\nnative-c/text-287 finished: 1/1 passed\n",
+      "passed": true,
+      "rating": "terminated=1 strnlen=80",
+      "outcome": "terminated=1 strnlen=80"
+    },
+    "after": {
+      "raw": "native-c/text-287: starting...\nSETUPSTEP profile\nSETUP mb_cur_max=6\n  converted_screen_text_is_terminated  MODE control\nGEOMETRY rc=0 strnlen=80 terminated=1\nRATING terminated=1 strnlen=80\nOUTCOME terminated=1 strnlen=80\nPassed\nnative-c/text-287 finished: 1/1 passed\n",
+      "passed": true,
+      "rating": "terminated=1 strnlen=80",
+      "outcome": "terminated=1 strnlen=80"
+    }
+  }
+}

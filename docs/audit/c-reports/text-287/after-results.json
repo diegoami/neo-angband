@@ -1,0 +1,16 @@
+{
+  "multibyte": {
+    "exit": 0,
+    "passed": true,
+    "geometry": "rc=0 strnlen=81 terminated=1",
+    "rating": "terminated=1 strnlen=81",
+    "outcome": "terminated=1 strnlen=81"
+  },
+  "control": {
+    "exit": 0,
+    "passed": true,
+    "geometry": "rc=0 strnlen=80 terminated=1",
+    "rating": "terminated=1 strnlen=80",
+    "outcome": "terminated=1 strnlen=80"
+  }
+}
