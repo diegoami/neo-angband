@@ -1,0 +1,34 @@
+{
+  "brand": {
+    "label": "The brand need that counted twice",
+    "explanation": "A level fifty druid wields a long bow - shooter power three - wears a firebrand ring, and carries five identified plain arrows. The brand-the-ammo test appeared twice in the inventory scan with the same condition, so the single qualifying stack added twenty to the need-brand trait instead of ten. The correction keeps the copy that sits with the enchant logic: ten.",
+    "before": {
+      "raw": "native-c/brand-240: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Druid level=50 ammo_power=3 ammo_tval=3 brand_legal=1\n  brand_need_counts_once  MODE brand\nGEOMETRY ammo_power=3 arrows=5\nRATING need_brand=20\nOUTCOME need_brand=20\nFailed\n    native-c/brand-240:183: requirement 'need' == '10' failed\n      need:               20\n      10:               10\nnative-c/brand-240 finished: 0/1 passed\n",
+      "passed": false,
+      "rating": "need_brand=20",
+      "outcome": "need_brand=20"
+    },
+    "after": {
+      "raw": "native-c/brand-240: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Druid level=50 ammo_power=3 ammo_tval=3 brand_legal=1\n  brand_need_counts_once  MODE brand\nGEOMETRY ammo_power=3 arrows=5\nRATING need_brand=10\nOUTCOME need_brand=10\nPassed\nnative-c/brand-240 finished: 1/1 passed\n",
+      "passed": true,
+      "rating": "need_brand=10",
+      "outcome": "need_brand=10"
+    }
+  },
+  "control": {
+    "label": "Control: a stack too small to brand",
+    "explanation": "The same druid and bow with only two arrows, below the five the test requires: the need stays zero before and after, and the complete log is byte-identical.",
+    "before": {
+      "raw": "native-c/brand-240: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Druid level=50 ammo_power=3 ammo_tval=3 brand_legal=1\n  brand_need_counts_once  MODE control\nGEOMETRY ammo_power=3 arrows=2\nRATING need_brand=0\nOUTCOME need_brand=0\nPassed\nnative-c/brand-240 finished: 1/1 passed\n",
+      "passed": true,
+      "rating": "need_brand=0",
+      "outcome": "need_brand=0"
+    },
+    "after": {
+      "raw": "native-c/brand-240: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Druid level=50 ammo_power=3 ammo_tval=3 brand_legal=1\n  brand_need_counts_once  MODE control\nGEOMETRY ammo_power=3 arrows=2\nRATING need_brand=0\nOUTCOME need_brand=0\nPassed\nnative-c/brand-240 finished: 1/1 passed\n",
+      "passed": true,
+      "rating": "need_brand=0",
+      "outcome": "need_brand=0"
+    }
+  }
+}
