@@ -31,8 +31,8 @@ From a clone of `diegoami/neo-angband-tracker`, copy these three commands:
 
 ```sh
 git fetch https://github.com/diegoami/neo-angband-tracker.git task/homeblows-313-evidence
-git show PINSHA:docs/audit/c-reports/homeblows-313/reproduce.py > /tmp/reproduce-homeblows-313.py
-python3 /tmp/reproduce-homeblows-313.py --fixtures-ref PINSHA --full-tests
+git show 0d3c1316a971270c67c6fed234a0d1ea0fa1c70e:docs/audit/c-reports/homeblows-313/reproduce.py > /tmp/reproduce-homeblows-313.py
+python3 /tmp/reproduce-homeblows-313.py --fixtures-ref 0d3c1316a971270c67c6fed234a0d1ea0fa1c70e --full-tests
 ```
 
 The runner builds original and corrected variants from pristine C
