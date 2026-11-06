@@ -124,3 +124,20 @@ no CI classification rule, runtime code, dependency, test, package version or
 historical measurement changes. Original receipt text is preserved behind its
 front-door erratum. Runtime full/live provenance belongs to PR300 and its code
 merge, rather than a repeated fourteen-thousand-test run for this prose correction.
+
+## Consumer scope supersession — 2026-11-06
+
+The owner subsequently made Mandos a bug-fix consumer and withdrew accepted-birth/
+seed433 as a mandatory runtime requirement. It prefers unpatched published beta.3;
+actual Mandos command-path tests decide whether any gameplay carry is necessary.
+The release audit's missing432/433 facts are not a requirement to apply both.
+Source5's event-subscriber contract and source6's optional provenance proposal
+remain independent upstream work; removing a consumer dependency does not mark
+either source fixed. Historical enhanced profiles and patches remain preserved.
+
+Mandos180 qualifies the published Core/harness profile separately from official
+desktop/web host policy. An installed Mandos API2 controller is not in the
+release's compiled first-party origin list; package tests alone do not prove
+interactive stock-host compatibility. Source review found no supported
+configuration-only promotion route. This follow-up does not add an origin,
+bypass policy, rewrite the host or deploy the existing lab.
