@@ -1,0 +1,34 @@
+{
+  "town": {
+    "label": "Half out of lunal mode",
+    "explanation": "The Borg is in lunal mode - both halves of the state set - and the stair-scum bail fires in town. The original cleared only the lunal_mode flag, leaving fleeing_lunal set: the caution phase kept treating the Borg as lunal while the mode flag said otherwise. The correction clears the pair, as the normal lunal exit does: both flags false.",
+    "before": {
+      "raw": "native-c/lunal-314: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Warrior depth=0\n  leaving_scumming_clears_the_lunal_pair  MODE town\nGEOMETRY lunal_mode=0 fleeing_lunal=1\nRATING lunal_mode=0 fleeing_lunal=1\nOUTCOME lunal_mode=0 fleeing_lunal=1\nFailed\n    native-c/lunal-314:136: requirement '!borg.goal.fleeing_lunal' failed\nnative-c/lunal-314 finished: 0/1 passed\n",
+      "passed": false,
+      "rating": "lunal_mode=0 fleeing_lunal=1",
+      "outcome": "lunal_mode=0 fleeing_lunal=1"
+    },
+    "after": {
+      "raw": "native-c/lunal-314: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Warrior depth=0\n  leaving_scumming_clears_the_lunal_pair  MODE town\nGEOMETRY lunal_mode=0 fleeing_lunal=0\nRATING lunal_mode=0 fleeing_lunal=0\nOUTCOME lunal_mode=0 fleeing_lunal=0\nPassed\nnative-c/lunal-314 finished: 1/1 passed\n",
+      "passed": true,
+      "rating": "lunal_mode=0 fleeing_lunal=0",
+      "outcome": "lunal_mode=0 fleeing_lunal=0"
+    }
+  },
+  "pack": {
+    "label": "Control: the full-pack bail",
+    "explanation": "A full pack bails out of stair scumming before any flag is touched: both halves stay set in both variants, and the complete log is byte-identical.",
+    "before": {
+      "raw": "native-c/lunal-314: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Warrior depth=2\n  leaving_scumming_clears_the_lunal_pair  MODE pack\nGEOMETRY lunal_mode=1 fleeing_lunal=1\nRATING lunal_mode=1 fleeing_lunal=1\nOUTCOME lunal_mode=1 fleeing_lunal=1\nPassed\nnative-c/lunal-314 finished: 1/1 passed\n",
+      "passed": true,
+      "rating": "lunal_mode=1 fleeing_lunal=1",
+      "outcome": "lunal_mode=1 fleeing_lunal=1"
+    },
+    "after": {
+      "raw": "native-c/lunal-314: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Warrior depth=2\n  leaving_scumming_clears_the_lunal_pair  MODE pack\nGEOMETRY lunal_mode=1 fleeing_lunal=1\nRATING lunal_mode=1 fleeing_lunal=1\nOUTCOME lunal_mode=1 fleeing_lunal=1\nPassed\nnative-c/lunal-314 finished: 1/1 passed\n",
+      "passed": true,
+      "rating": "lunal_mode=1 fleeing_lunal=1",
+      "outcome": "lunal_mode=1 fleeing_lunal=1"
+    }
+  }
+}
