@@ -431,6 +431,9 @@ static bool adjust_order_ops_depth_block(
         mem_free(operators->items[i]);
         operators->items[i] = NULL;
     }
+    /* Release the backing pointer array too: it is allocated separately
+     * by borg_array_add() once the block has an operator. */
+    mem_free(operators->items);
     mem_free(operators);
     operators = NULL;
 
