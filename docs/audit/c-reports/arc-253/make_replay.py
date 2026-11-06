@@ -3,7 +3,7 @@ from pathlib import Path
 root=Path(sys.argv[1]);data={}
 CASES={
  'arc-bystander':('A bystander behind the spray','A Mage considers Acid Spray, a sixty-degree arc, at a kobold four grids north. Another kobold stands four grids south - inside the ten-grid range but one hundred eighty degrees off the spray. The original angle test reorients the spray target instead of the grid being scanned, so every grid receives the same angle difference and the spray counts every monster in range and line of sight: the value includes the southern kobold. The correction measures each grid, and the off-arc bystander adds nothing.'),
- 'arc-both':('Control: two monsters inside the spray','Two kobolds stand north, both within the sixty-degree arc. Both versions count both monsters, and the complete log is byte-identical before and after the correction: the fix removes only the off-angle counting.'}
+ 'arc-both':('Control: two monsters inside the spray','Two kobolds stand north, both within the sixty-degree arc. Both versions count both monsters, and the complete log is byte-identical before and after the correction: the fix removes only the off-angle counting.')}
 for mode,(label,explanation) in CASES.items():
  item={'label':label,'explanation':explanation}
  for phase in ('before','after'):
