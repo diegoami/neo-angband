@@ -32,3 +32,9 @@ in RULES.md; linked logs or passing automation alone are insufficient.
 For a fresh cloud checkout, follow the native C setup and pinned reproduction
 in docs/SESSION.md. Read checkpoint207 for current work before starting a task;
 no workstation /tmp directory or engine checkout is required.
+
+Owner-accepted report format: follow PR226 and issue82. Lead with what the
+player sees and the measured consequence, provide three copyable commands
+that build the comparison and generate an offline browser replay, explain
+what to click and what changes, and keep source pins/raw logs below the
+readable walkthrough. Do not substitute technical receipts for that format.

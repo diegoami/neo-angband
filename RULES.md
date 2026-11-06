@@ -112,3 +112,12 @@
     (collapsible where useful). Do not make the owner navigate internal PRs,
     checkpoints or raw logs to find the filing material. This handoff is for the
     owner; it does not authorize this agent to post upstream under a standing pause.
+
+    Owner-accepted presentation examples are
+    https://github.com/diegoami/neo-angband-tracker/pull/226 and
+    https://github.com/diegoami/neo-angband-tracker/issues/82.
+    Match their practical explanation, three-command reproduction, generated
+    offline replay and explicit click-through instructions. Put the observable
+    before/after result and unchanged controls before code-level receipts.
+    Explain the strength and limits of the measured consequence plainly; an
+    extra cast/mana cost must not be presented as measured combat harm.
