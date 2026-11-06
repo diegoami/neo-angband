@@ -1,4 +1,4 @@
-# Human verification: CBUG-0002 / source issue #14 / local proposal #210
+# Verification: CBUG-0002 / source issue #14 / local proposal #210
 
 When the Borg recovers from being knocked out, it should resume handling fight
 messages such as "You hit the kobold" and "You have slain the kobold". Instead,
@@ -17,7 +17,7 @@ persistent message-processing fault is real, but high practical severity has not
 been established. Further investigation is parked behind bugs with demonstrated
 crashes, stuck behavior, resource waste or harmful survival/combat decisions.
 
-Here is how a human can check the cause and the measured effect without trusting
+Here is how to check the cause and the measured effect without trusting
 that explanation or a green test.
 
 Run the source commands from any clone of diegoami/neo-angband-tracker containing
@@ -249,7 +249,6 @@ The convincing claim is therefore deliberately specific: **a reachable knockout
 message sets a gate that has no runtime reset; the native scenario then shows
 lost post-recovery combat reactions, and correcting only the reset restores
 them while the three controls remain identical.** No subsequent autonomous
-strategy change, player death or lost save is demonstrated. If a human needs
-those stronger consequences before filing, this evidence does not establish
-them. The local proposal remains subject to the owner's judgment; it has not
-been filed upstream or applied to a consumer.
+strategy change, player death or lost save is demonstrated. The local proposal
+remains subject to the owner's judgment; it has not been filed upstream or
+applied to a consumer.

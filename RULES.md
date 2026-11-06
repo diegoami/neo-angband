@@ -23,7 +23,7 @@
    translation is not a port-fidelity defect. Mark Mandos departures explicitly.
 5. No angband/angband issues, PRs or comments from us under the standing pause.
    Keep C proposals in diegoami repositories with reproducible native legal
-   scenarios, controls, human consequence and patch links. Confirmed Neo
+   scenarios, controls, player consequence and patch links. Confirmed Neo
    engine/port reports may use their correct neostryder repository after
    reproduction, provenance and duplicate checks. Local proposals may be
    closed/unmerged with c-proposal/postponed while retaining branches/patches.
@@ -79,10 +79,10 @@
     monitor scope before running inherited tooling (see docs/BORG-RS-INTAKE.md).
 
 16. For every defect investigated or fixed by this session, include a self-contained
-    "Human verification" section in BOTH the canonical issue and fix PR. Write
+    "Verification" section in BOTH the canonical issue and fix PR. Write
     it for a skeptical maintainer who has not read the conversation. State the
     observable problem, intended behavior and exact source/build pins; give
-    copyable commands a human can run, the actual relevant output, and explain
+    copyable commands the reviewer can run, the actual relevant output, and explain
     what each result proves and does not prove. For claims such as an unused
     field or wrong variable, show a scoped exhaustive symbol search, classify
     declarations/reads/writes and inspect the decisive call-site context. Do not
@@ -91,9 +91,9 @@
     sequence with unchanged conditions, negative controls and their outcomes;
     expose synthetic interventions, reachability assumptions and practical
     limits. Link immutable full logs/fixtures/patches as supporting detail and
-    explain how the human can inspect or rerun them. Verbosity is welcome where
+    explain how to inspect or rerun them. Verbosity is welcome where
     it makes the reasoning checkable. Update this account when evidence or the
-    patch changes. Passing automation is not human acceptance: keep readiness
+    patch changes. Passing automation is not owner acceptance: keep readiness
     for the owner's external filing explicitly subject to their assessment.
 
 17. Make every source issue actionable from its opening screen: explain in everyday
@@ -105,8 +105,8 @@
     A clear coding mistake alone does not justify high priority. Reassess imported
     severity after investigation and park further low-impact work when appropriate.
     For every proposal prepared for owner filing, put the direct upstream compare/
-    Create pull request link, a copyable human-readable title and description, and
-    one direct immutable link to the human-readable evidence near the TOP of the
+    Create pull request link, a copyable plain-language title and description, and
+    one direct immutable link to the evidence explanation near the TOP of the
     canonical issue. Keep detailed commands/history below the concise explanation
     (collapsible where useful). Do not make the owner navigate internal PRs,
     checkpoints or raw logs to find the filing material. This handoff is for the
