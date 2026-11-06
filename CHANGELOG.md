@@ -52,6 +52,12 @@ still calls itself.
 
 - [Visible] [Modding-API] **Mods now receive the `input-flush` event.** `disturb()` ends by signalling it, as upstream's does (player-util.c:1674), so a mod with `event:input-flush` hears every disturbance - a run stopping, a rest reaching its condition, a hit landing - and can stop a multi-step action on it. The event was declared and grantable before, but nothing ever fired it. A handler that throws is logged and the disturbance still completes (#414).
 
+## [1.23.0-beta.3] - 2026-11-05
+
+### Fixed
+
+- [Visible] [Compatibility] **When the terrain of a grid the player can see changes during play, the remembered map now updates to the new terrain right away, as in Angband.** This applies when a door opens or closes, a wall is tunneled, or a rubble pile is cleared. Before, the remembered map kept the old terrain for that grid until something else refreshed it, so a program that plans from the remembered map, such as the Borg, treated a door it had just closed as still open and tried to close it again every turn while the game clock stood still. Grids the player cannot see are left alone, as before. Reported by diegoami.
+
 ## [1.23.0-beta.2] - 2026-10-30
 
 ### Fixed
