@@ -1,0 +1,34 @@
+{
+  "stale": {
+    "label": "The phantom in his own boots",
+    "explanation": "After a teleport plus a blindness transition, a tracked monster entry can still point at the grid the player now occupies. No real monster can share the player's grid, but the melee chooser accepted distance zero as \"adjacent\", picked the phantom as the best target, and queued +5 - the center square, not a direction - which trips the unexpected-direction abort and stops the Borg. The correction requires distance exactly one: the phantom is no target, and nothing is queued.",
+    "before": {
+      "raw": "native-c/staletarget-322: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Warrior level=1 depth=30 hp=20/20 mode=stale\n  stale_own_grid_is_not_a_melee_target  MODE stale\nGEOMETRY target=(11,11) player=(11,11) dist=0\nRATING acted=1 keys=\"+5\" center_attack=1\nOUTCOME acted=1 keys=\"+5\" center_attack=1\nFailed\n    native-c/staletarget-322:187: requirement 'acted ? 1 : 0' == '0' failed\n      acted ? 1 : 0:                1\n      0:                0\nnative-c/staletarget-322 finished: 0/1 passed\n",
+      "passed": false,
+      "rating": "acted=1 keys=\"+5\" center_attack=1",
+      "outcome": "acted=1 keys=\"+5\" center_attack=1"
+    },
+    "after": {
+      "raw": "native-c/staletarget-322: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Warrior level=1 depth=30 hp=20/20 mode=stale\n  stale_own_grid_is_not_a_melee_target  MODE stale\nGEOMETRY target=(11,11) player=(11,11) dist=0\nRATING acted=0 keys=\"\" center_attack=0\nOUTCOME acted=0 keys=\"\" center_attack=0\nPassed\nnative-c/staletarget-322 finished: 1/1 passed\n",
+      "passed": true,
+      "rating": "acted=0 keys=\"\" center_attack=0",
+      "outcome": "acted=0 keys=\"\" center_attack=0"
+    }
+  },
+  "control": {
+    "label": "Control: a real adjacent kobold",
+    "explanation": "A genuinely adjacent monster one grid south is a valid target in both variants: the Borg attacks it with +2, and the complete log is byte-identical - the correction rejects only the impossible own-grid case.",
+    "before": {
+      "raw": "native-c/staletarget-322: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Warrior level=1 depth=30 hp=20/20 mode=control\n  stale_own_grid_is_not_a_melee_target  MODE control\nGEOMETRY target=(12,11) player=(11,11) dist=1\nRATING acted=1 keys=\"+2\" center_attack=0\nOUTCOME acted=1 keys=\"+2\" center_attack=0\nPassed\nnative-c/staletarget-322 finished: 1/1 passed\n",
+      "passed": true,
+      "rating": "acted=1 keys=\"+2\" center_attack=0",
+      "outcome": "acted=1 keys=\"+2\" center_attack=0"
+    },
+    "after": {
+      "raw": "native-c/staletarget-322: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Warrior level=1 depth=30 hp=20/20 mode=control\n  stale_own_grid_is_not_a_melee_target  MODE control\nGEOMETRY target=(12,11) player=(11,11) dist=1\nRATING acted=1 keys=\"+2\" center_attack=0\nOUTCOME acted=1 keys=\"+2\" center_attack=0\nPassed\nnative-c/staletarget-322 finished: 1/1 passed\n",
+      "passed": true,
+      "rating": "acted=1 keys=\"+2\" center_attack=0",
+      "outcome": "acted=1 keys=\"+2\" center_attack=0"
+    }
+  }
+}
