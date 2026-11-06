@@ -1,0 +1,6 @@
+dungeon {'exit': 0, 'completed': True, 'passed': True, 'used': 1, 'potions_spent': 1, 'stairs_known': 1, 'stairs_feat': 6, 'native_stairs': 6, 'hp': 421}
+town-control {'exit': 0, 'completed': True, 'passed': True, 'used': 0, 'potions_spent': 0, 'stairs_known': 0, 'stairs_feat': 0, 'native_stairs': 6, 'hp': 421}
+unknown-control {'exit': 0, 'completed': True, 'passed': True, 'used': 0, 'potions_spent': 0, 'stairs_known': 0, 'stairs_feat': 0, 'native_stairs': 6, 'hp': 421}
+unrelated-control {'exit': 0, 'completed': True, 'passed': True, 'used': 0, 'potions_spent': 0, 'stairs_known': 0, 'stairs_feat': 0, 'native_stairs': 6, 'hp': 421}
+augmentation-dungeon {'exit': 0, 'completed': True, 'passed': True, 'used': 1, 'potions_spent': 1, 'stairs_known': 0, 'stairs_feat': 0, 'native_stairs': 6, 'hp': 421}
+augmentation-town {'exit': 0, 'completed': True, 'passed': True, 'used': 1, 'potions_spent': 1, 'stairs_known': 0, 'stairs_feat': 0, 'native_stairs': 6, 'hp': 421}

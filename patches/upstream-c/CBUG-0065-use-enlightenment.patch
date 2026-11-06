@@ -1,0 +1,18 @@
+diff --git a/src/borg/borg-item-use.c b/src/borg/borg-item-use.c
+index 020b03bbb..1785b2213 100644
+--- a/src/borg/borg-item-use.c
++++ b/src/borg/borg-item-use.c
+@@ -1116,9 +1116,12 @@ bool borg_use_things(void)
+         switch (item->tval) {
+         case TV_POTION: {
+-            /* Check the scroll */
++            /* Check the potion */
+             if (item->sval == sv_potion_enlightenment) {
+                 /* Never quaff these in town */
+                 if (!borg.trait[BI_CDEPTH])
+                     break;
++
++                if (borg_quaff_potion(item->sval))
++                    return true;
+             } else if (item->sval == sv_potion_inc_all)
+                 /* Try quaffing the potion */

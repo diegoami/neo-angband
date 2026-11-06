@@ -1,0 +1,12 @@
+native-c/CBUG-0065: starting...
+SETUP seed=1000 class=Warrior level=40 depth=30 hp=421 potion=Enlightenment aware=1 light=2 food=4 safe=1
+STAIRS x=30 y=20 native_feat=6 visible=0 known=0
+  use_enlightenment_in_dungeon_only  MODE dungeon
+FRAME {"stage":"start","hp":421,"potions":2,"stairs_known":0,"stairs_feat":0}
+DECISION used=1 keys=2 sequence=qc
+ENGINE An image of your surroundings forms in your mind...
+ENGINE You have a Potion of Enlightenment (c).
+FRAME {"stage":"use","hp":421,"potions":1,"stairs_known":1,"stairs_feat":6}
+OUTCOME used=1 potions_spent=1 stairs_known=1 stairs_feat=6 native_stairs=6 hp=421
+Passed
+native-c/CBUG-0065 finished: 1/1 passed
