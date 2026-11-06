@@ -1,0 +1,53 @@
+{
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "fix": "d7b42db02cc74473bc175d2c37dd6feba1a77811",
+  "fixtures_ref": "c2b19026ecc7dcbe95fcc398301fa0d83c064fbc",
+  "cases": {
+    "before": {
+      "stack": {
+        "exit": 0,
+        "passed": false,
+        "geometry": "iqty=10 weight=40 weight_one=40",
+        "rating": "borg_blows=1 engine_blows=2",
+        "outcome": "borg_blows=1 engine_blows=2"
+      },
+      "single": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "iqty=1 weight=40 weight_one=40",
+        "rating": "borg_blows=2 engine_blows=2",
+        "outcome": "borg_blows=2 engine_blows=2"
+      }
+    },
+    "after": {
+      "stack": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "iqty=10 weight=40 weight_one=40",
+        "rating": "borg_blows=2 engine_blows=2",
+        "outcome": "borg_blows=2 engine_blows=2"
+      },
+      "single": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "iqty=1 weight=40 weight_one=40",
+        "rating": "borg_blows=2 engine_blows=2",
+        "outcome": "borg_blows=2 engine_blows=2"
+      }
+    }
+  },
+  "identical_full_logs": [
+    "single"
+  ],
+  "full_tests": {
+    "before": {
+      "units": "965/965",
+      "frontends": "5/5"
+    },
+    "after": {
+      "units": "965/965",
+      "frontends": "5/5"
+    }
+  },
+  "fixed_source_sha256": "8a7a4abdd37ba7a1c28474d5f30fed92c827dcd75f807ea238c7ff455b41c426"
+}

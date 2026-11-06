@@ -1,0 +1,34 @@
+{
+  "stack": {
+    "label": "The ten rapiers that weighed as one",
+    "explanation": "A stack of ten rapiers in the pack, weighed by the home-value maths. The Borg multiplied the weapon weight by the stack size, so ten 4-pound rapiers were treated as one 40-pound sword: the Borg computed 1 blow where the engine gives 2 per weapon. The correction weighs one weapon, like the engine: 2 equals 2.",
+    "before": {
+      "raw": "native-c/homeblows-313: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Warrior str=17 dex=16 stack=10\n  stack_weighs_like_one_weapon  MODE stack\nGEOMETRY iqty=10 weight=40 weight_one=40\nRATING borg_blows=1 engine_blows=2\nOUTCOME borg_blows=1 engine_blows=2\nFailed\n    native-c/homeblows-313:145: requirement 'borg_blows' == 'engine_blows' failed\n      borg_blows:                1\n      engine_blows:                2\nnative-c/homeblows-313 finished: 0/1 passed\n",
+      "passed": false,
+      "rating": "borg_blows=1 engine_blows=2",
+      "outcome": "borg_blows=1 engine_blows=2"
+    },
+    "after": {
+      "raw": "native-c/homeblows-313: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Warrior str=17 dex=16 stack=10\n  stack_weighs_like_one_weapon  MODE stack\nGEOMETRY iqty=10 weight=40 weight_one=40\nRATING borg_blows=2 engine_blows=2\nOUTCOME borg_blows=2 engine_blows=2\nPassed\nnative-c/homeblows-313 finished: 1/1 passed\n",
+      "passed": true,
+      "rating": "borg_blows=2 engine_blows=2",
+      "outcome": "borg_blows=2 engine_blows=2"
+    }
+  },
+  "single": {
+    "label": "Control: a single rapier",
+    "explanation": "A lone rapier has a stack size of one, so the multiplied and single weights agree: 2 blows in both variants, and the complete log is byte-identical.",
+    "before": {
+      "raw": "native-c/homeblows-313: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Warrior str=17 dex=16 stack=1\n  stack_weighs_like_one_weapon  MODE single\nGEOMETRY iqty=1 weight=40 weight_one=40\nRATING borg_blows=2 engine_blows=2\nOUTCOME borg_blows=2 engine_blows=2\nPassed\nnative-c/homeblows-313 finished: 1/1 passed\n",
+      "passed": true,
+      "rating": "borg_blows=2 engine_blows=2",
+      "outcome": "borg_blows=2 engine_blows=2"
+    },
+    "after": {
+      "raw": "native-c/homeblows-313: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Warrior str=17 dex=16 stack=1\n  stack_weighs_like_one_weapon  MODE single\nGEOMETRY iqty=1 weight=40 weight_one=40\nRATING borg_blows=2 engine_blows=2\nOUTCOME borg_blows=2 engine_blows=2\nPassed\nnative-c/homeblows-313 finished: 1/1 passed\n",
+      "passed": true,
+      "rating": "borg_blows=2 engine_blows=2",
+      "outcome": "borg_blows=2 engine_blows=2"
+    }
+  }
+}

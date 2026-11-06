@@ -1,0 +1,84 @@
+{
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "fix": "d7b42db02cc74473bc175d2c37dd6feba1a77811",
+  "fixtures_ref": "c2b19026ecc7dcbe95fcc398301fa0d83c064fbc",
+  "cases": {
+    "before": {
+      "stack": {
+        "exit": 0,
+        "passed": false,
+        "geometry": "iqty=10 weight=40 weight_one=40",
+        "rating": "borg_blows=1 engine_blows=2",
+        "outcome": "borg_blows=1 engine_blows=2"
+      },
+      "single": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "iqty=1 weight=40 weight_one=40",
+        "rating": "borg_blows=2 engine_blows=2",
+        "outcome": "borg_blows=2 engine_blows=2"
+      }
+    },
+    "after": {
+      "stack": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "iqty=10 weight=40 weight_one=40",
+        "rating": "borg_blows=2 engine_blows=2",
+        "outcome": "borg_blows=2 engine_blows=2"
+      },
+      "single": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "iqty=1 weight=40 weight_one=40",
+        "rating": "borg_blows=2 engine_blows=2",
+        "outcome": "borg_blows=2 engine_blows=2"
+      }
+    }
+  },
+  "identical_controls": [
+    "single"
+  ],
+  "full_tests": {
+    "before": {
+      "units": "965/965",
+      "frontends": "5/5"
+    },
+    "after": {
+      "units": "965/965",
+      "frontends": "5/5"
+    }
+  },
+  "fixed_source_sha256": "8a7a4abdd37ba7a1c28474d5f30fed92c827dcd75f807ea238c7ff455b41c426",
+  "compiler": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+  "cmake": "cmake version 4.2.3",
+  "browser": {
+    "engine": "Google Chrome for Testing 156.0.8078.4 (headless dump-dom)",
+    "verification": "16 checks against the rendered DOM and payload: 2 situations x 2 variants; stack borg 1 vs engine 2 before, 2 == 2 after; single-rapier control byte-identical raw logs; no n/a or undefined fields; zero console errors; generated replay JS validated with node --check"
+  },
+  "maintenance_base": "f186aa1fce2e590eb9bbcb91dc369f3f8b6af688",
+  "sha256": {
+    "README.md": "134deaaf362fc138016b0d1bf5d00b3a6592fe08702b53ec001a0b3585be6133",
+    "after-alltests.log": "c6572dd2f293e9feae47d530da9d94d037f117702787755ccad702caccfa7a59",
+    "after-build.log": "d564dad573c953206a718639ed0d6a390c859beb8040edb798df186a33d5187f",
+    "after-results.json": "21e037afd984452226ad22629ac2c2aea3151d4abe1e27306fe7be871603db6f",
+    "after-scenarios.log": "c220aed0b6c013e9dea18feb635be1098ed1cbe9cd4f0b3a1cf86dc0c928a9f2",
+    "after-single.log": "8ce8fdcfceceea798589679aef85ac1ae15dd7500c0c5319a63879d2abb71e71",
+    "after-stack.log": "9ad422697fdf74e6251b8fda22a72119544a83791be87ce006c0fa52a9ee35b7",
+    "before-alltests.log": "e94d8f5b21960f0edd3885572ecb14f6861de3984ecbcb094d980cfbaa3626af",
+    "before-build.log": "320f1dac902e14e080aa6e2dd087ef07c6dc243934f0780f3c8c71482da34a85",
+    "before-results.json": "035dcbbfee3486f50084a67c197807a7623eac7e8c7410c6952b24a5a2a5d63e",
+    "before-scenarios.log": "cdb25be1321d2b96ab5c8c6b83237a21fd4f518ccc6c76c977cb655171376706",
+    "before-single.log": "8ce8fdcfceceea798589679aef85ac1ae15dd7500c0c5319a63879d2abb71e71",
+    "before-stack.log": "0f45271d338ba86142e31179c9569445ceda6a22b2625d47886bdf448b9749e5",
+    "borg.txt": "80738da248ed74e343925e0348fc75da993d8c03ffff03c7bce1a9090005be47",
+    "configure.log": "6cb21ab853c91ff4900b598b86d287c9cd43af982ff40e59091cb1fca9c9c419",
+    "make_replay.py": "ba60a5dd993b141f99c4d3c1f697e8799ab7594ec7e6ea7ecd20d19c6a6c0527",
+    "replay-data.json": "5930789ab038adc6b107db31aaa2f4c51b4202a325f9606aa3e765ff98a22078",
+    "replay.html": "39cad9b3930b0380e52bdf5a2f225fbcadefa7c38e8e972566a7ccd8c7aa44dd",
+    "reproduce.py": "46b1e33b61c7544a66b5be69d33e3c75317e36af438f0af35b8dc08d53a98f72",
+    "result.json": "e0e60ee85ff8db4ddf2f9dc4711bfc301579d63e8597e4f1cce2b3e4a4fae150",
+    "run-cases.py": "e53473081e3098d0ff3b219add79440163f31aee71d01ec7b5ffeb2f0cceffd0",
+    "scenario.c": "13dcaf04bb6797f4ba81592789a0d2d420d2ac4834416e18db8501772e6c0004"
+  }
+}
