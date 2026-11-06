@@ -1,0 +1,28 @@
+{
+  "phantom": {
+    "exit": 0,
+    "passed": true,
+    "geometry": {
+      "raw": "player=(11,11) own_feat=1 nw_feat=6 far_stair=(30,30) track_more=1"
+    },
+    "rating": {
+      "raw": "acted=1 keys=\"\" stair_key=0"
+    },
+    "outcome": {
+      "raw": "acted=1 stair_key=0 own_is_stair=0"
+    }
+  },
+  "on-stair": {
+    "exit": 0,
+    "passed": true,
+    "geometry": {
+      "raw": "player=(11,11) own_feat=6 nw_feat=6 far_stair=(30,30) track_more=2"
+    },
+    "rating": {
+      "raw": "acted=1 keys=\">\" stair_key=62"
+    },
+    "outcome": {
+      "raw": "acted=1 stair_key=62 own_is_stair=1"
+    }
+  }
+}

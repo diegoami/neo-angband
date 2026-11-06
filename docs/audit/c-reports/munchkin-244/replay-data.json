@@ -1,0 +1,38 @@
+{
+  "phantom": {
+    "label": "A staircase the Borg was not standing on",
+    "explanation": "A young Borg in munchkin mode stands on plain floor and remembers a down staircase one diagonal step to the north-west - the grid the adjacent-monster scan examines last. A sealed stair in a permanent-wall pocket keeps the stair flows failing so the decision reaches the take-the-stair tests. The original tests the neighbours feature through the stale pointer and queues the take-stair key while standing on floor; in the game that keypress fails without taking a turn, so the Borg can repeat the same decision forever. The correction reads the Borgs own grid and the phantom keypress disappears.",
+    "before": {
+      "raw": "native-c/munchkin-244: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Warrior level=1 depth=30 hp=20/20 track_more=1\n  stair_key_only_on_own_stair  MODE phantom\nGEOMETRY player=(11,11) own_feat=1 nw_feat=6 far_stair=(30,30) track_more=1\nRATING acted=1 keys=\">\" stair_key=62\nOUTCOME acted=1 stair_key=62 own_is_stair=0\nFailed\n    native-c/munchkin-244:179: requirement '!stair_key || own_more || own_less' failed\nnative-c/munchkin-244 finished: 0/1 passed\n",
+      "passed": false,
+      "geometry": "player=(11,11) own_feat=1 nw_feat=6 far_stair=(30,30) track_more=1",
+      "rating": "acted=1 keys=\">\" stair_key=62",
+      "outcome": "acted=1 stair_key=62 own_is_stair=0"
+    },
+    "after": {
+      "raw": "native-c/munchkin-244: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Warrior level=1 depth=30 hp=20/20 track_more=1\n  stair_key_only_on_own_stair  MODE phantom\nGEOMETRY player=(11,11) own_feat=1 nw_feat=6 far_stair=(30,30) track_more=1\nRATING acted=1 keys=\"\" stair_key=0\nOUTCOME acted=1 stair_key=0 own_is_stair=0\nPassed\nnative-c/munchkin-244 finished: 1/1 passed\n",
+      "passed": true,
+      "geometry": "player=(11,11) own_feat=1 nw_feat=6 far_stair=(30,30) track_more=1",
+      "rating": "acted=1 keys=\"\" stair_key=0",
+      "outcome": "acted=1 stair_key=0 own_is_stair=0"
+    }
+  },
+  "on-stair": {
+    "label": "Control: standing on a real staircase",
+    "explanation": "The same young Borg stands on a real, seen down staircase. The power-diving section takes it correctly before the scan runs, and the complete log is byte-identical before and after the correction: the fix removes only the phantom keypress, not legitimate stair-taking.",
+    "before": {
+      "raw": "native-c/munchkin-244: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Warrior level=1 depth=30 hp=20/20 track_more=2\n  stair_key_only_on_own_stair  MODE on-stair\nGEOMETRY player=(11,11) own_feat=6 nw_feat=6 far_stair=(30,30) track_more=2\nRATING acted=1 keys=\">\" stair_key=62\nOUTCOME acted=1 stair_key=62 own_is_stair=1\nPassed\nnative-c/munchkin-244 finished: 1/1 passed\n",
+      "passed": true,
+      "geometry": "player=(11,11) own_feat=6 nw_feat=6 far_stair=(30,30) track_more=2",
+      "rating": "acted=1 keys=\">\" stair_key=62",
+      "outcome": "acted=1 stair_key=62 own_is_stair=1"
+    },
+    "after": {
+      "raw": "native-c/munchkin-244: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Warrior level=1 depth=30 hp=20/20 track_more=2\n  stair_key_only_on_own_stair  MODE on-stair\nGEOMETRY player=(11,11) own_feat=6 nw_feat=6 far_stair=(30,30) track_more=2\nRATING acted=1 keys=\">\" stair_key=62\nOUTCOME acted=1 stair_key=62 own_is_stair=1\nPassed\nnative-c/munchkin-244 finished: 1/1 passed\n",
+      "passed": true,
+      "geometry": "player=(11,11) own_feat=6 nw_feat=6 far_stair=(30,30) track_more=2",
+      "rating": "acted=1 keys=\">\" stair_key=62",
+      "outcome": "acted=1 stair_key=62 own_is_stair=1"
+    }
+  }
+}
