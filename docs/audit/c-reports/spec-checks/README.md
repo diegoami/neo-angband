@@ -1,19 +1,24 @@
 # Source-level checks for the C Borg findings
 
 These are the standalone C programs used to check the branch, counter and
-formula claims in the C Borg findings. Each one **transcribes the relevant
-code verbatim** from the pinned C reference
-(`angband/angband` at `e473720ed88a0f0c7ca66815cef3000eb4a38bc3`) and runs
-it over synthetic inputs.
+formula claims in the C Borg findings filed as
+[#310](https://github.com/diegoami/neo-angband-tracker/issues/310) through
+[#316](https://github.com/diegoami/neo-angband-tracker/issues/316).
+
+Each one **transcribes the relevant code verbatim** from the upstream C
+reference (`angband/angband` `master` at
+`e473720ed88a0f0c7ca66815cef3000eb4a38bc3`) and runs it over synthetic
+inputs.
 
 They are **source-level checks, not game runs**. A program here proves that
 the transcribed code does what the finding says; it does not prove that the
-game reaches that state. The findings say which of the two they have.
+game reaches that state. Each finding says which of the two it has, and
+carries the label that records it.
 
 ## Running them
 
 ```sh
-cd docs/c-borg/checks
+cd docs/audit/c-reports/spec-checks
 for f in *.c; do
     gcc -O0 -Wall -Wextra -o "/tmp/${f%.c}" "$f" && "/tmp/${f%.c}"
 done
@@ -55,9 +60,9 @@ which shows `borg_glow_y` ending exactly where `borg_glow_x` begins.
 
 ## How the transcriptions were checked
 
-Each transcription was compared against the pinned source line by line, and
-the data tables and class parameters were taken from the pinned tree rather
-than from memory:
+Each transcription was compared against the upstream source line by line,
+and the data tables and class parameters were taken from the pinned tree
+rather than from memory:
 
 * `blows_test.c` uses `adj_str_blow` and `blows_table` verbatim from
   `src/player-calcs.c:548` and `:889`, and the Warrior's parameters from
@@ -69,8 +74,8 @@ than from memory:
 ## The runtime side
 
 The runtime evidence is not in this directory. It comes from the native C
-game built from the pinned tree with `SUPPORT_BORG=ON` and the headless
+game built from the upstream commit with `SUPPORT_BORG=ON` and the headless
 deterministic Borg harness (`SUPPORT_BORG_HARNESS=ON`), which logs the
-Borg's keypress stream and its full message/decision trace. See
-[BORG_SPEC.md §18](../BORG_SPEC.md) for the exact commands and the
-isolation arrangement that keeps the run off the shared user directory.
+Borg's keypress stream and its full message/decision trace. The
+specification's §18 gives the exact commands and the isolation arrangement
+that keeps a run off the shared user directory.

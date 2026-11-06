@@ -1,19 +1,8 @@
-# The C Borg: behavioural specification for a rebuild
+# The C Borg: purpose and architecture
 
-**Status:** specification, not a proposal. It describes what the original Angband
-C Borg *does*, so a rebuild can reuse the accumulated knowledge instead of
-rediscovering it.
-
-**Why this document exists in this fork.** This fork tracks bugs in the C
-Borg and in Neo Angband. The C Borg's findings live on the issue board
-(`upstream-c` + `finding` labels) with their provenance in
-`docs/c-bugs/catalogue.json`. That is the authoritative record of *what is
-broken and whether it is fixed*. What the board cannot do is answer the
-question a reader actually has when they open a Borg source file: **what is
-known to be wrong with this function, and what does the Borg rely on here?**
-This document is the index that answers it, in one place, at a known source
-revision. It exists to make the fork's accumulated knowledge usable, not to
-restate it.
+**Status:** specification, not a proposal. It explains what the original
+Angband C Borg *is for* and how it is put together, so that a rebuild — or a
+reader trying to understand a defect — does not have to rediscover it.
 
 **Source of truth:** the C Borg in
 [`angband/angband`](https://github.com/angband/angband) at
@@ -22,18 +11,16 @@ restate it.
 e473720ed88a0f0c7ca66815cef3000eb4a38bc3
 ```
 
-file `src/borg/` (59 `.c` files, 64,147 lines of C plus headers).
+file `src/borg/` (59 `.c` files, 64,147 lines of C plus headers). That
+commit is upstream's `master` head; see §0.
 
-That commit **is** the current `angband/angband` `master` head — it is not a
-fork-local snapshot and not an import of an older release. The comparison
-`angband/angband` `e473720ed...master` reports `status: identical`,
-`ahead_by: 0`, `behind_by: 0`, so `src/borg/` here is byte-for-byte what
-upstream ships today. The same commit is recorded as this session's C
-baseline in [`session.json`](../../session.json) (`baselines.c`) and as the C
-source pin in [`docs/c-bugs/catalogue.json`](../c-bugs/catalogue.json)
-(`sources.c.commit`); the repository's own watcher
-(`node tools/c-upstream-watch.mjs`) compares the two and reports *"Official
-source still equals the recorded reference."*
+**This document does not list the Borg's bugs.** They are on this fork's
+issue board, and their state changes there. What this document does is
+explain **what the Borg is for and how it is built**, so that the bugs make
+sense: a defect is only legible against the behaviour it disturbs. §11
+describes the *shapes* of defect the architecture produces, with one
+example each, so a rebuild can recognise them; the individual findings stay
+on the board.
 
 **Scope:** the C Borg only. This document says nothing about the Neo
 TypeScript port (`neostryder/neo-angband-mod-borg`) or the Mandos derivative,
@@ -47,10 +34,10 @@ sane thing; the sane thing is stated alongside, and the choice is left open.
 
 ---
 
-## 0. The upstream commit id, and why it is the one to use
+## 0. The upstream commit this describes
 
-Every claim in this document is a claim about one specific commit of the
-upstream C Borg. That commit is:
+Every statement below is a statement about one specific commit of the
+upstream C Borg:
 
 | Field | Value |
 | --- | --- |
@@ -58,73 +45,50 @@ upstream C Borg. That commit is:
 | Branch | `master` |
 | Commit | `e473720ed88a0f0c7ca66815cef3000eb4a38bc3` |
 | Commit date | 2026-10-27 |
-| Subject | `Term_clear() and loop over height calling Term_erase() are not synonyms` |
 | Path read | `src/borg/` |
 | Size read | 59 `.c` files, 64,147 lines (plus headers) |
 
-**This commit is upstream's current `master` head.** The commit's subject is
-about `Term_clear()`/`Term_erase()` and has nothing to do with the Borg; it
-simply happens to be the newest upstream commit, and it carries `src/borg/`
-along unchanged. It was pushed on 2026-10-27, so "current" means "the tip as
-of today", not "actively developed".
-
-One check is load-bearing and the others restate it:
+That commit **is** upstream's `master` head, so `src/borg/` here is
+byte-for-byte what upstream ships. It is also this session's recorded C
+baseline (`session.json` → `baselines.c`) and the catalogue's C source pin
+(`docs/c-bugs/catalogue.json` → `sources.c.commit`), and the local
+`c-borg-reference` branch carries it unmodified:
 
 ```sh
-# 1. what upstream ships right now -- THIS is the check that matters
 gh api repos/angband/angband/commits/master --jq '.sha'
 #   -> e473720ed88a0f0c7ca66815cef3000eb4a38bc3
-
-# 2. what the session has pinned
-python3 -c "import json;print(json.load(open('session.json'))['baselines']['c'])"
-#   -> e473720ed88a0f0c7ca66815cef3000eb4a38bc3
-
-# 3. what the catalogue records as the C source
-python3 -c "import json;print(json.load(open('docs/c-bugs/catalogue.json'))['sources']['c']['commit'])"
-#   -> e473720ed88a0f0c7ca66815cef3000eb4a38bc3
-
-# 4. no drift between the pin and upstream's tip
-gh api "repos/angband/angband/compare/e473720ed88a0f0c7ca66815cef3000eb4a38bc3...master" \
-  --jq '"status=\(.status) ahead=\(.ahead_by) behind=\(.behind_by)"'
-#   -> status=identical ahead=0 behind=0
+git diff e473720ed origin/c-borg-reference -- src/borg   # empty
 ```
 
-Note that check 4 compares a commit against itself and so only says "no
-drift"; check 1 is the one that establishes "upstream's tip". The
-repository's own watcher does check 1 and compares it to the catalogue:
-
-```
-$ node tools/c-upstream-watch.mjs
-Official C master: e473720ed88a0f0c7ca66815cef3000eb4a38bc3
-Catalogue affected/reference pin: e473720ed88a0f0c7ca66815cef3000eb4a38bc3
-Official source still equals the recorded reference.
-```
-
-**Rules that follow from the link being direct.**
-
-1. A defect reported against this commit is a defect in **upstream's current
-   `master`**, not in a fork's copy of an old release. It can be filed
-   upstream as-is.
-2. When upstream `master` moves, the pin moves with it. The check to repeat
-   is check 1 above, plus `node tools/c-upstream-watch.mjs`, which reports
-   the affected C files and which catalogue findings reference them. A
-   changed `src/borg/` path is a **review signal, not proof of a fix**
-   (the watcher's own words).
-3. The local `c-borg-reference` branch and the native C worktree
-   (`.worktrees/angband-c`) carry this same commit as their C source base;
-   `git diff e473720ed origin/c-borg-reference -- src/borg` is empty, so the
-   reference is pristine.
-4. Every finding linked from §11 must name the commit it was read at. A
-   finding that survives a `master` move is re-checked at the new head; a
-   finding that does not is closed as fixed *by upstream*, not by us.
-5. The two open upstream Borg PRs (#6808, #6809) are **ours**, filed from
-   this fork. Upstream `master` itself has no Borg commit newer than the
-   pin, so there is nothing upstream has already changed underneath these
-   findings.
+Line numbers cited throughout are at that commit. When upstream `master`
+moves, the pin moves with it and the citations are re-read at the new head.
 
 ---
 
 ## 1. What the Borg is
+
+### 1.0 What it is for
+
+The Borg exists to **play Angband well without a human**. It is the
+original autoplayer: the thing you leave running overnight to push a
+character deeper than anyone would sit and watch, and the thing that
+produced the game records of deep, successful, unattended runs.
+
+That purpose shapes everything about it. An autoplayer that has to be
+watched is not an autoplayer, so it must be able to play for hours without
+supervision: it decides, it acts, it recovers from its own mistakes, and it
+keeps going. It plays to win rather than to survive — it will spend a
+potion on a fight it could walk away from if the potion is worth it, and
+it will push toward Morgoth rather than settle for a comfortable depth.
+And it does so through the only channel the game offers a player, which is
+the keyboard.
+
+The consequence is that the Borg is not a strategy and not a set of rules.
+It is a **decision loop**: perceive, evaluate, act, and repeat. Its
+"intelligence" is entirely in the middle step — a scoring function over
+the possibilities it can perceive.
+
+### 1.1 The mechanism
 
 The Borg is an **autoplayer**. It reads the game's screen and stats, decides
 what to do, and presses keys. It is not a rules engine: it never changes a
@@ -144,7 +108,7 @@ the fact that its "memory" of the world is a **screen-derived map**, not the
 game's own truth, and it must therefore re-derive everything it thinks it
 knows every turn.
 
-### 1.1 What it is not
+### 1.2 What it is not
 
 * It is not a cheat engine. It has a *separate* RNG (`borg_rand_local`) so its
   decisions do not consume the game's RNG stream and change the game's rolls.
@@ -650,36 +614,28 @@ early returns.
 **Known defect (CBUG-0016):** a stair predicate queues a climb before its
 phase guards finish.
 
-### 9.3 The recall-depth answer — **defect**
+### 9.3 Answering the game's prompts
 
-`borg_recall()` answers the game's prompt *"Set recall depth to current
-depth? [y/n]"*. The game's meaning
-(`src/effect-handler-general.c:1132`) is:
+Several game prompts want a yes/no answer, and the Borg has to answer them
+without a human. The mechanism is the same everywhere: the Borg queues the
+keypress and then queues `ESCAPE` to dismiss the prompt.
 
-* `y` → `player->recall_depth = player->max_depth = player->depth`
-  (the recall depth is **reset to the current depth**)
-* `n` → the recall depth is left alone
+The prompt *"Set recall depth to current depth? [y/n]"* is the clearest
+example, because the Borg's answer depends on a chain of five conditions
+(§11.2 covers the failure mode this produces). The point for a rebuild is
+the shape of the decision:
 
-The Borg's branch chain:
+* the prompt only appears in the dungeon, when the current depth is below
+  the maximum;
+* the "right" answer depends on endgame state — how deep the Borg has
+  been, how many uniques are still alive, whether it is in a special mode;
+* the Borg's own state is split across `borg.trait[]` (current and maximum
+  depth) and `borg.goal.*` (the mode flags), so the decision has to consult
+  both.
 
-| Condition | Comment in the source | Key sent |
-| --- | --- | --- |
-| `depth >= 80 && depth < 100 && Sauron is dead` | "Do reset Depth" | `y` |
-| `borg.goal.fleeing_munchkin` | "Do reset Depth" | `y` |
-| `depth >= 100 && !king` | "Do **not** reset Depth" | `n` |
-| `BI_MAXDEPTH == 99 && borg_numb_live_unique < 5` | "**Do reset Depth**, cleaning up last uniques to hit Morgoth. Want to keep using up the stock of potions" | **`n`** |
-| otherwise | "Do reset Depth" | `y` |
-
-The fourth row is the defect: **the branch whose own comment says to reset
-the recall depth sends `n`**, so the Borg keeps the old recall depth. The
-branch fires exactly in the endgame situation the comment describes — the
-Borg has reached depth 99 and fewer than five uniques are left — where the
-stated intent is to reset the recall depth to the current depth so that
-later town recalls land at the endgame depth.
-
-**Known defect.** A rebuild must decide: keep the current behaviour (leave
-the recall depth alone) or follow the comment (reset it). The sane behaviour
-is the comment's; the current code does the opposite.
+A rebuild should treat "answer a prompt" as a first-class decision with its
+own inputs, rather than folding it into whichever routine happened to
+trigger the prompt. That keeps the state it consults visible.
 
 ---
 
@@ -750,7 +706,7 @@ test misbehaves.
 ### 10.5 `borg_calc_blows()` — blows per turn
 
 `src/borg/borg-trait.c`. A copy of the engine's `calc_blows()`
-(`src/player-calcs.c`) with **one difference**:
+(`src/player-calcs.c`):
 
 ```c
 /* the Borg */
@@ -760,115 +716,163 @@ int weight = item->weight * item->iqty;
 int weight = (obj == NULL) ? 0 : object_weight_one(obj);
 ```
 
-The engine uses the **single-item** weight; the Borg multiplies by the stack
-size. For the wielded weapon `iqty == 1`, so the two agree. But
-`borg_calc_blows()` is also called on **home** items
-(`src/borg/borg-home-notice.c`), where weapons are stored in stacks. The
-Borg therefore computes the wrong strength-vs-weight index and the wrong
-number of blows for a stack of weapons in the home.
+The difference is what "weight" means. The engine's `object_weight_one()`
+is the **single item's** weight, because the question the calculation asks
+is "how does this weapon feel in the hand" — the encumbrance of swinging
+it. The Borg's version multiplies by the stack size, which is the weight
+of *carrying* it.
 
-**Known defect.** A rebuild must use the single-item weight, or explicitly
-decide that stacks should be valued as stacks.
+Both meanings are correct for their own question, and the Borg uses the
+carrying sense elsewhere (`borg_item_weight()`); the two must not be mixed
+inside one calculation. This matters because the same function is called on
+the wielded weapon (where `iqty == 1` and the two agree) and on **home**
+items (where weapons are stored in stacks and they do not).
+
+**What a rebuild should take from this:** when it reimplements an engine
+calculation, it must copy the engine's *semantics*, not just its shape. The
+Borg's copy of `calc_blows()` is otherwise line-for-line the engine's, which
+makes a one-term difference easy to miss and easy to introduce.
 
 ---
 
 ## 11. Known defects that a rebuild should not inherit
 
-This section is the accumulated knowledge, in two layers:
+The bugs live on this fork's issue board, and that is where they belong.
+This section does not list them — a list here would go stale the moment a
+finding is closed or a new one arrives.
 
-* **§11.1 - §11.12 group the defects by their *shape*** — stale state, the
-  wrong variable, dead code, the wrong comparison, and so on — because the
-  shape is what a rebuild has to design around. Each entry names the
-  finding that tracks it.
-* **§11.13 is the complete index**: every one of the 152 tracked findings,
-  keyed by the source site it names, so that a rebuild rewriting a function
-  can see everything known to be wrong with it. §11.14 ranks the files by
-  how many findings name them.
+What this section does instead is group the *shapes* of the defects that
+the C Borg's architecture actually produces, and show one representative
+example of each. The shapes are stable; the individual findings are not.
+A rebuild that recognises the shapes will avoid the bugs whether or not it
+has seen the specific findings.
 
-The shapes below are a reading aid, not a filter: the index in §11.13 is
-the full set.
+Each shape below names the findings that exhibit it, so the board can be
+consulted for the detail and for the evidence state.
 
 ### 11.1 Stale state between calls
 
-The single most common defect class. The Borg keeps a lot of state in
-globals and expects each function to leave them clean.
+The single most common defect class, and the one a rebuild is most likely
+to reproduce: the Borg keeps a great deal of state in globals and expects
+every function to leave it clean.
 
-* CBUG-0103, CBUG-0104 — `borg_simulate` / `borg_attacking` not restored.
-* CBUG-0056 — `if (!k_ptr) continue;` tests a pointer that is never NULL, so
-  dead entries are not skipped.
-* CBUG-0093 — `borg_flow_cost_stair()` reads a `track_less` entry without
-  checking `track_less.num`.
-* CBUG-0102 — `track_glyph.num` can go negative.
-* CBUG-0110 — a `track_door.num >= 255` guard against a 100-entry array.
+The pattern is always the same. A global flag is set to mean "we are only
+scoring, do not act", a function returns early without clearing it, and the
+next caller inherits a world in which scoring and acting are confused.
+`borg_simulate` and `borg_attacking` are the two flags that do this most
+damage, because so much of the Borg's decision logic branches on them.
+
+The same shape appears with counters: a list's count is used to decide
+whether an entry is live, but the count is not always consulted, or is
+decremented without a check, and a stale entry is read as if it were
+current.
+
+**What to do differently:** a function that sets a global owes the caller a
+restore, and the restore belongs on every exit path. A count that indexes
+an array must be checked against the array's bounds at the point of use,
+not assumed.
 
 ### 11.2 The wrong variable
 
-* CBUG-0021 — `borg.has[BI_CURHP]` where `borg.trait[BI_CURHP]` was meant
-  (`has[]` is indexed by object kind).
-* CBUG-0031, CBUG-0037 — `num_neck > 3`; all five `OF_SUST_*` tests add to
-  `num_sustain_str`.
-* CBUG-0045 — `LOSE_CON` adds the "below 8" fear when `BI_CSTR < 8`.
-* CBUG-0050 — the second `borg_crush_spell` block clears `v1` again instead
-  of `v2`.
-* CBUG-0078 — `borg_race_death[i]` with the kill index, not the race index.
-* CBUG-0079 — `r_ptr` is read before `kill->r_idx` is set.
-* CBUG-0090 — a poison cure tries the same mushroom twice in one `||` chain.
-* CBUG-0095 — `borg_perma_aux_venom()` checks the cost of `SMITE_EVIL`.
-* CBUG-0131 — spastic scoring reads the *last* neighbour's extra value.
-* CBUG-0141 — a recall-in-danger mana threshold compares mana with itself.
-* CBUG-0142 — critical poison/bleeding healing returns with pretend full
-  mana.
+The Borg has several parallel arrays that mean nearly the same thing:
+`borg.trait[]` holds its model of itself, `borg.has[]` holds counts of
+objects by kind, and `borg.amt_book[]` / `borg.book_idx[]` hold spellbook
+state. Mixing them up is easy and usually compiles.
+
+A representative instance: a health check written as
+`borg.has[BI_CURHP] > 100` instead of `borg.trait[BI_CCURHP] > 100`. `has[]`
+is indexed by *object kind*, so this reads a count of some item type
+against a hit-point threshold — and it type-checks perfectly, because both
+are `int`.
+
+The other common form is a copy-paste between two near-identical blocks:
+the second `borg_crush_spell` block clears `v1` again instead of `v2`, and
+all five `OF_SUST_*` tests accumulate into `num_sustain_str`.
+
+**What to do differently:** when two arrays hold different kinds of thing,
+name them so the compiler helps, and check the index against the array's
+documented meaning rather than its type.
 
 ### 11.3 Dead code that matters
 
-* CBUG-0027 — `borg_spell_stat()` tests `&books[0].spells[0] != NULL`.
-* CBUG-0068 — the `i == -1` fixes.
-* CBUG-0080 — `randint1(100) < 1` is never true.
-* CBUG-0106 — the "Explore visible traps" branch is dead.
-* CBUG-0134 — the twentieth twitchy random choice enters the surrounded scan
-  even when valid.
+A branch that can never be taken is usually harmless. It becomes harmful
+when it is the branch that was *supposed* to fire — when the condition was
+written one way and the code another, so a real case silently falls through
+to a default.
+
+`borg_spell_stat()` tests `&books[0].spells[0] != NULL`, which is always
+true, so the check it was meant to make never happens. A "too afraid to
+attack" test appears twice, the second unreachable. A random draw of
+`randint1(100) < 1` is never true, so the 1% case never occurs.
+
+**What to do differently:** a condition that looks unreachable is either a
+typo or a missing case. Both are worth a test that would fail if the
+condition were fixed.
 
 ### 11.4 The wrong comparison
 
-* CBUG-0046 — `z > d_dice * d_side` right after `z = d_dice * d_side`.
-* CBUG-0047 — a hit-chance formula that is below its own clamp for any
-  armour class of 2 or more.
-* CBUG-0053 — `borg_danger()` overwrites its `full_damage` argument.
-* CBUG-0064 — "when hurting" is `CURHP < 4 || CURHP <= MAXHP`.
-* CBUG-0069 — `skipping` reset inside the loop.
-* CBUG-0114 — danger computed and then ignored.
+The Borg's arithmetic is full of thresholds, and a comparison that can
+never be true or never false makes the code above it dead.
+
+The hit-chance formula
+`150 - ((ac * 300) / 4 / 1 + (level + power) * 3)` is below its own clamp
+of 5 for any armour class of 2 or more, so the "partial damage" path it
+guards is unreachable in practice. The HURT stun test `z > d_dice * d_side`
+immediately follows `z = d_dice * d_side`, so it is never true.
+
+**What to do differently:** a threshold is worth checking at its extremes
+— at the best and worst values the inputs can take — because that is where
+the comparison quietly stops discriminating.
 
 ### 11.5 The wrong element of a parallel set
 
-* CBUG-0022 — two `borg_init_item_val()` name lookups.
-* CBUG-0052 — `feat == FEAT_GRANITE` versus `feat >= FEAT_GRANITE`.
-* CBUG-0072, CBUG-0073 — `borg_light_beam()`'s west test starts at step 1
-  while the others start at step 0; the panel-edge test compares a dungeon
-  row with a panel height.
-* CBUG-0088 — `borg_pick_armor()` tests `TV_HELM` twice.
-* CBUG-0098 — "Skip every non floor/glyph" skips only glyphed non-floor
-  grids.
-* CBUG-0110 — 255 against a 100-entry array.
-* CBUG-0125, CBUG-0126, CBUG-0127 — the `borg.txt` configuration parser:
-  malformed integers can spin, bare minus and overflow are parsed as
-  unintended values, and setting names are prefix-matched.
+Several Borg structures are parallel arrays or switch statements over
+`TV_*` kinds, and the wrong member of the set is easy to select by eye.
+
+`borg_init_item_val()` resolves the wand kinds by *name*, and two of those
+names are the wrong one — a confusion wand looked up as "Scare Monster",
+and a lightning *ball* wand looked up as "Lightning Bolts". Both lookups
+succeed, because both wrong names are real items; the bug is silent and
+permanent.
+
+`borg_light_beam()` tests the west neighbour from step 1 while north,
+south and east start at step 0, so the west beam is a step short. A
+"skip every non-floor/glyph" test is written `ag->feat != FEAT_FLOOR &&
+ag->glyph`, which skips only *glyphed* non-floor grids rather than all of
+them.
+
+**What to do differently:** where a set of kinds is enumerated in more than
+one place, derive the second from the first, and check that the lookup
+names are the ones you meant.
 
 ### 11.6 Mutation during a read-only pass
 
-* `borg_notice_equipment()` zeroes `borg_items[INVEN_WIELD]`'s and
-  `borg_items[INVEN_BOW]`'s fields in place ("bare hands"), leaving
-  `borg_items[]` wrong for the rest of the turn even though `safe_items[]`
-  still holds the truth.
+`borg_notice()` is a *read* pass: it looks at the equipment and derives the
+trait vector from it. But to model "attacking with bare hands" it zeroes
+the wielded weapon's and the bow's `ds`, `dd`, `to_d`, `to_h`, `weight`,
+`ident` and `sval` **in place**, in the live `borg_items[]` array.
+
+`safe_items[]` holds the pre-corruption copy, so the simulation machinery
+that restores it works. But everything else that reads `borg_items[]`
+within the same turn now sees a falsified weapon: zero weight, no bonuses,
+and `sval == 0` so it no longer matches the sling or the long bow.
+
+**What to do differently:** a read pass must not write. If a temporary
+model is needed, use the scratch copy that already exists.
 
 ### 11.7 Off-by-one and out-of-bounds
 
-* CBUG-0051 — the Teleport Other skip list is read with `ii <= count`.
-* CBUG-0074 — `borg_refuel_lantern()` starts at `borg_slot(...)`, which can be
-  -1.
-* CBUG-0091 — the rod-recharge rest indexes `borg_items[-1]`.
-* CBUG-0101 — a bounds check that reads `borg_grids[center + ddd]` unguarded.
-* CBUG-0112 — `borg_flow_old()` reads the flow cost before its edge test.
-* CBUG-0144 — the step-history debug command reads one past the newest entry.
+The Borg indexes several fixed-size arrays with values that come from the
+game rather than from its own code: a slot number from `borg_slot()`, a
+monster index from a list, a grid from a flow.
+
+`borg_refuel_lantern()` starts its scan at `borg_slot(...)`, which is `-1`
+when the lantern is not found. The Teleport Other skip list is read with
+`ii <= count`, one entry past the end. A rod-recharge rest indexes
+`borg_items[borg_slot(TV_ROD, sval)]` without checking for `-1`.
+
+**What to do differently:** every index that came from a lookup that can
+fail must be checked before it is used as an index.
 
 ### 11.8 Array capacity vs. screen size
 
@@ -918,8 +922,8 @@ entirely** (`y >= 23` or `x >= 79` for an 80x24 panel with the sidebar off).
 Those are fed into the flow's cost field and spread, so the Borg would be
 pathing towards coordinates that name no grid.
 
-**Known defect** (issue #311). A rebuild must size this array from the
-*terminal* or bound it explicitly.
+**What to do differently:** size this array from the *terminal*, or bound
+it explicitly.
 
 ### 11.9 Double counting
 
@@ -942,7 +946,9 @@ eight neighbours the count can reach 16 against a starting `safe_grids` of 8,
 so `safe_grids` goes negative and `monsters > safe_grids` is true with **no
 monsters nearby**. The Borg then believes it is surrounded and flees.
 
-**Known defect.**
+**What to do differently:** a chain of mutually exclusive tests must be
+written as one chain; a bare `if` next to an `else if` chain is a separate
+test, and whether that is intended is not obvious from the code.
 
 ### 11.10 Wrong mode flag
 
@@ -954,7 +960,8 @@ mode. There is no scumming-mode flag; the state that scumming sets
 stair-scum call site (`borg-think-dungeon.c:1343`) runs *before* the lunal
 engagement block (`borg-think-dungeon.c:1438-1456`), so the two can collide.
 
-**Known defect** (issue #314).
+**What to do differently:** the state that *enters* a mode and the state
+that *leaves* it should be one structure, set and cleared together.
 
 ### 11.11 Two scans sharing one best-score
 
@@ -981,7 +988,9 @@ artifacts at the artifact bonus, which masks the under-scoring for that
 item but leaves the first scan's score in the shared `b_v`, where
 `if (v <= b_v) continue;` can block a legitimate second-scan candidate.
 
-**Known defect** (issue #315).
+**What to do differently:** a score built from independent contributions
+should accumulate, not overwrite; and a scan that keeps the best candidate
+should not share its running best with another scan.
 
 ### 11.12 A scan that keeps the last match, with no preference
 
@@ -1007,197 +1016,11 @@ If such an item is last, `b_slot == -1`, the function falls through to
 `return false`, and the Borg neither rests nor recharges the worn item it
 was looking for.
 
-**Known defect** (issue #316).
+**What to do differently:** a search should stop at the first acceptable
+candidate, or prefer the best one explicitly; and a candidate that cannot
+be used should be rejected when it is found, not discovered afterwards.
 
 ---
-
-<!-- borg-defect-index:start -->
-### 11.13 Complete defect index by source site
-
-Every tracked C Borg finding, indexed by the source site it names.
-This is the **index**, not a second authority: the issue board owns
-whether a finding is open, fixed or closed, and the JSON catalogue
-owns its provenance. What this table adds is the *reverse* lookup --
-from a function in `src/borg/` to everything known to be wrong with
-it -- which is what a rebuild needs when it rewrites that function.
-
-All 152 findings; 44 source files; 155 site entries.
-
-| Source file | Function | Findings |
-| --- | --- | --- |
-| `borg-messages-react.c` | `(file level)` | CBUG-0002 (#14) |
-| `borg-store-sell.c transaction counters` | `(file level)` | CBUG-0013 (#20) |
-| `borg-store-sell.c transaction wrap` | `(file level)` | CBUG-0014 (#32) |
-| `src/borg/borg-attack-munchkin.c` | `borg_munchkin_mage` | CBUG-0103 (#119), CBUG-0104 (#120), CBUG-0105 (#121) |
-| `src/borg/borg-caution.c` | `borg_caution` | CBUG-0136 (#152), CBUG-0137 (#153), CBUG-0138 (#154), CBUG-0139 (#155), CBUG-0140 (#156), CBUG-0141 (#157) |
-| `src/borg/borg-caution.c` | `borg_heal` | CBUG-0142 (#158), CBUG-0143 (#159) |
-| `src/borg/borg-cave-light.c` | `borg_update_light` | CBUG-0003 (#10), CBUG-0024 (#40) |
-| `src/borg/borg-commands.c` | `borg_cmd_flags` | CBUG-0149 (#165), CBUG-0150 (#166) |
-| `src/borg/borg-commands.c` | `borg_cmd_flow` | CBUG-0147 (#163) |
-| `src/borg/borg-commands.c` | `borg_cmd_grid_target_feature` | CBUG-0148 (#164) |
-| `src/borg/borg-commands.c` | `borg_cmd_object_desc` | CBUG-0151 (#167) |
-| `src/borg/borg-commands.c` | `borg_cmd_power` | CBUG-0146 (#162) |
-| `src/borg/borg-commands.c` | `borg_cmd_steps` | CBUG-0144 (#160) |
-| `src/borg/borg-commands.c` | `borg_cmd_targeting` | CBUG-0145 (#161) |
-| `src/borg/borg-commands.c` | `do_cmd_borg` | CBUG-0152 (#168) |
-| `src/borg/borg-danger.c` | `borg_danger` | CBUG-0053 (#69) |
-| `src/borg/borg-danger.c` | `borg_danger_physical` | CBUG-0004 (#26), CBUG-0045 (#61), CBUG-0046 (#62), CBUG-0047 (#63), CBUG-0048 (#64), CBUG-0049 (#65), CBUG-0050 (#66), CBUG-0051 (#67), CBUG-0052 (#68) |
-| `src/borg/borg-escape.c` | `borg_dimension_door` | CBUG-0018 (#21) |
-| `src/borg/borg-escape.c` | `borg_escape` | CBUG-0017 (#35) |
-| `src/borg/borg-escape.c` | `borg_escape danger level1` | CBUG-0015 (#33) |
-| `src/borg/borg-escape.c` | `borg_escape levels3/4/5/6/8` | CBUG-0016 (#34) |
-| `src/borg/borg-fight-defend.c` | `borg_defend_aux_banishment` | CBUG-0021 (#37) |
-| `src/borg/borg-fight-perm.c` | `borg_perma_aux_bless` | CBUG-0097 (#113) |
-| `src/borg/borg-fight-perm.c` | `borg_perma_aux_fastcast` | CBUG-0096 (#112) |
-| `src/borg/borg-fight-perm.c` | `borg_perma_aux_regen` | CBUG-0094 (#110) |
-| `src/borg/borg-fight-perm.c` | `borg_perma_aux_venom` | CBUG-0095 (#111) |
-| `src/borg/borg-flow-dark.c` | `borg_flow_dark_4` | CBUG-0107 (#123) |
-| `src/borg/borg-flow-dark.c` | `borg_flow_dark_5` | CBUG-0108 (#124) |
-| `src/borg/borg-flow-dark.c` | `borg_flow_dark_interesting` | CBUG-0106 (#122) |
-| `src/borg/borg-flow-glyph.c` | `borg_flow_glyph` | CBUG-0098 (#114), CBUG-0099 (#115), CBUG-0100 (#116), CBUG-0101 (#117), CBUG-0102 (#118) |
-| `src/borg/borg-flow-kill.c` | `borg_flow_kill` | CBUG-0082 (#98) |
-| `src/borg/borg-flow-kill.c` | `borg_flow_kill_aim` | CBUG-0083 (#99) |
-| `src/borg/borg-flow-kill.c` | `borg_follow_kill` | CBUG-0080 (#96) |
-| `src/borg/borg-flow-kill.c` | `borg_init_flow_kill` | CBUG-0085 (#101) |
-| `src/borg/borg-flow-kill.c` | `borg_locate_kill` | CBUG-0086 (#102) |
-| `src/borg/borg-flow-kill.c` | `borg_new_kill` | CBUG-0079 (#95) |
-| `src/borg/borg-flow-kill.c` | `borg_shoot_scoot_safe` | CBUG-0084 (#100) |
-| `src/borg/borg-flow-kill.c` | `borg_update_kill_old` | CBUG-0078 (#94), CBUG-0081 (#97) |
-| `src/borg/borg-flow-misc.c` | `borg_check_rest` | CBUG-0133 (#149) |
-| `src/borg/borg-flow-misc.c` | `borg_flow_spastic` | CBUG-0130 (#146), CBUG-0131 (#147) |
-| `src/borg/borg-flow-misc.c` | `borg_flow_vault` | CBUG-0132 (#148) |
-| `src/borg/borg-flow-misc.c` | `borg_flow_vein` | CBUG-0135 (#151) |
-| `src/borg/borg-flow-misc.c` | `borg_twitchy` | CBUG-0134 (#150) |
-| `src/borg/borg-flow-stairs.c` | `borg_flow_cost_stair` | CBUG-0093 (#109) |
-| `src/borg/borg-flow-stairs.c` | `borg_prep_leave_level_spells` | CBUG-0092 (#108) |
-| `src/borg/borg-flow-take.c` | `borg_flow_take` | CBUG-0055 (#71), CBUG-0056 (#72), CBUG-0057 (#73), CBUG-0059 (#75) |
-| `src/borg/borg-flow-take.c` | `borg_follow_take` | CBUG-0058 (#74) |
-| `src/borg/borg-flow.c` | `borg_flow_enqueue_grid` | CBUG-0114 (#130) |
-| `src/borg/borg-flow.c` | `borg_flow_old` | CBUG-0112 (#128) |
-| `src/borg/borg-flow.c` | `borg_flow_spread` | CBUG-0109 (#125) |
-| `src/borg/borg-flow.c` | `borg_play_step` | CBUG-0110 (#126), CBUG-0111 (#127), CBUG-0113 (#129) |
-| `src/borg/borg-formulas-calc.c` | `adjust_order_operations` | CBUG-0023 (#39) |
-| `src/borg/borg-formulas.c` | `borg_formula_error` | CBUG-0028 (#44) |
-| `src/borg/borg-formulas.c` | `parse_range` | CBUG-0029 (#45) |
-| `src/borg/borg-home-notice.c` | `borg_notice_home_aux` | CBUG-0037 (#53), CBUG-0038 (#54) |
-| `src/borg/borg-home-power.c` | `borg_power_home_aux1` | CBUG-0030 (#46), CBUG-0031 (#47) |
-| `src/borg/borg-init.c` | `borg_init_txt_file` | CBUG-0128 (#144) |
-| `src/borg/borg-init.c` | `borg_proc_setting` | CBUG-0125 (#141), CBUG-0126 (#142), CBUG-0127 (#143) |
-| `src/borg/borg-init.c` | `borg_reset_ignore` | CBUG-0129 (#145) |
-| `src/borg/borg-inventory.c` | `borg_first_empty_inventory_slot` | CBUG-0044 (#60) |
-| `src/borg/borg-inventory.c` | `borg_slot` | CBUG-0043 (#59) |
-| `src/borg/borg-item-analyze.c` | `borg_object_value_known` | CBUG-0054 (#70) |
-| `src/borg/borg-item-decurse.c` | `borg_decurse_any` | CBUG-0075 (#91), CBUG-0076 (#92) |
-| `src/borg/borg-item-decurse.c` | `borg_decurse_armour` | CBUG-0077 (#93) |
-| `src/borg/borg-item-enchant.c` | `borg_pick_armor` | CBUG-0088 (#104) |
-| `src/borg/borg-item-enchant.c` | `borg_pick_weapon` | CBUG-0087 (#103) |
-| `src/borg/borg-item-id.c` | `borg_object_fully_id` | CBUG-0042 (#58) |
-| `src/borg/borg-item-use.c` | `borg_activate_failure` | CBUG-0060 (#76) |
-| `src/borg/borg-item-use.c` | `borg_eat_food_any` | CBUG-0064 (#80) |
-| `src/borg/borg-item-use.c` | `borg_equips_ring` | CBUG-0062 (#78) |
-| `src/borg/borg-item-use.c` | `borg_quaff_crit` | CBUG-0061 (#77) |
-| `src/borg/borg-item-use.c` | `borg_use_staff_fail` | CBUG-0063 (#79) |
-| `src/borg/borg-item-use.c` | `borg_use_things` | CBUG-0065 (#81) |
-| `src/borg/borg-item-val.c` | `borg_init_item_val` | CBUG-0022 (#38) |
-| `src/borg/borg-item-wear.c` | `borg_backup_swap` | CBUG-0066 (#82), CBUG-0067 (#83), CBUG-0068 (#84) |
-| `src/borg/borg-item-wear.c` | `borg_best_stuff_aux` | CBUG-0070 (#86) |
-| `src/borg/borg-item-wear.c` | `borg_one_step_wearing_best` | CBUG-0069 (#85) |
-| `src/borg/borg-item-wear.c` | `borg_wear_stuff` | CBUG-0071 (#87) |
-| `src/borg/borg-junk.c` | `borg_consume` | CBUG-0124 (#140) |
-| `src/borg/borg-junk.c` | `borg_drop_hole` | CBUG-0120 (#136), CBUG-0121 (#137) |
-| `src/borg/borg-junk.c` | `borg_drop_junk` | CBUG-0119 (#135) |
-| `src/borg/borg-junk.c` | `borg_drop_slow` | CBUG-0122 (#138) |
-| `src/borg/borg-junk.c` | `borg_remove_stuff` | CBUG-0123 (#139) |
-| `src/borg/borg-light.c` | `borg_light_beam` | CBUG-0072 (#88), CBUG-0073 (#89) |
-| `src/borg/borg-light.c` | `borg_refuel_lantern` | CBUG-0074 (#90) |
-| `src/borg/borg-log.c` | `borg_display_status` | CBUG-0040 (#56) |
-| `src/borg/borg-log.c` | `borg_write_map` | CBUG-0001 (#13), CBUG-0039 (#55) |
-| `src/borg/borg-magic-play.c` | `borg_play_magic` | CBUG-0032 (#48) |
-| `src/borg/borg-magic.c` | `borg_cheat_spells` | CBUG-0026 (#42) |
-| `src/borg/borg-magic.c` | `borg_init_spell` | CBUG-0025 (#41) |
-| `src/borg/borg-magic.c` | `borg_spell_stat` | CBUG-0027 (#43) |
-| `src/borg/borg-messages-react.c` | `borg_react_prompted` | CBUG-0041 (#57) |
-| `src/borg/borg-prepared.c` | `borg_prepared` | CBUG-0033 (#49), CBUG-0035 (#51) |
-| `src/borg/borg-prepared.c` | `borg_restock` | CBUG-0034 (#50) |
-| `src/borg/borg-recover.c` | `borg_recover` | CBUG-0089 (#105), CBUG-0090 (#106), CBUG-0091 (#107) |
-| `src/borg/borg-reincarnate.c` | `borg_reincarnate_start` | CBUG-0036 (#52) |
-| `src/borg/borg-store-buy.c` | `(file level)` | CBUG-0013 (#20), CBUG-0014 (#32) |
-| `src/borg/borg-store-buy.c` | `borg_good_buy` | CBUG-0005 (#17) |
-| `src/borg/borg-store-buy.c` | `borg_think_home_buy_swap_weapon/armour` | CBUG-0011 (#30), CBUG-0012 (#31) |
-| `src/borg/borg-store-buy.c` | `borg_think_home_buy_useful` | CBUG-0007 (#19), CBUG-0008 (#27), CBUG-0009 (#28) |
-| `src/borg/borg-store-buy.c` | `borg_think_home_grab_useless` | CBUG-0010 (#29) |
-| `src/borg/borg-store-buy.c` | `borg_think_shop_buy_useful` | CBUG-0006 (#18) |
-| `src/borg/borg-store-sell.c` | `borg_count_sell` | CBUG-0118 (#134) |
-| `src/borg/borg-store-sell.c` | `borg_good_sell` | CBUG-0117 (#133) |
-| `src/borg/borg-store-sell.c` | `borg_think_home_sell_best` | CBUG-0116 (#132) |
-| `src/borg/borg-store-sell.c` | `borg_think_home_sell_useful` | CBUG-0115 (#131) |
-| `src/borg/borg-think-store.c` | `borg_choose_shop` | CBUG-0019 (#23), CBUG-0020 (#36) |
-| `src/borg/borg.c` | `(file level)` | CBUG-0002 (#14) |
-
-**155 site entries over 152 findings.** A finding whose site names two files appears under both, which is why the entry count exceeds the finding count.
-<!-- borg-defect-index:end -->
-
-<!-- borg-defect-hotspots:start -->
-### 11.14 Where the defects concentrate
-
-Files in `src/borg/` ordered by how many findings name them. A file
-with many findings is either a hot spot in the code or a hot spot in
-the analysis; either way it is where a rebuild must be careful.
-
-| Rank | Source file | Findings |
-| ---: | --- | ---: |
-| 1 | `src/borg/borg-danger.c` | 10 |
-| 2 | `src/borg/borg-store-buy.c` | 10 |
-| 3 | `src/borg/borg-commands.c` | 9 |
-| 4 | `src/borg/borg-flow-kill.c` | 9 |
-| 5 | `src/borg/borg-caution.c` | 8 |
-| 6 | `src/borg/borg-flow-misc.c` | 6 |
-| 7 | `src/borg/borg-flow.c` | 6 |
-| 8 | `src/borg/borg-item-use.c` | 6 |
-| 9 | `src/borg/borg-item-wear.c` | 6 |
-| 10 | `src/borg/borg-junk.c` | 6 |
-| 11 | `src/borg/borg-flow-glyph.c` | 5 |
-| 12 | `src/borg/borg-flow-take.c` | 5 |
-| 13 | `src/borg/borg-init.c` | 5 |
-| 14 | `src/borg/borg-escape.c` | 4 |
-| 15 | `src/borg/borg-fight-perm.c` | 4 |
-| 16 | `src/borg/borg-store-sell.c` | 4 |
-| 17 | `src/borg/borg-attack-munchkin.c` | 3 |
-| 18 | `src/borg/borg-flow-dark.c` | 3 |
-| 19 | `src/borg/borg-item-decurse.c` | 3 |
-| 20 | `src/borg/borg-light.c` | 3 |
-| 21 | `src/borg/borg-log.c` | 3 |
-| 22 | `src/borg/borg-magic.c` | 3 |
-| 23 | `src/borg/borg-prepared.c` | 3 |
-| 24 | `src/borg/borg-recover.c` | 3 |
-| 25 | `src/borg/borg-cave-light.c` | 2 |
-| 26 | `src/borg/borg-flow-stairs.c` | 2 |
-| 27 | `src/borg/borg-formulas.c` | 2 |
-| 28 | `src/borg/borg-home-notice.c` | 2 |
-| 29 | `src/borg/borg-home-power.c` | 2 |
-| 30 | `src/borg/borg-inventory.c` | 2 |
-| 31 | `src/borg/borg-item-enchant.c` | 2 |
-| 32 | `src/borg/borg-think-store.c` | 2 |
-| 33 | `borg-messages-react.c` | 1 |
-| 34 | `borg-store-sell.c transaction counters` | 1 |
-| 35 | `borg-store-sell.c transaction wrap` | 1 |
-| 36 | `src/borg/borg-fight-defend.c` | 1 |
-| 37 | `src/borg/borg-formulas-calc.c` | 1 |
-| 38 | `src/borg/borg-item-analyze.c` | 1 |
-| 39 | `src/borg/borg-item-id.c` | 1 |
-| 40 | `src/borg/borg-item-val.c` | 1 |
-| 41 | `src/borg/borg-magic-play.c` | 1 |
-| 42 | `src/borg/borg-messages-react.c` | 1 |
-| 43 | `src/borg/borg-reincarnate.c` | 1 |
-| 44 | `src/borg/borg.c` | 1 |
-
-**The top five files carry 46 of the 152 findings.** `borg-danger.c` (10), `borg-store-buy.c` (10), `borg-commands.c` (9), `borg-flow-kill.c` (9), `borg-caution.c` (8).
-
-That distribution is itself a finding: the danger estimate, the
-home shopping, the kill flow, the debug commands and the caution
-phase are where the analysis has concentrated. A rebuild that
-touches those five has the most to get wrong.
-<!-- borg-defect-hotspots:end -->
 
 ## 12. The Borg in town
 
@@ -1340,170 +1163,48 @@ changes them will play differently, and "differently" is the thing to avoid.
 
 ## 17. What a rebuild should *not* preserve
 
-These are the defects. A rebuild is free to fix them; doing so is a
-deliberate divergence that must be recorded.
+The Borg's defects are on this fork's issue board, not here, so this is not
+a list of them. It is the set of **principles** a rebuild should apply when
+it finds itself reproducing one.
 
-1. The recall-depth answer that contradicts its own comment (§9.3, #310).
-2. The unbounded `borg_glow_*` write (§11.8, #311).
-3. The double-counted surrounded scan (§11.9, #312).
-4. The wrong mode flag in the stair-scum exit (§11.10, #314).
-5. The `borg_calc_blows()` stack weight (§10.5, #313).
-6. The `borg_notice_equipment()` in-place corruption (§11.6).
-7. The identify-priority overwrite (§11.11, #315).
-8. The recharge scan's last-match selection (§11.12, #316).
-9. The 152 findings already tracked in the issue board.
+1. **Do not preserve a defect that contradicts the code's own stated
+   intent.** Where a comment says one thing and the code does another, the
+   comment is the specification. Fix it, and say so.
+2. **Do not preserve an unbounded write.** If a buffer is filled from a
+   quantity the environment controls — the terminal size, the map size, the
+   stack size — then the bound must be derived from the same source.
+3. **Do not preserve a count that can go negative or be double-counted.** A
+   counter whose failure mode is a wrong sign is a wrong decision, not a
+   cosmetic slip.
+4. **Do not preserve a mode flag that is set by one routine and cleared by
+   another.** Mode state must be owned in one place, and the exit path must
+   clear the whole of it.
+5. **Do not preserve a copy of a game function that has drifted from it.**
+   When the Borg reimplements an engine calculation, the two must agree;
+   where they cannot, the reason must be written down.
+6. **Do not preserve a simulation that mutates the state it is simulating.**
+   A "try this on" pass must leave the world exactly as it found it.
+7. **Do not preserve a counter that leaks between the branches that use
+   it.** Local state is local; shared state needs an explicit owner.
 
----
-
-## 18. How this was established
-
-### 18.1 Source
-
-`angband/angband` `master` at
-`e473720ed88a0f0c7ca66815cef3000eb4a38bc3` — which **is** upstream's current
-`master` head (see §0), `src/borg/`, 59 `.c` files and 64,147 lines. Read
-file by file. The local `c-borg-reference` branch carries the same commit
-and is unmodified (`git diff e473720ed origin/c-borg-reference -- src/borg`
-is empty).
-
-### 18.2 The native C game and the headless harness
-
-The C game was built from that upstream commit with `SUPPORT_BORG=ON`, and
-driven by the **headless deterministic Borg harness**
-(`SUPPORT_BORG_HARNESS=ON`): a front end that supplies a terminal which
-draws nothing and never sleeps, scripts the birth screens, sends `^Z z` to
-start the Borg, logs every key the Borg returns, and stops on a game-turn
-cap. It uses a fixed seed and a per-run `borg.txt`.
-
-The harness is an *observer*: it does not change the game's rules, the RNG,
-the player, the map or the Borg's decisions. The only additions this session
-made to it were a **message observer** (every message the game adds is
-written to a log — the Borg's decision notes go through `message_add()`) and
-a terminal-geometry option.
-
-Runs used: seed 1000, Human Warrior, 2,000 / 20,000 / 60,000 game turns.
-Each run produced a keypress log, a message log and a JSON summary.
-
-The message log is the useful artefact. It is the Borg's own account of what
-it did, in order:
-
-```
-1	Initializing the Borg... (borg.txt)
-1	# Installing keypress hook
-1	# Standing on dn-stairs
-1	# Flowing toward Home at cost 10
-51	# Creating a monster 'singing, happy drunk' at (6,12), HP: 4, Index: 11
-91	# Entering a '7' shop
-91	# Selling 'Scroll of Word of Recall' to the home
-201	# Performing attack type 1 with value 8.
-201	# Facing village idiot at (9,26) who has 10 Hit Points.
-201	# Attacking with weapon 'Dagger (1d4) (+0,+0)'
-201	You hit the village idiot.
-201	You have slain the village idiot.
-```
-
-### 18.3 Standing the checks apart from the runs
-
-Source-level claims about a branch, a counter or a formula are checked with
-a small standalone C program that transcribes the relevant code **verbatim**
-from the pinned tree and runs it over synthetic inputs. The transcription is
-checked against the source line by line, and the program's tables and
-constants are taken from the pinned tree, not from memory. This is a
-**source-level** check, not a game run, and the reports say so.
-
-### 18.4 What is claimed, and what is not
-
-* **Claimed:** what the Borg does, verified against the source; the main
-  loop, the message trace and the recall path, verified in a running game.
-* **Not claimed:** the *frequency* of any behaviour, long-run outcomes, the
-  Borg's win rate, or that any specific branch is reachable in ordinary
-  play. Every report that could not be reproduced in a game says so and
-  keeps the label `evidence:source-checked`.
-
-### 18.5 Running the harness without disturbing anything else
-
-The harness writes to five directories: `user`, `save`, `archive`, `panic`
-and `scores`. The game's default user directory is
-`~/.angband/Angband`, which is **shared** with any other session on the
-machine. Every run therefore overrides all five with `-d`:
-
-```sh
-BIN=/path/to/angband
-OUT=/tmp/some/isolated/dir
-mkdir -p "$OUT"/{user,save,archive,panic,scores}
-cd "$(dirname "$BIN")"          # the game finds ./lib relative to the cwd
-TZ=UTC LANG=C.UTF-8 LC_ALL=C.UTF-8 "$BIN" -mborgh -n -uBorg \
-    -duser="$OUT/user" -dsave="$OUT/save" -darchive="$OUT/archive" \
-    -dpanic="$OUT/panic" -dscores="$OUT/scores" -- \
-    -seed 1000 -race 0 -class 0 -turns 60000 \
-    -keylog "$OUT/keys.log" -msglog "$OUT/msgs.log" \
-    -summary "$OUT/summary.json" -screen
-```
-
-The game must be run from the directory that holds `lib/` (the build's
-`game/` directory), or a copy of it.
+Each of these corresponds to a family of defects the current Borg has, and
+the issue board has the specifics with their evidence.
 
 ---
 
-## 19. Companion documents
+## 18. Companion documents
 
 | Document | What it holds |
 | --- | --- |
+| the issue board (`upstream-c` + `finding` labels) | the canonical, live state of every C Borg finding |
 | `docs/c-bugs/catalogue.json` | the machine-readable finding catalogue |
 | `docs/c-bugs/findings/CBUG-NNNN.json` | one JSON record per finding |
-| the issue board (`upstream-c` + `finding` labels) | the canonical, live state of every finding |
 | `docs/c-bugs/watch-index.json` | the data-only watch index |
 | `patches/upstream-c/` | stored proposal patches |
-| `tools/borg-defect-index.mjs` | regenerates §11.13 and §11.14 from the catalogue |
 
-The issue board is authoritative for live state; this document is the
-*behavioural* reference.
-
-§11.13 and §11.14 are **generated**. `node tools/borg-defect-index.mjs
---write` rebuilds them from `docs/c-bugs/findings/`; `--check` fails if they
-have drifted from the catalogue, and the fork's session-docs CI runs that
-check on every pull request. So the index cannot silently fall behind the
-board — a new finding that reaches the catalogue shows up in the table, and
-an edit to the table that the catalogue does not support is caught.
+The board is where the bugs are, and it is the only place their state
+changes. This document is the *behavioural* reference: what the Borg is,
+how it is built, and what a rebuild has to preserve. Neither is a substitute
+for the other, and neither is duplicated here.
 
 ---
-
-## 20. Using this with the fork's tracking workflow
-
-This fork's job is to track C Borg and Neo Angband bugs. This document is
-meant to be used *by* that workflow, not beside it. The short version:
-
-**When a new C Borg finding arrives**, whether it is reported by borg-rs
-onto this board or found by reading the source:
-
-1. File it as an issue with `upstream-c` + `finding`, and the honest
-   evidence label. The ladder the fork uses is
-   `evidence:reported-lead` → `evidence:source-checked` →
-   `evidence:c-game-flags-only` → `evidence:c-game-reproduced`. A reported
-   lead is not a verified defect; the label is what keeps that honest.
-2. Give it a **source site** in the form `src/borg/<file>.c:<function>`.
-   That is what makes it indexable, and §11.13 is built entirely from that
-   field. A finding without a site is a finding nobody can look up.
-3. Add a catalogue record under `docs/c-bugs/findings/` with the same ID,
-   so the JSON and the board stay in step.
-
-**When you reproduce one natively**, raise the evidence label and record
-the reproduction: the seed, the scenario, the controls, and the actual
-output. The evidence ladder exists so that "we read the code" and "we saw
-it happen" never get confused.
-
-**When upstream moves**, `node tools/c-upstream-watch.mjs` reports which
-`src/borg/` paths changed and which catalogue findings reference them. A
-changed path is a **review signal, not proof of a fix** — re-read the
-function, then decide.
-
-**When a rebuild starts**, §11.13 gives the reverse lookup: for each
-function you are about to rewrite, the list of everything known to be wrong
-with it, with the issue to read for the evidence. §11.14 says which files
-carry the most risk.
-
-**What this document deliberately does not do.** It does not restate a
-finding's live state, and it is not a place to close findings. A finding
-moves on the board and in the JSON catalogue; §11.13 is regenerated from
-them. If the two disagree, the board and the catalogue are right and this
-table is stale.

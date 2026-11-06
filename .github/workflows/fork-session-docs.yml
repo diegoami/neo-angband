@@ -20,10 +20,6 @@ jobs:
         run: node tools/check-fork-workflows.mjs
       - if: ${{ hashFiles('tools/c-bugs.mjs') != '' }}
         run: node tools/c-bugs.mjs --check
-      - if: ${{ hashFiles('tools/borg-defect-index.mjs') != '' }}
-        run: node tools/borg-defect-index.mjs --check
-      - if: ${{ hashFiles('tools/borg-defect-index.node-test.mjs') != '' }}
-        run: node --test tools/borg-defect-index.node-test.mjs
       - if: ${{ hashFiles('tools/c-bugs-source.node-test.mjs') != '' }}
         run: node --test tools/c-bugs-source.node-test.mjs
       - if: ${{ hashFiles('tools/borg-rs-watch.node-test.mjs') != '' }}
