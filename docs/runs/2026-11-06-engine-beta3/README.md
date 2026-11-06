@@ -1,3 +1,9 @@
+> **Packaging erratum (authoritative recipe):** the historical pack block below
+> omitted workspace-range pinning. Use [disposable source packaging](../../ENGINE-SOURCES.md#disposable-source-packaging)
+> instead. The original receipt and measurements remain unchanged; source299's
+> [interim correction](https://github.com/diegoami/neo-angband-tracker/issues/299#issuecomment-6691845982)
+> records how the omission was caught. This correction changes documentation only.
+
 # Exact beta.3 engine integration and consumer handoff
 
 Canonical integration task: [source299](https://github.com/diegoami/neo-angband-tracker/issues/299).
