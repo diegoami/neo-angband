@@ -38,8 +38,8 @@ From a clone of `diegoami/neo-angband-tracker`, copy these three commands:
 
 ```sh
 git fetch https://github.com/diegoami/neo-angband-tracker.git task/calcreload-325-evidence
-git show PINSHA:docs/audit/c-reports/calcreload-325/reproduce.py > /tmp/reproduce-calcreload-325.py
-python3 /tmp/reproduce-calcreload-325.py --fixtures-ref PINSHA --full-tests
+git show 47d5600af81a1880be98a0ae4a80391e7dd43bd5:docs/audit/c-reports/calcreload-325/reproduce.py > /tmp/reproduce-calcreload-325.py
+python3 /tmp/reproduce-calcreload-325.py --fixtures-ref 47d5600af81a1880be98a0ae4a80391e7dd43bd5 --full-tests
 ```
 
 The runner builds original and corrected variants from pristine C
