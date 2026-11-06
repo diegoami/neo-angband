@@ -24,7 +24,7 @@ survival claim is made.
 
 Canonical report: [issue248](https://github.com/diegoami/neo-angband-tracker/issues/248).
 Lead supplied by borg-rs; independently validated and reproduced
-natively here. Source proposal [PR-SOURCE](https://github.com/diegoami/neo-angband-tracker/pull/SOURCE).
+natively here. Source proposal [PR-SOURCE](https://github.com/diegoami/neo-angband-tracker/pull/291).
 
 ## Verification
 
