@@ -118,3 +118,13 @@ All frames and raw case output are retained in the before/after JSON/logs.
 The original committed evidence is unchanged. The extended observer adds only
 read-only map/status capture; the original six case results still match, and
 all four control logs are byte-identical between variants.
+
+## Checked end to end
+
+The committed bundle was replayed in fresh temporary directories with
+`--full-tests`: five expected baseline failures, nine corrected passes, four
+byte-identical controls, and both full native gates965/965 +5/5. All18 fresh
+case logs match the captured replay exactly. END-TO-END-RESULT.json records
+the source/fixture pins, helper-code hashes and full-gate log hashes. The nine
+replay modes and decision/damage controls were also checked in a browser with
+no JavaScript errors. The C proposal itself is unchanged.

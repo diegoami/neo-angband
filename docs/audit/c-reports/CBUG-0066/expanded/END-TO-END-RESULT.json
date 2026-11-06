@@ -1,0 +1,61 @@
+{
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "fixtures_ref": "cdba468a5be2a5d9aa6d2e6565b2941252f865e0",
+  "fixed_source_sha256": "96dd28c786e73ddf211a94f1d73b288225c182caa5ca68cdcd746c33d96dd40e",
+  "affected": {
+    "armour-better": {
+      "before_hp_lost": 79,
+      "after_hp_lost": 26
+    },
+    "weapon-better": {
+      "before_hp_lost": 79,
+      "after_hp_lost": 26
+    },
+    "fire-armour": {
+      "before_hp_lost": 88,
+      "after_hp_lost": 29
+    },
+    "electric-weapon": {
+      "before_hp_lost": 79,
+      "after_hp_lost": 26
+    },
+    "both-helpful": {
+      "before_hp_lost": 113,
+      "after_hp_lost": 59
+    }
+  },
+  "identical_controls": [
+    "armour-only",
+    "weapon-only",
+    "tie",
+    "no-benefit"
+  ],
+  "native_full_tests": {
+    "before": {
+      "unit_checks": "965/965",
+      "frontend_tests": "5/5"
+    },
+    "after": {
+      "unit_checks": "965/965",
+      "frontend_tests": "5/5"
+    }
+  },
+  "replay": "/tmp/angband-cbug0066-pukqqaz4/evidence/replay.html",
+  "replay_checked_in_browser": {
+    "cases": 9,
+    "decision_and_damage_controls": true,
+    "javascript_errors": 0,
+    "native_map_capture_verified": true
+  },
+  "bundle_code_sha256": {
+    "scenario.c": "b26f955689acaf552545019189ade029e82344a0c508d9c77d5b1581015a70b6",
+    "run-expanded.py": "d580b8c670ab9f4de369f33c112c3cf1f9bb539ed4fc85afe27a2b6672aad2f9",
+    "make_replay.py": "84b3877ada97c6f0126d44eeedb5a7c4c53c206956fcace691d65d3bc45bffb0",
+    "reproduce.py": "90ba4371c06349d58f4ef6e7bacc0f5f1ef96ef89cf25288635fdfe72beb0539"
+  },
+  "all_eighteen_case_logs_match_recorded_replay": true,
+  "fresh_gate_log_sha256": {
+    "before-alltests.log": "975a9812364a3591c9fc052141f20401e6f527eae354fd501afe8b33471da7b8",
+    "after-alltests.log": "78abb336fc813cfc37708d867e2cd29fa9d5152a3ff829316f37f52e327645c2"
+  }
+}
