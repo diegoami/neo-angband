@@ -1,0 +1,57 @@
+{
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "fix": "e5da34177368960c9707df6c7b8d55e6c4ab081a",
+  "fixtures_ref": "d4937b1b2b5fcbc7b10450c6c3842a4a0e846c23",
+  "cases": {
+    "before": {
+      "reserve": {
+        "exit": 0,
+        "passed": false,
+        "mana": "dispel_power=14 cursp=19 maxsp=116 ok=1",
+        "geometry": "player=(11,11) bats=3 temp_n=3 cursp=19 maxsp=116",
+        "rating": "value=-21127",
+        "outcome": "value=-21127"
+      },
+      "clear": {
+        "exit": 0,
+        "passed": true,
+        "mana": "dispel_power=14 cursp=19 maxsp=116 ok=1",
+        "geometry": "player=(11,11) bats=3 temp_n=3 cursp=34 maxsp=116",
+        "rating": "value=-127",
+        "outcome": "value=-127"
+      }
+    },
+    "after": {
+      "reserve": {
+        "exit": 0,
+        "passed": true,
+        "mana": "dispel_power=14 cursp=19 maxsp=116 ok=1",
+        "geometry": "player=(11,11) bats=3 temp_n=3 cursp=19 maxsp=116",
+        "rating": "value=-10627",
+        "outcome": "value=-10627"
+      },
+      "clear": {
+        "exit": 0,
+        "passed": true,
+        "mana": "dispel_power=14 cursp=19 maxsp=116 ok=1",
+        "geometry": "player=(11,11) bats=3 temp_n=3 cursp=34 maxsp=116",
+        "rating": "value=-127",
+        "outcome": "value=-127"
+      }
+    }
+  },
+  "identical_full_logs": [
+    "clear"
+  ],
+  "full_tests": {
+    "before": {
+      "units": "965/965",
+      "frontends": "5/5"
+    },
+    "after": {
+      "units": "965/965",
+      "frontends": "5/5"
+    }
+  },
+  "fixed_source_sha256": "eba9308079c4c03142e187b8c7c782df57a9c3fe2e3f3dc5283b1a9707d23f3a"
+}

@@ -1,0 +1,18 @@
+{
+  "reserve": {
+    "exit": 0,
+    "passed": false,
+    "mana": "dispel_power=14 cursp=19 maxsp=116 ok=1",
+    "geometry": "player=(11,11) bats=3 temp_n=3 cursp=19 maxsp=116",
+    "rating": "value=-21127",
+    "outcome": "value=-21127"
+  },
+  "clear": {
+    "exit": 0,
+    "passed": true,
+    "mana": "dispel_power=14 cursp=19 maxsp=116 ok=1",
+    "geometry": "player=(11,11) bats=3 temp_n=3 cursp=34 maxsp=116",
+    "rating": "value=-127",
+    "outcome": "value=-127"
+  }
+}

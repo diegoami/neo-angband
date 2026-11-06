@@ -1,0 +1,42 @@
+{
+  "reserve": {
+    "label": "Deep in the teleport reserve",
+    "explanation": "A level twenty-one priest with every class book faces three vampire bats, its mana tuned so that casting Dispel Undead leaves five points - inside the final-teleport band of every class reserve. The original applies the mana-needed-for-final-teleport penalty twice: once with the class reserve and once more with a fixed six, a subset of the first for every class. The dispel is valued at minus twenty-one thousand, one hundred twenty-seven; the correction applies the penalty once and values it at minus ten thousand six hundred twenty-seven - exactly one penalty-block lower.",
+    "before": {
+      "raw": "native-c/dispel-259: starting...\nSETUPSTEP profile\nMANA dispel_power=14 cursp=19 maxsp=116 ok=1\nSETUP seed=1000 class=Priest level=21 depth=5 avoidance=4\n  reserve_bolt_checks_near_monsters  MODE dispel-reserve\nGEOMETRY player=(11,11) bats=3 temp_n=3 cursp=19 maxsp=116\nRATING value=-21127\nOUTCOME value=-21127\nFailed\n    native-c/dispel-259:207: requirement 'v' == '-10627' failed\n      v:           -21127\n      -10627:           -10627\nnative-c/dispel-259 finished: 0/1 passed\n",
+      "passed": false,
+      "mana": "dispel_power=14 cursp=19 maxsp=116 ok=1",
+      "geometry": "player=(11,11) bats=3 temp_n=3 cursp=19 maxsp=116",
+      "rating": "value=-21127",
+      "outcome": "value=-21127"
+    },
+    "after": {
+      "raw": "native-c/dispel-259: starting...\nSETUPSTEP profile\nMANA dispel_power=14 cursp=19 maxsp=116 ok=1\nSETUP seed=1000 class=Priest level=21 depth=5 avoidance=4\n  reserve_bolt_checks_near_monsters  MODE dispel-reserve\nGEOMETRY player=(11,11) bats=3 temp_n=3 cursp=19 maxsp=116\nRATING value=-10627\nOUTCOME value=-10627\nPassed\nnative-c/dispel-259 finished: 1/1 passed\n",
+      "passed": true,
+      "mana": "dispel_power=14 cursp=19 maxsp=116 ok=1",
+      "geometry": "player=(11,11) bats=3 temp_n=3 cursp=19 maxsp=116",
+      "rating": "value=-10627",
+      "outcome": "value=-10627"
+    }
+  },
+  "clear": {
+    "label": "Control: mana outside the band",
+    "explanation": "The same priest with twenty points to spare after the cast, outside the teleport band: neither variant applies the penalty and both value the dispel identically at minus one hundred twenty-seven, byte for byte.",
+    "before": {
+      "raw": "native-c/dispel-259: starting...\nSETUPSTEP profile\nMANA dispel_power=14 cursp=19 maxsp=116 ok=1\nSETUP seed=1000 class=Priest level=21 depth=5 avoidance=4\n  reserve_bolt_checks_near_monsters  MODE dispel-reserve\nGEOMETRY player=(11,11) bats=3 temp_n=3 cursp=34 maxsp=116\nRATING value=-127\nOUTCOME value=-127\nPassed\nnative-c/dispel-259 finished: 1/1 passed\n",
+      "passed": true,
+      "mana": "dispel_power=14 cursp=19 maxsp=116 ok=1",
+      "geometry": "player=(11,11) bats=3 temp_n=3 cursp=34 maxsp=116",
+      "rating": "value=-127",
+      "outcome": "value=-127"
+    },
+    "after": {
+      "raw": "native-c/dispel-259: starting...\nSETUPSTEP profile\nMANA dispel_power=14 cursp=19 maxsp=116 ok=1\nSETUP seed=1000 class=Priest level=21 depth=5 avoidance=4\n  reserve_bolt_checks_near_monsters  MODE dispel-reserve\nGEOMETRY player=(11,11) bats=3 temp_n=3 cursp=34 maxsp=116\nRATING value=-127\nOUTCOME value=-127\nPassed\nnative-c/dispel-259 finished: 1/1 passed\n",
+      "passed": true,
+      "mana": "dispel_power=14 cursp=19 maxsp=116 ok=1",
+      "geometry": "player=(11,11) bats=3 temp_n=3 cursp=34 maxsp=116",
+      "rating": "value=-127",
+      "outcome": "value=-127"
+    }
+  }
+}
