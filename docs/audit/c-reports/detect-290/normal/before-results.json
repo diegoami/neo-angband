@@ -1,0 +1,17 @@
+{
+  "stale": {
+    "exit": -11,
+    "passed": false,
+    "asan": false,
+    "oob_row": false
+  },
+  "fresh": {
+    "exit": 0,
+    "passed": true,
+    "asan": false,
+    "oob_row": false,
+    "geometry": "new_cave=28x28 panels=1,1 last_row_mark=1",
+    "rating": "last_row_mark=1 rows=2",
+    "outcome": "last_row_mark=1"
+  }
+}
