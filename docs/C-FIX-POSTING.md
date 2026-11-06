@@ -88,7 +88,10 @@ Captured artifacts from the verified run, **committed to the evidence branch**
    `replay.html` (`--headless=new --dump-dom --virtual-time-budget`), assert
    the scenario labels, panel values against `replay-data.json`, no
    `undefined` fields, zero console errors; record the check count in the
-   receipt.
+   receipt. Assert against the **rendered DOM before the `<script>` tag** —
+   matching the script source itself gives false passes when the JS is
+   syntactically broken (this bit three replays: incomplete ternaries,
+   Python-escaped apostrophes, stray parens).
 
 ## 4. Pinning discipline
 
