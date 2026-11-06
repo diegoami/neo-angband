@@ -1,0 +1,88 @@
+{
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "fix": "e5da34177368960c9707df6c7b8d55e6c4ab081a",
+  "fixtures_ref": "d4937b1b2b5fcbc7b10450c6c3842a4a0e846c23",
+  "cases": {
+    "before": {
+      "reserve": {
+        "exit": 0,
+        "passed": false,
+        "mana": "dispel_power=14 cursp=19 maxsp=116 ok=1",
+        "geometry": "player=(11,11) bats=3 temp_n=3 cursp=19 maxsp=116",
+        "rating": "value=-21127",
+        "outcome": "value=-21127"
+      },
+      "clear": {
+        "exit": 0,
+        "passed": true,
+        "mana": "dispel_power=14 cursp=19 maxsp=116 ok=1",
+        "geometry": "player=(11,11) bats=3 temp_n=3 cursp=34 maxsp=116",
+        "rating": "value=-127",
+        "outcome": "value=-127"
+      }
+    },
+    "after": {
+      "reserve": {
+        "exit": 0,
+        "passed": true,
+        "mana": "dispel_power=14 cursp=19 maxsp=116 ok=1",
+        "geometry": "player=(11,11) bats=3 temp_n=3 cursp=19 maxsp=116",
+        "rating": "value=-10627",
+        "outcome": "value=-10627"
+      },
+      "clear": {
+        "exit": 0,
+        "passed": true,
+        "mana": "dispel_power=14 cursp=19 maxsp=116 ok=1",
+        "geometry": "player=(11,11) bats=3 temp_n=3 cursp=34 maxsp=116",
+        "rating": "value=-127",
+        "outcome": "value=-127"
+      }
+    }
+  },
+  "identical_controls": [
+    "clear"
+  ],
+  "full_tests": {
+    "before": {
+      "units": "965/965",
+      "frontends": "5/5"
+    },
+    "after": {
+      "units": "965/965",
+      "frontends": "5/5"
+    }
+  },
+  "fixed_source_sha256": "eba9308079c4c03142e187b8c7c782df57a9c3fe2e3f3dc5283b1a9707d23f3a",
+  "compiler": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+  "cmake": "cmake version 4.2.3",
+  "browser": {
+    "engine": "Google Chrome for Testing 156.0.8078.4 (headless dump-dom)",
+    "verification": "18 checks against the rendered DOM: 2 situations x 2 variants; reserve -21127 before and -10627 after (exactly one 750x-cost block apart); clear control -127/-127 byte-identical raw logs; no n/a or undefined fields; zero console errors"
+  },
+  "maintenance_base": "f186aa1fce2e590eb9bbcb91dc369f3f8b6af688",
+  "sha256": {
+    "README.md": "47f1822030010d56f75134caf6cc5100f6f5397ff9a16c217eab4b8d8421e983",
+    "after-alltests.log": "ce681fc7b83fdb11a9ea416e7499201f27ade1b50ef1767415c058fd47e5f96d",
+    "after-build.log": "b6d6243b48d6b3030f56f308b93752a7ce8a56e029dde77b110d665714b9b496",
+    "after-clear.log": "d45c00862f79ef016cdc62d037a006d199703e63cc70e5657aa23b3662515a45",
+    "after-reserve.log": "3b6082e9d792e3a8b07ba295896dfcf51308c543f3f9e6aba2638afd38b0caa8",
+    "after-results.json": "437ee03f4a51c46d77fca6c627e74c0f0fec0bebd56e76120d6d96ca0ddbb0a6",
+    "after-scenarios.log": "ab310be7273bdd67633c365bc35d9be3f1259948837b047e9d6dc90863da9b77",
+    "before-alltests.log": "6d496a5ad032759f8980f7b93e75f58ddd2b3ac8b6a4d5bd9a6e72097eee6380",
+    "before-build.log": "747dc97e14306cdcce427584d114c6386a4fe09990bf15e814f8c532dbcdb75d",
+    "before-clear.log": "d45c00862f79ef016cdc62d037a006d199703e63cc70e5657aa23b3662515a45",
+    "before-reserve.log": "07af6e61af12dc7f49b448884d70a610e6ebd3c7a7d5e317b50d9f55cb04bdc3",
+    "before-results.json": "d509d9be3ed6a9b872744e5d2cc974b34bb14a109b0782be5ee578f548294bf1",
+    "before-scenarios.log": "4af09de0a528b8f0a54a696698a6057d8507c43867f6793aac4d90761e3f6c8e",
+    "borg.txt": "80738da248ed74e343925e0348fc75da993d8c03ffff03c7bce1a9090005be47",
+    "configure.log": "2228bc3a621afd6fbd430a3b050c12ce90c2ca0fd419f8ac06054dead954df41",
+    "make_replay.py": "60063ce431f194604f55bb0bf7c798785dbbe50605495cad2478a17d8dd8ffc2",
+    "replay-data.json": "92c296151a5f61b0b978405e468e806a5b65c7223062488f9dda26d5e4a8b9f1",
+    "replay.html": "23ef3c8fe17dd0b7ddb9188c159d06bc123e1f19643f5be072ec5f505cb3632c",
+    "reproduce.py": "cd520686ae71bfe42b68d879425169c4c29a69e3ea4c5c3f4ee0751be4c9bc30",
+    "result.json": "a04ad54e741db6f60bd2954ef63d303e4a49a5c5c08923ca780ad2b2ba3da64a",
+    "run-cases.py": "29601767fd74e0ef8695cdd7eea2ffdff133035727804ec734f33c8c67f4c896",
+    "scenario.c": "982b6c45368c56613c7eacf915f00b9b26e8616742701f8b794015eeea512c84"
+  }
+}
