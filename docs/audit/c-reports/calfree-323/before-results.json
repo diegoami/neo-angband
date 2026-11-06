@@ -1,0 +1,22 @@
+{
+  "free": {
+    "exit": 0,
+    "passed": true,
+    "geometry": "freed count=0",
+    "rating": "freed_value=3 freed_count=0",
+    "outcome": "freed_value=3 freed_count=0"
+  },
+  "control": {
+    "exit": 0,
+    "passed": true,
+    "geometry": "control count=1",
+    "rating": "control_value=42 control_count=1",
+    "outcome": "control_value=42 control_count=1"
+  },
+  "asan": {
+    "passed": true,
+    "summary": "160 byte(s) leaked in 2 allocation(s).",
+    "token_array_leaks": 1,
+    "operator_block_leaks": 1
+  }
+}

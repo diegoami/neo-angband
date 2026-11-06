@@ -1,0 +1,103 @@
+{
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "fix": "2b98c831ba7b3f53b05ddcf620b8b2c54f5ed6a3",
+  "fixtures_ref": "e299a3e95423b4185665818a7007b7f912922cf5",
+  "cases": {
+    "before": {
+      "free": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "freed count=0",
+        "rating": "freed_value=3 freed_count=0",
+        "outcome": "freed_value=3 freed_count=0"
+      },
+      "control": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "control count=1",
+        "rating": "control_value=42 control_count=1",
+        "outcome": "control_value=42 control_count=1"
+      },
+      "asan": {
+        "passed": true,
+        "summary": "160 byte(s) leaked in 2 allocation(s).",
+        "token_array_leaks": 1,
+        "operator_block_leaks": 1
+      }
+    },
+    "after": {
+      "free": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "freed count=0",
+        "rating": "freed_value=3 freed_count=0",
+        "outcome": "freed_value=3 freed_count=0"
+      },
+      "control": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "control count=1",
+        "rating": "control_value=42 control_count=1",
+        "outcome": "control_value=42 control_count=1"
+      },
+      "asan": {
+        "passed": true,
+        "summary": "80 byte(s) leaked in 1 allocation(s).",
+        "token_array_leaks": 0,
+        "operator_block_leaks": 1
+      }
+    }
+  },
+  "identical_controls": [
+    "control",
+    "free"
+  ],
+  "full_tests": {
+    "before": {
+      "units": "965/965",
+      "frontends": "5/5"
+    },
+    "after": {
+      "units": "965/965",
+      "frontends": "5/5"
+    }
+  },
+  "fixed_source_sha256": "20ecc2e57cd5037bd78a79e72fb55c9dcf6b7eabb12ce523322df31faa54dac5",
+  "compiler": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+  "cmake": "cmake version 4.2.3",
+  "sanitizer": "AddressSanitizer + LeakSanitizer (gcc 15.2.0), parse-and-free path: 160 bytes in 2 allocations lost before (incl. the token backing array via borg_array_add <- tokenize_math), 80 in 1 after (issue-324 sibling remains in both)",
+  "browser": {
+    "engine": "Google Chrome for Testing 156.0.8078.4 (headless dump-dom)",
+    "verification": "18 checks against the rendered DOM: 2 situations x 2 variants; freed count 0 byte-identical functional logs both variants; leak summaries 160/2 before vs 80/1 after; control value 42 byte-identical; no n/a or undefined fields; zero console errors"
+  },
+  "maintenance_base": "f186aa1fce2e590eb9bbcb91dc369f3f8b6af688",
+  "sha256": {
+    "README.md": "79f59a9eb2b54d246b5f385a89b155a4d6a1ece13d0cc829dc754097754853a7",
+    "after-alltests.log": "99ec82f296aba7aba6e524fec1db563b37d53455736f86eefdaeec715d2a54c2",
+    "after-asan-free.log": "a28c247f2d23eb1744562385c7bd4ceeed93047a80c0ff91b4cb8087c69c34f1",
+    "after-build-asan.log": "dc7fa707faf1f12e4ed8f140c7e1dffeea283fd2f07379eefbd73d91b23e6399",
+    "after-build.log": "be3d7155ea66d726ad7f2539e16bee3d36dbbc1af07c2dc0122f36dd77d3ac96",
+    "after-control.log": "04e4a0747bd65c0c06d1c26f0347e6265bcfb2a6bd66a759eb00b5fef514db54",
+    "after-free.log": "f1e8224ee74570d2098edc55b85e8a70e5b5607bb6fa9182a84a8b4d363d7cd4",
+    "after-results.json": "97cb9881b70408b6b6a26fbd7b890d9a24053fd404899b4ec439d9eea70b0e8e",
+    "after-scenarios.log": "9bbb5afe4e4c2922e69865b9aeb35b2b16d31e5c338f2fbee5620001c0e7eb57",
+    "before-alltests.log": "bfec7a4b3ad750d23875f26d19f5fee605670caa7d91f77114867e214f5e0bff",
+    "before-asan-free.log": "aa77fbe978d61a2580bd5a71bade8f6eff28de5a6815bfbc78130536447a7ebd",
+    "before-build-asan.log": "811d28e6a10f28d975828ce0b99857a47aed5e877ef33809c3cdaa28c883d839",
+    "before-build.log": "8ae478c7fcb4ddfd774cd5283e42d63cb789926492511e1309c996c173697187",
+    "before-control.log": "04e4a0747bd65c0c06d1c26f0347e6265bcfb2a6bd66a759eb00b5fef514db54",
+    "before-free.log": "f1e8224ee74570d2098edc55b85e8a70e5b5607bb6fa9182a84a8b4d363d7cd4",
+    "before-results.json": "f5a303c0cbc0d86756eb2d196f21b1584c2cc54dae81181336e6603427464fc7",
+    "before-scenarios.log": "e718cbf06281a39343ae3d2c7920fc351a1514ff7ff76604754a3674423db0b4",
+    "borg.txt": "80738da248ed74e343925e0348fc75da993d8c03ffff03c7bce1a9090005be47",
+    "configure-asan.log": "5e79cfa1d871532ad33a995802552d163fde22d874f651e58143df775c07f94b",
+    "configure.log": "4df712531b641dba87af7adc9a228f7548ea54d6f1b7cb6f6d2c6649171252b4",
+    "make_replay.py": "a649bea341db392836dd33089719e7f3d9fe237d22d1fe998a0337c521346dfe",
+    "replay-data.json": "424ac750fed70be508ae5b9e6c81f0dde5394925a80df478e8622ef928d50f6b",
+    "replay.html": "491998ce706226d5b71fddc5706c1c049536bd97bb1fb4db02aa3a81770d182a",
+    "reproduce.py": "99526a2eb04d1662fb20835c89ddd3ed7c99d150c781ea8e2845ea4cf33dec10",
+    "result.json": "c10ec3ca80956ff3400306b54c8281d9785174d4f127299a0d843f6d73134d2d",
+    "run-cases.py": "351e6ad9200ab20558447fcb8381f7bd02a578aef1b767d5b47f486936cf9787",
+    "scenario.c": "602781eba623dacc9c8a8977dd8439dbe0694821ed79a90bd032f7a2af80b079"
+  }
+}
