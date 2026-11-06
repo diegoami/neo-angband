@@ -1320,9 +1320,15 @@ static void borg_handle_self(char *str)
     int q_x, q_y;
     int y, x;
 
-    /* Extract panel */
+    /* Extract panel.  The offsets are from the panel the Borg last saw:
+     * a reaction queued before a level change can address panels outside
+     * the detection arrays resized for the new cave, so drop the panel
+     * marks of such stale reactions. */
     q_x = o_w_x / borg_panel_wid();
     q_y = o_w_y / borg_panel_hgt();
+
+    bool detect_panel_ok = (q_x >= 0 && q_y >= 0
+        && q_x + 1 <= borg.panels.x && q_y + 1 <= borg.panels.y);
 
     /* Handle failure */
     if (borg_failure) {
@@ -1372,7 +1378,7 @@ static void borg_handle_self(char *str)
     }
 
     /* Handle "detect walls" */
-    else if (prefix(str, "wall")) {
+    else if (detect_panel_ok && prefix(str, "wall")) {
         /* Message */
         borg_note(format(
             "# Detected walls (%d,%d to %d,%d)", q_y, q_x, q_y + 1, q_x + 1));
@@ -1385,7 +1391,7 @@ static void borg_handle_self(char *str)
     }
 
     /* Handle "detect traps" */
-    else if (prefix(str, "trap")) {
+    else if (detect_panel_ok && prefix(str, "trap")) {
         /* Message */
         borg_note(format(
             "# Detected traps (%d,%d to %d,%d)", q_y, q_x, q_y + 1, q_x + 1));
@@ -1398,7 +1404,7 @@ static void borg_handle_self(char *str)
     }
 
     /* Handle "detect doors" */
-    else if (prefix(str, "door")) {
+    else if (detect_panel_ok && prefix(str, "door")) {
         /* Message */
         borg_note(format(
             "# Detected doors (%d,%d to %d,%d)", q_y, q_x, q_y + 1, q_x + 1));
@@ -1411,7 +1417,7 @@ static void borg_handle_self(char *str)
     }
 
     /* Handle "detect traps and doors" */
-    else if (prefix(str, "both")) {
+    else if (detect_panel_ok && prefix(str, "both")) {
         /* Message */
         borg_note(format("# Detected traps and doors (%d,%d to %d,%d)", q_y,
             q_x, q_y + 1, q_x + 1));
@@ -1430,7 +1436,7 @@ static void borg_handle_self(char *str)
     }
 
     /* Handle "detect traps and doors and evil" */
-    else if (prefix(str, "TDE")) {
+    else if (detect_panel_ok && prefix(str, "TDE")) {
         /* Message */
         borg_note(format("# Detected traps, doors & evil (%d,%d to %d,%d)", q_y,
             q_x, q_y + 1, q_x + 1));
@@ -1455,7 +1461,7 @@ static void borg_handle_self(char *str)
     }
 
     /* Handle DETECT_EVIL */
-    else if (prefix(str, "evil")) {
+    else if (detect_panel_ok && prefix(str, "evil")) {
         /* Message */
         borg_note(format(
             "# Detected evil (%d,%d to %d,%d)", q_y, q_x, q_y + 1, q_x + 1));
@@ -1468,7 +1474,7 @@ static void borg_handle_self(char *str)
     }
 
     /* Handle "detect objects" */
-    else if (prefix(str, "obj")) {
+    else if (detect_panel_ok && prefix(str, "obj")) {
         /* Message */
         borg_note(format(
             "# Detected objects (%d,%d to %d,%d)", q_y, q_x, q_y + 1, q_x + 1));
@@ -1990,20 +1996,17 @@ void borg_update(void)
         /* Handle "cackles evilly" */
         if (created_traps) {
             /* Remove the flag which tells borg that
-             * Trap Detection was done here
-             */
-            borg_detect_trap[o_w_y / borg_panel_hgt() + 0]
-                            [o_w_x / borg_panel_wid() + 0]
-                = false;
-            borg_detect_trap[o_w_y / borg_panel_hgt() + 0]
-                            [o_w_x / borg_panel_wid() + 1]
-                = false;
-            borg_detect_trap[o_w_y / borg_panel_hgt() + 1]
-                            [o_w_x / borg_panel_wid() + 0]
-                = false;
-            borg_detect_trap[o_w_y / borg_panel_hgt() + 1]
-                            [o_w_x / borg_panel_wid() + 1]
-                = false;
+             * Trap Detection was done here.  The old offsets can address
+             * a panel outside the arrays resized for a new cave. */
+            int reset_y = o_w_y / borg_panel_hgt();
+            int reset_x = o_w_x / borg_panel_wid();
+            if (reset_y >= 0 && reset_x >= 0 && reset_y + 1 <= borg.panels.y
+                && reset_x + 1 <= borg.panels.x) {
+                borg_detect_trap[reset_y + 0][reset_x + 0] = false;
+                borg_detect_trap[reset_y + 0][reset_x + 1] = false;
+                borg_detect_trap[reset_y + 1][reset_x + 0] = false;
+                borg_detect_trap[reset_y + 1][reset_x + 1] = false;
+            }
 
             /* Leave a note */
             borg_note("# Logging need for use of Detect Traps.");
