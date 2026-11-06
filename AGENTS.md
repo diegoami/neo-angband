@@ -24,7 +24,7 @@ routine Rust repository/file/issue-feed watches. Preserve attribution and
 CBUG IDs; independently validate direct reports before calling them defects.
 The canonical C issue board and historical evidence remain in this repository.
 
-Every bug fix must include self-contained human verification in its canonical
+Every bug fix must include self-contained verification in its canonical
 issue and PR: copyable pinned commands, actual results, the reasoning they
-support, before/after controls and limits. Follow the human-verification rule
+support, before/after controls and limits. Follow the verification rule
 in RULES.md; linked logs or passing automation alone are insufficient.
