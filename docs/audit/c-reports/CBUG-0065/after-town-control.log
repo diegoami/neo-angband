@@ -1,0 +1,10 @@
+native-c/CBUG-0065: starting...
+SETUP seed=1000 class=Warrior level=40 depth=0 hp=421 potion=Enlightenment aware=1 light=2 food=4 safe=1
+STAIRS x=30 y=20 native_feat=6 visible=0 known=0
+  use_enlightenment_in_dungeon_only  MODE town-control
+FRAME {"stage":"start","hp":421,"potions":2,"stairs_known":0,"stairs_feat":0}
+DECISION used=0 keys=0 sequence=
+FRAME {"stage":"use","hp":421,"potions":2,"stairs_known":0,"stairs_feat":0}
+OUTCOME used=0 potions_spent=0 stairs_known=0 stairs_feat=0 native_stairs=6 hp=421
+Passed
+native-c/CBUG-0065 finished: 1/1 passed

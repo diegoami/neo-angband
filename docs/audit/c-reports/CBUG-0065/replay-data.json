@@ -1,0 +1,350 @@
+{
+  "dungeon": {
+    "label": "Dungeon: recognized Enlightenment potion",
+    "explanation": "The Warrior has a known Enlightenment potion and cannot see stairs beyond a wall. The original leaves the potion unused and those stairs unknown. The correction drinks one and the native game reveals the stairs.",
+    "before": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "potions": 2,
+          "stairs_known": 0,
+          "stairs_feat": 0
+        },
+        {
+          "stage": "use",
+          "hp": 421,
+          "potions": 2,
+          "stairs_known": 0,
+          "stairs_feat": 0
+        }
+      ],
+      "outcome": {
+        "used": 0,
+        "potions_spent": 0,
+        "stairs_known": 0,
+        "stairs_feat": 0,
+        "native_stairs": 6,
+        "hp": 421
+      },
+      "raw": "native-c/CBUG-0065: starting...\nSETUP seed=1000 class=Warrior level=40 depth=30 hp=421 potion=Enlightenment aware=1 light=2 food=4 safe=1\nSTAIRS x=30 y=20 native_feat=6 visible=0 known=0\n  use_enlightenment_in_dungeon_only  MODE dungeon\nFRAME {\"stage\":\"start\",\"hp\":421,\"potions\":2,\"stairs_known\":0,\"stairs_feat\":0}\nDECISION used=0 keys=0 sequence=\nFRAME {\"stage\":\"use\",\"hp\":421,\"potions\":2,\"stairs_known\":0,\"stairs_feat\":0}\nOUTCOME used=0 potions_spent=0 stairs_known=0 stairs_feat=0 native_stairs=6 hp=421\nFailed\n    native-c/CBUG-0065:103: requirement 'used' == 'should_use' failed\n      used:                0\n      should_use:                1\nnative-c/CBUG-0065 finished: 0/1 passed\n"
+    },
+    "after": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "potions": 2,
+          "stairs_known": 0,
+          "stairs_feat": 0
+        },
+        {
+          "stage": "use",
+          "hp": 421,
+          "potions": 1,
+          "stairs_known": 1,
+          "stairs_feat": 6
+        }
+      ],
+      "outcome": {
+        "used": 1,
+        "potions_spent": 1,
+        "stairs_known": 1,
+        "stairs_feat": 6,
+        "native_stairs": 6,
+        "hp": 421
+      },
+      "raw": "native-c/CBUG-0065: starting...\nSETUP seed=1000 class=Warrior level=40 depth=30 hp=421 potion=Enlightenment aware=1 light=2 food=4 safe=1\nSTAIRS x=30 y=20 native_feat=6 visible=0 known=0\n  use_enlightenment_in_dungeon_only  MODE dungeon\nFRAME {\"stage\":\"start\",\"hp\":421,\"potions\":2,\"stairs_known\":0,\"stairs_feat\":0}\nDECISION used=1 keys=2 sequence=qc\nENGINE An image of your surroundings forms in your mind...\nENGINE You have a Potion of Enlightenment (c).\nFRAME {\"stage\":\"use\",\"hp\":421,\"potions\":1,\"stairs_known\":1,\"stairs_feat\":6}\nOUTCOME used=1 potions_spent=1 stairs_known=1 stairs_feat=6 native_stairs=6 hp=421\nPassed\nnative-c/CBUG-0065 finished: 1/1 passed\n"
+    }
+  },
+  "town-control": {
+    "label": "Control: Enlightenment in town",
+    "explanation": "The existing rule forbids drinking Enlightenment in town. Both versions keep it.",
+    "before": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "potions": 2,
+          "stairs_known": 0,
+          "stairs_feat": 0
+        },
+        {
+          "stage": "use",
+          "hp": 421,
+          "potions": 2,
+          "stairs_known": 0,
+          "stairs_feat": 0
+        }
+      ],
+      "outcome": {
+        "used": 0,
+        "potions_spent": 0,
+        "stairs_known": 0,
+        "stairs_feat": 0,
+        "native_stairs": 6,
+        "hp": 421
+      },
+      "raw": "native-c/CBUG-0065: starting...\nSETUP seed=1000 class=Warrior level=40 depth=0 hp=421 potion=Enlightenment aware=1 light=2 food=4 safe=1\nSTAIRS x=30 y=20 native_feat=6 visible=0 known=0\n  use_enlightenment_in_dungeon_only  MODE town-control\nFRAME {\"stage\":\"start\",\"hp\":421,\"potions\":2,\"stairs_known\":0,\"stairs_feat\":0}\nDECISION used=0 keys=0 sequence=\nFRAME {\"stage\":\"use\",\"hp\":421,\"potions\":2,\"stairs_known\":0,\"stairs_feat\":0}\nOUTCOME used=0 potions_spent=0 stairs_known=0 stairs_feat=0 native_stairs=6 hp=421\nPassed\nnative-c/CBUG-0065 finished: 1/1 passed\n"
+    },
+    "after": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "potions": 2,
+          "stairs_known": 0,
+          "stairs_feat": 0
+        },
+        {
+          "stage": "use",
+          "hp": 421,
+          "potions": 2,
+          "stairs_known": 0,
+          "stairs_feat": 0
+        }
+      ],
+      "outcome": {
+        "used": 0,
+        "potions_spent": 0,
+        "stairs_known": 0,
+        "stairs_feat": 0,
+        "native_stairs": 6,
+        "hp": 421
+      },
+      "raw": "native-c/CBUG-0065: starting...\nSETUP seed=1000 class=Warrior level=40 depth=0 hp=421 potion=Enlightenment aware=1 light=2 food=4 safe=1\nSTAIRS x=30 y=20 native_feat=6 visible=0 known=0\n  use_enlightenment_in_dungeon_only  MODE town-control\nFRAME {\"stage\":\"start\",\"hp\":421,\"potions\":2,\"stairs_known\":0,\"stairs_feat\":0}\nDECISION used=0 keys=0 sequence=\nFRAME {\"stage\":\"use\",\"hp\":421,\"potions\":2,\"stairs_known\":0,\"stairs_feat\":0}\nOUTCOME used=0 potions_spent=0 stairs_known=0 stairs_feat=0 native_stairs=6 hp=421\nPassed\nnative-c/CBUG-0065 finished: 1/1 passed\n"
+    }
+  },
+  "unknown-control": {
+    "label": "Control: potion flavor still unknown",
+    "explanation": "Neither version assumes an unidentified potion is Enlightenment. Both keep it.",
+    "before": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "potions": 2,
+          "stairs_known": 0,
+          "stairs_feat": 0
+        },
+        {
+          "stage": "use",
+          "hp": 421,
+          "potions": 2,
+          "stairs_known": 0,
+          "stairs_feat": 0
+        }
+      ],
+      "outcome": {
+        "used": 0,
+        "potions_spent": 0,
+        "stairs_known": 0,
+        "stairs_feat": 0,
+        "native_stairs": 6,
+        "hp": 421
+      },
+      "raw": "native-c/CBUG-0065: starting...\nSETUP seed=1000 class=Warrior level=40 depth=30 hp=421 potion=Enlightenment aware=0 light=2 food=4 safe=1\nSTAIRS x=30 y=20 native_feat=6 visible=0 known=0\n  use_enlightenment_in_dungeon_only  MODE unknown-control\nFRAME {\"stage\":\"start\",\"hp\":421,\"potions\":2,\"stairs_known\":0,\"stairs_feat\":0}\nDECISION used=0 keys=0 sequence=\nFRAME {\"stage\":\"use\",\"hp\":421,\"potions\":2,\"stairs_known\":0,\"stairs_feat\":0}\nOUTCOME used=0 potions_spent=0 stairs_known=0 stairs_feat=0 native_stairs=6 hp=421\nPassed\nnative-c/CBUG-0065 finished: 1/1 passed\n"
+    },
+    "after": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "potions": 2,
+          "stairs_known": 0,
+          "stairs_feat": 0
+        },
+        {
+          "stage": "use",
+          "hp": 421,
+          "potions": 2,
+          "stairs_known": 0,
+          "stairs_feat": 0
+        }
+      ],
+      "outcome": {
+        "used": 0,
+        "potions_spent": 0,
+        "stairs_known": 0,
+        "stairs_feat": 0,
+        "native_stairs": 6,
+        "hp": 421
+      },
+      "raw": "native-c/CBUG-0065: starting...\nSETUP seed=1000 class=Warrior level=40 depth=30 hp=421 potion=Enlightenment aware=0 light=2 food=4 safe=1\nSTAIRS x=30 y=20 native_feat=6 visible=0 known=0\n  use_enlightenment_in_dungeon_only  MODE unknown-control\nFRAME {\"stage\":\"start\",\"hp\":421,\"potions\":2,\"stairs_known\":0,\"stairs_feat\":0}\nDECISION used=0 keys=0 sequence=\nFRAME {\"stage\":\"use\",\"hp\":421,\"potions\":2,\"stairs_known\":0,\"stairs_feat\":0}\nOUTCOME used=0 potions_spent=0 stairs_known=0 stairs_feat=0 native_stairs=6 hp=421\nPassed\nnative-c/CBUG-0065 finished: 1/1 passed\n"
+    }
+  },
+  "unrelated-control": {
+    "label": "Control: unrelated True Seeing potion",
+    "explanation": "This useful-item routine does not automatically drink unrelated True Seeing potions. Both versions keep it.",
+    "before": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "potions": 2,
+          "stairs_known": 0,
+          "stairs_feat": 0
+        },
+        {
+          "stage": "use",
+          "hp": 421,
+          "potions": 2,
+          "stairs_known": 0,
+          "stairs_feat": 0
+        }
+      ],
+      "outcome": {
+        "used": 0,
+        "potions_spent": 0,
+        "stairs_known": 0,
+        "stairs_feat": 0,
+        "native_stairs": 6,
+        "hp": 421
+      },
+      "raw": "native-c/CBUG-0065: starting...\nSETUP seed=1000 class=Warrior level=40 depth=30 hp=421 potion=True Seeing aware=1 light=2 food=4 safe=1\nSTAIRS x=30 y=20 native_feat=6 visible=0 known=0\n  use_enlightenment_in_dungeon_only  MODE unrelated-control\nFRAME {\"stage\":\"start\",\"hp\":421,\"potions\":2,\"stairs_known\":0,\"stairs_feat\":0}\nDECISION used=0 keys=0 sequence=\nFRAME {\"stage\":\"use\",\"hp\":421,\"potions\":2,\"stairs_known\":0,\"stairs_feat\":0}\nOUTCOME used=0 potions_spent=0 stairs_known=0 stairs_feat=0 native_stairs=6 hp=421\nPassed\nnative-c/CBUG-0065 finished: 1/1 passed\n"
+    },
+    "after": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "potions": 2,
+          "stairs_known": 0,
+          "stairs_feat": 0
+        },
+        {
+          "stage": "use",
+          "hp": 421,
+          "potions": 2,
+          "stairs_known": 0,
+          "stairs_feat": 0
+        }
+      ],
+      "outcome": {
+        "used": 0,
+        "potions_spent": 0,
+        "stairs_known": 0,
+        "stairs_feat": 0,
+        "native_stairs": 6,
+        "hp": 421
+      },
+      "raw": "native-c/CBUG-0065: starting...\nSETUP seed=1000 class=Warrior level=40 depth=30 hp=421 potion=True Seeing aware=1 light=2 food=4 safe=1\nSTAIRS x=30 y=20 native_feat=6 visible=0 known=0\n  use_enlightenment_in_dungeon_only  MODE unrelated-control\nFRAME {\"stage\":\"start\",\"hp\":421,\"potions\":2,\"stairs_known\":0,\"stairs_feat\":0}\nDECISION used=0 keys=0 sequence=\nFRAME {\"stage\":\"use\",\"hp\":421,\"potions\":2,\"stairs_known\":0,\"stairs_feat\":0}\nOUTCOME used=0 potions_spent=0 stairs_known=0 stairs_feat=0 native_stairs=6 hp=421\nPassed\nnative-c/CBUG-0065 finished: 1/1 passed\n"
+    }
+  },
+  "augmentation-dungeon": {
+    "label": "Control: Augmentation in the dungeon",
+    "explanation": "Augmentation already works here. Both versions drink it and leave the remote stairs unknown.",
+    "before": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "potions": 2,
+          "stairs_known": 0,
+          "stairs_feat": 0
+        },
+        {
+          "stage": "use",
+          "hp": 421,
+          "potions": 1,
+          "stairs_known": 0,
+          "stairs_feat": 0
+        }
+      ],
+      "outcome": {
+        "used": 1,
+        "potions_spent": 1,
+        "stairs_known": 0,
+        "stairs_feat": 0,
+        "native_stairs": 6,
+        "hp": 421
+      },
+      "raw": "native-c/CBUG-0065: starting...\nSETUP seed=1000 class=Warrior level=40 depth=30 hp=421 potion=Augmentation aware=1 light=2 food=4 safe=1\nSTAIRS x=30 y=20 native_feat=6 visible=0 known=0\n  use_enlightenment_in_dungeon_only  MODE augmentation-dungeon\nFRAME {\"stage\":\"start\",\"hp\":421,\"potions\":2,\"stairs_known\":0,\"stairs_feat\":0}\nDECISION used=1 keys=2 sequence=qc\nENGINE You feel very strong!\nENGINE You feel very smart!\nENGINE You feel very wise!\nENGINE You feel very dextrous!\nENGINE You feel very healthy!\nENGINE You have a Potion of Augmentation (c).\nFRAME {\"stage\":\"use\",\"hp\":421,\"potions\":1,\"stairs_known\":0,\"stairs_feat\":0}\nOUTCOME used=1 potions_spent=1 stairs_known=0 stairs_feat=0 native_stairs=6 hp=421\nPassed\nnative-c/CBUG-0065 finished: 1/1 passed\n"
+    },
+    "after": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "potions": 2,
+          "stairs_known": 0,
+          "stairs_feat": 0
+        },
+        {
+          "stage": "use",
+          "hp": 421,
+          "potions": 1,
+          "stairs_known": 0,
+          "stairs_feat": 0
+        }
+      ],
+      "outcome": {
+        "used": 1,
+        "potions_spent": 1,
+        "stairs_known": 0,
+        "stairs_feat": 0,
+        "native_stairs": 6,
+        "hp": 421
+      },
+      "raw": "native-c/CBUG-0065: starting...\nSETUP seed=1000 class=Warrior level=40 depth=30 hp=421 potion=Augmentation aware=1 light=2 food=4 safe=1\nSTAIRS x=30 y=20 native_feat=6 visible=0 known=0\n  use_enlightenment_in_dungeon_only  MODE augmentation-dungeon\nFRAME {\"stage\":\"start\",\"hp\":421,\"potions\":2,\"stairs_known\":0,\"stairs_feat\":0}\nDECISION used=1 keys=2 sequence=qc\nENGINE You feel very strong!\nENGINE You feel very smart!\nENGINE You feel very wise!\nENGINE You feel very dextrous!\nENGINE You feel very healthy!\nENGINE You have a Potion of Augmentation (c).\nFRAME {\"stage\":\"use\",\"hp\":421,\"potions\":1,\"stairs_known\":0,\"stairs_feat\":0}\nOUTCOME used=1 potions_spent=1 stairs_known=0 stairs_feat=0 native_stairs=6 hp=421\nPassed\nnative-c/CBUG-0065 finished: 1/1 passed\n"
+    }
+  },
+  "augmentation-town": {
+    "label": "Control: Augmentation in town",
+    "explanation": "The town restriction belongs to Enlightenment, not Augmentation. Both versions still drink Augmentation in town.",
+    "before": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "potions": 2,
+          "stairs_known": 0,
+          "stairs_feat": 0
+        },
+        {
+          "stage": "use",
+          "hp": 421,
+          "potions": 1,
+          "stairs_known": 0,
+          "stairs_feat": 0
+        }
+      ],
+      "outcome": {
+        "used": 1,
+        "potions_spent": 1,
+        "stairs_known": 0,
+        "stairs_feat": 0,
+        "native_stairs": 6,
+        "hp": 421
+      },
+      "raw": "native-c/CBUG-0065: starting...\nSETUP seed=1000 class=Warrior level=40 depth=0 hp=421 potion=Augmentation aware=1 light=2 food=4 safe=1\nSTAIRS x=30 y=20 native_feat=6 visible=0 known=0\n  use_enlightenment_in_dungeon_only  MODE augmentation-town\nFRAME {\"stage\":\"start\",\"hp\":421,\"potions\":2,\"stairs_known\":0,\"stairs_feat\":0}\nDECISION used=1 keys=2 sequence=qc\nENGINE You feel very strong!\nENGINE You feel very smart!\nENGINE You feel very wise!\nENGINE You feel very dextrous!\nENGINE You feel very healthy!\nENGINE You have a Potion of Augmentation (c).\nFRAME {\"stage\":\"use\",\"hp\":421,\"potions\":1,\"stairs_known\":0,\"stairs_feat\":0}\nOUTCOME used=1 potions_spent=1 stairs_known=0 stairs_feat=0 native_stairs=6 hp=421\nPassed\nnative-c/CBUG-0065 finished: 1/1 passed\n"
+    },
+    "after": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "potions": 2,
+          "stairs_known": 0,
+          "stairs_feat": 0
+        },
+        {
+          "stage": "use",
+          "hp": 421,
+          "potions": 1,
+          "stairs_known": 0,
+          "stairs_feat": 0
+        }
+      ],
+      "outcome": {
+        "used": 1,
+        "potions_spent": 1,
+        "stairs_known": 0,
+        "stairs_feat": 0,
+        "native_stairs": 6,
+        "hp": 421
+      },
+      "raw": "native-c/CBUG-0065: starting...\nSETUP seed=1000 class=Warrior level=40 depth=0 hp=421 potion=Augmentation aware=1 light=2 food=4 safe=1\nSTAIRS x=30 y=20 native_feat=6 visible=0 known=0\n  use_enlightenment_in_dungeon_only  MODE augmentation-town\nFRAME {\"stage\":\"start\",\"hp\":421,\"potions\":2,\"stairs_known\":0,\"stairs_feat\":0}\nDECISION used=1 keys=2 sequence=qc\nENGINE You feel very strong!\nENGINE You feel very smart!\nENGINE You feel very wise!\nENGINE You feel very dextrous!\nENGINE You feel very healthy!\nENGINE You have a Potion of Augmentation (c).\nFRAME {\"stage\":\"use\",\"hp\":421,\"potions\":1,\"stairs_known\":0,\"stairs_feat\":0}\nOUTCOME used=1 potions_spent=1 stairs_known=0 stairs_feat=0 native_stairs=6 hp=421\nPassed\nnative-c/CBUG-0065 finished: 1/1 passed\n"
+    }
+  }
+}

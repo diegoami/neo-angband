@@ -1,0 +1,197 @@
+{
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "fix": "526906c0f367cd690bdd92b99ac1e114fd84b1a2",
+  "fixtures_ref": "8eb4b9951cdd8a3cc3a702ce0109643dba1f98f1",
+  "cases": {
+    "before": {
+      "dungeon": {
+        "exit": 0,
+        "completed": true,
+        "passed": false,
+        "used": 0,
+        "potions_spent": 0,
+        "stairs_known": 0,
+        "stairs_feat": 0,
+        "native_stairs": 6,
+        "hp": 421
+      },
+      "town-control": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "used": 0,
+        "potions_spent": 0,
+        "stairs_known": 0,
+        "stairs_feat": 0,
+        "native_stairs": 6,
+        "hp": 421
+      },
+      "unknown-control": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "used": 0,
+        "potions_spent": 0,
+        "stairs_known": 0,
+        "stairs_feat": 0,
+        "native_stairs": 6,
+        "hp": 421
+      },
+      "unrelated-control": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "used": 0,
+        "potions_spent": 0,
+        "stairs_known": 0,
+        "stairs_feat": 0,
+        "native_stairs": 6,
+        "hp": 421
+      },
+      "augmentation-dungeon": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "used": 1,
+        "potions_spent": 1,
+        "stairs_known": 0,
+        "stairs_feat": 0,
+        "native_stairs": 6,
+        "hp": 421
+      },
+      "augmentation-town": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "used": 1,
+        "potions_spent": 1,
+        "stairs_known": 0,
+        "stairs_feat": 0,
+        "native_stairs": 6,
+        "hp": 421
+      }
+    },
+    "after": {
+      "dungeon": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "used": 1,
+        "potions_spent": 1,
+        "stairs_known": 1,
+        "stairs_feat": 6,
+        "native_stairs": 6,
+        "hp": 421
+      },
+      "town-control": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "used": 0,
+        "potions_spent": 0,
+        "stairs_known": 0,
+        "stairs_feat": 0,
+        "native_stairs": 6,
+        "hp": 421
+      },
+      "unknown-control": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "used": 0,
+        "potions_spent": 0,
+        "stairs_known": 0,
+        "stairs_feat": 0,
+        "native_stairs": 6,
+        "hp": 421
+      },
+      "unrelated-control": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "used": 0,
+        "potions_spent": 0,
+        "stairs_known": 0,
+        "stairs_feat": 0,
+        "native_stairs": 6,
+        "hp": 421
+      },
+      "augmentation-dungeon": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "used": 1,
+        "potions_spent": 1,
+        "stairs_known": 0,
+        "stairs_feat": 0,
+        "native_stairs": 6,
+        "hp": 421
+      },
+      "augmentation-town": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "used": 1,
+        "potions_spent": 1,
+        "stairs_known": 0,
+        "stairs_feat": 0,
+        "native_stairs": 6,
+        "hp": 421
+      }
+    }
+  },
+  "identical_controls": [
+    "town-control",
+    "unknown-control",
+    "unrelated-control",
+    "augmentation-dungeon",
+    "augmentation-town"
+  ],
+  "full_tests": {
+    "before": {
+      "units": "965/965",
+      "frontends": "5/5"
+    },
+    "after": {
+      "units": "965/965",
+      "frontends": "5/5"
+    }
+  },
+  "fixed_source_sha256": "b462fbd8247de579aeb8037f76b0da312785148dd5813be7b9be2d3a7b1ae7a3",
+  "compiler": "Debian GCC14.2.0",
+  "cmake": "4.4.4",
+  "maintenance_base": "f186aa1fce2e590eb9bbcb91dc369f3f8b6af688",
+  "browser_verification": "Chromium HTML-content rendering: six scenarios, two buttons, 24 native stair-knowledge/potion/HP/action panel checks; no JavaScript errors. Managed file:// navigation is blocked; no browser policy changed.",
+  "sha256": {
+    "README.md": "eedd0d9c93c3d96cd2a709c1cd6adb95eb217e5039f78733cc35da2fed197ca2",
+    "after-alltests.log": "189f476b5968d2ed894a0eaeb03168df25479e5f7d0a6a49aa2bfdaabdc1952c",
+    "after-augmentation-dungeon.log": "9ade238057cdd2f8392fea9bc28cddf603e275c243754613d12d605d3991a445",
+    "after-augmentation-town.log": "b58689625f5d0714073efdbdb14ecdee7d6aa261873528547be5e10573bf9953",
+    "after-build.log": "9e3912450fbcbd6057e7d8a93aca4ffad948fcf361b1531a47b48a145a9df6aa",
+    "after-dungeon.log": "48282685ab4617d8163faca964b9991353d8fdc72015ce9ed82c3d44a80dab15",
+    "after-results.json": "da2093880008d9022d043ea757bb76ba0719817a0c9415cd475b8068ef13f120",
+    "after-scenarios.log": "10746fcc3ad3e889aa65014d787e9d24f0f3ae6982ba95bbe3da815a5d275343",
+    "after-town-control.log": "f03d46768a546ec7e6349f7dbda2960b3bd97a5251b155751704121842e19a3a",
+    "after-unknown-control.log": "9ee34411bed65df6859a722ad6ac870f4b9900cd63a3bd645f7d6adcf0ddda65",
+    "after-unrelated-control.log": "5150925a4306c1285d4641f78809b1094920b00a2c5b145a432d3942d6ebb3f0",
+    "before-alltests.log": "ec8fffceacd77401cf69739d9c17d15332e5a1159aa5095bfa8eebf1f645ed0c",
+    "before-augmentation-dungeon.log": "9ade238057cdd2f8392fea9bc28cddf603e275c243754613d12d605d3991a445",
+    "before-augmentation-town.log": "b58689625f5d0714073efdbdb14ecdee7d6aa261873528547be5e10573bf9953",
+    "before-build.log": "5f4436109fa3956555076234d2681616a0b7d516a7b7f17660195fd8f78e0b7a",
+    "before-dungeon.log": "31f0a947da53f4c25111f2d3e33600a4c6da732f7f63f12f11689e978d19f2c1",
+    "before-results.json": "bd9962395d0c9a5bdd3fea00ca4ddfe5fa0c145ff367e3f247e156cd568efa9b",
+    "before-scenarios.log": "ec140d30516586b5477e5867dd96c24eac21d1ffdcdc84bee7d723021a933d7f",
+    "before-town-control.log": "f03d46768a546ec7e6349f7dbda2960b3bd97a5251b155751704121842e19a3a",
+    "before-unknown-control.log": "9ee34411bed65df6859a722ad6ac870f4b9900cd63a3bd645f7d6adcf0ddda65",
+    "before-unrelated-control.log": "5150925a4306c1285d4641f78809b1094920b00a2c5b145a432d3942d6ebb3f0",
+    "borg.txt": "80738da248ed74e343925e0348fc75da993d8c03ffff03c7bce1a9090005be47",
+    "configure.log": "506182b88217ae91628e4e0a1640dcea7dbdf87cef829ff0d63f9cfd2516a844",
+    "make_replay.py": "1e52bd38384a64d7880c85af42ac4ef50a890f627fc0ccf58596f7b12a965f3d",
+    "replay-data.json": "af077ce4626d1cf5f6b5ab68c13d5783367c663c0191963ed8b0813090df86a9",
+    "replay.html": "7c020c9ed291c37a0c9f686a01de0cd4b60e98486c895664c062a0db44475b93",
+    "reproduce.py": "46ec7b7884022d47d8a6d599488375a1dd3f74b00326d5470aadff4417a22d4b",
+    "result.json": "6caa217f134af1943aa5f11c23078acadf79a932efa1a755a76b246b30ebc1b2",
+    "run-cases.py": "613b120f381a13f37137752b6b2c26b837040fdcf99dddc96aacf3302366d093",
+    "scenario.c": "27ff848a032a717d22012124a87c618f6a8098777efb4e95b052f3cee3736cc6"
+  }
+}
