@@ -1,0 +1,24 @@
+{
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "seed": 1000,
+  "before": {
+    "knockout_kill_reactions": 0,
+    "unit_checks": "965/965",
+    "frontend_tests": "5/5"
+  },
+  "after": {
+    "knockout_kill_reactions": 1,
+    "unit_checks": "965/965",
+    "frontend_tests": "5/5"
+  },
+  "identical_control_logs": [
+    "heavy-stun",
+    "paralysis",
+    "none"
+  ],
+  "limitations": [
+    "synthetic timed-effect entry and adjacent monster placement",
+    "headless message renderer with real Borg screen scraper/input hook",
+    "external driver chooses attacks; no autonomous decision/death claim"
+  ]
+}

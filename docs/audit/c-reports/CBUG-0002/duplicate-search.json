@@ -1,0 +1,60 @@
+{
+  "checked_at": "2026-11-05T23:18:13.360852+00:00",
+  "queries": [
+    {
+      "query": "repo:angband/angband borg \"dont_react\"",
+      "total_count": 0,
+      "incomplete_results": false,
+      "items": []
+    },
+    {
+      "query": "repo:angband/angband borg \"knocked out\"",
+      "total_count": 0,
+      "incomplete_results": false,
+      "items": []
+    },
+    {
+      "query": "repo:angband/angband borg reaction",
+      "total_count": 3,
+      "incomplete_results": false,
+      "items": [
+        {
+          "number": 6706,
+          "title": "Borg reorg1",
+          "state": "closed",
+          "url": "https://github.com/angband/angband/pull/6706"
+        },
+        {
+          "number": 6352,
+          "title": "Borg Should Probably Stop Digging",
+          "state": "closed",
+          "url": "https://github.com/angband/angband/issues/6352"
+        },
+        {
+          "number": 6132,
+          "title": "borg: standing on a throwable messes the check.  Make it a reaction",
+          "state": "closed",
+          "url": "https://github.com/angband/angband/pull/6132"
+        }
+      ]
+    },
+    {
+      "query": "repo:angband/angband borg paralysis",
+      "total_count": 0,
+      "incomplete_results": false,
+      "items": []
+    },
+    {
+      "query": "repo:angband/angband borg paralyzed",
+      "total_count": 0,
+      "incomplete_results": false,
+      "items": []
+    },
+    {
+      "query": "repo:diegoami/neo-angband-tracker \"dont_react\"",
+      "total_count": 0,
+      "incomplete_results": false,
+      "items": []
+    }
+  ]
+}

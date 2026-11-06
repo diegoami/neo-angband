@@ -1,0 +1,26 @@
+{
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "fixture_commit": "3de1e3123915587483395dd40c4d2e75704e65f4",
+  "fixed_source_sha256": "fccea5be3bb31c1e3a8e2aecd4a209fc2877abc2845f64cf98cf343550a1e972",
+  "directory": "/tmp/angband-cbug0002-gmxv6_w7",
+  "knockout_kill_reactions": {
+    "before": 0,
+    "after": 1
+  },
+  "identical_controls": [
+    "heavy-stun",
+    "paralysis",
+    "none"
+  ],
+  "native_tests": {
+    "before": {
+      "unit_checks": "965/965",
+      "frontend_tests": "5/5"
+    },
+    "after": {
+      "unit_checks": "965/965",
+      "frontend_tests": "5/5"
+    }
+  },
+  "runner_sha256": "837f3c180d6a2dacec328284fa0f5e398cd2453c5712a032fd082ada7b01a270"
+}

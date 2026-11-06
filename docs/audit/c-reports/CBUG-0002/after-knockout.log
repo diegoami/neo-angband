@@ -1,0 +1,18 @@
+native-c/CBUG-0002: starting...
+PROFILE /tmp/native-c-14-evidence/profile cheat_death=0 cheat_live=0
+  recovery_then_kill  MODE knockout seed=1000 race=Human class=Warrior hp=20 depth=0
+ENGINE turn=1 stun=0 paralysis=0: You have been knocked out.
+ENGINE turn=510 stun=1 paralysis=0: You are no longer stunned.
+RECOVERED turn=511 hp=20 global_suppression=0 knockout_messages=1
+COMBAT monster=kobold hp=10 visible=1
+ENGINE turn=511 stun=0 paralysis=0: You hit the kobold.
+ENGINE turn=511 stun=0 paralysis=0: You miss the kobold.
+ENGINE turn=511 stun=0 paralysis=0: The kobold flees in terror!
+ENGINE turn=519 stun=0 paralysis=0: You hit the kobold.
+ENGINE turn=519 stun=0 paralysis=0: You hit the kobold.
+ENGINE turn=519 stun=0 paralysis=0: You have slain the kobold.
+KILL_REACTION delta=1
+ENGINE turn=519 stun=0 paralysis=0: Welcome to level 2.
+OUTCOME deaths=1 reactions_before=1 reactions_after=7 delta=6
+[01;32mPassed[00m
+native-c/CBUG-0002 finished: 1/1 passed

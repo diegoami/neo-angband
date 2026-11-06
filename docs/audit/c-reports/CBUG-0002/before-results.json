@@ -1,0 +1,25 @@
+{
+  "binary_sha256": "02b269c7aff13e8d72a9086a8d43054b4783500273bd9a9fde27e07f71f8cc57",
+  "modes": {
+    "knockout": {
+      "passed": false,
+      "exit": 0,
+      "output_sha256": "d98ff03e7d19c8a628d46fc34c7e2c6ff359bdcbb1cd86878616b52bfcdd9edb"
+    },
+    "heavy-stun": {
+      "passed": true,
+      "exit": 0,
+      "output_sha256": "b2242620b399cb989a2abadd61858a3afa129b10f6cb744f4bfa50d9843785af"
+    },
+    "paralysis": {
+      "passed": true,
+      "exit": 0,
+      "output_sha256": "9cd485b7cce0e752be1adb9f7227f566d00bf38625882fdb3b02786ee6ee9260"
+    },
+    "none": {
+      "passed": true,
+      "exit": 0,
+      "output_sha256": "5ba278938ba965c576ac6e06843b28c3c5655235525555105b61eb8939fa861b"
+    }
+  }
+}
