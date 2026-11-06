@@ -1,0 +1,167 @@
+{
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "fix": "0119d5daee9b8a07a8096331eea78dbbb6c26050",
+  "fixtures_ref": "545213726d6d0156ea1cea931b212a9895c5b77b",
+  "cases": {
+    "before": {
+      "near-far": {
+        "exit": 0,
+        "passed": false,
+        "geometry": {
+          "near": 5,
+          "far": 20,
+          "max_range": 20
+        },
+        "decision": {
+          "acted": 0,
+          "keys": 0
+        },
+        "outcome": {
+          "acted": 0,
+          "keys": 0,
+          "cast_spell": 0
+        }
+      },
+      "near-near": {
+        "exit": 0,
+        "passed": true,
+        "geometry": {
+          "near": 2,
+          "far": 0,
+          "max_range": 20
+        },
+        "decision": {
+          "acted": 1,
+          "keys": 3
+        },
+        "outcome": {
+          "acted": 1,
+          "keys": 3,
+          "cast_spell": 1
+        }
+      },
+      "far": {
+        "exit": 0,
+        "passed": true,
+        "geometry": {
+          "near": 20,
+          "far": 20,
+          "max_range": 20
+        },
+        "decision": {
+          "acted": 0,
+          "keys": 0
+        },
+        "outcome": {
+          "acted": 0,
+          "keys": 0,
+          "cast_spell": 0
+        }
+      }
+    },
+    "after": {
+      "near-far": {
+        "exit": 0,
+        "passed": true,
+        "geometry": {
+          "near": 5,
+          "far": 20,
+          "max_range": 20
+        },
+        "decision": {
+          "acted": 1,
+          "keys": 3
+        },
+        "outcome": {
+          "acted": 1,
+          "keys": 3,
+          "cast_spell": 1
+        }
+      },
+      "near-near": {
+        "exit": 0,
+        "passed": true,
+        "geometry": {
+          "near": 2,
+          "far": 0,
+          "max_range": 20
+        },
+        "decision": {
+          "acted": 1,
+          "keys": 3
+        },
+        "outcome": {
+          "acted": 1,
+          "keys": 3,
+          "cast_spell": 1
+        }
+      },
+      "far": {
+        "exit": 0,
+        "passed": true,
+        "geometry": {
+          "near": 20,
+          "far": 20,
+          "max_range": 20
+        },
+        "decision": {
+          "acted": 0,
+          "keys": 0
+        },
+        "outcome": {
+          "acted": 0,
+          "keys": 0,
+          "cast_spell": 0
+        }
+      }
+    }
+  },
+  "identical_controls": [
+    "near-near",
+    "far"
+  ],
+  "full_tests": {
+    "before": {
+      "units": "965/965",
+      "frontends": "5/5"
+    },
+    "after": {
+      "units": "965/965",
+      "frontends": "5/5"
+    }
+  },
+  "fixed_source_sha256": "bc79a7ffed2e0a9aae765092f190e936f8662951b81a0daeb8bc53909de4942b",
+  "compiler": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+  "cmake": "cmake version 4.2.3",
+  "browser": {
+    "engine": "Google Chrome for Testing 156.0.8078.4 (headless dump-dom)",
+    "verification": "17 checks against the rendered DOM (not script source): 3 situations x 2 variants x 2 steps; near-far refused before and cast after; controls equal; no undefined fields; zero console errors"
+  },
+  "maintenance_base": "f186aa1fce2e590eb9bbcb91dc369f3f8b6af688",
+  "sha256": {
+    "README.md": "59c27c8cc74bf0fc49372d1d4171cacafd7547b1c0eca492411c45047d998e70",
+    "after-alltests.log": "b0d31fd0d50d6503739d7f3b9386dad3f9f161c1d446c37cf7b6e6db517e89e9",
+    "after-build.log": "5d2e8e46fd98f619f869eddce200f5ae6a9e3311c4e11fd29748e561b0a393f3",
+    "after-far.log": "2faeb8a95d61cbcfc43d3edbfdd4fb0aa3860e3e72b4b0b5d1f5b1b710aeb8c0",
+    "after-near-far.log": "bb7775a1112c616adfa53abbf88d583f18812ca0eae9de73247ae2879ac5e6b6",
+    "after-near-near.log": "edf44dee519a8335a01d6b2c126e82854095e16760aa7264c93cc07f10ef45e3",
+    "after-results.json": "7026b8fec84492df2752916fd06fef8fdde784ce968519c15ece5e438d38bd27",
+    "after-scenarios.log": "f8d44ac6badcd8a0be290fea4a91839a9edf91cfd31fa29aa958ea5b9500bc47",
+    "before-alltests.log": "083d88351f7507cf98af5e9670f4713560db80fc6adaabbc2805b99ed7f12562",
+    "before-build.log": "9d238221490b40fc3643da0bd7035a25ec2e5c481c017dc904aedfbb6d90c7f7",
+    "before-far.log": "2faeb8a95d61cbcfc43d3edbfdd4fb0aa3860e3e72b4b0b5d1f5b1b710aeb8c0",
+    "before-near-far.log": "0ff874e8085433d1cb7a88aa1dbf9efe04e909e425f04298f1e6d361d6a4977e",
+    "before-near-near.log": "edf44dee519a8335a01d6b2c126e82854095e16760aa7264c93cc07f10ef45e3",
+    "before-results.json": "829e4cb7c3447c325e383c60790a11a5ba45ed1f1acd6d5487c2cd5593cdcc03",
+    "before-scenarios.log": "6a2bca8aa75c9f4e02b88c597f855ed95243e9a4749fcbfb03416bf5601553ae",
+    "borg.txt": "80738da248ed74e343925e0348fc75da993d8c03ffff03c7bce1a9090005be47",
+    "configure.log": "8f6a26bc8670ab92bea139e91f70bf0c3cd12087b33774ea54de09043e62d31b",
+    "make_replay.py": "a8f993d6d5e1ece766b5d6a7653b031d734e601e01329281cdbcb042f6822b57",
+    "replay-data.json": "7f7a22bc003814c63c8dc9fd79323d464280958b54349faf4f5e86ed175c578c",
+    "replay.html": "29bf891fa4811dbf0b45729a306d3707d35e86f878ac4ffa63c68be474149831",
+    "reproduce.py": "70bd80fca90900293a2ace41cd2d599fd17034ce04aed230ab38faba23cda23d",
+    "result.json": "ba1f87943e3dfcf867d437cb26679a2bdeb46a23d4e86cc81d0010514c2e2f10",
+    "run-cases.py": "fcb382dad8dc54ed687f365863ad366cca79404da0b02bba1fb0519c85df5e48",
+    "scenario.c": "5536af151497d8d5daf5fd1e207bfd2927cda849292f5bf24e5e3f5625cb4152"
+  }
+}

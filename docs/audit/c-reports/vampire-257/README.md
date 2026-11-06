@@ -38,8 +38,8 @@ From a clone of `diegoami/neo-angband-tracker`, copy these three commands:
 
 ```sh
 git fetch https://github.com/diegoami/neo-angband-tracker.git task/vampire-257-evidence
-git show PINSHA:docs/audit/c-reports/vampire-257/reproduce.py > /tmp/reproduce-vampire-257.py
-python3 /tmp/reproduce-vampire-257.py --fixtures-ref PINSHA --full-tests
+git show 545213726d6d0156ea1cea931b212a9895c5b77b:docs/audit/c-reports/vampire-257/reproduce.py > /tmp/reproduce-vampire-257.py
+python3 /tmp/reproduce-vampire-257.py --fixtures-ref 545213726d6d0156ea1cea931b212a9895c5b77b --full-tests
 ```
 
 The runner builds original and corrected variants from pristine C
