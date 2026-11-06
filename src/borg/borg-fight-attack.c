@@ -1495,12 +1495,12 @@ static int borg_launch_bolt_at_location(
         }
 
         /* Collect damage (bolts/beams) */
-        if (rad <= 0 || rad == 10)
+        if (rad <= 0)
             n += borg_launch_bolt_aux_hack(ag->kill, dam, typ, ammo_location);
 
         /* Check for arrival at "final target" */
         /* except beams, which keep going. */
-        if ((rad != -1 && rad != 10) && ((x == x2) && (y == y2)))
+        if (rad != -1 && ((x == x2) && (y == y2)))
             break;
 
         /* Stop bolts at monsters  */
@@ -1783,7 +1783,7 @@ int borg_launch_bolt(int rad, int dam, int typ, int max, int ammo_location)
         }
     }
     if (b_i == -1)
-        return b_n;
+        return 0;
 
     /* Reset Teleport Other variables */
     borg_tp_other_n = 0;
