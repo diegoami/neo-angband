@@ -1966,8 +1966,8 @@ static int borg_launch_arc_at_location(
 
             /* check on angle */
             /* Reorient current grid for table access. */
-            n2y = y - y1 + 20;
-            n2x = x - x1 + 20;
+            n2y = ry - y1 + 20;
+            n2x = rx - x1 + 20;
 
             /* Find the angular difference (/2) between the lines to
                 * the end of the arc's center-line and to the current grid.
