@@ -43,8 +43,8 @@ From a clone of `diegoami/neo-angband-tracker`, copy these three commands:
 
 ```sh
 git fetch https://github.com/diegoami/neo-angband-tracker.git task/munchkin-244-evidence
-git show PINSHA:docs/audit/c-reports/munchkin-244/reproduce.py > /tmp/reproduce-munchkin-244.py
-python3 /tmp/reproduce-munchkin-244.py --fixtures-ref PINSHA --full-tests
+git show 4873ed2a9e2992752b603758c058ef0940068054:docs/audit/c-reports/munchkin-244/reproduce.py > /tmp/reproduce-munchkin-244.py
+python3 /tmp/reproduce-munchkin-244.py --fixtures-ref 4873ed2a9e2992752b603758c058ef0940068054 --full-tests
 ```
 
 The runner builds original and corrected variants from pristine C
