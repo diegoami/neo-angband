@@ -31,9 +31,11 @@
    Start actual fix/proposal branches from the correct pristine source base,
    excluding our session docs. C and Neo have different source trees/bases.
    No amend or force-push; preserve every published topic head and all tags.
-7. Mark intentional code divergence beside its source reference with FORK
-   and explain what/why in the commit. Preserve upstream credit, licensing,
-   AI_USAGE_POLICY and original technical docs. No AI attribution trailers.
+7. Keep proposal source and comments suitable for upstream review. Do not add
+   FORK markers, internal catalogue IDs or tracking labels to source comments.
+   Explain the functional change plainly in commits; keep internal provenance
+   on the issue and in supporting documentation. Preserve upstream credit,
+   licensing, AI_USAGE_POLICY and original technical docs. No AI trailers.
 8. Relevant fail-before/pass-after and controls precede a fix claim. Use the
    correct C or TypeScript build environment; state pins/options/RNG/perception
    and practical limits. Do not change assertions/seeds or waive relevant
