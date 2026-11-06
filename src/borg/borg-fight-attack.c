@@ -2136,8 +2136,9 @@ int borg_attack_aux_launch(void)
         }
     }
 
-    /* Nothing to use */
-    if (b_n < 0)
+    /* Nothing to use: no candidate missile was chosen, and b_n never goes
+     * negative once initialized to zero (candidates only raise it). */
+    if (b_k < 0)
         return 0;
 
     /* Simulation */
