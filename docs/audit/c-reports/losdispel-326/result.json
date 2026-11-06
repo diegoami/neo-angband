@@ -1,0 +1,53 @@
+{
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "fix": "53ef84c743768fdde9abaebc27bd8526b4423de9",
+  "fixtures_ref": "d414ea1c85259fc20465527ca39a33c88dd1d282",
+  "cases": {
+    "before": {
+      "storm": {
+        "exit": 0,
+        "passed": false,
+        "geometry": "player=(5,20) bats=(10,20)(11,19)(11,21) temp_n=3",
+        "rating": "dispel=-15",
+        "outcome": "dispel=-15"
+      },
+      "control": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "player=(5,20) bats=(10,20)(11,19)(11,21) temp_n=3",
+        "rating": "orb=540",
+        "outcome": "orb=540"
+      }
+    },
+    "after": {
+      "storm": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "player=(5,20) bats=(10,20)(11,19)(11,21) temp_n=3",
+        "rating": "dispel=534",
+        "outcome": "dispel=534"
+      },
+      "control": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "player=(5,20) bats=(10,20)(11,19)(11,21) temp_n=3",
+        "rating": "orb=540",
+        "outcome": "orb=540"
+      }
+    }
+  },
+  "identical_full_logs": [
+    "control"
+  ],
+  "full_tests": {
+    "before": {
+      "units": "965/965",
+      "frontends": "5/5"
+    },
+    "after": {
+      "units": "965/965",
+      "frontends": "5/5"
+    }
+  },
+  "fixed_source_sha256": "6ef79dbe1df573e2ea0d63c824245e120433f2d2406f977bacba61de779d76a4"
+}

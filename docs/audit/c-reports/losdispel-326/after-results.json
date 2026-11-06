@@ -1,0 +1,16 @@
+{
+  "storm": {
+    "exit": 0,
+    "passed": true,
+    "geometry": "player=(5,20) bats=(10,20)(11,19)(11,21) temp_n=3",
+    "rating": "dispel=534",
+    "outcome": "dispel=534"
+  },
+  "control": {
+    "exit": 0,
+    "passed": true,
+    "geometry": "player=(5,20) bats=(10,20)(11,19)(11,21) temp_n=3",
+    "rating": "orb=540",
+    "outcome": "orb=540"
+  }
+}

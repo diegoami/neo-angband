@@ -1,0 +1,38 @@
+{
+  "storm": {
+    "label": "The dispel that stopped at nothing",
+    "explanation": "A level fifty priest stands near the west edge of a lit arena with three vampire bats to its east, full mana, and considers Dispel Undead. The LOS-dispel beam walk has no arrival break: it runs past the bats to the maximum range and exits through the excessive-distance guard, discarding everything it counted, and the launcher returns its initial minus one instead of zero. The dispel is valued at minus fifteen - the leaked minus one minus the spell cost. The correction breaks the walk at the target like a ball, takes path damage for bolts and beams only, and returns zero when nothing survived: the blast scan finally runs and values the bats at five hundred thirty-four.",
+    "before": {
+      "raw": "native-c/losdispel-326: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Priest level=50 depth=30 sp=276/276\n  los_dispel_reaches_its_blast  MODE storm\nGEOMETRY player=(5,20) bats=(10,20)(11,19)(11,21) temp_n=3\nRATING dispel=-15\nOUTCOME dispel=-15\nFailed\n    native-c/losdispel-326:202: requirement 'v_dispel > 0' failed\nnative-c/losdispel-326 finished: 0/1 passed\n",
+      "passed": false,
+      "geometry": "player=(5,20) bats=(10,20)(11,19)(11,21) temp_n=3",
+      "rating": "dispel=-15",
+      "outcome": "dispel=-15"
+    },
+    "after": {
+      "raw": "native-c/losdispel-326: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Priest level=50 depth=30 sp=276/276\n  los_dispel_reaches_its_blast  MODE storm\nGEOMETRY player=(5,20) bats=(10,20)(11,19)(11,21) temp_n=3\nRATING dispel=534\nOUTCOME dispel=534\nPassed\nnative-c/losdispel-326 finished: 1/1 passed\n",
+      "passed": true,
+      "geometry": "player=(5,20) bats=(10,20)(11,19)(11,21) temp_n=3",
+      "rating": "dispel=534",
+      "outcome": "dispel=534"
+    }
+  },
+  "control": {
+    "label": "Control: the holy orb ball",
+    "explanation": "The same priest considers Orb of Draining, a ball, whose walk already breaks at its target. It is valued identically at five hundred forty before and after the correction, and the complete log is byte-identical: the fix changes only the LOS-dispel walk and the launcher leak.",
+    "before": {
+      "raw": "native-c/losdispel-326: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Priest level=50 depth=30 sp=276/276\n  los_dispel_reaches_its_blast  MODE control\nGEOMETRY player=(5,20) bats=(10,20)(11,19)(11,21) temp_n=3\nRATING orb=540\nOUTCOME orb=540\nPassed\nnative-c/losdispel-326 finished: 1/1 passed\n",
+      "passed": true,
+      "geometry": "player=(5,20) bats=(10,20)(11,19)(11,21) temp_n=3",
+      "rating": "orb=540",
+      "outcome": "orb=540"
+    },
+    "after": {
+      "raw": "native-c/losdispel-326: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Priest level=50 depth=30 sp=276/276\n  los_dispel_reaches_its_blast  MODE control\nGEOMETRY player=(5,20) bats=(10,20)(11,19)(11,21) temp_n=3\nRATING orb=540\nOUTCOME orb=540\nPassed\nnative-c/losdispel-326 finished: 1/1 passed\n",
+      "passed": true,
+      "geometry": "player=(5,20) bats=(10,20)(11,19)(11,21) temp_n=3",
+      "rating": "orb=540",
+      "outcome": "orb=540"
+    }
+  }
+}
