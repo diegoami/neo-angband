@@ -1,0 +1,138 @@
+{
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "fix": "cad765806eed6431642ab02b53240d7938470c21",
+  "fixtures_ref": "b61f6b611600fdbc4c6370fff3ac2835ee77017f",
+  "cases": {
+    "before": {
+      "named-dragon": {
+        "exit": 0,
+        "completed": true,
+        "passed": false,
+        "located": 0,
+        "defend": 1,
+        "potions_spent": 1,
+        "see_invisible": 60,
+        "stamp": 100,
+        "hp": 421
+      },
+      "ogre-control": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "located": 1,
+        "defend": 0,
+        "potions_spent": 0,
+        "see_invisible": 0,
+        "stamp": 0,
+        "hp": 421
+      },
+      "unseen-control": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "located": 0,
+        "defend": 1,
+        "potions_spent": 1,
+        "see_invisible": 61,
+        "stamp": 100,
+        "hp": 421
+      },
+      "it-control": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "located": 0,
+        "defend": 1,
+        "potions_spent": 1,
+        "see_invisible": 61,
+        "stamp": 100,
+        "hp": 421
+      },
+      "lower-it-control": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "located": 0,
+        "defend": 1,
+        "potions_spent": 1,
+        "see_invisible": 61,
+        "stamp": 100,
+        "hp": 421
+      }
+    },
+    "after": {
+      "named-dragon": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "located": 1,
+        "defend": 0,
+        "potions_spent": 0,
+        "see_invisible": 0,
+        "stamp": 0,
+        "hp": 421
+      },
+      "ogre-control": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "located": 1,
+        "defend": 0,
+        "potions_spent": 0,
+        "see_invisible": 0,
+        "stamp": 0,
+        "hp": 421
+      },
+      "unseen-control": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "located": 0,
+        "defend": 1,
+        "potions_spent": 1,
+        "see_invisible": 61,
+        "stamp": 100,
+        "hp": 421
+      },
+      "it-control": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "located": 0,
+        "defend": 1,
+        "potions_spent": 1,
+        "see_invisible": 61,
+        "stamp": 100,
+        "hp": 421
+      },
+      "lower-it-control": {
+        "exit": 0,
+        "completed": true,
+        "passed": true,
+        "located": 0,
+        "defend": 1,
+        "potions_spent": 1,
+        "see_invisible": 61,
+        "stamp": 100,
+        "hp": 421
+      }
+    }
+  },
+  "identical_controls": [
+    "ogre-control",
+    "unseen-control",
+    "it-control",
+    "lower-it-control"
+  ],
+  "full_tests": {
+    "before": {
+      "units": "965/965",
+      "frontends": "5/5"
+    },
+    "after": {
+      "units": "965/965",
+      "frontends": "5/5"
+    }
+  },
+  "fixed_source_sha256": "0489bc679403e0fc497ce982567b9fc8f5b782f13914e172b17f066765dd3897"
+}

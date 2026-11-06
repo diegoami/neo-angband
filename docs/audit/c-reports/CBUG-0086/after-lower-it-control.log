@@ -1,0 +1,13 @@
+native-c/CBUG-0086: starting...
+SETUP seed=1000 class=Warrior level=40 depth=52 hp=421 monster=ghost visible=0 known_index=0
+NATIVE_NAME it
+  visible_name_does_not_request_invisible_search  MODE lower-it-control
+FRAME {"stage":"start","hp":421,"potions":2,"see_invisible":0}
+MESSAGE located=0 stamp_before=0 stamp_after=100 danger=0 limit=842
+DECISION defend=1 keys=2 sequence=qc
+ENGINE Your eyes feel very sensitive!
+ENGINE You have a Potion of True Seeing (c).
+FRAME {"stage":"defense","hp":421,"potions":1,"see_invisible":61}
+OUTCOME located=0 defend=1 potions_spent=1 see_invisible=61 stamp=100 hp=421
+Passed
+native-c/CBUG-0086 finished: 1/1 passed
