@@ -1,0 +1,12 @@
+diff --git a/src/borg/borg-danger.c b/src/borg/borg-danger.c
+index 11efe9f1a..ea97daaeb 100644
+--- a/src/borg/borg-danger.c
++++ b/src/borg/borg-danger.c
+@@ -565,3 +565,2 @@ static int borg_danger_spell(
+
+-    bool bolt       = false;
+
+@@ -613,2 +612,3 @@ static int borg_danger_spell(
+     for (q = 0; q < kill->ranged_attack; q++) {
++        bool bolt = false;
+         int p = 0;

@@ -1,0 +1,17 @@
+native-c/CBUG-0048: starting...
+SETUP seed=1000 class=Rogue level=20 depth=38 hp=130/130 sp=121/121 ammo=0 phase=1 fail=5
+THREAT name=patriarch direction=0 kill_index=1 power=490 awake=1 ranged=8 friends=1
+SPELLS 29,37,39,42,59,64,65,76,
+PATH clean_bolt=1 native_projectable=1 blocker=0
+SPEED native=110 borg=110 monster=122 individual_danger=1680 fear=0/0
+  escape_accounts_for_area_spell_behind_monster  MODE ball-control
+DANGER current=1680 escape_threshold=104
+FRAME {"stage":"start","hp":130,"max_hp":130,"mana":121,"max_mana":121,"scrolls":1,"x":20,"y":20,"enemy_x":20,"enemy_y":14,"distance":6}
+DECISION escape=1 keys=4 sequence=<Escape><Escape>rc
+ENGINE You have no more Scrolls of Phase Door (c).
+FRAME {"stage":"decision","hp":130,"max_hp":130,"mana":121,"max_mana":121,"scrolls":0,"x":16,"y":27,"enemy_x":20,"enemy_y":14,"distance":15}
+ENGINE The patriarch casts a ball of lightning.
+FRAME {"stage":"attack","hp":83,"max_hp":130,"mana":121,"max_mana":121,"scrolls":0,"x":16,"y":27,"enemy_x":20,"enemy_y":14,"distance":15}
+OUTCOME escape=1 moved=1 distance=15 cast=1 hp_before=130 hp_after=83 hp_lost=47 mana_spent=0 scrolls_spent=1
+Passed
+native-c/CBUG-0048 finished: 1/1 passed

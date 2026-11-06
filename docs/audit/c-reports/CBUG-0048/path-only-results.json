@@ -1,0 +1,72 @@
+{
+  "clear-path": {
+    "exit": 0,
+    "completed": true,
+    "passed": true,
+    "escape": 1,
+    "moved": 1,
+    "distance": 13,
+    "cast": 0,
+    "hp_before": 130,
+    "hp_after": 130,
+    "hp_lost": 0,
+    "mana_spent": 0,
+    "scrolls_spent": 1
+  },
+  "blocked": {
+    "exit": 0,
+    "completed": true,
+    "passed": false,
+    "escape": 0,
+    "moved": 0,
+    "distance": 6,
+    "cast": 1,
+    "hp_before": 130,
+    "hp_after": 71,
+    "hp_lost": 59,
+    "mana_spent": 0,
+    "scrolls_spent": 0
+  },
+  "ball-control": {
+    "exit": 0,
+    "completed": true,
+    "passed": true,
+    "escape": 1,
+    "moved": 1,
+    "distance": 15,
+    "cast": 1,
+    "hp_before": 130,
+    "hp_after": 83,
+    "hp_lost": 47,
+    "mana_spent": 0,
+    "scrolls_spent": 1
+  },
+  "direct-control": {
+    "exit": 0,
+    "completed": true,
+    "passed": true,
+    "escape": 1,
+    "moved": 1,
+    "distance": 7,
+    "cast": 0,
+    "hp_before": 130,
+    "hp_after": 130,
+    "hp_lost": 0,
+    "mana_spent": 2,
+    "scrolls_spent": 0
+  },
+  "boulder-control": {
+    "exit": 0,
+    "completed": true,
+    "passed": true,
+    "escape": 1,
+    "moved": 1,
+    "distance": 11,
+    "cast": 1,
+    "hp_before": 130,
+    "hp_after": 101,
+    "hp_lost": 29,
+    "mana_spent": 2,
+    "scrolls_spent": 0
+  }
+}
