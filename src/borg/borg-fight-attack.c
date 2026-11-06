@@ -3539,7 +3539,7 @@ static int borg_attack_aux_vampire_strike(void)
         return 0;
 
     /* Nothing to attack, require relatively close */
-    if (dist >= 20)
+    if (best_dist >= 20)
         return 0;
 
     x = borg_temp_x[b_i];
