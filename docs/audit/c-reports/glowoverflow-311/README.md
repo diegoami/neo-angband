@@ -36,8 +36,8 @@ From a clone of `diegoami/neo-angband-tracker`, copy these three commands:
 
 ```sh
 git fetch https://github.com/diegoami/neo-angband-tracker.git task/glowoverflow-311-evidence
-git show PINSHA:docs/audit/c-reports/glowoverflow-311/reproduce.py > /tmp/reproduce-glowoverflow-311.py
-python3 /tmp/reproduce-glowoverflow-311.py --fixtures-ref PINSHA --full-tests
+git show 83a131b3187b125521dcc76a099807c78167dc54:docs/audit/c-reports/glowoverflow-311/reproduce.py > /tmp/reproduce-glowoverflow-311.py
+python3 /tmp/reproduce-glowoverflow-311.py --fixtures-ref 83a131b3187b125521dcc76a099807c78167dc54 --full-tests
 ```
 
 The runner builds original and corrected variants from pristine C

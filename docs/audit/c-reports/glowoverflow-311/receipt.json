@@ -1,0 +1,102 @@
+{
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "fix": "d4dcb983c9623757b523a7fae861b624d858e23d",
+  "fixtures_ref": "5f5aa3a857d593d0f053b46c0786256f4d953a0c",
+  "cases": {
+    "before": {
+      "glow": {
+        "exit": 0,
+        "passed": false,
+        "geometry": "glow_n=1600 limit=1536",
+        "rating": "glow_n=1600 overflow=64",
+        "outcome": "glow_n=1600 overflow=64"
+      },
+      "control": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "glow_n=1000 limit=1536",
+        "rating": "glow_n=1000 overflow=0",
+        "outcome": "glow_n=1000 overflow=0"
+      },
+      "asan": {
+        "passed": false,
+        "summary": "SUMMARY: AddressSanitizer: global-buffer-overflow /tmp/angband-glowoverflow-311-qaoe783g/source/src/borg/borg-flow-misc.c:843 in borg_flow_light",
+        "write": "WRITE of size 1",
+        "in_flow_light": true
+      }
+    },
+    "after": {
+      "glow": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "glow_n=1536 limit=1536",
+        "rating": "glow_n=1536 overflow=0",
+        "outcome": "glow_n=1536 overflow=0"
+      },
+      "control": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "glow_n=1000 limit=1536",
+        "rating": "glow_n=1000 overflow=0",
+        "outcome": "glow_n=1000 overflow=0"
+      },
+      "asan": {
+        "passed": true,
+        "summary": "no sanitizer report",
+        "write": null,
+        "in_flow_light": false
+      }
+    }
+  },
+  "identical_controls": [
+    "control"
+  ],
+  "full_tests": {
+    "before": {
+      "units": "965/965",
+      "frontends": "5/5"
+    },
+    "after": {
+      "units": "965/965",
+      "frontends": "5/5"
+    }
+  },
+  "fixed_source_sha256": "97b9c3b1e4be0e8e66928618c8909199aed41a559c27c664cc678668703ba918",
+  "compiler": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+  "cmake": "cmake version 4.2.3",
+  "sanitizer": "AddressSanitizer (gcc 15.2.0, detect_leaks=0, intercept_strcmp=0 - pristine init trips an unrelated strcmp interceptor read): global-buffer-overflow WRITE of size 1 in borg_flow_light before; no report after",
+  "browser": {
+    "engine": "Google Chrome for Testing 156.0.8078.4 (headless dump-dom)",
+    "verification": "22 checks against the rendered DOM and payload: 2 situations x 2 variants; glow_n 1600/overflow 64 before vs 1536/0 after; sanitizer overflow before vs clean after; control glow_n 1000 byte-identical; no n/a or undefined fields; zero console errors; generated replay JS validated with node --check"
+  },
+  "maintenance_base": "f186aa1fce2e590eb9bbcb91dc369f3f8b6af688",
+  "sha256": {
+    "README.md": "34c06c22216f9781b1b26e43c3a792dd9e63807f09f19064f936c076cc8e8088",
+    "after-alltests.log": "2e67fa6b5a46e0fe9520a0be5a687e702c8e4733da29d2188cab3ba234a4d581",
+    "after-asan-glow.log": "ba8269a34abf6de0ec164cca8a20339fb74d808dfc85524003920f0987df36af",
+    "after-build-asan.log": "0fb5fade9cb7aa7784b35e0f5f819b1ad4c6e02deacf43c470b067a857d04356",
+    "after-build.log": "56a46bbdd8faa2a053a5079314016c6524d441a40b387a0bad79f4281ccc0e34",
+    "after-control.log": "3e85b3c85389a41db02c129a9ca1e8abd3a766173d1885db2b95547377bfcee0",
+    "after-glow.log": "ba8269a34abf6de0ec164cca8a20339fb74d808dfc85524003920f0987df36af",
+    "after-results.json": "ed8ea96c9272b834a9b1e60dbba3dc9709677b0f789d26a96b9e37f8d8dd1c7b",
+    "after-scenarios.log": "d0496c934e8661f8a441c851f0c2c33b62f92b4eece5e6d12fea3e42e7a4ff3b",
+    "before-alltests.log": "68b9aaa0fbe09b510210cf0bf68b9b17076256d40133ca8145adb00e2f791ba0",
+    "before-asan-glow.log": "8fc5e425088e1ce911ca90b544ee9da2f8eaae57a5a644a212e14de930e6f720",
+    "before-build-asan.log": "a87cb5c08a1e5ef98049befcf7f453724b358bf2cb2c9209800d6e95174b8403",
+    "before-build.log": "dfce74772d979eaf00cca70e0addd42de051604e31cd862c50363b0a1de59c1b",
+    "before-control.log": "3e85b3c85389a41db02c129a9ca1e8abd3a766173d1885db2b95547377bfcee0",
+    "before-glow.log": "d5174ae667f4e2fedae02249590968a3505e60cfa700673eb71bc20d5c4e8d17",
+    "before-results.json": "e746aee4426ee6f83a2c48f6f257803d34cde8f415992a8206523fd86aed31df",
+    "before-scenarios.log": "95757ae06c01c4c5c99235b3d45033aaed5f95b3137db47012ab3fc607a1b9c1",
+    "borg.txt": "80738da248ed74e343925e0348fc75da993d8c03ffff03c7bce1a9090005be47",
+    "configure-asan.log": "8b1462bac79a5be9ec93b72432da43da6e2ad358eae1076293fb68e2d73bf525",
+    "configure.log": "365ccbbe756f4fd2d89196260069868830771be5af274b951cd7eb015a54af03",
+    "make_replay.py": "77a4ebdcd23d1872fef23982827b706957638af95d49fea219b71b04028fd582",
+    "replay-data.json": "5f81ed68b0e5e2fd878534433c3c377a1a78a14e463ab86c5c42080425bd4219",
+    "replay.html": "7fe634dd66ee14504581c43bda71528ed606fb43de14258dc61a33d3c655963f",
+    "reproduce.py": "8c5c467624b523d576af1c164ae82c03f9782513c8cb241f97530787c5032f3f",
+    "result.json": "a730056662a61bc42ddbf1aeeb760e279167444b95e391d5cdafe7cf6e9748ca",
+    "run-cases.py": "ee806768016bb7ab717be41e970347033024d2cd20e8bfb46a1e45a654276bb6",
+    "scenario.c": "6d7d5288c5ed285c2ec8de8170396922fc989f95068e8321ba865375d371c105"
+  }
+}
