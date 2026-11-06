@@ -3,17 +3,20 @@
 These are the standalone C programs used to check the branch, counter and
 formula claims in the C Borg findings filed as
 [#310](https://github.com/diegoami/neo-angband-tracker/issues/310) through
-[#316](https://github.com/diegoami/neo-angband-tracker/issues/316).
+[#316](https://github.com/diegoami/neo-angband-tracker/issues/316), and the
+corresponding examples in the specification
+([`docs/c-borg/BORG_SPEC.md`](../../../c-borg/BORG_SPEC.md) §10.5, §11).
 
-Each one **transcribes the relevant code verbatim** from the upstream C
-reference (`angband/angband` `master` at
-`e473720ed88a0f0c7ca66815cef3000eb4a38bc3`) and runs it over synthetic
-inputs.
+Each one **transcribes the relevant code** from the upstream C reference
+(`angband/angband` at `e473720ed88a0f0c7ca66815cef3000eb4a38bc3`) — the
+lines it transcribes are named at the top of each file — and runs it over
+synthetic inputs.
 
-They are **source-level checks, not game runs**. A program here proves that
-the transcribed code does what the finding says; it does not prove that the
-game reaches that state. Each finding says which of the two it has, and
-carries the label that records it.
+They are **source-level checks, not game runs**. A program here shows what
+the transcribed code does with the inputs it is given; it does not show that
+the game reaches those inputs. Where an input is one the game does not
+produce in ordinary play, the program says so (`SYNTHETIC`, or a note in
+its output). [RECHECK.md](RECHECK.md) records the last full run.
 
 ## Running them
 
@@ -24,58 +27,50 @@ for f in *.c; do
 done
 ```
 
+All eight compile without warnings at `-O0 -Wall -Wextra`.
+
 ## What each one checks
 
 | Program | Finding | What it shows |
 | --- | --- | --- |
-| `recall_branch_test.c` | #310 | the branch whose comment says "Do reset Depth" queues `n` |
-| `glow_bound_test.c` | #311 | the map panel is larger than the 1536-entry glow arrays |
-| `glow_overflow_probe.c` | #311 | the overflow swaps the two arrays' coordinates and yields 212 off-map flow targets |
-| `surrounded_test.c` | #312 | the trapped-wall double count flips the surrounded verdict |
-| `blows_test.c` | #313 | the stack weight changes the blows (2 where the engine gives 3) |
-| `recharge_test.c` | #316 | an unwearable pack wand is selected and the routine gives up |
-| `teststuff_test.c`, `teststuff_test3.c` | #315 | the identify-priority score overwrites the artifact bonus |
+| `recall_branch_test.c` | #310 | in the endgame branch the comment says "Do reset Depth" while the key is `'n'` and the note is "Not Resetting recall depth"; every control reaches the branch it is labelled with |
+| `glow_bound_test.c` | #311 | the map panel can hold more grids than the 1536-entry glow arrays, by terminal size and sidebar mode (capacity only) |
+| `glow_overflow_probe.c` | #311 | for **one named build** (RelWithDebInfo at the pin), what the overflow corrupts, simulated from that build's `nm -S` layout and code: wrong `x` coordinates near the start of the list, none off the panel, and `borg_light_y[]` overwritten |
+| `surrounded_test.c` | #312 | a grid that satisfies the chain and the separate trap test is counted twice; the ordinary case is a monster on a known trap |
+| `blows_test.c` | #313 | weighing a home stack instead of one weapon lowers the blow count (1 where the engine gives 2, in the table's example) |
+| `recharge_test.c` | #316 | the last item with a timeout wins; the give-up path needs a synthetic input (a pack wand with a timeout) |
+| `teststuff_test.c` | #315 | the `+20000` assignment fires for every ordinary identify candidate, so the artifact and ego bonuses do not survive; the exception is a cursed non-artifact in the weapon or bow slot |
+| `teststuff_test3.c` | #315 | loop 1 can change loop 2's choice only through that exception |
 
-### `glow_overflow_probe.c` and the layout it depends on
+### `glow_overflow_probe.c` and layouts
 
-This one depends on the **link order** of the declarations, because that is
-what makes the two arrays contiguous in `.bss`:
-
-```c
-int16_t borg_glow_n = 0;
-uint8_t borg_glow_x[AUTO_LIGHT_MAX];
-uint8_t borg_glow_y[AUTO_LIGHT_MAX];
-```
-
-The probe declares them in the same order as
-`src/borg/borg-cave-light.c:42-45`, so the compiler lays them out the same
-way, and it reproduces the interleaved write of `borg_flow_light()` and its
-read-back loop. The layout can be confirmed against the real binary:
-
-```sh
-nm -S game/angband | grep -E ' borg_glow| borg_light'
-```
-
-which shows `borg_glow_y` ending exactly where `borg_glow_x` begins.
+What an out-of-bounds write corrupts depends on the build. The probe does
+**not** rely on the layout its own compiler chooses: it simulates, in a
+byte arena, the layout reported by `nm -S` for one build of the pinned tree
+and the code that build generates (the counter is held in a register during
+the scan and stored once after it). The build, the `nm` output and the
+`objdump` evidence are in the probe's header comment and in
+[RECHECK.md](RECHECK.md). A different build can give a different result;
+the specification relies only on the overflow itself.
 
 ## How the transcriptions were checked
 
-Each transcription was compared against the upstream source line by line,
-and the data tables and class parameters were taken from the pinned tree
-rather than from memory:
+Each transcription was compared with the pinned source line by line
+(`origin/c-borg-reference`), and the tables and class parameters come from
+the pinned tree:
 
-* `blows_test.c` uses `adj_str_blow` and `blows_table` verbatim from
-  `src/player-calcs.c:548` and `:889`, and the Warrior's parameters from
-  `lib/gamedata/class.txt`.
-* `glow_bound_test.c` uses `row_top_map`, `row_bottom_map` and `col_map`
-  verbatim from `src/ui-term.c:305-307`, and `AUTO_LIGHT_MAX` from
-  `src/borg/borg-cave-light.h:30`.
+* `blows_test.c`: `adj_str_blow` (first 12 entries) and `blows_table` from
+  `src/player-calcs.c`; `blows_table` is identical to `borg_blows_table` in
+  `src/borg/borg-trait.c`; the Warrior's `max-attacks:6`, `min-weight:30`,
+  `strength-multiplier:5` from `lib/gamedata/class.txt`.
+* `glow_bound_test.c`: `row_top_map`, `row_bottom_map`, `col_map` from
+  `src/ui-term.c`, `SIDEBAR_*` and the `SCREEN_*` macros from
+  `src/ui-term.h`, and `AUTO_LIGHT_MAX` from `src/borg/borg-cave-light.h`.
+* `teststuff_test.c`: `borg_item_note_needs_id()` and `borg_item_worth_id()`
+  are transcribed, not taken as inputs, because their results follow from
+  `ident`/`needs_ident`.
 
 ## The runtime side
 
-The runtime evidence is not in this directory. It comes from the native C
-game built from the upstream commit with `SUPPORT_BORG=ON` and the headless
-deterministic Borg harness (`SUPPORT_BORG_HARNESS=ON`), which logs the
-Borg's keypress stream and its full message/decision trace. The
-specification's §18 gives the exact commands and the isolation arrangement
-that keeps a run off the shared user directory.
+The runtime evidence is not in this directory. The harness commands and the
+isolation arrangement are in [PROVENANCE.md](PROVENANCE.md).

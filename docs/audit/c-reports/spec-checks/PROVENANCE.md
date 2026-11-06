@@ -11,14 +11,22 @@ not carry this.
 
 ## Source
 
-`angband/angband` `master` at
-`e473720ed88a0f0c7ca66815cef3000eb4a38bc3` — which **is** upstream's
-current `master` head, `src/borg/`, 59 `.c` files and 64,147 lines. Read
-file by file. The local `c-borg-reference` branch carries the same commit
+`angband/angband` at `e473720ed88a0f0c7ca66815cef3000eb4a38bc3` (upstream's
+`master` head when checked on 2026-11-06), `src/borg/`, 59 `.c` files and
+64,147 lines. Read file by file. The local `c-borg-reference` branch carries the same commit
 and is unmodified (`git diff e473720ed origin/c-borg-reference -- src/borg`
 is empty).
 
 ## The native C game and the headless harness
+
+**Re-check note (2026-11-06 UTC).** `SUPPORT_BORG_HARNESS` is not an option of
+the upstream tree at the pin (`git grep SUPPORT_BORG_HARNESS
+origin/c-borg-reference -- CMakeLists.txt` finds nothing), and no branch of
+this repository contains it (`git grep` over every local and remote branch
+finds nothing). The harness source was therefore not available to the
+re-check, and the runtime statements in this section were not re-verified.
+They are kept as the original author's record. The source-level checks in
+this directory do not depend on them.
 
 The C game was built from that upstream commit with `SUPPORT_BORG=ON`, and
 driven by the **headless deterministic Borg harness**
@@ -64,7 +72,8 @@ constants are taken from the pinned tree, not from memory. This is a
 **source-level** check, not a game run, and the findings say so.
 
 Those programs are in this directory; see the [README](README.md) for what
-each one shows and how to run them.
+each one shows and how to run them, and [RECHECK.md](RECHECK.md) for the
+re-check of the specification and of these programs.
 
 ## What is claimed, and what is not
 

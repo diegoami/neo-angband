@@ -1,83 +1,130 @@
 /*
- * When does loop 1's score actually block a loop-2 candidate?
+ * When can loop 1 of borg_test_stuff() change loop 2's choice?
  *
- * Loop 1 leaves b_v = (some item's loop-1 score).  Loop 2 skips any
- * candidate whose score is <= b_v.  So loop 1's ego bonus (value+100000)
- * blocks a loop-2 candidate with a score in (value, value+100000].
+ * angband e473720ed src/borg/borg-item-wear.c:borg_test_stuff() (84-245)
+ * runs two loops that share b_i / b_v and the test `if (v <= b_v) continue;`.
+ * Loop 1 scans INVEN_WIELD .. QUIVER_END-1 (equipment + quiver); loop 2
+ * scans 0 .. QUIVER_END-1 (pack + equipment + quiver), so every loop-1
+ * candidate is scanned again by loop 2.
+ *
+ * The scoring bodies and borg_item_note_needs_id() are the same
+ * transcription as teststuff_test.c (see there for line numbers).
+ *
+ * Result shown here:
+ *   - for ordinary candidates (needs_ident=1, ident=0) the loop-1 score is
+ *     value+20000 and the same item's loop-2 score is at least that, so
+ *     loop 1 cannot make loop 2 pick a different item, except by winning a
+ *     tie (`v <= b_v` keeps the earlier one);
+ *   - the exception is a cursed non-artifact random-power ego in the
+ *     weapon or bow slot (ident forced true by borg_notice_equipment()):
+ *     its loop-1 score is value+100000 and its loop-2 score is lower, so
+ *     its loop-1 score can block a loop-2 candidate.
  */
 #include <stdio.h>
-#define ART_BONUS 150000L
-#define EGO_BONUS 100000L
+
+#define ART_BONUS  150000L
+#define EGO_BONUS  100000L
 #define NOTE_BONUS  20000L
 
-struct item { const char *name; long value; int art, ego, note, aware; int maxdepth, tval; };
+enum { K_WEAPON, K_RING };
 
-static long l1(const struct item *i)
+struct item {
+	const char *name;
+	int in_loop1;        /* equipment or quiver */
+	long value;
+	int art_idx, random_ego, ident, needs_ident, wieldable, aware, kind;
+};
+
+static int note_needs_id(const struct item *it)
+{
+	if (it->ident) return 0;
+	if (it->needs_ident) return 1;
+	return 0;
+}
+
+static int worth_id(const struct item *it)
+{
+	return note_needs_id(it) ? it->wieldable : 0;
+}
+
+static long l1(const struct item *it)
 {
 	long v = 0;
-	if (i->art)  v = i->value + ART_BONUS;
-	if (i->ego)  v = i->value + EGO_BONUS;
-	if (i->note) v = i->value + NOTE_BONUS;
+	if (!it->needs_ident) return 0;
+	if (it->art_idx) v = it->value + ART_BONUS;
+	if (it->random_ego) v = it->value + EGO_BONUS;
+	if (note_needs_id(it)) v = it->value + NOTE_BONUS;
 	return v;
 }
 
-static long l2(const struct item *i)
+static long l2(const struct item *it, int free_id, int maxdepth)
 {
 	long v = 0;
-	if (i->art)  v = i->value + ART_BONUS;
-	if (i->note) v = i->value + NOTE_BONUS;
-	else if (!i->art) v = i->value;
-	if (!i->aware) {
-		switch (i->tval) {
-		case 90: case 91: v += i->maxdepth * 5000L; break;
-		case 95: v += i->maxdepth * 3000L; break;
-		case 96: case 97: v += i->maxdepth * 2000L; break;
-		case 100: case 101: if (i->maxdepth >= 5) v += i->maxdepth * 500L; break;
-		}
-	}
+	if (!it->needs_ident) return 0;
+	if (it->art_idx) v = it->value + ART_BONUS;
+	if (note_needs_id(it)) v = it->value + NOTE_BONUS;
+	else if (free_id || worth_id(it)) v = it->value;
+	if (!it->aware && it->kind == K_RING) v += maxdepth * 5000L;
 	return v;
+}
+
+/* items[] in index order: pack first, then equipment */
+static void run(const char *title, const struct item *items, int n,
+                int free_id, int maxdepth)
+{
+	int i;
+	long b_v = -1, v;
+	const char *who = "(none)";
+
+	printf("%s\n", title);
+	for (i = 0; i < n; i++)
+		printf("    %-44s loop1 %7ld  loop2 %7ld\n", items[i].name,
+			items[i].in_loop1 ? l1(&items[i]) : 0,
+			l2(&items[i], free_id, maxdepth));
+
+	for (i = 0; i < n; i++) {
+		if (!items[i].in_loop1) continue;
+		v = l1(&items[i]);
+		if (!v || v <= b_v) continue;
+		b_v = v; who = items[i].name;
+	}
+	printf("  after loop 1 : b_v %7ld  %s\n", b_v, who);
+	for (i = 0; i < n; i++) {
+		v = l2(&items[i], free_id, maxdepth);
+		if (!v || v <= b_v) continue;
+		b_v = v; who = items[i].name;
+	}
+	printf("  after loop 2 : b_v %7ld  %s\n", b_v, who);
+
+	b_v = -1; who = "(none)";
+	for (i = 0; i < n; i++) {
+		v = l2(&items[i], free_id, maxdepth);
+		if (!v || v <= b_v) continue;
+		b_v = v; who = items[i].name;
+	}
+	printf("  loop 2 alone : b_v %7ld  %s\n\n", b_v, who);
 }
 
 int main(void)
 {
-	/* An unaware ring at depth 50 scores value + 5000*50 = value+250000
-	 * in loop 2.  For a random-power ego whose value is high enough that
-	 * value+EGO_BONUS exceeds the ring's loop-2 score, the ring is
-	 * blocked. */
-	int depth = 50;
-	long ring_value = 100;
-	long ring_l2 = ring_value + depth * 5000L;
-
-	printf("an unaware ring at depth %d, value %ld:\n", depth, ring_value);
-	printf("  loop 2 score = %ld\n", ring_l2);
-
-	printf("\nloop 1 scores a random-power ego at value+100000.\n");
-	printf("For that to exceed the ring's loop-2 score of %ld we need\n", ring_l2);
-	printf("value > %ld.  Take value = %ld:\n", ring_l2 - EGO_BONUS, ring_l2 - EGO_BONUS + 1);
+	int depth = 10;
 
 	{
-		long ego_value = ring_l2 - EGO_BONUS + 1;
-		struct item ego = { "random-power ego", ego_value, 0, 1, 0, 1, depth, 0 };
-		struct item ring = { "unaware ring", ring_value, 0, 0, 0, 0, depth, 90 };
-
-		printf("\n  ego:   loop1 %ld   loop2 %ld\n", l1(&ego), l2(&ego));
-		printf("  ring:  loop1 %ld   loop2 %ld\n", l1(&ring), l2(&ring));
-
-		printf("\n  Running the two loops in order, sharing b_v:\n");
-		long b_v = -1; const char *who = "(none)";
-		long v;
-		v = l1(&ego); if (v > b_v) { b_v = v; who = ego.name; }
-		v = l1(&ring); if (v > b_v) { b_v = v; who = ring.name; }
-		printf("    after loop 1: b_v = %-8ld candidate = %s\n", b_v, who);
-		v = l2(&ego); if (v > b_v) { b_v = v; who = ego.name; }
-		v = l2(&ring); if (v > b_v) { b_v = v; who = ring.name; }
-		printf("    after loop 2: b_v = %-8ld candidate = %s\n", b_v, who);
-
-		printf("\n  Without loop 1's ego bonus, the ring would have won:\n");
-		b_v = -1; who = "(none)";
-		v = l2(&ego); if (v > b_v) { b_v = v; who = ego.name; }
-		v = l2(&ring); if (v > b_v) { b_v = v; who = ring.name; }
-		printf("    loop 2 alone: b_v = %-8ld candidate = %s\n", b_v, who);
+		struct item it[] = {
+			{ "pack: unaware ring", 0, 100, 0, 0, 0, 1, 1, 0, K_RING },
+			{ "worn: artifact + random-power ego", 1, 5000, 1, 1, 0, 1, 1, 1, K_WEAPON },
+		};
+		run("=== A. ordinary candidates (BI_MAXDEPTH 10, free_id 0) ===", it, 2, 0, depth);
 	}
+	{
+		struct item it[] = {
+			{ "pack: unaware ring", 0, 100, 0, 0, 0, 1, 1, 0, K_RING },
+			{ "worn: CURSED random-power ego weapon", 1, 5000, 0, 1, 1, 1, 1, 1, K_WEAPON },
+		};
+		run("=== B. the exception: cursed non-artifact ego in the weapon slot ===", it, 2, 0, depth);
+	}
+	printf("In A loop 1 makes no difference.  In B the cursed weapon's loop-1\n");
+	printf("score (value+100000) blocks the unaware ring (value+20000+50000)\n");
+	printf("that loop 2 alone would have chosen.\n");
 	return 0;
 }

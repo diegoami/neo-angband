@@ -11,57 +11,66 @@ reader trying to understand a defect — does not have to rediscover it.
 e473720ed88a0f0c7ca66815cef3000eb4a38bc3
 ```
 
-file `src/borg/` (59 `.c` files, 64,147 lines of C plus headers). That
-commit is upstream's `master` head; see §0.
+directory `src/borg/` (59 `.c` files, 64,147 lines of C plus headers), read
+at that commit. See §0.
 
 **This document does not list the Borg's bugs.** They are on this fork's
-issue board, and their state changes there. What this document does is
-explain **what the Borg is for and how it is built**, so that the bugs make
-sense: a defect is only legible against the behaviour it disturbs. §11
-describes the *shapes* of defect the architecture produces, with one
-example each, so a rebuild can recognise them; the individual findings stay
-on the board.
+issue board, and their state changes there (§18). What this document does
+is explain **what the Borg is for and how it is built**, so that the bugs
+make sense: a defect is only legible against the behaviour it disturbs.
+§11 describes the *shapes* of defect the architecture produces, each with an
+example read from the source, so that a rebuild can recognise them. The
+examples are described by their code, not by finding number, and nothing in
+this document records whether any finding is open, fixed or disputed.
 
-**Scope:** the C Borg only. This document says nothing about the Neo
-TypeScript port (`neostryder/neo-angband-mod-borg`) or the Mandos derivative,
-except where a behaviour is *shared* and therefore part of the contract a
-rebuild must satisfy.
+**Scope:** the C Borg only. Nothing here describes the Neo TypeScript port
+or the Mandos derivative.
 
-**Reading rule.** Where this document says "must", it means: the current C
-Borg does this, and a rebuild that does not do this will play differently.
-Where it says "known defect", it means the current C Borg does *not* do the
-sane thing; the sane thing is stated alongside, and the choice is left open.
+**Reading rules.**
+
+* "Must" means: the current C Borg does this, and a rebuild that does not
+  will play differently. §16 says which of those are observable behaviour,
+  which are decision-changing constants and which are configuration.
+* **Citations** are written `file:function:lines` (for example
+  `borg-flow.c:borg_flow_commit:585-608`). The file is under `src/borg/`
+  unless another directory is named; the lines are at the commit above and
+  lie inside the named function (or, for a header, contain the named
+  identifier). Every one was checked mechanically; see
+  `docs/audit/c-reports/spec-checks/RECHECK.md`.
+* **Code blocks** are either transcribed from the source, with their
+  citation in the line above the block, or labelled **pseudocode**.
+  Transcriptions may omit comments, blank lines and unrelated statements;
+  omissions are marked `...`. Pseudocode uses real identifiers wherever it
+  names one.
+* **Call graphs** were derived by grepping call sites at the commit, not
+  from memory. Where a graph is partial, it says so.
 
 ---
 
 ## 0. The upstream commit this describes
 
-Every statement below is a statement about one specific commit of the
-upstream C Borg:
-
 | Field | Value |
 | --- | --- |
 | Repository | `angband/angband` |
-| Branch | `master` |
 | Commit | `e473720ed88a0f0c7ca66815cef3000eb4a38bc3` |
 | Commit date | 2026-10-27 |
-| Path read | `src/borg/` |
+| Upstream `master` head when last checked | the same commit, on 2026-11-06 |
+| Path read | `src/borg/` (plus the engine files named in citations) |
 | Size read | 59 `.c` files, 64,147 lines (plus headers) |
 
-That commit **is** upstream's `master` head, so `src/borg/` here is
-byte-for-byte what upstream ships. It is also this session's recorded C
-baseline (`session.json` → `baselines.c`) and the catalogue's C source pin
-(`docs/c-bugs/catalogue.json` → `sources.c.commit`), and the local
+The commit id is the pin. The statement "it is upstream's head" was true
+when checked and is not a property of this document; when upstream moves,
+the citations still hold *at the pin*, and re-reading them at a newer head
+is a separate piece of work. The pin is also this session's recorded C
+baseline (the C entry of the baselines in `session.json`) and the
+catalogue's C source pin (`commit` under `sources` → `c` in
+`docs/c-bugs/catalogue.json`), and the local
 `c-borg-reference` branch carries it unmodified:
 
 ```sh
-gh api repos/angband/angband/commits/master --jq '.sha'
-#   -> e473720ed88a0f0c7ca66815cef3000eb4a38bc3
-git diff e473720ed origin/c-borg-reference -- src/borg   # empty
+gh api repos/angband/angband/commits/master --jq '.sha'     # head today
+git rev-parse origin/c-borg-reference                         # the pin
 ```
-
-Line numbers cited throughout are at that commit. When upstream `master`
-moves, the pin moves with it and the citations are re-read at the new head.
 
 ---
 
@@ -71,52 +80,114 @@ moves, the pin moves with it and the citations are re-read at the new head.
 
 The Borg exists to **play Angband well without a human**. It is the
 original autoplayer: the thing you leave running overnight to push a
-character deeper than anyone would sit and watch, and the thing that
-produced the game records of deep, successful, unattended runs.
+character deeper than anyone would sit and watch.
 
 That purpose shapes everything about it. An autoplayer that has to be
 watched is not an autoplayer, so it must be able to play for hours without
 supervision: it decides, it acts, it recovers from its own mistakes, and it
-keeps going. It plays to win rather than to survive — it will spend a
-potion on a fight it could walk away from if the potion is worth it, and
-it will push toward Morgoth rather than settle for a comfortable depth.
-And it does so through the only channel the game offers a player, which is
-the keyboard.
+keeps going. It plays to win rather than to survive — it dives when its
+preparation checks say it may (§5.5), spends consumables when a fight is
+worth it, and pushes towards Morgoth. And it acts on the game through the
+same channel a player does: **keystrokes**.
 
 The consequence is that the Borg is not a strategy and not a set of rules.
-It is a **decision loop**: perceive, evaluate, act, and repeat. Its
-"intelligence" is entirely in the middle step — a scoring function over
-the possibilities it can perceive.
+It is a **decision loop**: perceive, evaluate, act, repeat. Its
+"intelligence" is a fixed priority ladder of goals (§2.8), most of whose
+rungs are scoring functions over the possibilities it can perceive.
 
-### 1.1 The mechanism
+### 1.1 The mechanism: two input channels, one output
 
-The Borg is an **autoplayer**. It reads the game's screen and stats, decides
-what to do, and presses keys. It is not a rules engine: it never changes a
-game rule, never reads hidden information the game has not shown it, and
-never edits game state outside the ordinary keypress channel.
+The Borg's **output** is a queue of keystrokes (§2.6). It takes no game
+action by any other route. (It does change some game *settings* — §1.2.)
 
-It is therefore a *screen-scraping* agent with three inputs:
+Its **input** comes through two channels, and a rebuild needs both.
 
-1. the terminal screen (glyphs, colours, positions),
-2. the game's own status line and character sheet,
-3. the message log.
+**Channel A — the screen.** Read with `borg_what_text()` (a wrapper over
+the terminal's character/attribute buffer):
 
-and one output: a queue of keystrokes.
+* the message line (row 0), including `-more-` and yes/no prompts
+  (`borg-messages.c:borg_get_messages:183-294`, §4.6);
+* the store/home header, which is how `borg_think()` knows it is in a shop
+  (`borg-think.c:borg_think:222-224`).
 
-Everything below follows from that design. Most of the Borg's bugs come from
-the fact that its "memory" of the world is a **screen-derived map**, not the
-game's own truth, and it must therefore re-derive everything it thinks it
-knows every turn.
+**Channel B — direct reads of game state.** This is not an exception or a
+cheat bolted on; it is how most perception works. On every call of
+`borg_think()`:
+
+* **its own gear.** The first call is `borg_find_all_items()`, which runs
+  `borg_equipment()` (reads `player->body.slots[]`), then the quiver
+  (`player->upkeep->quiver[]`), then `borg_inventory()` (reads
+  `player->upkeep->inven[]`), then the stores, and snapshots the result
+  into `safe_items[]` (`borg-item.c:borg_find_all_items:117-131`,
+  `borg-inventory.c:borg_equipment:172-209`,
+  `borg-inventory.c:borg_inventory:214-250`). Each object goes through
+  `borg_item_analyze()`, which copies `tval`/`sval`, the *known* parts of
+  the object (`obj->known`) and whether its runes are known
+  (`borg-item-analyze.c:borg_item_analyze:450-498`).
+* **its own status.** `borg_notice_player()` reads hit points, mana,
+  depth, experience, gold, recall state and the timed effects straight
+  from `player->` (`player->chp`, `player->timed[TMD_BLIND]`, …); it is
+  also called at the top of every `generate_keypress()` (§2.2).
+* **its spells.** `borg_cheat_spells()` reads
+  `player->class->magic.books[]` and `player->spell_flags[]`
+  (`borg-magic.c:borg_cheat_spells:677-718`).
+* **the map panel.** `borg_update_map()` calls the game's own `map_info()`
+  for every grid of the visible panel. `map_info()` returns what the game
+  would draw there: the feature from the *player's* memory
+  (`player->cave`), whether the grid is in view, and a monster or object
+  only if the player can see it. The Borg also asks `cave` directly
+  whether a panel grid holds a visible trap, which shop it is, whether it
+  is webbed, and it reads a visible monster's display attribute and
+  mimic state through `cave_monster()`
+  (`borg-update.c:borg_update_map:279-353`,
+  `borg-update.c:borg_update_map:572-587`).
+* **monster condition.** For a tracked monster on a known grid,
+  `borg_update_kill_old()` reads the real `struct monster`: exact
+  `hp`/`maxhp`, the sleep, fear, confusion and stun timers, `mspeed` and
+  the game's monster index. The source says so itself: "this is a cheat.
+  Borg does not look at the bar at the bottom"
+  (`borg-flow-kill.c:borg_update_kill_old:243-330`).
+* **race and kind data.** Danger and attack scoring use the full monster
+  race record `r_info[]` (blows, spells, flags), not the player's lore,
+  and items use `k_info[]`/`e_info[]`.
+* **cave predicates.** A handful of decisions consult `cave` for facts
+  about the Borg's surroundings: `square_isvault()` (danger, retreat),
+  `square_isno_teleport()` and `player->upkeep->arena_level` (teleport),
+  `square_in_bounds_fully()` (flow and neighbour scans), `square_shopnum()`
+  (stores), and `cave->width`/`cave->height` (panel arithmetic).
+
+What the Borg does **not** do: it does not read the player's map memory
+outside the current panel (it remembers what earlier panels showed), it
+does not see monsters the player cannot see, and it does not scan the
+level's monster or object lists for things it has not observed.
+
+The upstream comment that explains the design is in
+`borg-think.c:borg_think:179-256` (the comment block above it): the
+"cheat" functions for inventory, equipment, panel and spellbooks "can be
+replaced by (very expensive) parse functions, which cause an insane amount
+of screen flashing". Upstream chose direct reads. A rebuild that parses the
+inventory off the screen is a different, slower program.
 
 ### 1.2 What it is not
 
-* It is not a cheat engine. It has a *separate* RNG (`borg_rand_local`) so its
-  decisions do not consume the game's RNG stream and change the game's rolls.
-* It does not read the game's internal `cave[]`, `player->`, or `inv[]`
-  structures for its decisions. It has `borg_cheat_*`-style helpers, but they
-  are used for the *Borg's own* bookkeeping of what it saw, not as an oracle
-  for hidden state.
-* It does not run on a timer. It runs when the game asks for a key.
+* **It does not consume the game's RNG while it thinks.** During
+  `borg_think()` the RNG is switched to the quick generator seeded from
+  the Borg's own `borg_rand_local`, and restored afterwards (§2.2,
+  `borg.c:generate_keypress:355-374`). This covers the thinking pass only:
+  code that runs before the swap — prompt handling in
+  `borg_react_prompted()`, including the random race/class choice in
+  `borg_reincarnate_start()` — uses the game's RNG.
+* **It is not a pure keyboard player.** It sets game options when it
+  starts (`borg-init.c:borg_reinit_options:403-444`: no `auto_more`,
+  `pickup_always` on, original keyset, `easy_open`/`easy_alter` off, …),
+  changes the delay factor, turns `cheat_live` on at start (with
+  `borg_cheat_death`) and when it respawns, marks
+  the character `NOSCORE_BORG`, and on the "Die?" prompt with
+  `borg_cheat_death` set it calls `do_cmd_wiz_cure_all()` directly
+  (`borg-messages-react.c:borg_react_prompted:105-139`). These are
+  setting changes, not game actions, but a rebuild must reproduce the
+  option set or the screen it reads will look different.
+* **It does not run on a timer.** It runs when the game asks for a key.
 
 ---
 
@@ -124,518 +195,1020 @@ knows every turn.
 
 ### 2.1 Taking over the keyboard
 
-The game installs an `inkey_hack` function pointer (`src/ui-input.c`). When
-set, `inkey_ex()` calls it instead of waiting for a real keypress.
+The engine exposes a function pointer `inkey_hack` (`src/ui-input.c`).
+When it is set, the engine's key reader calls it instead of waiting for a
+real keypress.
 
+Transcribed from `borg.c:borg_entry_point:76-79` and
+`borg.c:borg_update_entrypoint:84-92`:
+
+```c
+static struct keypress borg_entry_point(int flush_first)
+{
+    return borg_save_keypress(generate_keypress(flush_first));
+}
+
+void borg_update_entrypoint(bool start)
+{
+    if (start) {
+        inkey_hack = borg_entry_point;
+    }
+    else {
+        inkey_hack = NULL;
+    }
+}
 ```
-inkey_ex()
-  └─ inkey_hack(flush_first)   →  borg_entry_point()
-       └─ borg_save_keypress(generate_keypress(flush_first))
-```
 
-`borg_update_entrypoint(true)` installs the hook; `false` removes it.
+The player starts the Borg from the `^Z` command menu (`do_cmd_borg()` in
+`borg-commands.c`), which calls `borg_update_entrypoint(true)`.
+`borg_save_keypress()` only records the key in a history ring for
+diagnostics.
 
-### 2.2 One Borg turn
+### 2.2 One call of `generate_keypress()`
 
-`generate_keypress()` (`src/borg/borg.c`) is the heart. In order:
+Each time the engine wants a key it calls `generate_keypress()`
+(`borg.c:generate_keypress:268-394`). In order:
 
-1. `Term_locate()` — remember the cursor position.
-2. `Term_fresh()` — force a screen refresh (the Borg normally never sees a
-   stale screen).
-3. `borg_notice_player()` — read the character sheet / status bar.
-4. `check_for_deactivate_or_death()` — bail out if the Borg was stopped, the
-   player died, the king was killed, a stop level was reached, or the money
-   scum quota was met.
-5. Flush the keypress buffer if asked.
-6. `borg_get_messages()` — read the message log off the screen. **Some
-   messages must be answered immediately** (a `-more-` prompt, a "Die? [y/n]"
-   prompt); those return a keypress straight away.
-7. `borg_parse(NULL)` — parse the *rest* of the messages into the Borg's own
-   message structures. `borg.dont_react = false` afterwards.
-8. `borg_inkey(true)` — if the Borg already has a queued key, use it.
-9. `user_abort()` — if a real human pressed a key, stop the Borg.
-10. If resting or repeating a command, return `EVT_NONE` (let the game run).
-11. If respawning, finish the respawn.
+1. `Term_locate()` — remember the cursor; `Term_fresh()`.
+2. `borg_notice_player()` — read the player's stats and timed effects
+   (Channel B), "before any check for deactivation that might use player
+   stats".
+3. `check_for_deactivate_or_death()` — if the Borg was stopped, the player
+   died, the king retired, a stop depth/level was reached or the money-scum
+   quota was met, tidy up and return a harmless key
+   (`borg.c:check_for_deactivate_or_death:97-203`).
+4. If the engine asked for a flush and keys are queued, `borg_flush()`.
+5. `borg_get_messages()` — read the message line. Prompts that need an
+   immediate answer (`-more-`, "Die?", "Direction?", …) **return a key
+   straight away** (§4.6).
+6. `borg_parse(NULL)` — flush the parsed messages into the reaction queue;
+   then `borg.dont_react = false`.
+7. **If a key is already queued, return it.** (`borg_inkey(true)`.)
+8. `user_abort()` — a real key press from the user stops the Borg.
+9. If `BI_CDEPTH >= 1`, clear `borg.in_shop`.
+10. **If the player is resting or a command is repeating, return a key of
+    type `EVT_NONE`** — let the game's own rest/repeat loop run (§2.7).
+11. If respawning, finish the respawn (`borg_reincarnate_end()`).
 12. `borg.targeting = false`.
-13. Swap in the Borg's own RNG (`Rand_quick = true; Rand_value =
-    borg_rand_local;`), call `borg_think()` in a loop until it returns true,
-    then save `borg_rand_local` and restore the game's RNG state.
-14. `borg_display_status()` — redraw the status line.
-15. `borg_inkey(true)` — the key the Borg queued, if any.
-16. If there is still no key, `borg_oops("normal abort")` and return ESCAPE.
+13. Swap in the Borg's RNG, call `borg_think()` until it returns true, then
+    `borg_display_status()`, save `borg_rand_local` and restore the game's
+    RNG.
+14. Count down the single-step counter `borg_step`, cancelling when it
+    reaches zero.
+15. Return the first queued key; if there is none, `borg_oops("normal
+    abort")` and return `ESCAPE`.
 
-**Invariant for a rebuild:** the Borg must produce **at least one keypress**
-per turn, or the game stalls. A turn that ends with no key is an abort.
+Two consequences matter for a rebuild. **The Borg thinks only when its key
+queue is empty** (step 7 comes before step 13), so a think that queues five
+keys is followed by four calls of `generate_keypress()` that only drain the
+queue. And **a think that queues nothing stops the Borg** (step 15).
 
 ### 2.3 The decision function
 
-`borg_think()` (`src/borg/borg-think.c`):
+`borg_think()` (`borg-think.c:borg_think:179-256`), in order:
 
-```
-borg_think()
-  ├─ borg_find_all_items()        -- re-read equipment + pack + stores
-  ├─ borg_check_save()             -- autosave if configured
-  ├─ borg_cheat_spells()           -- re-read spellbooks (if needed)
-  ├─ if shapechanged: press 'v','r' (throw to revert form)
-  ├─ borg_notice(true)             -- derive traits from items
-  ├─ borg_update()                 -- re-read the map from the screen
-  ├─ borg.power = borg_power()     -- score itself
-  ├─ if in a store/home: return borg_think_store()
-  ├─ track max clevel / max depth
-  ├─ borg.time.now++               -- the Borg's clock
-  ├─ borg.antibounce_count++       -- anti-loop counter
-  └─ return borg_think_dungeon()   -- the actual decision
+Outline of `borg-think.c:borg_think:179-256`; every line is a call or test,
+in source order:
+
+```pseudocode
+borg_find_all_items()            Channel B: gear, quiver, pack, stores; snapshot safe_items[]
+borg_check_save()                autosave if a save is pending (queues ^S); may return
+borg_cheat_spells()              only if borg_do_spell is set
+player_is_shapechanged()         if so, queue 'v' 'r' (the throw command, which changes back) and return
+borg_notice(true)                rebuild borg.trait[] / borg.has[] from the items (§3.4)
+borg_update()                    the map, monsters, objects, messages, timers (§4)
+borg.power = borg_power()        score the current kit (§5)
+store header "Stor"/"Home"?      if so: return borg_think_store()          (§12)
+borg_do_spell = true
+track BI_MAXCLEVEL / BI_MAXDEPTH
+borg.time.now++ ; overflow check (§2.4)
+borg.antibounce_count++          (§2.5)
+borg.status.cancel?              return true
+return borg_think_dungeon()      the decision ladder (§2.8)
 ```
 
-`borg_think()` is called in a loop (`while (!borg_think());`) because it may
-return "nothing to do" (e.g. it needs to wait for a message to arrive).
+`generate_keypress()` calls it as `while (!borg_think());`.
 
 ### 2.4 The Borg's clock
 
-`borg.time.now` is a `borg_time` = `int32_t`. It overflows at
-`BORG_TIME_MAX - 100`; the Borg resets it to 1 and logs
-`"*****WARNING***** Borg Clock Overflow"`.
+`borg.time.now` is a `borg_time` (`int32_t`; `BORG_TIME_MAX` is
+`INT32_MAX`). It counts calls of `borg_think()` outside the stores, not
+game turns, and every `borg.time.*` timestamp and `borg_timer()` test is in
+that unit.
 
-**Known defect (CBUG-0246):** the reset is unreachable in practice — the
-Borg aborts on the overflow first. See `borg-think.c` and the reset in
-`borg_update()`.
+`borg_think()` resets it to 1 with the warning
+`"*****WARNING***** Borg Clock Overflow"` when it exceeds
+`BORG_TIME_MAX - 100` (`borg-think.c:borg_think:242-245`). That reset is
+**unreachable**: `borg_think_dungeon()` aborts with `borg_oops("clock
+overflow")` once `borg.time.now >= BORG_TIME_MAX - 3000`
+(`borg-think-dungeon.c:borg_think_dungeon:1282-1288`), which happens
+first. The ladder also has two fixed windows, `borg.time.now` in
+12000–12025 and 25000–25025, in which it queues four `ESCAPE`s and forces
+the "new level" bookkeeping (`borg-think-dungeon.c:borg_think_dungeon:1263-1279`).
 
 ### 2.5 The anti-bounce counter
 
-`borg.antibounce_count` counts turns. It is incremented every
-`borg_think()`, and it is bumped by **+10** whenever a note contains
-`"Best Combo"` or `"Taking off "` (the Borg's own loop detection, in
-`borg_note_internal`).
+`borg.antibounce_count` (`int16_t`) measures how long the Borg has gone
+without visible progress. It is not a turn counter:
 
-Uses:
-* `borg.antibounce_count > 300` → refuse an emergency equipment swap
-  ("Forbid if been sitting on level forever").
-* `borg.antibounce_count <= 200` → regional fear from monsters is included
-  in danger estimates. Above 200 the Borg stops adding that fear, to stop
-  "bouncy" behaviour (running away from danger and back again).
+* **incremented** by 1 on every `borg_think()` outside the stores, and
+  also inside several loops (wear, junk, quiver, store buy/sell);
+* **bumped by +10** whenever a note contains `"Best Combo"` or
+  `"Taking off "` (`borg-io.c:borg_note_internal:165-170`). At the pin no
+  note contains `"Best Combo"`; the ring-swap notes contain
+  `"Taking off "`;
+* **bumped by +100** on some messages (for example an `"Illegal "`
+  command, `borg-messages.c`);
+* **reset to 1** on progress: a new level, a kill, a panel change,
+  tunnelling into granite, and a few other events (`borg-update.c`,
+  `borg-messages.c`); `borg_recover()` resets it to 0 after some rests.
 
-**Invariant for a rebuild:** this is a *hidden state machine parameter* that
-changes the Borg's decisions. Any rebuild must reproduce its increments
-exactly or the Borg's behaviour will diverge.
+Thresholds read it to change behaviour — among them:
+
+| Test | Where | Effect |
+| --- | --- | --- |
+| `<= 200` | `borg-danger.c:borg_danger:2846-2847` | the per-grid monster fear `borg_fear_monsters[][]` is added to danger only while the counter is at most 200 |
+| `>= 300 && <= 303` | `borg-think-dungeon.c:borg_check_bounciness:1139-1142` | forget the current flow goal |
+| `> 300` | `borg_backup_swap()` (`borg-item-wear.c`) | refuse an emergency equipment swap |
+| `>= 500 && <= 503` | `borg-think-dungeon.c:borg_check_bounciness:1144-1158` | forget every tracked object and monster |
+| `>= 700` | `borg-think-dungeon.c:borg_check_bounciness:1163-1173` | set `borg.goal.leaving` and `borg.goal.fleeing` |
+| `> 1200` | `borg-danger.c` | change the danger estimate for long-stuck Borgs |
+
+### 2.6 The key queue and the ESCAPE discipline
+
+The queue is a ring of `KEY_SIZE` (8192) `keycode_t`s
+(`borg-io.c:borg_keypress:311-336`, `borg-io.c:borg_inkey:394-418`,
+`borg-io.c:borg_flush:423-429`):
+
+* `borg_keypress(k)` appends one key; a zero key is refused with a note;
+  overrunning the ring aborts the Borg (`borg_oops("overflow")`).
+* `borg_keypresses(str)` appends each character of a string.
+* `borg_inkey(false)` peeks at the next key; `borg_inkey(true)` takes it.
+* `borg_flush()` empties the queue and forgets a queued direction.
+* `borg_queue_direction()` stores a direction to be returned when the game
+  asks "Direction?" (§4.6).
+
+Every action is a **complete key sequence queued in one think**: command,
+item letter, sometimes a direction or a count, and usually a closing
+`ESCAPE`. For example the identify path queues the spell or scroll, then
+the item selector, then `ESCAPE`
+(`borg-item-wear.c:borg_test_stuff:212-238`); a recall queues the
+use-item keys, the answer to the recall-depth prompt (`'y'` or `'n'`), and
+`ESCAPE` (`borg-escape.c:borg_recall:58-124`). The trailing `ESCAPE` is
+there so that an unexpected prompt or menu is dismissed rather than
+answered by the next action's keys. Item letters come from
+`all_letters_nohjkl[]`, never from the screen.
+
+### 2.7 The rest/repeat pass-through
+
+When the player is resting (`player->upkeep->resting`) or a command is
+repeating (`cmd_get_nrepeats() > 0`), `generate_keypress()` returns a key
+of type `EVT_NONE` and does not think (`borg.c:generate_keypress:334-337`).
+That is how the Borg rests: it queues `R` and a count (`'R' '7' '5'
+KC_ENTER`, or `'R' '9' KC_ENTER` while waiting for recall), and the game's
+own rest loop then runs — and is interrupted by the game — without the
+Borg being consulted. A rebuild that always returns a key interrupts its
+own rest on the next turn and never recovers.
+
+### 2.8 The dungeon decision ladder
+
+`borg_think_dungeon()` (`borg-think-dungeon.c:borg_think_dungeon:1256-2302`)
+is a fixed priority list. Each rung either queues keys and returns true, or
+falls through. This ordering, more than any scoring weight, is what makes
+the Borg play the way it does. The outline below lists every rung in source
+order; the lines are within that function.
+
+Pseudocode: the rungs of `borg-think-dungeon.c:borg_think_dungeon:1256-2302`
+in source order.
+
+```pseudocode
+clock windows / clock abort                         (§2.4)
+borg_destroy_floor()                                destroy an ignored item underfoot
+delay; redraw if borg.status.redraw
+level boredom: borg_timer(borg.time.level) >= 10000 -> goal.leaving, goal.fleeing
+borg_near_monster_type()                            note scary/unique/breeder on level
+depth 1 and goal.fleeing_to_town: borg_think_stair_scum()   (§13.1)
+borg_check_bounciness()                             (§2.5)
+borg_check_breeders()
+avoidance follows BI_CURHP (borg_danger_wipe if it changed)
+stair leash for weak characters (goal.less)
+borg_notice(true)
+self-lunal mode: borg_think_dungeon_lunal()         (§13.1)
+munchkin start mode: borg_think_dungeon_munchkin()  (§13.1)
+"get back on correct depth": borg_prepared() fails -> goal.less, take '<'
+borg_think_dungeon_light()                          (§10.7)
+borg_flow_old(GOAL_DIGGING)                         continue an anti-summon corridor
+borg_caution()                                      caution and escape (§9)
+no light / cut / poisoned / starving: light, wear, borg_recover(), drop, shop
+borg_must_return_to_town() -> borg_leave_level()
+borg_play_magic(false)                              study / try spells (§10.6)
+digger or bare hands: borg_wear_stuff()
+borg_flow_kill_corridor()                           dig an anti-summon corridor
+borg_attack(false)                                  routine combat (§7)
+borg_wear_stuff(), borg_swap_rings(), borg_wear_rings()
+borg_flow_old(GOAL_TAKE), borg_flow_take(true, 5)   pick up something visible and close
+borg_wear_rings(), borg_remove_stuff(), borg_dump_quiver()
+borg_check_light()                                  detections and lighting (§10.7)
+borg_flow_old(GOAL_RECOVER), borg_recover(), borg_flow_recover(50)   (§10.9)
+borg_perma_spell()                                  keep timed spells up (§7.5)
+low-level casters: rest on a stair for mana, or flow to one
+town and broke: leave via down stairs
+goal.less: head for an up stair
+goal.fleeing (not recalling): any stair
+Morgoth on level and glyphs available: borg_flow_glyph()
+GOAL_TAKE / borg_flow_take(false, 5) / borg_flow_vein(true, 5)
+GOAL_KILL / borg_flow_kill(true, 20)                walk to a visible monster
+GOAL_TAKE / borg_flow_take(false, 10) / borg_flow_vein(false, 10)
+GOAL_KILL / GOAL_VAULT / borg_flow_kill_aim(true)  move to a firing position
+borg_use_things(), borg_test_stuff(), borg_enchanting(), borg_recharging()
+borg_drop_junk(), borg_drop_hole(false), borg_drop_slow()   (§10.8)
+GOAL_TAKE / borg_flow_take(true, 250) / borg_flow_vein(true, 250)
+goal.leaving, or low level with 13+ items to sell: take an up stair (or down if prepared)
+prepared for BI_CDEPTH + 5: dive (GOAL_BORE, borg_flow_stair_more)
+continue GOAL_MISC / GOAL_DARK / GOAL_XTRA / GOAL_BORE / GOAL_VAULT
+vault on level: kill, take, borg_excavate_vault(), borg_flow_vault(), borg_flow_dark()
+borg_flow_kill(false, 250), borg_flow_take(false, 250), borg_flow_vein(false, 250)
+borg_flow_dark(true)                                explore (near)
+money scum in town, else borg_leave_level(false)
+borg_flow_dark(false)                               explore (far)
+borg_choose_shop() -> borg_flow_shop_entry()
+borg_play_magic(true)
+detections, borg_flow_spastic(false), borg_flow_kill_direct(false), borg_wear_recharge()
+money scum, else borg_leave_level(true)
+detections, borg_flow_spastic(true), borg_flow_kill_direct(false)
+recalling and safe: rest 'R' '9' KC_ENTER
+                                                    --- nothing worked: "bizarre" level ---
+boost bravery (1): avoidance = 2 * BI_CURHP, borg_think_dungeon_brave()
+twitchy phase (while borg.times_twitch < 3): PHASE_DOOR, act_tele_phase, TELEPORT_SELF, PORTAL, borg_shadow_shift()
+boost bravery (2): avoidance = 4 * BI_MAXHP, borg_think_dungeon_brave()
+boost bravery (3): avoidance = 30000, forget stairs/glyphs/tracks/objects, borg_think_dungeon_brave()
+twitchy teleport (while borg.times_twitch < 5), then borg_recall()
+forget objects and monsters; borg_flow_kill_direct(true); borg_twitchy()
+return false
+```
+
+`borg.avoidance` is the danger level the flow treats as impassable (§6.5).
+The three "boosted bravery" passes raise it, re-run a reduced ladder
+(`borg_think_dungeon_brave()`, which starts with `borg_defend()` at depth 100
+and `borg_attack(true)`), and restore it — so a Borg that is stuck walks
+through danger it would otherwise route around.
 
 ---
 
 ## 3. The Borg's memory
 
-### 3.1 Two kinds of memory
+### 3.1 What it keeps
 
-| Memory | Holds | Refreshed by |
+| Memory | Holds | Maintained by |
 | --- | --- | --- |
-| **Screen-derived** | `borg_grids[]` — what the Borg *believes* about every visible grid | `borg_update()` every turn |
-| **Cheat-derived** | `borg_items[]`, `borg.trait[]`, `borg.kills[]`, `borg_race_death[]` | `borg_notice()`, `borg_find_all_items()`, `borg_update()` |
-
-The screen-derived map is the source of nearly all of the Borg's
-misbehaviour: it is what the Borg *saw*, and it is stale, partial and
-occasionally wrong.
+| `borg_grids[][]` | what the Borg believes about every dungeon grid it has seen | `borg_update()` — patched in place; a grid keeps what the Borg last saw there |
+| `borg_items[]`, `safe_items[]` | the gear, pack, quiver; the snapshot used to undo simulations | rebuilt from Channel B by `borg_find_all_items()` every think |
+| `borg.trait[]`, `borg.has[]`, `borg.activation[]` | the model of itself | zeroed and rebuilt by `borg_notice()` |
+| `borg_kills[]` | tracked monsters | `borg_update()` — created, refreshed, moved and retired across turns |
+| `borg_takes[]` | tracked objects on the floor | `borg_update()`, the same way |
+| `track_less`, `track_more`, `track_glyph`, `track_door`, `track_closed`, `track_step`, `track_vein` | stairs, glyphs, doors, steps, veins seen on this level | `borg_update()` and the message handlers |
+| `borg_race_death[]`, `borg_race_count[]` | kills per race (all game), sightings per race (this level) | kills, `borg_update()` |
+| `borg_shops[]` | the last seen contents of every store and the home | `borg_notice_store()` |
+| `borg.time.*` | when things last happened (level start, detections, …) | everywhere |
 
 ### 3.2 The grid record
 
-`borg_grid` (`src/borg/borg-cave.h`) holds, per dungeon grid:
+Transcribed from `borg-cave.h:borg_grid:74-86`:
 
-| Field | Meaning |
-| --- | --- |
-| `feat` | the terrain feature the Borg believes is there |
-| `info` | flags: `BORG_DARK`, `BORG_GLOW`, `BORG_LIGHT`, `BORG_ICKY`, `BORG_HURT`, `BORG_VIEW` … |
-| `kill` | index into `borg.kills[]` if a monster is believed to be here |
-| `trap` | the Borg believes there is a trap here |
-| `glyph` | the glyph index of the remembered object |
-| `xtra` | per-goal scratch space |
+```c
+struct borg_grid {
+    uint8_t  feat; /* Grid type */
+    uint16_t info; /* Grid flags */
+    bool     trap;
+    bool     glyph;
+    bool     web;
+    uint8_t  store;
+    uint8_t  take; /* Object index */
+    uint8_t  kill; /* Monster index */
+    uint8_t  xtra; /* Extra field (search count) */
+};
+```
 
-`borg_grids` is `borg_grid *borg_grids[AUTO_MAX_Y]`, one allocated row per
-dungeon row, `AUTO_MAX_X` entries per row.
+`take` and `kill` are indexes into `borg_takes[]` and `borg_kills[]` (0 =
+none), `store` is the shop number of a shop entrance, and `xtra` counts
+searching. `borg_grids` is `borg_grid *borg_grids[AUTO_MAX_Y]`, one row per
+dungeon row; `AUTO_MAX_Y`/`AUTO_MAX_X` are `DUNGEON_HGT` (66) and
+`DUNGEON_WID` (198).
+
+`glyph` is meant to mark a glyph of warding, but at the pin it is set only
+inside the branch that handles a visible *player trap*
+(`borg-update.c:borg_update_map:330-353`, guarded by
+`square_isdisarmabletrap()`), and the glyph of warding is not a player trap
+in `lib/gamedata/trap.txt` (its flags are `GLYPH | VISIBLE | FLOOR`). The
+Borg tracks its glyphs through `track_glyph` instead (set from messages).
+
+The `info` flags:
+
+Transcribed from `borg-cave-view.h:BORG_MARK:67-75`:
+
+```c
+#define BORG_MARK  0x01 /* observed grid */
+#define BORG_GLOW  0x02 /* probably perma-lit */
+#define BORG_DARK  0x04 /* probably not perma-lit */
+#define BORG_OKAY  0x08 /* on the current panel */
+#define BORG_LIGHT 0x10 /* lit by the torch */
+#define BORG_VIEW  0x20 /* in line of sight */
+#define BORG_TEMP  0x40 /* temporary flag */
+#define BORG_XTRA  0x80 /* extra flag */
+#define BORG_IGNORE_MAP 0x100 /* ignore unseen grid from map_info() */
+```
 
 ### 3.3 Item memory
 
-`borg_items[]` is indexed by a **packed** index space:
+`borg_items[]` is indexed by a **packed** index space (`borg-item.h`):
 
-| Range | Meaning | Constants |
-| --- | --- | --- |
-| `0 .. PACK_SLOTS-1` | the pack | `PACK_SLOTS = pack_size - quiver_slots` |
-| `INVEN_WIELD .. INVEN_WIELD+11` | the equipment slots | `INVEN_WIELD = z_info->pack_size` |
-| `QUIVER_START .. QUIVER_END-1` | the quiver | `QUIVER_START = INVEN_TOTAL = pack_size + 12` |
+| Range | Meaning |
+| --- | --- |
+| `0 .. z_info->pack_size - 1` | the pack (`PACK_SLOTS` is the pack size less the quiver slots in use) |
+| `INVEN_WIELD ..` | the equipment; `INVEN_WIELD` is `z_info->pack_size`, followed by `INVEN_BOW`, `INVEN_RIGHT`, `INVEN_LEFT`, …, `INVEN_LIGHT`, … up to `INVEN_TOTAL` |
+| `QUIVER_START .. QUIVER_END - 1` | the quiver; `QUIVER_START` is `INVEN_TOTAL` |
 
-`safe_items[]` is a snapshot of `borg_items[]` taken by
-`borg_find_all_items()`, used as the restore point for the Borg's
-"try this item on" simulations.
-
-**Known defect:** `borg_notice_equipment()` zeroes the wielded weapon's and
-the bow's `ds/dd/to_d/to_h/weight/ident/sval` **in place**, in
-`borg_items[]`, to model "attacking with bare hands". `safe_items[]` keeps
-the real values, but `borg_items[]` stays wrong for the rest of the turn.
-See §11.6.
+A `borg_item` carries `tval`, `sval`, `iqty`, `weight` (from
+`object_weight_one()`, so one item), `timeout`, the known to-hit/to-dam/AC,
+dice, modifiers and flags, `ident` (`object_fully_known()`), `needs_ident`
+(not `object_runes_known()`), `aware`, the description and inscription, and
+a value. `safe_items[]` is the copy taken at the end of
+`borg_find_all_items()`; the simulations in §5.4 restore from it.
 
 ### 3.4 The trait vector
 
-`borg.trait[]` is a flat `int` array indexed by `BI_*` enumerators
-(`src/borg/borg-trait.h`). It is the Borg's model of itself: current and max
-HP, depth, level, resistances, flags (`BI_ISCUT`, `BI_ISPOISONED`,
-`BI_ISWEAK`, `BI_ISHUNGRY`, `BI_ISPARALYZED`, `BI_ISCONFUSED`, `BI_ISBLIND`,
-`BI_ISHALLU`, `BI_ISAFRAID`, …), `BI_CURHP`, `BI_MAXHP`, `BI_CDEPTH`,
-`BI_MAXDEPTH`, `BI_CLEVEL`, `BI_MAXCLEVEL`, `BI_GOLD`, `BI_ACSW` (Cure Serious
-Wounds count), `BI_ARESPOIS` (Resist Poison potion count), and so on.
+`borg.trait[]` is a flat `int` array indexed by the `BI_*` enumerators of
+`borg-trait.h`: its model of itself. A few of them: `BI_CURHP`, `BI_MAXHP`,
+`BI_CURSP`, `BI_MAXSP`, `BI_CDEPTH`, `BI_MAXDEPTH`, `BI_CLEVEL`,
+`BI_MAXCLEVEL`, `BI_GOLD`, `BI_SPEED`, `BI_LIGHT`, `BI_FOOD`, the conditions
+`BI_ISCUT`, `BI_ISPOISONED`, `BI_ISWEAK`, `BI_ISHUNGRY`, `BI_ISPARALYZED`,
+`BI_ISCONFUSED`, `BI_ISBLIND`, `BI_ISIMAGE`, `BI_ISAFRAID`, resistances
+(`BI_RFIRE`, …, and `BI_SRFIRE` etc. which include swap items and spells),
+and consumable counts such as `BI_ACSW` and `BI_AEZHEAL`.
 
-The trait vector is **recomputed from scratch** by `borg_notice()` on every
-turn, from the item list. It is not incremental.
+`borg.has[]` is a different array: counts of items **by object kind**,
+indexed by `kv_*` kind indexes (`borg.has[kv_potion_healing]`). The two
+arrays are both `int *` and easy to confuse (§11.2).
 
-### 3.5 The kill list
+`borg_notice(true)` **zeroes** `borg.has`, `borg.trait` and
+`borg.activation` and rebuilds them: player stats, spells, equipment,
+inventory, then the swap items (`borg-trait.c:borg_notice:2820-2949`). The
+trait vector is therefore recomputed, not patched. `borg_think()` calls it
+once and `borg_think_dungeon()` calls it again before the mode checks.
 
-`borg.kills[]` is a list of monsters the Borg has seen, each with its race
-index, grid position, and a "known" flag. `borg.kills_nxt` is the count.
-`borg_race_death[]` records which races are known dead.
+### 3.5 The monster and object lists
 
-**Known defect (CBUG-0078):** `borg_update_kill_old()` writes
-`borg_race_death[i]` with the *kill* index rather than the race index.
+Transcribed from `borg-flow-kill.h:borg_kill:38-68`, with fields omitted where marked:
+
+```c
+struct borg_kill {
+    uint16_t     r_idx; /* Race index */
+    bool         known; /* Verified race */
+    bool         awake; /* Probably awake */
+    ...
+    struct loc   pos; /* Location */
+    uint8_t      speed; /* Estimated speed */
+    uint8_t      moves; /* Estimates moves */
+    ...
+    int16_t      power; /* Estimated hit-points */
+    int16_t      injury; /* Percent wounded */
+    ...
+    borg_time    when; /* When last seen */
+    int16_t      m_idx; /* Game's index */
+};
+```
+
+`borg_kills[]` is a global array (not a field of `borg`), with
+`borg_kills_cnt` live entries and `borg_kills_nxt` the next unused slot;
+slot 0 is unused, and a slot whose `r_idx` is 0 is dead. The list is
+**patched and retired across turns**: `borg_locate_kill()` matches a
+message or a screen sighting to an existing slot or makes a new one,
+`borg_update_kill_old()` refreshes a slot in place, observed motion moves
+it, and `borg_delete_kill()` retires it. It is emptied
+(`borg_kills_cnt = 0; borg_kills_nxt = 1;`) on a level change
+(`borg-update.c:borg_update:2232-2233`), by the anti-bounce check at 500
+(§2.5), and by the last-resort rungs of the ladder (§2.8).
+
+`borg_takes[]` (`borg_takes_cnt`, `borg_takes_nxt`) tracks floor objects
+the same way.
 
 ---
 
 ## 4. Perception: `borg_update()`
 
-`borg_update()` (`src/borg/borg-update.c`, 3216 lines) re-derives the
-Borg's picture of the level from the screen. It is the single most
-important function for a rebuild to get right, and the single most
-bug-prone.
+`borg_update()` (`borg-update.c:borg_update:1539-3091`) brings the Borg's
+memory up to date. Its main jobs:
 
 ### 4.1 What it reads
 
-* the **map panel** — one glyph per grid, plus the colour/attribute
-* the **message area**
-* the **status line** (HP, depth, level, etc.)
+* The panel offset from the terminal (`w_y = Term->offset_y; w_x =
+  Term->offset_x;`), and the number of panels from `cave->width`/
+  `cave->height`.
+* Every grid of the visible panel through `map_info()` (Channel B, §1.1),
+  in `borg_update_map()`. A grid is marked `BORG_OKAY` (on the panel) and,
+  if the game knows its feature, `BORG_MARK` with `feat` copied; shops,
+  visible traps and webs are noted; visible monsters and objects become
+  "wanks" (screen sightings) that are matched to the kill and take lists.
+* The reaction queue filled by the message layer (§4.6). Each queued
+  message is used at most once (`borg_msg_use[]`); kills, deaths, "you
+  feel" messages, monster spells and pain messages update the lists and
+  flags.
+* `borg_notice_player()`'s view of the player's own state, already taken
+  (§2.2).
 
 ### 4.2 What it writes
 
-* `borg_grids[][]` — features, flags, kill indices, traps, glyphs
-* `borg.kills[]` — the monsters seen
-* `borg_race_death[]`
-* `borg.time.*` — the "when did I last detect X" timers
-* `borg.avoidance` — the danger level the Borg tries to avoid
+* `borg_grids[][]` — features, flags, monster/object indexes, traps, webs.
+* `borg_kills[]`, `borg_takes[]`, the `track_*` lists.
+* `borg_race_death[]`, `borg_race_count[]`.
+* `borg.time.*` — level start, detections, morgoth sightings.
+* `borg_fear_region[][]` (fear per 11×11 region) and
+  `borg_fear_monsters[][]` (fear per grid), which `borg_danger()` adds in
+  (§8).
+* On a **level change** (`borg.status.old_depth != borg.trait[BI_CDEPTH]`):
+  restart the level clock, reset the anti-bounce counter, forget the map
+  and every list, and reset the level goals
+  (`borg-update.c:borg_update:2055-2240`).
 
-### 4.3 The panel problem
+### 4.3 The panel
 
-The map panel is a *window* on the dungeon. `w_x`/`w_y` are the panel's top-left
-dungeon coordinate. The Borg must map screen cells back to dungeon grids, and
-must handle the panel scrolling under it.
+The map panel is a *window* on the dungeon: `SCREEN_HGT` rows by
+`SCREEN_WID` columns (`src/ui-term.h`), starting at dungeon grid
+(`w_y`, `w_x`). The Borg's map and position are in **dungeon** coordinates;
+`borg.c` is the Borg's dungeon grid, found as the `is_player` grid of
+`map_info()`. Grids off the panel keep whatever the Borg last saw there.
 
-`borg_need_shift_panel()` decides when to scroll the panel so the Borg can see
-further. `borg.c` (`borg.c.x`, `borg.c.y`) is the Borg's *dungeon* position,
-not its screen position.
+The Borg moves the panel itself when it wants to see off-screen monsters:
+`borg_defend_panel_shift()` queues `L`, a direction and `ESCAPE`, driven by
+the flag `borg.need_shift_panel`
+(`borg-fight-defend.c:borg_defend_panel_shift:2819-2952`); it is the first
+thing `borg_defend()` tries.
 
-**Invariant for a rebuild:** the Borg's map is anchored on **dungeon
-coordinates**, and the panel is a viewport onto it. Any rebuild that works in
-screen coordinates will break the moment the panel scrolls.
+### 4.4 Monster bookkeeping
 
-### 4.4 The glyph/monster bookkeeping
-
-Monsters are tracked by *tracking* them: the Borg remembers a monster's race
-and moves its remembered position forward when it sees the monster move.
-`borg_locate_kill()` finds the slot for a monster description. When a monster
-disappears, `borg_update_kill_old()` retires the slot.
-
-**Known defect (CBUG-0086):** `borg_locate_kill()` uses
-`my_strnicmp(who, "It", 2)`, so *any* monster whose name starts with "it"
-(case-insensitively) is treated as invisible.
+Monsters are *tracked*: a sighting or a message is matched to a slot by
+`borg_locate_kill()` (which uses the remembered race and position), the
+slot is moved when the monster is seen to move, and its condition is
+refreshed from the real monster by `borg_update_kill_old()` (§1.1). The
+race comes from the screen symbol and attribute, from message names, and
+from `r_info[]`. Monster names beginning with "It" are treated as
+invisible-monster messages (`my_strnicmp(who, "It", 2) == 0` in
+`borg-flow-kill.c:borg_locate_kill:1286-1292`).
 
 ### 4.5 Detection timers
 
-`borg.time.detect_traps`, `detect_doors`, `detect_walls`, `detect_evil`,
-`detect_obj` record when each detection was last cast. The Borg re-casts
-detections on a schedule rather than every turn, to save turns.
+`borg.time.detect_traps`, `detect_doors`, `detect_walls`, `detect_evil` and
+`detect_obj` record when each detection last succeeded, and per-grid
+arrays (`borg_detect_trap`, …) record where. `borg_check_light()` re-casts
+detections on a schedule rather than every turn (§10.7).
 
-**Known defect (issue #219):** the object-detection state is not cleared on a
-new level and carries over from the previous one.
+### 4.6 The message layer: prompts, parsing and reactions
+
+Messages reach the Borg in three stages.
+
+1. **Prompts that need an answer now.** `borg_get_messages()` reads the
+   message line. If it looks like a prompt (`borg_prompt`), and the game is
+   not waiting for a command, `borg_react_prompted()` gets the first look
+   (`borg-messages-react.c:borg_react_prompted:95-324`). It answers, among
+   others:
+
+   | Prompt (prefix) | Answer |
+   | --- | --- |
+   | `"Die?"` (with `borg.status.cheat_death`) | log the death; with `borg_cheat_death` set, cure-all and `'n'`; otherwise start a respawn and `'y'` |
+   | `"Atte"` (cast anyway?) | `'y'` |
+   | `"(Equip: c-d,"` | `'c'` (left hand) |
+   | `"Direction"` | the direction queued with `borg_queue_direction()`, or abort with a key history dump if none was expected |
+   | `"You have no room"` | a key of code 0 (a no-op) |
+   | `"Set recall depth"`, when nothing is queued | `'n'` |
+   | `"Target out of range"` | `'y'` |
+   | `"Word of Recall is already"` | `'n'`, and abort unless trying an unknown item |
+   | equipment/inventory/browse sub-screens | `ESCAPE` |
+   | `"Throw which item? (Throw"` | `'/'` (switch to the inventory) |
+   | `"Which effect?"` | `'a'` |
+
+   A `-more-` is answered with a space after the text before it has been
+   parsed; a normal message while the game wants a command is parsed and
+   answered with a space (`borg-messages.c:borg_get_messages:183-294`).
+
+2. **Parsing.** `borg_parse()` splits the text into messages and hands
+   each to the static `borg_parse_aux()`, which handles a long list of
+   message prefixes. Some act immediately: an `"Illegal "` message queues
+   two `ESCAPE`s and adds 100 to the anti-bounce counter; amnesia sets
+   `BI_ISFORGET`; "You have been knocked out." and "You are paralyzed"
+   set the global `borg_dont_react`. Others are rewritten into a tagged
+   form (`"KILL:"`, `"DIED:"`, `"PAIN:"`, …) and passed to `borg_react()`.
+
+3. **Reactions.** `borg_react()` appends the tagged message to the
+   reaction queue (`borg_msg_buf`, `borg_msg_pos[]`, `borg_msg_num`),
+   unless `borg_dont_react` is set or the Borg is paralysed, in which case
+   it notes "Ignoring messages" and drops it
+   (`borg-messages-react.c:borg_react:41-90`). `borg_update()` consumes the
+   queue (§4.1); `borg_clear_reactions()` empties it.
+
+So messages are not only information: some answer prompts, some change
+state immediately, and the rest steer `borg_update()`.
+
+The struct field `borg.dont_react` (reset to false on every
+`generate_keypress()`) and the global `borg_dont_react` (the one
+`borg_react()` tests, set by the knock-out and paralysis messages) are
+different variables (§11.2).
 
 ---
 
 ## 5. Scoring itself: `borg_power()`
 
-`borg_power()` (`src/borg/borg-power.c`, 1913 lines) computes a single large
-integer describing how good the Borg's current kit is. It is the Borg's
-utility function: **almost every decision is "which of these choices has the
-highest power?"**
+`borg_power()` (`borg-power.c:borg_power:1881-1912`) computes one
+`int32_t` that says how good the Borg's current kit is. It is the utility
+behind every "try this on" choice: wearing, swapping, buying, selling,
+dropping and crushing all compare `borg_power()` before and after a
+simulated change.
 
 ### 5.1 Shape
 
-```
-value = 0
-value += <armour class>       * borg_worships_ac       bonus
-value += <damage>             * borg_worships_damage   bonus
-value += <speed>              * borg_worships_speed    bonus
-value += <max HP>             * borg_worships_hp       bonus
-value += <max mana>           * borg_worships_mana     bonus
-value += <gold>               * borg_worships_gold     bonus
-value += <ranged power>       * borg_worships_damage   bonus
-value += <adjacent monsters>   * 1000
-value += <status immunities>  * 10000
-value += <useful potions>     * 25000 / 300 / 500 / …
-value += <skill levels>        * 1000
-value += <unique kills>       * 50000
-value += <flags>              * …
+Transcribed from `borg-power.c:borg_power:1881-1912` (comments removed):
+
+```c
+int32_t borg_power(void)
+{
+    int     i = 1;
+    int32_t value = 0L;
+
+    if (borg_cfg[BORG_USES_DYNAMIC_CALCS]) {
+        value += borg_power_dynamic();
+    } else {
+        value += borg_power_equipment();
+        value += borg_power_inventory();
+    }
+
+    for (i = 1; i <= borg.trait[BI_MAXDEPTH] + 50; i++) {
+        if ((char *)NULL != borg_prepared(i))
+            break;
+    }
+    value += ((i - 1) * 40000L);
+
+    value += weapon_swap_value;
+    value += armour_swap_value;
+
+    return (value);
+}
 ```
 
-### 5.2 The worship weights
+* `borg_power_equipment()` (`borg-power.c:borg_power_equipment:43-1117`)
+  scores the derived traits: weapon damage times blows and slays, to-hit,
+  shooting, speed, hit points, mana, armour class, resistances, sustains,
+  abilities, light, and penalties.
+* `borg_power_inventory()` scores what is carried: food, light fuel,
+  potions, scrolls, staffs, wands, rods, ammunition and books, mostly with
+  diminishing returns per extra item.
+* **Every depth the Borg is prepared for adds 40,000** (§5.5), so a change
+  that makes it ready for one more level is worth a lot.
+* The two swap items add their own values.
 
-The six `borg_worships_*` options in `borg.txt` multiply the corresponding
-component. The defaults are all FALSE, so the base weights apply. The
-worship weights are what make the Borg's *style* change; a rebuild must
-reproduce them or the Borg will value different kit.
+### 5.2 The worship options
+
+Five of the `borg_worships_*` options select **different weight branches**
+inside `borg_power_equipment()`; they do not multiply a component. For
+example, with `borg_worships_damage` the to-hit bonus earns an extra 15 per
+point and the slay damage is counted once more
+(`borg-power.c:borg_power_equipment:87-110`); with `borg_worships_ac` the
+armour-class reward uses the 2500/2000/1500-per-point schedule instead of
+2000/500/…​ (`borg-power.c:borg_power_equipment:586-600`). The same holds
+for `borg_worships_speed`, `borg_worships_hp` and `borg_worships_mana`.
+
+`borg_worships_gold` is not read by `borg-power.c` at all. It changes
+which items `borg-junk.c` keeps for sale and the depth thresholds in
+`borg-think-dungeon-util.c`.
 
 ### 5.3 The formula section
 
-With `borg_uses_dynamic_calcs` enabled, `borg.txt` may contain a
-`[BEGIN FORMULA SECTION]` with a small expression language
-(`src/borg/borg-formulas.c`, `borg-formulas-calc.c`) that adds to the power.
-`borg_formula_error()` reports parse errors.
+With `borg_uses_dynamic_calcs` set, `borg.txt` may contain formula sections
+(`borg-formulas.c`, `borg-formulas-calc.c`). Then `borg_power_dynamic()`
+**replaces** the equipment and inventory scoring, and
+`borg_prepared_dynamic()`/`borg_restock_dynamic()` replace the depth checks
+in §5.5. If the option is set but no formulas (or old-style formulas) are
+found, `borg_init_txt_file()` turns it off with a warning. Parse errors are
+reported through `borg_formula_error()`.
 
-**Known defect (CBUG-0028):** three callers pass `format(...)` as the *error
-argument* of `borg_formula_error()`.
+### 5.4 Simulation: scoring a kit the Borg is not wearing
 
-**Known defect (CBUG-0029):** `parse_range()` misbehaves when
-`borg_uses_dynamic_calcs` is on.
+To value a candidate, the Borg **writes the candidate into
+`borg_items[]`**, re-runs `borg_notice()`, calls `borg_power()`, and then
+copies the original slot back from `safe_items[]`. The equipment search in
+`borg_best_stuff_aux()` does exactly that
+(`memcpy(&borg_items[slot], item, …)` … `memcpy(&borg_items[slot],
+&safe_items[slot], …)` in `borg-item-wear.c`). The store and home code
+does the same with shop wares. A simulation that returns without the
+restore leaves the next pass reading a kit the Borg does not have (§11.1).
 
-### 5.4 Power is computed from a *simulation* of wearing items
+This is a different mechanism from the `borg_simulate` flag of §7.4,
+which marks an attack- or defence-*scoring* pass.
 
-To value a candidate item, the Borg copies the item into `borg_items[]`,
-re-runs `borg_notice()`, recomputes the power, and restores. That is why
-`borg_simulate` exists (see §7.4) and why several bugs are of the form "the
-simulation was not undone".
+### 5.5 Depth preparation: `borg_prepared()`
+
+`borg_prepared(depth)` (`borg-prepared.c:borg_prepared:538-686`) answers
+"may I be on this depth?" It returns `NULL` for yes, or a short reason
+string for no ("Clevel < depth", "1 recall", "resist fire", "Must kill
+…"). In order:
+
+1. Depth 1 is always allowed.
+2. With dynamic calcs: `borg_restock()`, then `borg_prepared_dynamic()`.
+   Otherwise: `borg_restock()` (am I carrying enough food, light, cures,
+   escapes to *stay*?), then "Clevel < depth" unless the maximum level is
+   50, then `borg_prepared_aux(depth)` for depths up to 99, then
+   `borg_no_deeper`.
+3. A king may go anywhere; from town the answer stands.
+4. From depth 82 down it requires a stock of *Healing*/Life potions,
+   counting those in the home (`borg_notice_home()`).
+5. With `borg_kills_uniques` set and fewer than 98 levels dived, it refuses
+   to go below the depth of the shallowest living unique once three or
+   more are alive; at 98–99 it refuses depth 100 until only Morgoth is
+   left, and sets `borg.ready_morgoth`.
+
+`borg_prepared_aux()` is cumulative by depth band: each band adds
+requirements (light, food, fuel, hit points and level by class, cures,
+recall, teleports, see invisible, free action, the basic resists, stat
+minimums, …) and returns at the first one unmet.
+
+The answer gates almost every vertical move: the dive rung of the ladder
+(`borg_prepared(BI_CDEPTH + 5)`), the "get back on the correct depth" rung,
+the leave-level choice of stairs, lunal-mode entry (`BI_CDEPTH + 15`), the
+40,000-per-depth power bonus, and the town shopping list. Changing a
+requirement here changes how deep and how fast the Borg dives.
 
 ---
 
 ## 6. Flow: how the Borg decides *where* to go
 
-The "flow" subsystem is the Borg's pathfinding. It is **not** A*: it is a
-per-goal Dijkstra-like flood over the visible/known grid, with a per-goal
-cost function.
+The flow is the Borg's pathfinder. It is a **breadth-first flood from the
+goal grids outward**, over a one-byte cost per grid, followed by a greedy
+**downhill step from the Borg's own grid**. It is not A*.
 
 ### 6.1 The data structures
 
-```c
-struct borg_data { int16_t cost; uint8_t xtra; ... };
-extern struct borg_data *borg_data_flow;  /* current flow's costs   */
-extern struct borg_data *borg_data_cost;  /* current cost function  */
-extern struct borg_data *borg_data_hard;  /* constant hard data     */
-extern struct borg_data *borg_data_know;  /* "know" flags           */
-extern struct borg_data *borg_data_icky;  /* "icky" flags           */
-```
-
-`borg_data_flow` holds the accumulated cost of the current flood. The flood
-starts at the Borg's position and spreads outward; `borg_flow_commit()`
-walks the flow downhill from the goal back to the Borg and produces the
-next keypress.
-
-### 6.2 The API
+Transcribed from `borg-flow.h:borg_data:58-60` and
+`borg-flow.h:borg_data_flow:84-88`:
 
 ```c
-void borg_flow_clear(void);
-void borg_flow_enqueue_grid(int y, int x);
-void borg_flow_spread(int depth, bool optimize, bool avoid,
-                      bool tunneling, int danger, bool cave);
-bool borg_flow_commit(const char *who, int why);
-bool borg_flow_old(int why);
+struct borg_data {
+    uint8_t data[AUTO_MAX_Y][AUTO_MAX_X];
+};
+
+extern borg_data *borg_data_flow; /* Current "flow" data */
+extern borg_data *borg_data_cost; /* Current "cost" data */
+extern borg_data *borg_data_hard; /* Constant "hard" data */
+extern borg_data *borg_data_know; /* Current "know" flags */
+extern borg_data *borg_data_icky; /* Current "icky" flags */
 ```
 
-`borg_flow_spread()` is called with a `depth` budget: how far the flood may
-travel. A small budget means "look for something nearby".
+Each is one byte per grid. `borg_data_cost` is the flood being built,
+`borg_data_flow` the committed copy the Borg walks, `borg_data_hard` the
+"unreached" template (all 255), and `borg_data_know`/`borg_data_icky` cache
+"danger already evaluated" / "too dangerous" per grid. The queue is the
+circular `borg_flow_y[]`/`borg_flow_x[]` of `AUTO_FLOW_MAX` (1536) entries
+with `flow_head`/`flow_tail`.
 
-### 6.3 The goal types
+### 6.2 The contract
 
-`borg.goal.type` is one of a small set of `GOAL_*` defines
-(`src/borg/borg-trait.h:32-41`):
+Transcribed from `borg-flow.h:borg_flow_clear:131-152` (comments removed):
 
-| Goal | Value | Purpose | Implemented in |
+```c
+extern void borg_flow_clear(void);
+extern void borg_flow_spread(int depth, bool optimize, bool avoid,
+    bool tunneling, int stair_idx, bool sneak);
+extern void borg_flow_enqueue_grid(int y, int x);
+extern bool borg_flow_commit(const char *who, int why);
+extern bool borg_flow_old(int why);
+```
+
+Every goal builder uses the same five steps:
+
+1. **`borg_flow_clear()`** — copy `borg_data_hard` into `borg_data_cost`
+   (every grid unreached), reset the queue, and, if `borg_danger_wipe` is
+   set, also wipe the know/icky caches
+   (`borg-flow.c:borg_flow_clear:166-186`).
+2. **`borg_flow_enqueue_grid(y, x)`** for each goal grid. It evaluates the
+   grid's danger once (caching in know/icky), refuses a grid whose danger
+   exceeds the current fear threshold (unless desperate, lunal, munchkin or
+   digging), and otherwise **sets the grid's cost to 0** and enqueues it
+   (`borg-flow.c:borg_flow_enqueue_grid:506-580`).
+3. **`borg_flow_spread(depth, optimize, avoid, tunneling, stair_idx,
+   sneak)`** — pop grids and give each reachable neighbour the cost
+   `parent + 1`, so the cost of a grid is its step distance **from the
+   nearest goal** (`borg-flow.c:borg_flow_spread:255-501`). A neighbour is
+   skipped if it is out of bounds, already cheaper, a wall (unless
+   `tunneling`), permanent rock, lava without fire immunity, unknown (when
+   `avoid` is set or the Borg is desperate, unless twitchy), a monster grid
+   in some modes, another shop's entrance, a trap the Borg is too weak to
+   risk, icky, or too dangerous on first evaluation. `depth` caps the
+   distance; `optimize` stops as soon as the Borg's own grid is reached;
+   `stair_idx >= 0` measures from that up stair instead of the Borg (for
+   characters below level 15); `sneak` refuses grids adjacent to a monster
+   unless desperate or twitchy.
+4. **`borg_flow_commit(who, why)`** — read the cost at the Borg's grid; if
+   it is 250 or more, return false; otherwise note
+   `"# Flowing toward <who> at cost <n>"`, copy cost→flow and set
+   `borg.goal.type = why`. **It queues no key.**
+5. **`borg_flow_old(why)`** — if `borg.goal.type == why`, step to the
+   neighbour with the lowest flow value (never uphill, a −5 bias against
+   loops; in town a random choice among equals, in the dungeon the first),
+   by calling the static `borg_play_step()`; if no step is possible, clear
+   `borg.goal.type`. **This is where the keys are queued**
+   (`borg-flow.c:borg_flow_old:1122-1203`).
+
+Transcribed from `borg-flow.c:borg_flow_commit:585-608` (comments removed):
+
+```c
+bool borg_flow_commit(const char *who, int why)
+{
+    int cost;
+
+    cost = borg_data_cost->data[borg.c.y][borg.c.x];
+
+    if (cost >= 250)
+        return false;
+
+    if (who)
+        borg_note(format("# Flowing toward %s at cost %d", who, cost));
+
+    memcpy(borg_data_flow, borg_data_cost, sizeof(borg_data));
+
+    borg.goal.type = why;
+
+    return true;
+}
+```
+
+`borg_play_step()` (`borg-flow.c:borg_play_step:613-1097`) turns "go to
+this neighbour" into keys: close doors on breeder levels, open or unlock
+doors, tunnel, disarm or jump traps, alter, or walk.
+
+A goal therefore persists across turns: each later think calls
+`borg_flow_old(<goal>)` on its rung of the ladder (§2.8), takes one more
+step down the committed flow, and only rebuilds a flood when that fails.
+
+### 6.3 The goal types and who drives them
+
+`borg.goal.type` takes one of the `GOAL_*` values
+(`borg-trait.h:GOAL_KILL:32-41`). The table was derived by grepping every
+`borg_flow_commit()` call site and its `why` argument.
+
+| Goal | Value | Meaning | Committed by |
 | --- | ---: | --- | --- |
-| `GOAL_KILL` | 1 | reach and fight a monster | `borg-flow-kill.c` |
-| `GOAL_TAKE` | 2 | fetch a remembered object | `borg-flow-take.c` |
-| `GOAL_MISC` | 3 | stores and other miscellany | `borg-flow-misc.c` |
-| `GOAL_DARK` | 4 | explore unexplored territory | `borg-flow-dark.c` |
-| `GOAL_XTRA` | 5 | searching for something specific | `borg-flow-misc.c` |
-| `GOAL_BORE` | 6 | leaving the level | `borg-flow-misc.c` |
-| `GOAL_FLEE` | 7 | fleeing the level | `borg-flow-misc.c` |
-| `GOAL_VAULT` | 8 | excavating a vault | `borg-flow-misc.c` |
-| `GOAL_RECOVER` | 9 | resting safely | `borg-flow-misc.c` |
-| `GOAL_DIGGING` | 10 | digging an anti-summon corridor | `borg-flow-misc.c` |
+| `GOAL_KILL` | 1 | reach a monster or a firing position | `borg_flow_kill()`, `borg_flow_kill_aim()`, the monster-path flows in `borg-flow-kill.c` |
+| `GOAL_TAKE` | 2 | reach an object or a treasure vein | `borg_flow_take()`, `borg_flow_take_scum()`, `borg_flow_take_lunal()` (`borg-flow-take.c`), `borg_flow_vein()` (`borg-flow-misc.c`) |
+| `GOAL_MISC` | 3 | reach a shop entrance or a glyph spot | `borg_flow_shop_entry()` (`borg-flow-misc.c`), `borg_flow_glyph()` (`borg-flow-glyph.c`) |
+| `GOAL_DARK` | 4 | explore | `borg_flow_dark()` and its five static helpers (`borg-flow-dark.c`) |
+| `GOAL_XTRA` | 5 | wander/search | `borg_flow_spastic()` (`borg-flow-misc.c`) |
+| `GOAL_BORE` | 6 | take a down stair to dive | `borg_flow_stair_more(GOAL_BORE, …)` from the ladder (`borg-flow-stairs.c`) |
+| `GOAL_FLEE` | 7 | leave the level by any route | `borg_flow_stair_less/more/both(GOAL_FLEE, …)` (`borg-flow-stairs.c`) and `borg_flow_light(GOAL_FLEE)` |
+| `GOAL_VAULT` | 8 | reach a diggable vault wall | `borg_flow_vault()` (`borg-flow-misc.c`) |
+| `GOAL_RECOVER` | 9 | reach a safe grid to rest | `borg_flow_recover()` (`borg-flow-misc.c`) |
+| `GOAL_DIGGING` | 10 | dig an anti-summon corridor | `borg_flow_kill_corridor()`, `borg_flow_kill_direct()` (`borg-flow-kill.c`) |
 
-The *flow builders* are a wider set than the goal types. `borg-flow-misc.c`
-additionally provides `borg_flow_vein()`, `borg_flow_spastic()`,
-`borg_flow_twitchy()`, `borg_flow_spread()`, `borg_flow_light()`,
-`borg_flow_guide()`, `borg_flow_destroy()`, `borg_flow_ground()` and
-`borg_flow_recover()`; `borg-flow-stairs.c` provides `borg_flow_stair_less()`
-and `borg_flow_stair_more()`; `borg-flow-glyph.c` provides
-`borg_flow_glyph()`.
+`borg_flow_light(why)` (`borg-flow-misc.c:borg_flow_light:824-874`) flows
+to any grid marked `BORG_GLOW`; its only caller passes `GOAL_FLEE`
+(`borg-think-dungeon-util.c`). Some builders call `borg_flow_old()`
+straight after committing, so they step in the same think.
 
 ### 6.4 The invariants that matter
 
-* **The flow must be cleared before each goal.** Several known defects are
-  "the flow was not cleared" (CBUG-0132, CBUG-0135, CBUG-0113).
-* **The flow is relative to the current goal.** `borg_data_flow` is a single
-  shared buffer; two goals cannot be interleaved.
-* **`borg_flow_commit()` must end with exactly one keypress.** A commit that
-  finds no path must return false without queueing anything.
+* **Clear before building.** A builder that enqueues without
+  `borg_flow_clear()` floods on top of the last goal's costs.
+* **One flood at a time.** `borg_data_cost` and `borg_data_flow` are
+  single shared buffers; committing a new goal replaces the old one, and
+  `borg.goal.type` names whose flow is in `borg_data_flow`.
+* **Commit queues nothing; `borg_flow_old()` steps.** A builder returns
+  true only after a successful step (or a successful commit when a later
+  rung will step).
+* **Costs are bytes.** Distances of 250 or more are "unreachable"
+  (`borg_flow_commit()`), and `borg_flow_spread()` notes that the largest
+  usable `depth` is 250.
 
 ### 6.5 Danger-aware flowing
 
-Some goals ask "can I stand here?", which is `borg_danger()`
-(§8.1) rather than a plain cost. `borg_flow_enqueue_grid()` computes the
-danger of every grid it enqueues — even when the goal will ignore it, which
-is wasted work (CBUG-0114).
-
-**Known defect (issue #251):** "Bolt targeting takes a pass-wall monster's
-danger at the wrong grid."
-
-**Known defect (issue #252):** "Ball and arc blast scans skip the south and
-east edges of the radius."
-
-**Known defect (issue #253):** "Arc targeting's angle test uses the path end
-for every grid (all-or-nothing)."
+Whether a grid may be entered is decided once per flood by comparing
+`borg_danger(y, x, 1, true, false)` with a **fear threshold** derived from
+`borg.avoidance`: 3/10 of it normally, 5/10 at level 50, twice it with a
+scary monster on the level, five times when ignoring monsters, 25 times
+after 5000 Borg turns on the level, 100 times when starving
+(`borg-flow.c:borg_flow_spread:442-474`, repeated in
+`borg-flow.c:borg_flow_enqueue_grid:523-555`). Raising `borg.avoidance`
+(the bravery boosts of §2.8) therefore opens routes the Borg would
+otherwise refuse.
 
 ---
 
 ## 7. Fighting
 
 `borg-fight-attack.c` (5322 lines) and `borg-fight-defend.c` (3605 lines)
-are the two largest files in the Borg.
+are the two largest files.
 
-### 7.1 The fight cycle
+### 7.1 Who calls the fight code
 
+From call-site grep at the pin (all callers listed; pseudocode notation):
+
+```pseudocode
+borg_attack(bool boosted_bravery)          borg-fight-attack.c:borg_attack:5149-5320
+  <- borg_think_dungeon()          borg_attack(false)  routine combat rung (§2.8)
+  <- borg_think_dungeon_brave()    borg_attack(true)   bravery-boost passes
+  <- borg_think_dungeon_munchkin() borg_attack(false)
+
+borg_defend(int p1)                        borg-fight-defend.c:borg_defend:3536-3603
+  <- borg_caution()                two calls, before or after borg_heal()
+  <- borg_think_dungeon_brave()    only at depth 100
+
+borg_flow_kill(bool viewable, int nearness)   walk towards a monster (GOAL_KILL)
+  <- borg_think_dungeon(), borg_think_dungeon_brave()
+borg_flow_kill_aim(bool viewable)             move to a grid with a shot (GOAL_KILL)
+  <- borg_think_dungeon()
 ```
-borg_think_dungeon()
-  └─ if a monster is adjacent or in sight:
-       ├─ borg_defend()       -- decide to flee, fight, or use a defence
-       └─ borg_attack()       -- choose and execute an attack
-```
+
+So the Borg attacks from the ladder's `borg_attack(false)` rung whenever an
+attack scores above zero; the flow functions only move it into range.
+Defensive manoeuvres run inside `borg_caution()` (§9), before the attack
+rung.
 
 ### 7.2 Attack selection
 
-`borg_attack()` evaluates every attack type the character could use, scores
-each, and picks the best. The attack types are enumerated `BF_*`
-(`src/borg/borg-fight-attack.h`):
+`borg_attack()` collects the monsters that are tracked, seen within the
+last two Borg turns, on the panel (`BORG_OKAY`), in line of sight
+(`BORG_VIEW`) and within `z_info->max_range` into `borg_temp_y[]`/
+`borg_temp_x[]`, with special cases for scary monsters, multipliers and
+low-level mages in town. It then sets `borg_simulate = true` and scores
+every attack type `g` with `borg_calculate_attack_effectiveness(g)`. If the
+best score is positive it notes `"# Performing attack type %d with value
+%d."`, clears `borg_simulate`, and calls the same function again to queue
+the keys (`borg-fight-attack.c:borg_attack:5277-5318`).
 
-* melee (`BF_ATTACK`, `BF_WHIRLWIND`, …)
-* thrown objects (`BF_THROW`)
-* wands, staffs, rods (as bolts, or as beams/radii)
-* bows and crossbows
-* spells (`BF_*` per spell class: bolt, ball, arc, beam, …)
-* activations (artifacts, rings, …)
-* mimics, quivering (`BF_QUIVER`)
-* *munchkin* mode (`borg-attack-munchkin.c`) — a special aggressive mode
+The attack types are the `BF_*` enum in `borg-fight-attack.h`, in this
+order: `BF_REST`, `BF_THRUST` (melee), `BF_OBJECT` (throw), `BF_LAUNCH`
+(missile weapon), the spells (`BF_SPELL_MAGIC_MISSILE`, …,
+`BF_SPELL_WHIRLWIND_ATTACK`, …), the prayers (`BF_PRAYER_HOLY_ORB_BALL`,
+…), rods (`BF_ROD_*`), staffs (`BF_STAFF_*`), wands (`BF_WAND_*`), rings
+(`BF_RING_*`), dragon armour (`BF_DRAGON_*`) and activations
+(`BF_ACT_*`), up to `BF_MAX`. Activations from `BF_ACT_STARLIGHT` on are
+scored only with `birth_randarts`.
 
-The scoring function is `borg_attack_aux_*()`, one per attack kind. Each
-returns a score; the highest score wins. Many of them work by *simulating*
-the attack's damage against the current monster list.
+Each kind has a scorer — `borg_attack_aux_launch()`,
+`borg_attack_aux_spell_bolt()`, `borg_attack_aux_dragon()`, … — that
+estimates the damage against the targets, chooses the best target, and,
+when `borg_simulate` is false, queues the keys.
 
-### 7.3 The defence side
+### 7.3 Defence
 
-`borg_defend()` decides whether to keep fighting, flee, teleport, or use a
-defensive item. It consults `borg_danger()`, the HP fraction, and whether
-the monster is a unique.
-
-**Known defect (issue #173):** `borg_defend()` leaves `borg_simulate` set when
-it does nothing.
+`borg_defend(p1)` first tries `borg_defend_panel_shift()` (§4.3), then
+sets `borg_simulate = true`, possibly refreshes Resistance, scores every
+defence type `BD_*` (speed, resistances, glyphs, teleport-other, banish,
+…; the enum is in `borg-fight-defend.c`) with
+`borg_calculate_defense_effectiveness(g, p1)`, and executes the best if
+its score is positive.
 
 ### 7.4 The simulation flag
 
-`borg_simulate` is a global flag meaning "we are only scoring, do not act".
-Most `borg_*_aux()` functions check it. Getting this wrong produces real
-side effects during a scoring pass.
+`borg_simulate` (`borg-trait.h`) means "score, do not act". Every attack
+and defence scorer checks it before queuing keys. `borg_attacking` means
+"an attack is being considered"; `borg_danger()` boosts some monsters'
+danger while it is set. Both are globals that the caller is expected to
+reset; §11.1 shows where they are not.
 
-**Known defects:** CBUG-0103 (`borg_munchkin_mage()` sets `borg_attacking`
-before its monster scan but returns false inside it); CBUG-0104 (two
-functions set `borg_simulate = true` and never reset it when no attack scores
-above 0).
+### 7.5 Buffs and the munchkin attackers
+
+`borg_perma_spell()` (`borg-fight-perm.c`) keeps bless, resistance,
+speed, protection from evil, heroism, berserk, regeneration and similar
+effects running, each scored by a `borg_perma_aux_*()` helper. Munchkin
+mode (§13.1) has its own attackers, `borg_munchkin_mage()` and
+`borg_munchkin_melee()` (`borg-attack-munchkin.c`), called from
+`borg_think_dungeon_munchkin()`.
 
 ---
 
 ## 8. Danger estimation
 
-`borg_danger()` (`src/borg/borg-danger.c`) answers "how dangerous is grid
-(y,x) right now?" on a 0..2000 scale.
+`borg_danger(y, x, c, average, full_damage)`
+(`borg-danger.c:borg_danger:2824-2865`) answers "how dangerous is grid
+(y, x) over the next `c` turns?", on a scale capped at 2000:
 
+Transcribed from `borg-danger.c:borg_danger:2824-2865` (comments removed):
+
+```c
+int borg_danger(int y, int x, int c, bool average, bool full_damage)
+{
+    int i, p = 0;
+
+    struct loc l = loc(x, y);
+    if (!square_in_bounds(cave, l))
+        return 2000;
+
+    if (!square_isvault(cave, l) && borg.trait[BI_CDEPTH] <= 80) {
+        p += borg_fear_region[y / 11][x / 11] * c;
+    }
+
+    if (borg.trait[BI_CDEPTH] == 100 && p >= 300)
+        p = 300;
+
+    if (borg.antibounce_count <= 200 && !square_isvault(cave, loc(x, y)))
+        p += borg_fear_monsters[y][x] * c;
+
+    full_damage = true;
+
+    for (i = 1; i < borg_kills_nxt; i++) {
+        borg_kill *kill = &borg_kills[i];
+
+        if (!kill->r_idx)
+            continue;
+
+        p += borg_danger_one_kill(y, x, c, i, average, full_damage);
+    }
+
+    return (p > 2000 ? 2000 : p);
+}
 ```
-p = 0
-p += borg_fear_region[y/11][x/11] * c        /* regional fear    */
-if (depth == 100 && p >= 300) p = 300         /* depth-100 cap    */
-p += borg_fear_monsters[y][x] * c             /* local monsters   */
-for each known monster i:
-    p += borg_danger_one_kill(y, x, c, i, average, full_damage)
-return min(p, 2000)
-```
 
-`borg_danger_one_kill()` walks the monster's blow table and sums the damage
-each blow would do, applying resistances, and applies the `MONBLOW_*` fear
-weights for non-damage effects (poison, confusion, paralysis, terrain
-destruction, …).
+Note the `full_damage = true;` line: whatever the caller passes, every
+monster is scored at full damage from this entry point.
 
-**Known defect (CBUG-0053):** `borg_danger()` **overwrites** its
-`full_damage` argument with `true`, so the partial-damage paths are only
-reachable through `borg_danger_one_kill()` directly.
-
-**Known defect (CBUG-0047):** the hit-chance formula
-`150 - ((ac * 300) / 4 / 1 + (level + power) * 3)` is below 5 for any armour
-class of 2 or more, so `full_damage == false` never yields partial damage.
-
-**Known defect (CBUG-0046):** the HURT stun test `z > d_dice * d_side`
-immediately follows `z = d_dice * d_side`, so it is never true.
+`borg_danger_one_kill()` (`borg-danger.c:borg_danger_one_kill:2289-2801`)
+combines a physical term from the static `borg_danger_physical()` (the
+race's blows, adjusted for resistances and the `MONBLOW_*` effects) and a
+spell term from the static `borg_danger_spell()`, scaled by how many moves
+the monster gets (speed and distance), whether it is awake, and whether it
+can reach the grid. Monsters listed in the Teleport Other skip list
+(`borg_tp_other_index[]`) score 0.
 
 ---
 
 ## 9. Caution and escape
 
-### 9.1 `borg_caution.c` — the reactive layer
+### 9.1 `borg_caution()` — the reactive layer
 
-`borg_caution_phase()` is a chain of "if the situation is X, do Y" checks
-that run before the normal decision. It covers:
+`borg_caution()` (`borg-caution.c:borg_caution:799-2034`) runs on the
+ladder after the light and digging rungs and before every routine goal
+(§2.8). It is a long chain of "if the situation is X, do Y" checks. In
+order, broadly:
 
-* fighting vs. fleeing decisions
-* emergency equipment swaps (`borg_backup_swap()`)
-* emergency teleportation
-* stair usage under threat
-* "back away" from a monster
-* using a *scroll of teleportation* when cornered
+1. **Level-scope decisions.** Not ready for Morgoth at depth 99/100: rise
+   or leave. Too many escapes this level, a scary unique on the level,
+   restock needs (`borg_restock()`), excessive or potential danger,
+   breeders, needing fuel or food: set `borg.goal.leaving` /
+   `borg.goal.fleeing` (and sometimes `fleeing_to_town`).
+2. **Protection notes.** Glyph, Protection from Evil, anti-summon corridor,
+   standing on a stair.
+3. **Defend and heal.** If not already fleeing: `borg_defend(pos_danger)`
+   and the static `borg_heal(pos_danger)` — mages defend first, others heal
+   first (`borg-caution.c:borg_caution:1001-1022`).
+4. **Swap.** With `borg_uses_swaps()` and danger above a third of
+   `borg.avoidance`, `borg_backup_swap(pos_danger)`
+   (`borg-caution.c:borg_caution:1025-1031`).
+5. **Waiting for recall**, leaving via stairs, eating, restoring mana.
+6. **Flee on foot.** Desperate dashes to nearby stairs
+   (`borg_flow_stair_less()`/`borg_flow_stair_more()` with `GOAL_FLEE`).
+7. **Strategic retreat.** Step to a less dangerous neighbour when danger
+   exceeds a third of `borg.avoidance` or the Borg may be surrounded
+   (`borg_surrounded()`), unless confused, in a vault, or recently in an
+   anti-summon spot.
+8. **Escape.** `borg_escape(pos_danger)` — teleport or phase; counts
+   `borg.escapes` and clears the goal
+   (`borg-caution.c:borg_caution:1653-1663`).
+9. **Back away** from a single adjacent monster.
+10. **Cures** for confusion, fear, low hit points, bleeding and poison, the
+    reserve *Healing*, and `borg_recall()` when fleeing; buying time while
+    recall is active; finally trying unknown items.
 
 ### 9.2 `borg-escape.c` — the escape machinery
 
 | Function | Purpose |
 | --- | --- |
-| `borg_escape()` | pick an escape route (stair, teleport, spell) |
-| `borg_escape_stair()` | head for a staircase |
-| `borg_recall()` | use a recall rod/activation/spell/scroll |
-| `borg_surrounded()` | decide whether the Borg is about to be surrounded |
-| `borg_escape_hall()` | escape along a corridor |
-| `borg_caution_...` | the caution-phase helpers |
-
-**Known defect (CBUG-0015):** `borg_escape()` fakes
-`borg.trait[BI_CURSP] = borg.trait[BI_MAXSP]` and skips restoring it on some
-early returns.
-
-**Known defect (CBUG-0016):** a stair predicate queues a climb before its
-phase guards finish.
+| `borg_escape(int b_q)` | choose and use an escape — teleport level, teleport, phase, dimension door, staffs, scrolls, spells, activations — by danger band and allowed failure rate (`borg-escape.c:borg_escape:645-1286`) |
+| `borg_caution_phase(int emergency, int turns)` | is Phase Door a good idea? Tries 100 random landing grids with `rand_spread()` around the Borg and counts how many are safer (`borg-escape.c:borg_caution_phase:324-412`) |
+| `borg_caution_teleport(int emergency, int turns)` | the same question for Teleport |
+| `borg_escape_stair()` (static) | leave by the up stair the Borg is standing on |
+| `borg_allow_teleport()` | not in an arena, not on a no-teleport grid, no no-teleport curse |
+| `borg_recall()` | read/zap/activate/cast recall and answer the recall-depth prompt (§9.3) |
+| `borg_surrounded()` | might the Borg be surrounded? (§11.9) |
+| `borg_freedom(int y, int x)` | how "free" a grid is (near stairs) |
+| `borg_shadow_shift()`, `borg_dimension_door()` | short-range escapes |
 
 ### 9.3 Answering the game's prompts
 
-Several game prompts want a yes/no answer, and the Borg has to answer them
-without a human. The mechanism is the same everywhere: the Borg queues the
-keypress and then queues `ESCAPE` to dismiss the prompt.
+The Borg answers a prompt in one of two ways, and a rebuild needs both:
 
-The prompt *"Set recall depth to current depth? [y/n]"* is the clearest
-example, because the Borg's answer depends on a chain of five conditions
-(§11.2 covers the failure mode this produces). The point for a rebuild is
-the shape of the decision:
+* **Pre-answered**: the action that will cause the prompt queues the
+  answer with it. `borg_recall()` queues the recall command, then `'y'` or
+  `'n'` for "Set recall depth to current depth?", then `ESCAPE`.
+* **Caught**: `borg_react_prompted()` recognises the prompt on the message
+  line and returns the answer (§4.6). It also answers "Set recall depth"
+  with `'n'` when nothing is queued (an unknown recall item).
 
-* the prompt only appears in the dungeon, when the current depth is below
-  the maximum;
-* the "right" answer depends on endgame state — how deep the Borg has
-  been, how many uniques are still alive, whether it is in a special mode;
-* the Borg's own state is split across `borg.trait[]` (current and maximum
-  depth) and `borg.goal.*` (the mode flags), so the decision has to consult
-  both.
-
-A rebuild should treat "answer a prompt" as a first-class decision with its
-own inputs, rather than folding it into whichever routine happened to
-trigger the prompt. That keeps the state it consults visible.
+The recall-depth answer shows the shape of a prompt decision
+(`borg-escape.c:borg_recall:64-117`). The prompt appears only when
+`BI_CDEPTH` is below `BI_MAXDEPTH` and not 0. The answer depends on how far
+the current and maximum depths are from `borg_depth_hunted_unique` (the
+depth of the unique being hunted), and then on Sauron, munchkin flight,
+depth 100 and the number of living uniques — state split across
+`borg.trait[]`, `borg.goal.*`, `borg_race_death[]` and
+`borg_numb_live_unique`. In one of its branches the comment says "Do reset
+Depth" while the note and the key both say "not resetting" (`'n'`); §17
+uses that branch as its worked example.
 
 ---
 
@@ -643,552 +1216,691 @@ trigger the prompt. That keeps the state it consults visible.
 
 ### 10.1 The pipeline
 
+Pseudocode: the item work done per think, in `borg_think()` and then on the
+ladder.
+
+```pseudocode
+borg_find_all_items()      Channel B -> borg_items[] (borg_item_analyze() per object), safe_items[]
+borg_notice(true)          borg_items[] -> borg.trait[], borg.has[], borg.activation[]
+borg_power()               the kit as one number (§5)
+ladder rungs:
+  borg_wear_stuff(), borg_remove_stuff(), borg_swap_rings(), borg_wear_rings()   wear/remove by power
+  borg_use_things(), borg_test_stuff(), borg_enchanting(), borg_recharging()     use, identify, improve
+  borg_drop_junk(), borg_drop_hole(), borg_drop_slow(), borg_dump_quiver()       get rid of things
+in the home:
+  borg_best_stuff()          the best combination of pack + home + equipment
 ```
-borg_find_all_items()      read equipment + pack + stores into borg_items[]
-borg_notice(true)          derive borg.trait[] from borg_items[]
-borg_item_analyze()        describe each item (borg_item_note)
-borg_item_val()            score each item
-borg_power()               score the Borg as a whole
-```
 
-### 10.2 `borg_item_val()` — the item score
+### 10.2 Name lookups: `borg_init_item_val()`
 
-`src/borg/borg-item-val.c`. Scores a candidate item for the "best stuff"
-decision: base value, plus bonuses for armour class, damage, speed, flags,
-and so on. The `sv_*` enumerators are resolved at startup by
-`borg_init_item_val()`, which looks items up **by name** in the gamedata.
+`borg-item-val.c` contains three functions: `borg_init_item_val()`,
+`borg_lookup_kind()` and the static `borg_lookup_sval_fail()`. At start-up
+`borg_init_item_val()` resolves every `sv_*` and `kv_*` the Borg uses
+**by name** from the game data (`sv_wand_elec_bolt =
+borg_lookup_sval_fail(tval, "Lightning Bolts")`, …) — the Borg's code never
+uses raw sval numbers. A wrong name that happens to be a real item is
+accepted silently (§11.5). There is no item-scoring function in this file;
+item value comes from `borg_item_analyze()`'s value fields and, for every
+keep/wear/buy/sell decision, from `borg_power()` (§5).
 
-**Known defect (CBUG-0022):** two of those name lookups are wrong:
-`sv_wand_confuse_monster` is looked up as `"Scare Monster"` (the same as
-`sv_wand_fear_monster`), and `sv_wand_elec_ball` as `"Lightning Bolts"` (the
-same as `sv_wand_elec_bolt`, where the intent was `"Lightning Balls"`). Both
-succeed silently because the wrong name is a real item.
+### 10.3 Identification
 
-**Consequence of the second:** `BF_WAND_ELEC_BALL` looks the *bolt* wand up
-in the pack and then launches it with a radius-2 / 64-damage **ball**
-profile. The Borg never recognises a real Wand of Lightning Balls (it is
-treated as unknown junk), and when it does fire, it scores the shot as a
-64-damage blast while the game delivers a beam.
+The Borg identifies by rune knowledge. `needs_ident` comes from the game
+(not all runes known). `borg_test_stuff()` (§11.3) picks an item and uses
+the Identify Rune spell or a scroll of identify; `borg_use_things()`,
+`borg_quaff_unknown()`, `borg_read_unknown()`, `borg_use_unknown()` and
+`borg_eat_unknown()` learn flavours by using them, and messages update the
+item state (`borg-messages.c`).
 
-### 10.3 `borg_item_analyze()` — pseudo-identification
+### 10.4 Wearing, swapping, and the home combination
 
-The Borg identifies items by *using* them and reading the message
-("You feel a strange sensation..."). `borg_item_analyze()` holds the
-per-item state machine.
+* `borg_wear_stuff()` and `borg_remove_stuff()` take one step towards the
+  kit with the higher `borg_power()`.
+* `borg_best_stuff()` runs only in the home (`shop_num == BORG_HOME`): it
+  searches combinations of equipment, pack and home items with
+  `borg_best_stuff_aux()` (a simulation per candidate, §5.4) and then
+  wears the result one item per think through
+  `borg_one_step_wearing_best()`.
+* `borg_backup_swap()` swaps in a *backup* weapon or armour when the
+  current one is inadequate against the present danger; the backups are
+  chosen by `borg_notice_weapon_swap()` / `borg_notice_armour_swap()` and
+  enabled by `borg_uses_swaps` (§13).
+* `borg_wear_recharge()` swaps in a pack item with a running `timeout` so
+  that it recharges (pack items, other than rods, do not recharge in the
+  game), then rests (§11.12).
 
-### 10.4 Wearing, swapping, and the simulation
+### 10.5 Blows per turn: `borg_calc_blows()`
 
-`borg-item-wear.c`. `borg_best_stuff()` picks the best item for each slot,
-simulating each candidate. `borg_backup_swap()` swaps in a *backup* item
-when the current gear is inadequate.
+`borg_calc_blows()` (`borg-trait.c:borg_calc_blows:1035-1071`) is a copy of
+the engine's `calc_blows()` (`src/player-calcs.c`) with one difference in
+the weight it uses and a final division to whole blows:
 
-**Known defect (CBUG-0066):** the emergency-swap selector keeps the
-*higher* danger score. (Upstream PR angband/angband#6809.)
-
-**Known defect (CBUG-0067):** with an armour swap and no weapon swap, the
-weapon danger stays 0, so an armour danger of 0 selects
-`swap = weapon_swap - 1 = -1` and the key becomes
-`all_letters_nohjkl[-1]`.
-
-**Known defect (CBUG-0068):** the `i == -1` guards in the same function are
-dead (the index is never negative there).
-
-**Known defect (CBUG-0069):** `borg_one_step_wearing_best()` resets its
-`skipping` counter on every pass of the loop.
-
-**Known defect (CBUG-0070):** the "don't test the same item in both ring
-slots" test reads `test[n + 1]` for `INVEN_LEFT`.
-
-**Known defect (CBUG-0071):** `track_worn_time` is an `int16_t`, so
-`borg.time.now` is truncated; past 32767 the "worn more than 10 turns ago"
-test misbehaves.
-
-### 10.5 `borg_calc_blows()` — blows per turn
-
-`src/borg/borg-trait.c`. A copy of the engine's `calc_blows()`
-(`src/player-calcs.c`):
+Transcribed from `borg-trait.c:borg_calc_blows:1042-1042` and from
+`player-calcs.c:calc_blows:1711-1711` (in `src/`, not `src/borg/`):
 
 ```c
 /* the Borg */
-int weight = item->weight * item->iqty;
+int weight     = item->weight * item->iqty;
 
 /* the engine */
 int weight = (obj == NULL) ? 0 : object_weight_one(obj);
 ```
 
-The difference is what "weight" means. The engine's `object_weight_one()`
-is the **single item's** weight, because the question the calculation asks
-is "how does this weapon feel in the hand" — the encumbrance of swinging
-it. The Borg's version multiplies by the stack size, which is the weight
-of *carrying* it.
+`item->weight` is already one item's weight, so the Borg's copy weighs the
+whole stack. For the wielded weapon `iqty` is 1 and the two agree. It is
+also called on home items (`borg-home-notice.c`), where a stack of
+weapons is weighed as one heavy weapon. The lesson for a rebuild is
+general: a copy of an engine calculation must copy its semantics.
 
-Both meanings are correct for their own question, and the Borg uses the
-carrying sense elsewhere (`borg_item_weight()`); the two must not be mixed
-inside one calculation. This matters because the same function is called on
-the wielded weapon (where `iqty == 1` and the two agree) and on **home**
-items (where weapons are stored in stacks and they do not).
+### 10.6 Spellbooks and spells
 
-**What a rebuild should take from this:** when it reimplements an engine
-calculation, it must copy the engine's *semantics*, not just its shape. The
-Borg's copy of `calc_blows()` is otherwise line-for-line the engine's, which
-makes a one-term difference easy to miss and easy to introduce.
+* **Book index.** `borg_cheat_spells()` maps each class book to its pack
+  slot in `borg.book_idx[]` (−1 if not carried) and gives every spell a
+  status from `player->spell_flags[]` and the level:
+  `BORG_MAGIC_LOST`, `BORG_MAGIC_HIGH` (level too low),
+  `BORG_MAGIC_OKAY` (learnable), `BORG_MAGIC_TEST` (learnt, never cast),
+  `BORG_MAGIC_KNOW`. Spells are named by `enum borg_spells`
+  (`MAGIC_MISSILE`, `PHASE_DOOR`, `IDENTIFY_RUNE`, …) in `borg-magic.h`.
+* **Can I cast it?** `borg_spell_okay()` requires the spell to be legal
+  (known and its book carried), the Borg not blind or confused, light
+  available, and enough mana. From character level 35 a class-specific
+  mana reserve is kept, waived for nourishment, teleport and (shallow)
+  Magic Missile (`borg-magic.c:borg_spell_okay:419-494`).
+  `borg_spell_fail(spell, allow_fail)` and `borg_spell_okay_fail()` add a
+  failure-rate ceiling.
+* **Casting** is `'m'`, the book's letter, the spell's letter
+  (`borg-magic.c:borg_spell:596-630`).
+* **Learning and practice.** `borg_play_magic(bored)` studies the
+  best-rated learnable spell when the character can study (`'G'`, the
+  book, the spell for choosing classes), and otherwise, in town or
+  munchkin mode or when bored, casts untried spells to learn their
+  effects; some spells are never "played" (`borg_can_play_spell()` in
+  `borg-magic-play.c`).
+* **Books as kit.** Books are scored in `borg_power_inventory()`, never
+  crushed (`borg_drop_junk()` skips browsable kinds), bought by the store
+  logic, and dungeon books justify self-scumming (§13.1).
+
+### 10.7 Light and fuel
+
+* `borg_maintain_light()` (`borg-light.c:borg_maintain_light:613-667`)
+  returns `BORG_NO_NEED`, `BORG_MET_NEED` or `BORG_UNMET_NEED`. With no
+  light it wields a lantern or a torch; a torch below 250 turns needs a
+  spare torch; a lantern below 1000 turns is refuelled by the static
+  `borg_refuel_lantern()` (§11.7). Necromancers and `OF_NO_FUEL` lights need
+  nothing.
+* `borg_think_dungeon_light()` (`borg-think-dungeon-util.c`) acts on an
+  unmet light need early in the ladder: leave the level, recall, or flow to
+  a lit area (`borg_flow_light(GOAL_FLEE)`).
+* `borg_check_light()` casts the detections and the light spells on their
+  timers (§4.5), and `borg_light_beam()` lights a corridor with the Light
+  Beam spell.
+* Light is also a precondition elsewhere: no spells without light, no
+  spell practice without `BI_LIGHT`, and `borg_prepared_aux()` requires
+  light and fuel for every depth.
+
+### 10.8 Junk and crushing
+
+* `borg_drop_junk()` (`borg-junk.c`) runs only when
+  `borg_do_crush_junk` was set by a new pack read, not while recalling, and
+  only when danger is at most a tenth of `BI_CURHP`. For each pack item
+  that is not a swap item, a spellbook, an unaware scroll and so on, it
+  compares `borg_power()` with and without the item, and its value; an
+  item whose loss does not reduce power and that is not worth selling is
+  marked by inscribing `"borg ignore"` and ignored (`'k'`), which destroys
+  it.
+* `borg_destroy_floor()` ignores an ignorable item under the Borg.
+* `borg_drop_hole()` frees a slot when the pack is full (two passes, the
+  second allowing unidentified items).
+* `borg_drop_slow()` drops weight when slowed by it, valuing a tenth of a
+  pound at one gold.
+* `borg_dump_quiver()` shoots away cursed or negative ammunition.
+* `borg_remove_stuff()` takes off equipment that reduces power.
+
+### 10.9 Recovery and rest
+
+`borg_recover()` (`borg-recover.c:borg_recover:59-469`) restores the Borg
+after a fight: first "free" healing spells, then food, potions, scrolls,
+staffs, rods and activations, then **rest** (`'R'` and a count, §2.7) when
+`borg_check_rest()` says the grid is safe enough — to recharge a rod of
+Healing or Recall, to regain hit points or mana, or to let a cut, poison,
+fear or stun wear off. `borg_flow_recover()` walks to a grid where resting
+is safe (`GOAL_RECOVER`). The ladder tries recovery twice: early when the
+Borg has no light or is cut, poisoned or starving, and again after the
+light check.
 
 ---
 
-## 11. Known defects that a rebuild should not inherit
+## 11. Defect shapes that a rebuild should not inherit
 
-The bugs live on this fork's issue board, and that is where they belong.
-This section does not list them — a list here would go stale the moment a
-finding is closed or a new one arrives.
-
-What this section does instead is group the *shapes* of the defects that
-the C Borg's architecture actually produces, and show one representative
-example of each. The shapes are stable; the individual findings are not.
-A rebuild that recognises the shapes will avoid the bugs whether or not it
-has seen the specific findings.
-
-Each shape below names the findings that exhibit it, so the board can be
-consulted for the detail and for the evidence state.
+The individual bugs are on this fork's issue board (§18), with their
+evidence and state. This section groups the *shapes* that the C Borg's
+architecture produces and gives one example of each, read from the source
+at the pin. A rebuild that recognises the shapes will avoid them whether or
+not it has read the individual findings. Examples are described by their
+code; whether a given one is tracked, fixed or disputed is the board's
+business.
 
 ### 11.1 Stale state between calls
 
-The single most common defect class, and the one a rebuild is most likely
-to reproduce: the Borg keeps a great deal of state in globals and expects
-every function to leave it clean.
+The Borg keeps a great deal of state in globals and expects every function
+to leave it clean. The commonest form: a "we are only scoring" flag is set,
+the function returns early, and the flag stays set for the next caller.
 
-The pattern is always the same. A global flag is set to mean "we are only
-scoring, do not act", a function returns early without clearing it, and the
-next caller inherits a world in which scoring and acting are confused.
-`borg_simulate` and `borg_attacking` are the two flags that do this most
-damage, because so much of the Borg's decision logic branches on them.
-
-The same shape appears with counters: a list's count is used to decide
-whether an entry is live, but the count is not always consulted, or is
-decremented without a check, and a stale entry is read as if it were
-current.
+Example: `borg_attack()` sets `borg_simulate = true` before scoring and, when
+no attack scores above zero, returns with `borg_attacking = false` but
+without clearing `borg_simulate`
+(`borg-fight-attack.c:borg_attack:5277-5305`). `borg_defend()` does the
+same on its no-defence path.
 
 **What to do differently:** a function that sets a global owes the caller a
-restore, and the restore belongs on every exit path. A count that indexes
-an array must be checked against the array's bounds at the point of use,
-not assumed.
+restore on every exit path.
 
 ### 11.2 The wrong variable
 
-The Borg has several parallel arrays that mean nearly the same thing:
-`borg.trait[]` holds its model of itself, `borg.has[]` holds counts of
-objects by kind, and `borg.amt_book[]` / `borg.book_idx[]` hold spellbook
-state. Mixing them up is easy and usually compiles.
+Several parallel arrays and flags mean nearly the same thing and have the
+same type, so mixing them compiles.
 
-A representative instance: a health check written as
-`borg.has[BI_CURHP] > 100` instead of `borg.trait[BI_CCURHP] > 100`. `has[]`
-is indexed by *object kind*, so this reads a count of some item type
-against a hit-point threshold — and it type-checks perfectly, because both
-are `int`.
+* `borg.has[]` is indexed by object kind, `borg.trait[]` by `BI_*`. A test
+  written `borg.has[BI_CURHP] > 100` reads an item count against a
+  hit-point threshold (`borg-fight-defend.c`, the Teleport Other / loskill
+  defence). The intended expression is `borg.trait[BI_CURHP] > 100`.
+* `generate_keypress()` resets the struct field `borg.dont_react`, while
+  `borg_react()` tests the global `borg_dont_react` (§4.6).
+* In `borg-home-notice.c` all five `OF_SUST_*` tests add to
+  `num_sustain_str`.
 
-The other common form is a copy-paste between two near-identical blocks:
-the second `borg_crush_spell` block clears `v1` again instead of `v2`, and
-all five `OF_SUST_*` tests accumulate into `num_sustain_str`.
-
-**What to do differently:** when two arrays hold different kinds of thing,
-name them so the compiler helps, and check the index against the array's
-documented meaning rather than its type.
+**What to do differently:** name parallel things so the compiler can tell
+them apart, and check an index against the array's documented meaning.
 
 ### 11.3 Dead code that matters
 
-A branch that can never be taken is usually harmless. It becomes harmful
-when it is the branch that was *supposed* to fire — when the condition was
-written one way and the code another, so a real case silently falls through
-to a default.
+A branch that cannot be taken is harmful when it is the one that was
+*supposed* to fire.
 
-`borg_spell_stat()` tests `&books[0].spells[0] != NULL`, which is always
-true, so the check it was meant to make never happens. A "too afraid to
-attack" test appears twice, the second unreachable. A random draw of
-`randint1(100) < 1` is never true, so the 1% case never occurs.
+* `borg_test_stuff()` scores identify candidates with three successive
+  **assignments** — artifact `value + 150000`, random-power ego
+  `value + 100000`, then `value + 20000` if
+  `borg_item_note_needs_id(item)` (`borg-item-wear.c:borg_test_stuff:101-134`).
+  Both loops first skip items without `needs_ident`, and
+  `borg_item_note_needs_id()` returns true for any item with
+  `needs_ident` that is not `ident`
+  (`borg-item-id.c:borg_item_note_needs_id:145-155`); since
+  `object_fully_known()` implies `object_runes_known()`, that is every
+  candidate except a cursed non-artifact weapon or bow, whose `ident` is
+  forced true by `borg_notice_equipment()` (§11.6). So for ordinary
+  candidates the last assignment always wins and the artifact and ego
+  bonuses never survive; the same holds for the artifact bonus in the
+  second loop.
+* `borg_spell_stat()` tests `spell != NULL` where `spell` is the address
+  of an array element (`borg-magic.c:borg_spell_stat:239-249`).
+* `if (randint1(100) < 1)` in `borg-flow-kill.c` is never true.
+* The clock reset of §2.4 is behind a threshold that a stricter test
+  reaches first.
 
 **What to do differently:** a condition that looks unreachable is either a
-typo or a missing case. Both are worth a test that would fail if the
-condition were fixed.
+typo or a missing case; write the test that would fail if it were fixed.
 
 ### 11.4 The wrong comparison
 
-The Borg's arithmetic is full of thresholds, and a comparison that can
-never be true or never false makes the code above it dead.
+* In `borg_danger_physical()` the stun bonus for HURT blows is
+  `if ((d_side < 3) && (z > d_dice * d_side))` directly after
+  `z = (d_dice * d_side);`, so it is never true (`borg-danger.c`).
+* The partial-damage hit chance is
+  `150 - (((ac * 300) / 4) / 1 + ((r_ptr->level + power) * 3))`, which is
+  at or below its floor of 5 for any armour class of 2 or more; and
+  `borg_danger()` overwrites `full_damage` with `true` anyway (§8).
 
-The hit-chance formula
-`150 - ((ac * 300) / 4 / 1 + (level + power) * 3)` is below its own clamp
-of 5 for any armour class of 2 or more, so the "partial damage" path it
-guards is unreachable in practice. The HURT stun test `z > d_dice * d_side`
-immediately follows `z = d_dice * d_side`, so it is never true.
+**What to do differently:** check a threshold at the extremes its inputs
+can take.
 
-**What to do differently:** a threshold is worth checking at its extremes
-— at the best and worst values the inputs can take — because that is where
-the comparison quietly stops discriminating.
+### 11.5 The wrong member of a parallel set
 
-### 11.5 The wrong element of a parallel set
+* `borg_init_item_val()` looks up `sv_wand_confuse_monster` as
+  `"Scare Monster"` (the fear wand) and `sv_wand_elec_ball` as
+  `"Lightning Bolts"` (the bolt wand). Both names are real items, so both
+  lookups succeed (`borg-item-val.c:borg_init_item_val:455-464`).
+* `borg_light_beam()` starts the west scan at step 1 and the other three
+  directions at step 0 (`borg-light.c:borg_light_beam:713-794`).
+* `borg_flow_glyph()` skips "every non floor/glyph" grid with
+  `ag->feat != FEAT_FLOOR && ag->glyph`, which skips only glyphed
+  non-floor grids.
 
-Several Borg structures are parallel arrays or switch statements over
-`TV_*` kinds, and the wrong member of the set is easy to select by eye.
-
-`borg_init_item_val()` resolves the wand kinds by *name*, and two of those
-names are the wrong one — a confusion wand looked up as "Scare Monster",
-and a lightning *ball* wand looked up as "Lightning Bolts". Both lookups
-succeed, because both wrong names are real items; the bug is silent and
-permanent.
-
-`borg_light_beam()` tests the west neighbour from step 1 while north,
-south and east start at step 0, so the west beam is a step short. A
-"skip every non-floor/glyph" test is written `ag->feat != FEAT_FLOOR &&
-ag->glyph`, which skips only *glyphed* non-floor grids rather than all of
-them.
-
-**What to do differently:** where a set of kinds is enumerated in more than
-one place, derive the second from the first, and check that the lookup
-names are the ones you meant.
+**What to do differently:** where a set is enumerated twice, derive one
+from the other, and check that lookup names are the ones intended.
 
 ### 11.6 Mutation during a read-only pass
 
-`borg_notice()` is a *read* pass: it looks at the equipment and derives the
-trait vector from it. But to model "attacking with bare hands" it zeroes
-the wielded weapon's and the bow's `ds`, `dd`, `to_d`, `to_h`, `weight`,
-`ident` and `sval` **in place**, in the live `borg_items[]` array.
+`borg_notice()` is meant to read the items and derive traits. But when the
+bow or the weapon slot is empty **or holds a cursed non-artifact** (one
+that is not marked uncursable, `cursed_nonartifact()`),
+`borg_notice_equipment()` models "bare hands" by zeroing that item's
+`ds`, `dd`, `to_d`, `to_h` and `weight` and setting `ident = true` **in
+`borg_items[]`**, and for the bow also `sval = 0`
+(`borg-trait.c:borg_notice_equipment:1868-1876` for the bow,
+`borg-trait.c:borg_notice_equipment:1947-1955` for the weapon). For an
+empty slot this is harmless. For a cursed bow or weapon, everything that
+reads `borg_items[]` later in the same think sees an item with no dice, no
+bonuses, no weight and `ident` set; a cursed bow no longer matches
+`sv_sling` or `sv_long_bow`. `safe_items[]` keeps the real values.
 
-`safe_items[]` holds the pre-corruption copy, so the simulation machinery
-that restores it works. But everything else that reads `borg_items[]`
-within the same turn now sees a falsified weapon: zero weight, no bonuses,
-and `sval == 0` so it no longer matches the sling or the long bow.
+**What to do differently:** a read pass must not write; model hypotheticals
+on a copy.
 
-**What to do differently:** a read pass must not write. If a temporary
-model is needed, use the scratch copy that already exists.
+### 11.7 Index and selection mistakes
 
-### 11.7 Off-by-one and out-of-bounds
+* The Teleport Other skip list is read with
+  `for (ii = 0; ii <= borg_tp_other_n; ii++)`, one entry past the count
+  (`borg-danger.c:borg_danger_one_kill:2323-2330`).
+* `borg_refuel_lantern()` has the right guards (`if (i >= 0)`) but the wrong
+  search: with no flask of oil it starts at `borg_slot(TV_LIGHT,
+  sv_light_lantern)` and walks forward until the first non-lantern
+  (`borg-light.c:borg_refuel_lantern:552-608`). `borg_slot()` prefers the
+  smallest pile and, among equal piles, the **last** match
+  (`borg-inventory.c:borg_slot:88-127`), so for single lanterns the scan
+  starts at the last lantern and an earlier lantern that still has fuel is
+  never considered.
 
-The Borg indexes several fixed-size arrays with values that come from the
-game rather than from its own code: a slot number from `borg_slot()`, a
-monster index from a list, a grid from a flow.
+**What to do differently:** when a lookup has a tie-break, know which way
+it breaks before using its result as the start of a scan; and check every
+index that came from a count against the array it indexes.
 
-`borg_refuel_lantern()` starts its scan at `borg_slot(...)`, which is `-1`
-when the lantern is not found. The Teleport Other skip list is read with
-`ii <= count`, one entry past the end. A rod-recharge rest indexes
-`borg_items[borg_slot(TV_ROD, sval)]` without checking for `-1`.
+### 11.8 Array capacity versus screen size
 
-**What to do differently:** every index that came from a lookup that can
-fail must be checked before it is used as an index.
+`borg_flow_light()` (`borg-flow-misc.c:borg_flow_light:824-874`) collects
+every `BORG_GLOW` grid of the visible panel:
 
-### 11.8 Array capacity vs. screen size
-
-`borg_flow_light()` (`src/borg/borg-flow-misc.c`) builds an array of every
-glowing grid on the visible panel:
+Transcribed from `borg-flow-misc.c:borg_flow_light:834-847` (comments removed):
 
 ```c
-for (y = w_y; y < w_y + SCREEN_HGT; y++)
-    for (x = w_x; x < w_x + SCREEN_WID; x++)
-        if (ag->info & BORG_GLOW) {
+    for (y = w_y; y < w_y + SCREEN_HGT; y++) {
+        for (x = w_x; x < w_x + SCREEN_WID; x++) {
+            borg_grid *ag = &borg_grids[y][x];
+
+            if (!(ag->info & BORG_GLOW))
+                continue;
+
             borg_glow_y[borg_glow_n] = y;
             borg_glow_x[borg_glow_n] = x;
             borg_glow_n++;
         }
-```
-
-`borg_glow_x[]`/`borg_glow_y[]` have `AUTO_LIGHT_MAX` (1536) entries and there
-is **no bound check**. The map panel size is
-`SCREEN_HGT x SCREEN_WID`, derived from the terminal size and the sidebar
-mode:
-
-| Terminal | Sidebar mode | Map cells | vs. 1536 |
-| --- | --- | ---: | --- |
-| 80x24 | 0 (sidebar) | 22 x 66 = 1452 | fits |
-| 80x24 | 1 | 20 x 79 = 1580 | **overflow** |
-| 80x24 | 2 | 23 x 79 = 1817 | **overflow** |
-| 80x28 | any | 1716 .. 2133 | **overflow** |
-| 120x40 | any | 4028 .. 4641 | **overflow** |
-
-So the write past the array is reachable in an ordinary 80x24 terminal with
-the sidebar off, and in any larger terminal.
-
-**What the overflow actually corrupts.** The two arrays are laid out
-**contiguously** in `.bss` — from the built binary's symbol table,
-`borg_glow_y` at `0x27fbc0..0x2801bf` and `borg_glow_x` at `0x2801c0..`
-— and the loop writes them **interleaved**, one `y` and one `x` per
-glowing grid. So:
-
-* `borg_glow_y[n]` for `n >= 1536` lands in `borg_glow_x[n - 1536]`
-* `borg_glow_x[n]` for `n >= 1536` lands in `borg_light_y[n - 1536]`
-
-The tail of each array ends up holding the *other* array's coordinates. The
-read-back loop then reads them back as `(y, x)` pairs, so from index 1536
-onward it enqueues **swapped** coordinates — 278 of the 1817 enqueued grids
-hold the wrong coordinates, and **212 of those are off the map panel
-entirely** (`y >= 23` or `x >= 79` for an 80x24 panel with the sidebar off).
-Those are fed into the flow's cost field and spread, so the Borg would be
-pathing towards coordinates that name no grid.
-
-**What to do differently:** size this array from the *terminal*, or bound
-it explicitly.
-
-### 11.9 Double counting
-
-`borg_surrounded()` (`src/borg/borg-escape.c`) counts the non-safe adjacent
-grids:
-
-```c
-if (!borg_cave_floor_grid(ag))   non_safe_grids++;
-else if (ag->feat == FEAT_NONE)  non_safe_grids++;
-else if (ag->kill)               non_safe_grids++;
-else if (feat_is_shop(ag->feat)) non_safe_grids++;
-/* Mega-Hack -- skip traps XXX XXX XXX */
-if (ag->trap && !ag->glyph)      non_safe_grids++;   /* NOT an else if */
-```
-
-The trap test is a separate `if`, not the fifth `else if` of the chain (its
-comment style matches the store branch exactly). A grid that is both
-occupied and trapped, or both a wall and trapped, is counted **twice**. With
-eight neighbours the count can reach 16 against a starting `safe_grids` of 8,
-so `safe_grids` goes negative and `monsters > safe_grids` is true with **no
-monsters nearby**. The Borg then believes it is surrounded and flees.
-
-**What to do differently:** a chain of mutually exclusive tests must be
-written as one chain; a bare `if` next to an `else if` chain is a separate
-test, and whether that is intended is not obvious from the code.
-
-### 11.10 Wrong mode flag
-
-`borg_think_stair_scum()` logs *"Leaving Scumming Mode. (Town or Weak)"* and
-then clears **`borg.lunal_mode`** — the *lunal* mode flag — not the scumming
-mode. There is no scumming-mode flag; the state that scumming sets
-(`borg.goal.fleeing_lunal`) is left dangling, so `borg.lunal_mode` and
-`borg.goal.fleeing_lunal` can disagree about which mode the Borg is in. The
-stair-scum call site (`borg-think-dungeon.c:1343`) runs *before* the lunal
-engagement block (`borg-think-dungeon.c:1438-1456`), so the two can collide.
-
-**What to do differently:** the state that *enters* a mode and the state
-that *leaves* it should be one structure, set and cleared together.
-
-### 11.11 Two scans sharing one best-score
-
-`borg_test_stuff()` scores the Borg's identify priority with three
-**assignments** to the same variable, so each overwrites the last:
-
-```c
-/* Preferentially ID egos and artifacts */
-if (item->art_idx)
-    v = item->value + 150000L;
-
-if (borg_ego_has_random_power(&e_info[item->ego_idx])) {
-    v = item->value + 100000L;      /* smaller: overwrites the artifact bonus */
-}
-
-/* Prioritize the ID */
-if (borg_item_note_needs_id(item))
-    v = item->value + 20000L;        /* smaller still */
-```
-
-An artifact that is also a random-power ego therefore scores as a plain
-ego. The function scans the items **twice** and the second scan re-scores
-artifacts at the artifact bonus, which masks the under-scoring for that
-item but leaves the first scan's score in the shared `b_v`, where
-`if (v <= b_v) continue;` can block a legitimate second-scan candidate.
-
-**What to do differently:** a score built from independent contributions
-should accumulate, not overwrite; and a scan that keeps the best candidate
-should not share its running best with another scan.
-
-### 11.12 A scan that keeps the last match, with no preference
-
-`borg_wear_recharge()` scans the pack and the equipment for something to
-recharge:
-
-```c
-    for (i = 0; i < INVEN_TOTAL; i++) {
-        ...
-        /* Where can it be worn? */
-        slot = borg_wield_slot(item);
-        ...
-        /* note this one */
-        b_i    = i;
-        b_slot = slot;
     }
 ```
 
-There is no early exit and no preference, so the **last** qualifying item
-wins. And nothing rejects an item whose wield slot is `-1` — `borg_wield_slot()`
-has no case for `TV_WAND` or `TV_STAFF`, so a pack wand or staff qualifies.
-If such an item is last, `b_slot == -1`, the function falls through to
-`return false`, and the Borg neither rests nor recharges the worn item it
-was looking for.
+`borg_glow_y[]` and `borg_glow_x[]` have `AUTO_LIGHT_MAX` (1536) entries
+(`borg-cave-light.h:AUTO_LIGHT_MAX:30`) and there is **no bound check**. The
+panel size comes from the terminal and the sidebar mode
+(`src/ui-term.h`: `SCREEN_HGT`, `SCREEN_WID`; `src/ui-term.c`:
+`row_top_map`, `row_bottom_map`, `col_map`). With one-cell tiles (the Borg
+refuses scaled tiles unless `borg_allow_strange_opts` is set):
 
-**What to do differently:** a search should stop at the first acceptable
-candidate, or prefer the best one explicitly; and a candidate that cannot
-be used should be rejected when it is found, not discovered afterwards.
+| Terminal | Sidebar mode | Map cells | vs. 1536 |
+| --- | --- | ---: | --- |
+| 80×24 | `SIDEBAR_LEFT` (0) | 22 × 66 = 1452 | fits |
+| 80×24 | `SIDEBAR_TOP` (1) | 20 × 79 = 1580 | can overflow |
+| 80×24 | `SIDEBAR_NONE` (2) | 23 × 79 = 1817 | can overflow |
+| 80×28 | any | 1716 – 2133 | can overflow |
+| 120×40 | any | 4028 – 4641 | can overflow |
+
+So a write past the end is reachable whenever more than 1536 panel grids
+are marked `BORG_GLOW` — possible in an ordinary 80×24 terminal with the
+sidebar on top or off, and in any larger terminal.
+
+**What the write corrupts is build-dependent.** It is undefined behaviour,
+and the result depends on how the linker lays out the zero-initialised data that
+follow the arrays and on whether the compiler keeps `borg_glow_n` in a
+register during the loop. For one build — this tree at the pin, built with
+`cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DSUPPORT_BORG=ON` (gcc 15.2.0,
+`-O2 -g -DNDEBUG`) — `nm -S` lists `borg_glow_y` *before* `borg_glow_x`,
+followed by `borg_glow_n` and then the `borg_light_*` arrays; the code
+keeps `borg_glow_n` in a register and stores it after the loop. In that
+build the overflowing `borg_glow_y[]` writes land in the head of
+`borg_glow_x[]`, the overflowing `borg_glow_x[]` writes land on
+`borg_glow_n`, padding and the head of `borg_light_y[]`, and the read-back
+loop enqueues grids with correct `y` and wrong `x` near the start of the
+list. Other builds will differ. The exact `nm` output, the disassembly
+evidence and a simulation of that layout are in
+`docs/audit/c-reports/spec-checks/` (`glow_overflow_probe.c`,
+`RECHECK.md`); this specification relies only on the overflow.
+
+**What to do differently:** size an array that holds per-screen data from
+the screen, or bound the write.
+
+### 11.9 Double counting
+
+`borg_surrounded()` counts the non-safe neighbours with a four-branch
+`if`/`else if` chain, followed by a **separate** `if` for traps
+(`borg-escape.c:borg_surrounded:218-236`):
+
+Transcribed from `borg-escape.c:borg_surrounded:219-236` (comments removed):
+
+```c
+        if (!borg_cave_floor_grid(ag))
+            non_safe_grids++;
+        else if (ag->feat == FEAT_NONE)
+            non_safe_grids++;
+        else if (ag->kill)
+            non_safe_grids++;
+        else if (feat_is_shop(ag->feat))
+            non_safe_grids++;
+        if (ag->trap && !ag->glyph)
+            non_safe_grids++;
+```
+
+A grid that satisfies a chain condition and the trap condition — most
+ordinarily a monster, awake or asleep, standing on a known trap — is counted
+twice. The `monsters` count, by contrast, includes only awake, visible
+monsters within three grids. `safe_grids`
+starts at 8 and is reduced by the count, so double counts can drive it
+below the number of monsters (even below zero), and `monsters >
+safe_grids` then reports "surrounded".
+
+**What to do differently:** write mutually exclusive tests as one chain; a
+bare `if` beside an `else if` chain is a separate test and should say so.
+
+### 11.10 A mode left by clearing another mode's flag
+
+`borg_think_stair_scum()` notes `"# Leaving Scumming Mode. (Town or Weak)"`
+and then clears `borg.lunal_mode`
+(`borg-think-dungeon-util.c:borg_think_stair_scum:363-368`). There is no
+scumming-mode flag; scumming is entered by its call site (depth 1 and
+`borg.goal.fleeing_to_town`, `borg-think-dungeon.c:borg_think_dungeon:1340-1344`)
+and it sets `borg.goal.fleeing`. The lunal mode it clears is a separate
+mode with its own flags (`borg.lunal_mode`, `borg.goal.fleeing_lunal`). The
+"Town" half of its guard (`BI_CDEPTH == 0`) cannot be true at that call
+site.
+
+**What to do differently:** the state that enters a mode and the state that
+leaves it should be one structure, set and cleared together.
+
+### 11.11 A shared running best across two scans
+
+`borg_test_stuff()` runs two candidate loops — equipment and quiver, then
+pack, equipment and quiver again — that share one `b_i`/`b_v` and the
+`if (v <= b_v) continue;` test (`borg-item-wear.c:borg_test_stuff:101-205`).
+A score left by the first loop is a floor for the second: the second loop's
+"unaware item" bonus (by item type and `BI_MAXDEPTH`) is in competition
+with first-loop scores computed by different rules. Combined with §11.3,
+the first loop's scores at the pin are `value + 20000` for ordinary
+candidates.
+
+**What to do differently:** a scan that keeps a best candidate should own
+its running best, or both scans should use one scoring rule.
+
+### 11.12 A scan that keeps the last match
+
+`borg_wear_recharge()` (`borg-item-wear.c:borg_wear_recharge:1451-1538`)
+scans indexes `0 .. INVEN_TOTAL - 1` for an item with a running `timeout`
+and records each qualifying one, so the **last** qualifying item wins.
+There is no preference between a rod (rest), a worn item (rest) and a pack
+item (swap in, then rest), and nothing rejects an item whose wield slot is
+−1: if the winner is such an item and not a rod, the function returns
+false without resting or swapping. At the pin, though, only rods carry a
+`timeout` among unwieldable items (`tval_can_have_timeout()` in
+`src/obj-tval.c` is `TV_ROD` only; activation timeouts are on wearable
+items), so that last path needs an item state that ordinary play does not
+produce. The last-match preference is real.
+
+**What to do differently:** a search should prefer the best candidate
+explicitly, and reject an unusable candidate when it is found.
 
 ---
 
 ## 12. The Borg in town
 
-`borg-store.c`, `borg-store-buy.c`, `borg-store-sell.c`, `borg-think-store.c`,
-`borg-home-notice.c`, `borg-home-power.c`.
+`borg-store.c`, `borg-store-buy.c`, `borg-store-sell.c`,
+`borg-think-store.c`, `borg-home-notice.c`, `borg-home-power.c`.
 
-The Borg shops by **simulating**: it copies a candidate ware into its pack,
-re-runs `borg_notice()`, recomputes the power, and compares. The "home" is
-the Borg's own storage: it buys items there to keep for later and sells
-things it no longer wants.
-
-**Known defects:** CBUG-0007 (home trial early exits leave reduced
-quantities/charges); CBUG-0008 (ring-side scores persist across home
-wares); CBUG-0009 (home ring trials use asymmetric quantities); CBUG-0010
-(the home grab skip flag leaks to later wares); CBUG-0013 (the latest
-purchase/sale is outside the history reader range); CBUG-0014 (ten-entry
-transaction arrays never use the tenth slot); CBUG-0016 (the urgent shop
-goal is overwritten or paired with a stale ware); CBUG-0115, CBUG-0116, and
-CBUG-0117, CBUG-0118 (home sell bookkeeping).
+* **Getting there.** `borg_choose_shop()` decides which shop to visit
+  next (`borg.goal.shop`, with `borg.goal.ware`/`borg.goal.item`), and
+  `borg_flow_shop_entry()` walks to its entrance (`GOAL_MISC`).
+* **Inside.** `borg_think()` sees the store header and calls
+  `borg_think_store()` (`borg-think-store.c:borg_think_store:285-357`):
+  it notes the shop with `square_shopnum()`, clears the goal, sets
+  `borg.in_shop`, runs `borg_best_stuff()` (home only), swaps a digger
+  out, then — if `borg_choose_shop()` still wants something — sells
+  (`borg_think_shop_sell()`) or buys (`borg_think_shop_buy()`) one thing,
+  and otherwise leaves with four `ESCAPE`s. One transaction per think.
+* **Choosing a transaction.** `borg_choose_shop()` walks a fixed list of
+  steps: sell to the home what is useful later, sell useless items to the
+  shops, buy useful items, take useful items from the home, take items
+  from the home to sell, buy interesting items for the home, and buy
+  backup weapons/armour from the home when swaps are enabled. Each step
+  simulates the transaction and compares `borg_power()` (for the Borg) or
+  the home's own power (`borg_power_home()`, from `borg-home-power.c`).
+* **Money scumming.** With `borg_money_scum_amount` set and below the
+  target, the town ladder rung `borg_money_scum()` and the store logic buy
+  and sell for gold, and `check_for_deactivate_or_death()` stops the Borg
+  once the target is reached (unless `borg_self_scum`).
 
 ---
 
 ## 13. Configuration (`borg.txt`)
 
-Parsed by `borg_init_txt_file()` (`src/borg/borg-init.c`). 36 settings, listed
-in `enum { BORG_VERBOSE, ... BORG_MAX_SETTINGS }` in `src/borg/borg.h`, with
-the same order as the `borg_settings[]` table in `borg-init.c`.
+`borg_init_txt_file()` (`borg-init.c`) reads `borg.txt`. The 35 settings
+are the `BORG_*` enum in `borg.h` (before `BORG_MAX_SETTINGS`), in the same
+order as the `borg_settings[]` table in `borg-init.c`, whose defaults are
+below. The "Read by" column lists where the value is used at the pin.
 
-| Setting | Type | Default | Effect |
+| Setting | Type | Default | Effect | Read by |
+| --- | --- | --- | --- | --- |
+| `borg_verbose` | bool | false | verbose notes | many |
+| `borg_munchkin_start` | bool | false | munchkin mode while `BI_MAXCLEVEL < 12` (§13.1); munchkin power weights | `borg-think-dungeon.c`, `borg-power.c`, `borg-trait.c`, `borg-flow-take.c` |
+| `borg_munchkin_level` | int | 12 | level used by the munchkin power weights (clamped 1–50) | `borg-power.c`, `borg-trait.c` |
+| `borg_munchkin_depth` | int | 16 | depth limit in munchkin mode | `borg-think-dungeon.c` |
+| `borg_worships_damage` | bool | false | §5.2 | `borg-power.c` |
+| `borg_worships_speed` | bool | false | §5.2 | `borg-power.c` |
+| `borg_worships_hp` | bool | false | §5.2 | `borg-power.c` |
+| `borg_worships_mana` | bool | false | §5.2 | `borg-power.c` |
+| `borg_worships_ac` | bool | false | §5.2 | `borg-power.c` |
+| `borg_worships_gold` | bool | false | keep sellable items, dive later | `borg-junk.c`, `borg-think-dungeon-util.c` |
+| `borg_plays_risky` | bool | false | looser depth requirements; no self-lunal; no money scumming | `borg-prepared.c`, `borg-think-dungeon.c`, `borg-caution.c`, `borg-escape.c`, `borg-think-dungeon-util.c` |
+| `borg_kills_uniques` | bool | false | do not dive past living uniques (§5.5) | `borg-prepared.c` |
+| `borg_uses_swaps` | bool | **true** | backup weapon/armour swaps | `borg-trait.c` (`borg_uses_swaps()`) |
+| `borg_uses_dynamic_calcs` | bool | false | formula sections (§5.3) | `borg-power.c`, `borg-prepared.c`, `borg-formulas.c` |
+| `borg_stop_dlevel` | int | 128 | stop on reaching this depth | `borg.c` |
+| `borg_stop_clevel` | int | 51 | stop on reaching this level | `borg.c` |
+| `borg_no_deeper` | int | 127 | never prepared for this depth or deeper | `borg-prepared.c`, `borg-think-dungeon-util.c` |
+| `borg_stop_king` | bool | **true** | stop after winning | `borg.c` |
+| `borg_cheat_death` | bool | false | turn on the game's `cheat_live` at start; on "Die?", cure and continue instead of respawning | `borg-init.c`, `borg-messages-react.c` |
+| `borg_respawn_winners` | bool | false | respawn after winning | `borg.c` |
+| `borg_respawn_class` | int | -1 | class of a respawned character; −1 = random | `borg-reincarnate.c` |
+| `borg_respawn_race` | int | -1 | race of a respawned character; −1 = random | `borg-reincarnate.c` |
+| `borg_chest_fail_tolerance` | int | 7 | chest disarm failure tolerance | `borg-flow.c` |
+| `borg_delay_factor` | int | 0 | extra delay per action | `borg-think-dungeon.c` |
+| `borg_money_scum_amount` | int | 0 | money-scum target; 0 = off | many |
+| `borg_self_scum` | bool | **true** | let the Borg stair-scum for items it wants to buy, and keep scumming for itself | `borg-store-buy.c`, `borg-think-store.c`, `borg.c` |
+| `borg_lunal_mode` | bool | false | initial value of `borg.lunal_mode` | `borg-init.c` only |
+| `borg_self_lunal` | bool | false | enter lunal mode by itself (§13.1) | `borg-think-dungeon.c` |
+| `borg_enchant_limit` | int | 12 | how far to enchant | `borg-trait.c`, `borg-item-enchant.c` |
+| `borg_dump_level` | int | 1 | write the map on death from this level | `borg.c`, `borg-think.c`, `borg-messages-react.c` |
+| `borg_save_death` | int | 1 | write the death logs | `borg-log.c` |
+| `borg_stop_on_bell` | bool | false | stop on the terminal bell | `borg-io.c` |
+| `borg_allow_strange_opts` | bool | false | start even with scaled tiles or `birth_force_descend` (otherwise start-up fails) | `borg-init.c` |
+| `borg_autosave` | bool | false | autosave periodically | `borg-update.c` |
+| `borg_restore_ignore_settings` | bool | false | restore the player's ignore settings when stopping | `borg-init.c` |
+
+A rebuild that changes a default changes the Borg from the first turn;
+note the three that default to **true**.
+
+### 13.1 Modes that change goal selection
+
+Several "modes" do not add rungs to the ladder; they **replace** most of it
+for a while, or change what the flow will accept.
+
+| Mode | Entered when | What changes | Left when |
 | --- | --- | --- | --- |
-| `borg_verbose` | bool | FALSE | verbose logging |
-| `borg_munchkin_start` | bool | FALSE | start in munchkin (speedrun) mode |
-| `borg_munchkin_level` | int | 12 | the level munchkin mode starts at |
-| `borg_munchkin_depth` | int | 16 | the depth munchkin mode starts at |
-| `borg_worships_damage` | bool | FALSE | weight damage higher in the power score |
-| `borg_worships_speed` | bool | FALSE | weight speed higher |
-| `borg_worships_hp` | bool | FALSE | weight max HP higher |
-| `borg_worships_mana` | bool | FALSE | weight max mana higher |
-| `borg_worships_ac` | bool | FALSE | weight armour class higher |
-| `borg_worships_gold` | bool | FALSE | weight gold higher |
-| `borg_plays_risky` | bool | FALSE | dive without the usual unique/level gates |
-| `borg_kills_uniques` | bool | FALSE | wait for uniques to die before diving |
-| `borg_uses_swaps` | bool | **TRUE** | use the backup-equipment swap machinery |
-| `borg_uses_dynamic_calcs` | bool | FALSE | enable the formula section |
-| `borg_stop_dlevel` | int | 128 | stop at this depth |
-| `borg_stop_clevel` | int | 51 | stop at this character level |
-| `borg_no_deeper` | int | 127 | do not dive past this depth |
-| `borg_stop_king` | bool | TRUE | stop after killing the king |
-| `borg_cheat_death` | bool | FALSE | cheat death on |
-| `borg_respawn_winners` | bool | FALSE | respawn after winning |
-| `borg_respawn_class` | int | -1 | respawn as this class (-1 = keep) |
-| `borg_respawn_race` | int | -1 | respawn as this race (-1 = keep) |
-| `borg_chest_fail_tolerance` | int | 7 | chest-opening failures to tolerate |
-| `borg_delay_factor` | int | 0 | extra delay per Borg action |
-| `borg_money_scum_amount` | int | 0 | the money-scum quota (0 = off) |
-| `borg_self_scum` | bool | TRUE | use the self-scum (lunal) mode |
-| `borg_lunal_mode` | bool | FALSE | use lunal mode |
-| `borg_self_lunal` | bool | FALSE | enter lunal mode by itself |
-| `borg_enchant_limit` | int | 12 | how much to enchant |
-| `borg_dump_level` | int | 1 | dump the map at this character level on death |
-| `borg_save_death` | int | 1 | save on death |
-| `borg_stop_on_bell` | bool | FALSE | stop when the bell rings |
-| `borg_allow_strange_opts` | bool | FALSE | allow unusual game options |
-| `borg_autosave` | bool | FALSE | autosave periodically |
-| `borg_restore_ignore_settings` | bool | FALSE | restore the saved ignore settings |
-
-**Note:** `borg_uses_swaps` defaults to **TRUE**, and `borg_stop_king`,
-`borg_self_scum` also default to TRUE. A rebuild that changes a default
-changes the Borg's behaviour from the first turn.
-
-**Known defects:** CBUG-0125, CBUG-0126, CBUG-0127, CBUG-0128, CBUG-0129
-(the configuration parser and the ignore-reset path).
+| **Lunal** (`borg.lunal_mode`) | `borg_self_lunal`, not `borg_plays_risky`, prepared for `BI_CDEPTH + 15` and has been that deep, and `BI_CDEPTH > BI_CLEVEL / 3` (`borg-think-dungeon.c:borg_think_dungeon:1438-1456`); or `borg_lunal_mode` at start | `borg_think_dungeon_lunal()` takes over: stair-dive and stair-climb without fighting, pick up only what is on the way, `borg.goal.fleeing_lunal`; the flow avoids monster grids and skips danger evaluation | in town, weak, no stairs known, close to the zone it is prepared for, depth 50 |
+| **Munchkin** (`borg.munchkin_mode`) | `borg_munchkin_start` and `BI_MAXCLEVEL < 12`, in the dungeon (`borg-think-dungeon.c:borg_think_dungeon:1460-1471`) | `borg_think_dungeon_munchkin()` takes over: low-level stair diving to `borg_munchkin_depth`, munchkin attackers, munchkin item pickup; flow as for lunal | level 12, town, weak, no stairs |
+| **Stair scum** | depth 1 and `borg.goal.fleeing_to_town` | `borg_think_stair_scum()`: take objects, then leave by any stair (§11.10) | weak or full pack |
+| **Self scum** | `borg_self_scum` and a wanted shop item (e.g. a dungeon book, teleport scrolls) | the buy logic marks the item as worth scumming for | the item is bought |
+| **Money scum** | `borg_money_scum_amount > 0`, in town, gold below target | `borg_money_scum()` replaces leaving the level; the store logic buys/sells for gold | target reached: the Borg stops |
+| **Digging** (`borg.status.digging`) | anti-summon corridor builders (`GOAL_DIGGING`) | flow tunnels; danger is not evaluated | corridor finished |
+| **Vault** (`borg.status.vault`) | a vault is guessed on the level | an extra block of rungs: kill, take, excavate, `borg_flow_vault()` | level change |
+| **Boosted bravery** | the ladder ran out (§2.8) | `borg.avoidance` raised; `borg_think_dungeon_brave()` | the pass ends |
+| **Desperate** (`borg.status.desperate`) | `borg_caution()` dashes for a stair within three steps (§9.1, step 6) | that flood avoids unknown and monster grids and skips danger evaluation | cleared straight after the dash |
 
 ---
 
-## 14. Rebooting the Borg
+## 14. Death and respawning
 
-`borg-reincarnate.c`. The Borg can respawn after death (cheat death,
-`borg_respawn_winners`, `borg_respawn_class`/`_race`). The restart must
-reset every piece of accumulated state.
+`borg-reincarnate.c` and the death path of `check_for_deactivate_or_death()`.
 
-**Known defect (CBUG-0036):** `borg_reincarnate_start()` does not fully reset
-the state on respawn.
+* **Death.** On `player->is_dead` the Borg writes the map (from
+  `borg_dump_level`), logs the death (`borg_log_death()`,
+  `borg_log_death_data()`), flushes, clears the reactions and stops.
+* **"Die?" with the game's `cheat_live`.** `borg_react_prompted()` either
+  cures and continues (`borg_cheat_death`) or starts a respawn
+  (`borg_reincarnate_start()`: random or configured race and class, a
+  random name, birth keys queued).
+* **Winning.** With `borg_stop_king` the Borg stops; with
+  `borg_respawn_winners` it logs and calls `borg_force_reincarnate()`
+  (queues `Q`, `y`, `@`).
+* **After a respawn** `borg_reincarnate_end()` re-reads race/class data,
+  notices the player, clears reactions, forces the level-change
+  bookkeeping (`borg.status.old_depth = 128`), marks the character
+  `NOSCORE_BORG`, re-applies the options and turns on `cheat_live`.
 
 ---
 
 ## 15. Logging and diagnostics
 
-* `borg_note()` — a decision note, added to the game's message log.
-* `borg_warning()` — louder.
-* `borg_log_death()`, `borg_log_death_data()` — write to
-  `ANGBAND_DIR_ARCHIVE/borg.dat`.
-* `borg_write_map()` — dump the map (the `^z` command family).
-
-**Known defect (CBUG-0001):** cancelling the map-dump filename prompt
-dereferences a NULL file and crashes the game.
-
-**Known defect (issue #287):** multibyte screen messages can acquire stale
-text and phantom monsters.
-
-**Known defect (CBUG-0146, #164):** the debug power output passes an `int32_t`
-to a `long` format.
-
-**Known defect (CBUG-0149, #165):** the debug flag/info text is passed as a
-format string although it contains no percent signs.
-
-**Known defect (CBUG-0150, #166):** the Borg's debug menus are allocated
-without being freed.
+* `borg_note()` — a decision note, added to the message log
+  (`message_add()`) and the Borg's log file; notes are where the
+  anti-bounce `+10` is applied (§2.5).
+* `borg_warning()` — a louder note; `borg_oops()` — note, stop, flush.
+* `borg_log_death()` writes `borg-log.txt` and `borg_log_death_data()`
+  writes `borg.dat`, both in `ANGBAND_DIR_ARCHIVE` and only with
+  `borg_save_death` (`borg-log.c:borg_log_death:48-89`,
+  `borg-log.c:borg_log_death_data:94-121`).
+* `borg_write_map()` — dump the map; `borg_display_status()` — the status
+  window; `borg_dump_recent_keys()` — the key history, used when an
+  unexpected "Direction?" appears.
+* `^Z` opens the Borg command menu (`borg-commands.c`): start, step, the
+  debugging displays.
 
 ---
 
 ## 16. What a rebuild must preserve
 
-If a rebuild is to "be" the C Borg, these are the observable behaviours that
-must be preserved. They are listed as invariants because a rebuild that
-changes them will play differently, and "differently" is the thing to avoid.
+If a rebuild is to *be* the C Borg, these must hold. They are sorted by
+kind, because they are not equally fundamental.
 
-1. **One keypress per turn.** A turn that produces no key is an abort and
-   stalls the game.
-2. **The Borg's own RNG.** The Borg's decisions must not consume the game's
-   RNG stream, or the game's rolls change.
-3. **Screen-only perception.** The rebuild may read the game's status line and
-   messages, but must not use the game's internal state as an oracle for
-   hidden information. (Exception: the `borg_cheat_*` helpers, which read the
-   Borg's *own* recorded view.)
-4. **Dungeon-coordinate map.** The map is anchored in dungeon coordinates and
-   the panel is a viewport.
-5. **Everything is re-derived each turn.** The trait vector, the map and the
-   kill list are recomputed, not patched.
-6. **Power is the utility.** Almost every choice is "maximise the power
-   score", with the danger estimate as the other main term.
-7. **Simulations must be undone.** Every "try this item on" / "try this spell"
-   simulation must restore every piece of state it touched.
-8. **The anti-bounce counter's increments are part of the behaviour.**
-9. **The Borg's clock overflows at `BORG_TIME_MAX - 100`.**
-10. **The six worship weights are the style dial.** A rebuild without them
-    plays a different Borg.
+### 16.1 Observable behaviour (the contract)
+
+1. **Keystrokes are the only action channel, and the queue discipline
+   holds:** each think queues a complete key sequence; the Borg thinks only
+   when the queue is empty; a think that queues nothing stops the Borg; an
+   action closes with `ESCAPE` where the C Borg does (§2.2, §2.6).
+2. **Rest and repeat are passed through** as `EVT_NONE`, not interrupted
+   (§2.7).
+3. **Perception is the two channels of §1.1** — the message line and store
+   header from the screen, plus direct reads of the player's own state and
+   gear, `map_info()` for the current panel, the named cave predicates, the
+   tracked monsters' real condition (`borg_update_kill_old()`), and full
+   race/kind data. Nothing more: no reading of the map outside the panel
+   beyond what the Borg remembers, no monsters the player cannot see, no
+   scanning of the level's monster or object lists. A rebuild that uses
+   less plays worse; one that uses more plays better; neither is this Borg.
+4. **The Borg thinks with its own RNG** (§1.2), so its choices do not move
+   the game's RNG during thinking.
+5. **The decision ladder's order** (§2.8), including caution before
+   routine combat, combat before pickup and exploration, and the three
+   bravery passes at the end.
+6. **Prompt answers** — the pre-answered keys and the caught prompts of
+   §4.6 and §9.3.
+7. **The option set** the Borg imposes (§1.2): the screen it reads depends
+   on it.
+
+### 16.2 Decision-changing constants and state machines
+
+These are not visible on their own, but a rebuild that changes them makes
+different decisions.
+
+1. **Power is the utility** (§5) with the 40,000-per-prepared-depth bonus,
+   and `borg_prepared()`'s requirements (§5.5) gate every dive.
+2. **Danger** on the 0–2000 scale with the regional and per-grid fear terms
+   (§8), and the **fear thresholds** that turn danger into "impassable"
+   (§6.5).
+3. **`borg.avoidance`** and its three boosts (§2.8).
+4. **The flow's byte costs and the 250 limit** (§6.4).
+5. **The anti-bounce counter** — its increments, resets and thresholds
+   (§2.5). The `"Best Combo"` trigger does not fire at the pin; the clock
+   reset at `BORG_TIME_MAX - 100` is unreachable (§2.4). Neither is
+   behaviour a rebuild needs; the abort at `BORG_TIME_MAX - 3000` and the
+   two fixed clock windows are.
+6. **Simulations are undone** (§5.4): every "try this on" pass restores
+   `borg_items[]` from `safe_items[]` and re-notices.
+7. **The memory model:** the map and the monster/object lists are patched
+   across turns and cleared on a level change; the trait vector and
+   `borg_items[]` are rebuilt every think (§3).
+
+### 16.3 Configuration
+
+1. **The 35 settings and their defaults** (§13), including the three that
+   default to true.
+2. **The worship options as weight-branch switches** (§5.2), not
+   multipliers.
+3. **The mode switches** (§13.1) and the conditions that enter and leave
+   them.
 
 ---
 
-## 17. What a rebuild should *not* preserve
+## 17. What a rebuild should *not* preserve — and which rule wins
 
-The Borg's defects are on this fork's issue board, not here, so this is not
-a list of them. It is the set of **principles** a rebuild should apply when
-it finds itself reproducing one.
+### 17.1 Principles
 
-1. **Do not preserve a defect that contradicts the code's own stated
-   intent.** Where a comment says one thing and the code does another, the
-   comment is the specification. Fix it, and say so.
-2. **Do not preserve an unbounded write.** If a buffer is filled from a
-   quantity the environment controls — the terminal size, the map size, the
-   stack size — then the bound must be derived from the same source.
-3. **Do not preserve a count that can go negative or be double-counted.** A
-   counter whose failure mode is a wrong sign is a wrong decision, not a
-   cosmetic slip.
-4. **Do not preserve a mode flag that is set by one routine and cleared by
-   another.** Mode state must be owned in one place, and the exit path must
-   clear the whole of it.
-5. **Do not preserve a copy of a game function that has drifted from it.**
-   When the Borg reimplements an engine calculation, the two must agree;
-   where they cannot, the reason must be written down.
-6. **Do not preserve a simulation that mutates the state it is simulating.**
-   A "try this on" pass must leave the world exactly as it found it.
-7. **Do not preserve a counter that leaks between the branches that use
-   it.** Local state is local; shared state needs an explicit owner.
+These are the principles a rebuild applies when it finds itself
+reproducing one of the §11 shapes.
 
-Each of these corresponds to a family of defects the current Borg has, and
-the issue board has the specifics with their evidence.
+1. **Where a comment states an intent and the code does something else,
+   find out which one is the design** — and record the decision.
+2. **Do not preserve an unbounded write.** A buffer filled from a quantity
+   the environment controls (terminal size, map size, stack size) must be
+   bounded by that quantity (§11.8).
+3. **Do not preserve a count that can be double-counted or go negative**
+   (§11.9).
+4. **Do not preserve a mode flag that one routine sets and another clears**
+   (§11.10).
+5. **Do not preserve a copy of an engine function that has drifted from
+   it**, or write down why it differs (§10.5).
+6. **Do not preserve a read pass that writes** (§11.6), or a simulation
+   that does not restore (§5.4, §11.1).
+7. **Do not preserve state that leaks between branches** (§11.1, §11.11).
+
+### 17.2 The conflict with §16, stated
+
+§16 says "preserve the C Borg's behaviour". §17 says "fix these". They
+conflict whenever a §11 defect changes a decision, and **a rebuild that
+applies §17 is a different Borg**: it will make different choices in the
+states the defect touches.
+
+The recall-depth branch of §9.3 is the plain case. Its comment says "Do
+reset Depth"; the code queues `'n'`; the note it writes says "Not Resetting
+recall depth". Treating the comment as the specification would make the
+Borg reset its recall depth in the endgame where the C Borg does not — a
+real change in where it returns after recall.
+
+The rule this document adopts:
+
+* **By default, §16 wins.** The code at the pin is the specification of the
+  C Borg's behaviour. A rebuild that claims to *be* the C Borg reproduces
+  the behaviour, defects included, wherever the behaviour is defined.
+* **§17 applies without conflict where the C behaviour is not defined** —
+  undefined behaviour such as the glow-array overflow (§11.8), whose effect
+  differs by build. There is no C behaviour to preserve; bounding the write
+  is not a departure.
+* **Every other §17 fix is a declared departure.** A rebuild may make it,
+  but must name it, say which decisions it changes, and not claim parity
+  for those decisions. Of the §11 examples, these change decisions when
+  fixed: the stale `borg_simulate` (§11.1), `borg.has[BI_CURHP]` and the
+  two reaction flags (§11.2), the identify scoring (§11.3, §11.11), the
+  danger comparisons (§11.4), the wand name lookups and the light-beam
+  range (§11.5), the cursed-item zeroing (§11.6), the lantern and Teleport
+  Other indexing (§11.7), the surrounded count (§11.9), the scum/lunal flag
+  (§11.10), the recharge preference (§11.12), and the recall-depth answer.
+
+Where comment and code disagree (§17.1, rule 1), the code is the default
+reading: the comment is evidence of intent, not the behaviour.
 
 ---
 
@@ -1196,15 +1908,12 @@ the issue board has the specifics with their evidence.
 
 | Document | What it holds |
 | --- | --- |
-| the issue board (`upstream-c` + `finding` labels) | the canonical, live state of every C Borg finding |
-| `docs/c-bugs/catalogue.json` | the machine-readable finding catalogue |
-| `docs/c-bugs/findings/CBUG-NNNN.json` | one JSON record per finding |
+| [the issue board](https://github.com/diegoami/neo-angband-tracker/issues?q=label%3Aupstream-c) (`upstream-c` + `finding` labels) | the canonical, live state of every C Borg finding — the only place a finding's state is recorded |
+| `docs/c-bugs/catalogue.json`, `docs/c-bugs/findings/CBUG-NNNN.json` | the machine-readable finding catalogue |
 | `docs/c-bugs/watch-index.json` | the data-only watch index |
 | `patches/upstream-c/` | stored proposal patches |
+| `docs/audit/c-reports/spec-checks/` | the standalone check programs, their provenance and harness commands (`PROVENANCE.md`), and the mechanical re-check of this document (`RECHECK.md`) |
 
-The board is where the bugs are, and it is the only place their state
-changes. This document is the *behavioural* reference: what the Borg is,
-how it is built, and what a rebuild has to preserve. Neither is a substitute
-for the other, and neither is duplicated here.
-
----
+The board is where the bugs are. This document is the behavioural
+reference: what the Borg is, how it is built, and what a rebuild has to
+preserve. Neither substitutes for the other.

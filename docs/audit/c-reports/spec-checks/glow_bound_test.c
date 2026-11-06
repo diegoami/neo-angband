@@ -1,6 +1,6 @@
 /*
  * Standalone check of the array bound in
- * angband e473720ed src/borg/borg-flow-misc.c:borg_flow_light().
+ * angband e473720ed src/borg/borg-flow-misc.c:borg_flow_light() (824-874).
  *
  * The Borg appends one entry per glowing grid on the visible map panel to
  * borg_glow_y[]/borg_glow_x[], which have AUTO_LIGHT_MAX entries.  There is
@@ -9,10 +9,14 @@
  *
  * No game state is involved; the constants are taken from the pinned tree:
  *   src/borg/borg-cave-light.h : AUTO_LIGHT_MAX 1536
- *   src/ui-term.h              : SCREEN_HGT, SCREEN_WID
+ *   src/ui-term.h              : SIDEBAR_LEFT 0, SIDEBAR_TOP 1, SIDEBAR_NONE 2;
+ *                                SCREEN_ROWS = Term->hgt - ROW_MAP - ROW_BOTTOM_MAP
+ *                                SCREEN_HGT  = SCREEN_ROWS / tile_height
+ *                                SCREEN_WID  = (Term->wid - COL_MAP - 1) / tile_width
  *   src/ui-term.c              : row_top_map{1,4,1}
  *                                row_bottom_map{1,0,0}
  *                                col_map{13,0,0}
+ * Tiles are taken as 1x1 (text mode: tile_height = tile_width = 1).
  */
 #include <stdio.h>
 
@@ -42,7 +46,7 @@ static void report(const char *label, int hgt, int wid, int sidebar)
 	printf("%-22s %-4s %3dx%-3d = %5d cells   last write index %5d   %s\n",
 		label, "", rows, cols, cells, last_index,
 		(last_index >= AUTO_LIGHT_MAX)
-			? "OVERFLOW (past the 1536-entry arrays)"
+			? "can overflow (if every grid is BORG_GLOW)"
 			: "within the arrays");
 }
 
@@ -51,23 +55,23 @@ int main(void)
 	printf("AUTO_LIGHT_MAX = %d\n\n", AUTO_LIGHT_MAX);
 
 	printf("--- 80x24 (the classic terminal) ---\n");
-	report("sidebar LEFT  (0)", 24, 80, 0);
-	report("sidebar RIGHT (1)", 24, 80, 1);
-	report("sidebar NONE  (2)", 24, 80, 2);
+	report("SIDEBAR_LEFT (0)", 24, 80, 0);
+	report("SIDEBAR_TOP  (1)", 24, 80, 1);
+	report("SIDEBAR_NONE (2)", 24, 80, 2);
 
 	printf("\n--- 80x28 ---\n");
-	report("sidebar LEFT  (0)", 28, 80, 0);
-	report("sidebar RIGHT (1)", 28, 80, 1);
-	report("sidebar NONE  (2)", 28, 80, 2);
+	report("SIDEBAR_LEFT (0)", 28, 80, 0);
+	report("SIDEBAR_TOP  (1)", 28, 80, 1);
+	report("SIDEBAR_NONE (2)", 28, 80, 2);
 
 	printf("\n--- 120x40 ---\n");
-	report("sidebar LEFT  (0)", 40, 120, 0);
-	report("sidebar RIGHT (1)", 40, 120, 1);
-	report("sidebar NONE  (2)", 40, 120, 2);
+	report("SIDEBAR_LEFT (0)", 40, 120, 0);
+	report("SIDEBAR_TOP  (1)", 40, 120, 1);
+	report("SIDEBAR_NONE (2)", 40, 120, 2);
 
-	printf("\nThe overflow needs every visible grid to carry BORG_GLOW.\n");
-	printf("BORG_GLOW is set on grids the Borg believes are perma-lit, so a\n");
-	printf("fully explored, lit room puts nearly every visible floor grid in\n");
-	printf("the array.\n");
+	printf("\nThe write passes the end of the arrays once more than 1536 panel\n");
+	printf("grids carry BORG_GLOW (grids the Borg believes are perma-lit).\n");
+	printf("This program shows only the capacity; it does not show that a\n");
+	printf("game reaches that many glowing grids.\n");
 	return 0;
 }

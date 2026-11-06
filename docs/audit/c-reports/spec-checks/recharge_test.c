@@ -1,160 +1,145 @@
 /*
  * Standalone check of the candidate selection in
- * angband e473720ed src/borg/borg-item-wear.c:borg_wear_recharge().
+ * angband e473720ed src/borg/borg-item-wear.c:borg_wear_recharge() (1451-1538).
  *
- * The scan and the two outcome branches are transcribed from the pinned
- * source.  The item array is the Borg's packed index space: the pack
- * first, then the equipment slots from INVEN_WIELD.
+ * The scan (1463-1492) and the three outcomes (1495-1537) are transcribed
+ * from the pinned source.  The item array is the Borg's packed index space:
+ * the pack first, then the equipment from INVEN_WIELD.  Here the pack has 4
+ * slots, so INVEN_WIELD = 4; INVEN_TOTAL = INVEN_WIELD + 12.
+ *
+ * borg_wield_slot() (borg-inventory.c:42-77) returns an equipment index for
+ * weapons, bows, rings (INVEN_LEFT), amulets, lights, armour, and -1 for
+ * everything else (rods, wands, staffs, ...).
+ *
+ * What the game produces at the pin: an object's `timeout` is set by
+ * activation (USE_TIMEOUT, src/cmd-obj.c) and recharges only while equipped,
+ * except rods, which recharge in the pack (src/game-world.c;
+ * src/obj-tval.c:tval_can_have_timeout() is TV_ROD only).  Wands and staffs
+ * use charges (pval), never timeout.  So "a pack wand with a timeout"
+ * (cases marked SYNTHETIC) is not a state ordinary play reaches; those cases
+ * show what the code does with it, not that it happens.
+ *
+ * No game state is involved.
  */
 #include <stdio.h>
-#include <string.h>
 
-#define TV_WAND   96
-#define TV_STAFF  97
-#define TV_ROD    95
-#define TV_RING   100
-#define TV_LIGHT  13
+enum { K_RING, K_AMULET, K_ROD, K_WAND, K_STAFF, K_TORCH, K_LANTERN,
+       K_ARTIFACT_LIGHT };
 
-/* The Borg's packed index space: the pack occupies 0..pack_size-1 and the
- * equipment starts at INVEN_WIELD == pack_size.  Here the pack has 4
- * slots, so the equipment starts at 4. */
-#define PACK_SLOTS   4
 #define INVEN_WIELD  4
-#define INVEN_TOTAL 10
-#define sv_rod_recall 3
+#define INVEN_LEFT   (INVEN_WIELD + 3)
+#define INVEN_NECK   (INVEN_WIELD + 4)
+#define INVEN_LIGHT  (INVEN_WIELD + 5)
+#define INVEN_TOTAL  (INVEN_WIELD + 12)
 
-/* borg_wield_slot() for the tvals this test uses; -1 = no slot.
- * The returned values are the real equipment indices. */
-static int wield_slot(int tval)
+struct item {
+	int kind;
+	int qty;
+	int timeout;        /* non-zero = still recharging */
+	int is_recall_rod;  /* sval == sv_rod_recall */
+};
+
+static const char *kname(int k)
 {
-	switch (tval) {
-	case 13:  return INVEN_WIELD + 8;  /* TV_LIGHT -> INVEN_LIGHT */
-	case 100: return INVEN_WIELD + 6;  /* TV_RING  -> INVEN_LEFT  */
-	case 95:  return -1;               /* TV_ROD   -> no slot     */
-	case 96:  return -1;               /* TV_WAND  -> no slot     */
-	case 97:  return -1;               /* TV_STAFF -> no slot     */
+	switch (k) {
+	case K_RING: return "ring";       case K_AMULET: return "amulet";
+	case K_ROD: return "rod";         case K_WAND: return "wand";
+	case K_STAFF: return "staff";     case K_TORCH: return "torch";
+	case K_LANTERN: return "lantern"; case K_ARTIFACT_LIGHT: return "artifact light";
+	}
+	return "?";
+}
+
+/* borg_wield_slot() for the kinds used here */
+static int wield_slot(int k)
+{
+	switch (k) {
+	case K_RING: return INVEN_LEFT;
+	case K_AMULET: return INVEN_NECK;
+	case K_TORCH: case K_LANTERN: case K_ARTIFACT_LIGHT: return INVEN_LIGHT;
 	}
 	return -1;
 }
 
-struct item {
-	int tval;
-	int qty;
-	int timeout;   /* non-zero = needs recharging */
-	int sval;
-};
-
-static void scan(const struct item *items, int n, int depth,
-                 int *out_i, int *out_slot, const char **outcome)
+static const char *scan(const struct item items[INVEN_TOTAL], int depth, int *out_i)
 {
-	int i;
-	int b_i = -1;
-	int b_slot = -1;
+	int i, b_i = -1, slot = -1, b_slot = -1;
 
-	for (i = 0; i < n; i++) {
+	for (i = 0; i < INVEN_TOTAL; i++) {
 		const struct item *item = &items[i];
-		int slot;
-
 		if (!item->qty) continue;
 		if (!item->timeout) continue;
-
-		slot = wield_slot(item->tval);
-
-		/* if this is a rod, only count it if it is a rod of recall
-		 * and we are in town.  (The source's condition is inverted
-		 * in the source text; here we take the branch the source
-		 * takes when NOT in town, which is the interesting case.) */
-		if (item->tval == TV_ROD && item->sval != sv_rod_recall && depth == 0)
+		slot = wield_slot(item->kind);
+		if (item->kind == K_ROD && !item->is_recall_rod && depth == 0)
 			continue;
-
-		/* skip torches and lanterns */
-		if (item->tval == TV_LIGHT)
+		if (item->kind == K_TORCH || item->kind == K_LANTERN)
 			continue;
-
 		b_i = i;
 		b_slot = slot;
 	}
-
 	*out_i = b_i;
-	*out_slot = b_slot;
-
-	if (b_i == -1) {
-		*outcome = "nothing to recharge";
-		return;
-	}
-	if (b_i >= INVEN_WIELD || items[b_i].tval == TV_ROD) {
-		*outcome = "waiting for recharge (rest 750)";
-		return;
-	}
-	if (b_slot >= INVEN_WIELD) {
-		*outcome = "swapping item for recharge (rest 750)";
-		return;
-	}
-	*outcome = "NOTHING TO RECHARGE";
+	if (b_i == -1)
+		return "nothing found -> return false";
+	if (b_i >= INVEN_WIELD || items[b_i].kind == K_ROD)
+		return "rest R 7 5 Enter (worn item or rod)";
+	if (b_slot >= INVEN_WIELD)
+		return "wear it, then rest (pack wearable)";
+	return "GIVE UP -> return false";
 }
 
-static void show(const char *label, struct item items[], int n)
+static void show(const char *label, struct item items[INVEN_TOTAL])
 {
-	int bi, bs;
-	const char *outcome;
-	scan(items, n, 5, &bi, &bs, &outcome);
+	int bi;
+	const char *outcome = scan(items, 5, &bi);
+	printf("%-52s chosen: %-26s %s\n", label,
+		bi < 0 ? "(none)" : "", outcome);
+	if (bi >= 0)
+		printf("%-52s         %s %s (index %d)\n", "",
+			bi >= INVEN_WIELD ? "worn" : "pack", kname(items[bi].kind), bi);
+}
 
-	printf("%-52s %-14s %6d  %s%s\n",
-		label,
-		(bi == -1) ? "(none)" :
-			(items[bi].tval == TV_WAND) ? "pack wand" :
-			(items[bi].tval == TV_STAFF) ? "pack staff" :
-			(items[bi].tval == TV_ROD) ? "rod" : "worn ring",
-		bs, outcome,
-		(strncmp(outcome, "NOTHING", 7) == 0 && bi != -1) ? "  <-- the ring is lost" : "");
+static void clear(struct item items[INVEN_TOTAL])
+{
+	int i;
+	for (i = 0; i < INVEN_TOTAL; i++)
+		items[i] = (struct item){ K_RING, 0, 0, 0 };
 }
 
 int main(void)
 {
-	struct item items[8];
+	struct item it[INVEN_TOTAL];
 
-	/* The Borg's index space: the pack first, then the equipment. */
-	items[0] = (struct item){ TV_WAND,  1, 0, 0 };   /* pack wand, charged     */
-	items[1] = (struct item){ TV_WAND,  1, 0, 0 };   /* pack wand, charged     */
-	items[2] = (struct item){ TV_RING,  1, 0, 0 };   /* worn ring, charged     */
+	printf("depth 5 (in the dungeon) for every case\n\n");
 
-	show("control: no timed items", items, 3);
+	clear(it);
+	show("control: nothing recharging", it);
 
-	items[2].timeout = 1;
-	show("control: a worn ring only (last timed item)", items, 3);
+	clear(it);
+	it[INVEN_LEFT] = (struct item){ K_RING, 1, 50, 0 };
+	show("control: worn ring recharging", it);
 
-	items[0].tval = TV_ROD; items[0].timeout = 1; items[0].sval = sv_rod_recall; items[2].timeout = 0;
-	show("control: a worn rod only (last timed item)", items, 3);
+	clear(it);
+	it[1] = (struct item){ K_AMULET, 1, 50, 0 };
+	show("control: pack amulet recharging", it);
 
-	/* TEST A: worn ring first, pack wand last */
-	items[0] = (struct item){ TV_WAND, 1, 0, 0 };
-	items[1] = (struct item){ TV_WAND, 1, 0, 0 };
-	items[2] = (struct item){ TV_RING, 1, 1, 0 };
-	items[3] = (struct item){ TV_WAND, 1, 1, 0 };   /* the LAST timed item */
-	show("TEST A: worn ring first, pack wand last", items, 4);
+	clear(it);
+	it[1] = (struct item){ K_AMULET, 1, 50, 0 };
+	it[2] = (struct item){ K_ROD, 1, 20, 0 };
+	show("LAST MATCH: pack amulet, then pack rod", it);
 
-	/* TEST B: worn ring first, pack staff last */
-	items[3] = (struct item){ TV_STAFF, 1, 1, 0 };
-	show("TEST B: worn ring first, pack staff last", items, 4);
+	clear(it);
+	it[2] = (struct item){ K_ROD, 1, 20, 0 };
+	it[INVEN_LEFT] = (struct item){ K_RING, 1, 50, 0 };
+	show("LAST MATCH: pack rod, then worn ring", it);
 
-	/* TEST C: pack wand first, worn ring last */
-	items[0] = (struct item){ TV_WAND, 1, 1, 0 };
-	items[1] = (struct item){ TV_WAND, 1, 0, 0 };
-	items[2] = (struct item){ TV_RING, 1, 1, 0 };
-	items[3] = (struct item){ TV_WAND, 1, 0, 0 };
-	show("TEST C: pack wand first, worn ring last", items, 4);
+	clear(it);
+	it[1] = (struct item){ K_AMULET, 1, 50, 0 };
+	it[3] = (struct item){ K_WAND, 1, 1, 0 };
+	show("SYNTHETIC: pack amulet, then pack wand w/ timeout", it);
 
-	/* TEST D: worn ring + pack wand, wand last */
-	items[0] = (struct item){ TV_WAND, 1, 0, 0 };
-	items[1] = (struct item){ TV_WAND, 1, 0, 0 };
-	items[2] = (struct item){ TV_RING, 1, 1, 0 };
-	items[3] = (struct item){ TV_WAND, 1, 1, 0 };
-	show("TEST D: worn ring + pack wand, pack wand last", items, 4);
-
-	printf("\nThe scan has no early exit and no preference: b_i is\n");
-	printf("overwritten on every qualifying item, so the LAST timed item\n");
-	printf("wins.  And nothing rejects an item whose wield slot is -1\n");
-printf("(a wand or a staff in the pack), so that item can be selected\n");
-	printf("and then make the routine give up entirely.\n");
+	printf("\nThe scan keeps the LAST item with a timeout; there is no\n");
+	printf("preference between resting for a rod, resting for a worn item,\n");
+	printf("and swapping in a pack item.  The give-up path needs an\n");
+	printf("unwieldable non-rod item with a timeout (SYNTHETIC above).\n");
 	return 0;
 }
