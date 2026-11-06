@@ -1,0 +1,84 @@
+{
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "fix": "1ab30ef0bc9a12caa5b1cf48e60c204ef564e9de",
+  "fixtures_ref": "808d018553a6869a4e8024a33e8a1e1852e2d7ea",
+  "cases": {
+    "before": {
+      "stale": {
+        "exit": 0,
+        "passed": false,
+        "geometry": "target=(11,11) player=(11,11) dist=0",
+        "rating": "acted=1 keys=\"+5\" center_attack=1",
+        "outcome": "acted=1 keys=\"+5\" center_attack=1"
+      },
+      "control": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "target=(12,11) player=(11,11) dist=1",
+        "rating": "acted=1 keys=\"+2\" center_attack=0",
+        "outcome": "acted=1 keys=\"+2\" center_attack=0"
+      }
+    },
+    "after": {
+      "stale": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "target=(11,11) player=(11,11) dist=0",
+        "rating": "acted=0 keys=\"\" center_attack=0",
+        "outcome": "acted=0 keys=\"\" center_attack=0"
+      },
+      "control": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "target=(12,11) player=(11,11) dist=1",
+        "rating": "acted=1 keys=\"+2\" center_attack=0",
+        "outcome": "acted=1 keys=\"+2\" center_attack=0"
+      }
+    }
+  },
+  "identical_controls": [
+    "control"
+  ],
+  "full_tests": {
+    "before": {
+      "units": "965/965",
+      "frontends": "5/5"
+    },
+    "after": {
+      "units": "965/965",
+      "frontends": "5/5"
+    }
+  },
+  "fixed_source_sha256": "bb6712923cd8e7b4dc7b8e9d56454fcd401706144e2774c3472e05ebd708929c",
+  "compiler": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+  "cmake": "cmake version 4.2.3",
+  "browser": {
+    "engine": "Google Chrome for Testing 156.0.8078.4 (headless dump-dom)",
+    "verification": "18 checks against the rendered DOM and payload: 2 situations x 2 variants; stale own-grid target queues +5 before (center_attack=1) and nothing after; adjacent control +2 byte-identical raw logs; no n/a or undefined fields; zero console errors; generated replay JS validated with node --check"
+  },
+  "maintenance_base": "f186aa1fce2e590eb9bbcb91dc369f3f8b6af688",
+  "sha256": {
+    "README.md": "4720f031d906dcb700c7ea5785a3dbdb37c6a43a904b658e3d2f30cd644edf02",
+    "after-alltests.log": "044ae2459d31eb5e6b79d6d797e9422265adaa828c6ecb88973a804f3f050b37",
+    "after-build.log": "9d9d4b0be57ded3e0f911008498c0a4db4eb4df016c8c1f52bd513ab827b716a",
+    "after-control.log": "e6bdc61647f9b204d574a2d03939334b3edd44af85f36e9aeb3d88378a4467cb",
+    "after-results.json": "dce71bfc57f0963dff0400a9e54eb26b795d962f834e5bc452557ef78c363a93",
+    "after-scenarios.log": "b169e01b986cfafbe2f01aa33d9f34a7c86a84f1e49a00facb0a0ea6ff92249b",
+    "after-stale.log": "ca958f679d3a0133d5e0a2d4e4c1e2695ba67a58447014fa1fcba0827569b572",
+    "before-alltests.log": "cec05c402c7720419e50bd014220c9b7ab4dfdf729af7042a81a40a0866e29d4",
+    "before-build.log": "60f2fdc7a06c8fe2e64349009d9cb4c956559b5bf65db27cda7ae409fad936ac",
+    "before-control.log": "e6bdc61647f9b204d574a2d03939334b3edd44af85f36e9aeb3d88378a4467cb",
+    "before-results.json": "524ce6dd022699e44139993c8b3c277055f411fc61bc2c8c340a9f565838697c",
+    "before-scenarios.log": "c92bf47738a57ea826b2e22d1bbc886243ff4a1b3e58f4e424c47bd4887825fd",
+    "before-stale.log": "df05e0396116d9c3f60938dc5158465c4ce712f015d0171812da1c947266ebc0",
+    "borg.txt": "80738da248ed74e343925e0348fc75da993d8c03ffff03c7bce1a9090005be47",
+    "configure.log": "ccf95549f917b46149a9233a035abfdf98762a95f41091133a87f84ebe807338",
+    "make_replay.py": "d10770ea29d974fe0c73999475061e121b886c4a6a9adf53db79e2ef9b865da0",
+    "replay-data.json": "f1c102e0c4af2bac66358d4b2c320eb78557d7b504c25f289d0bb4b63e34a8ce",
+    "replay.html": "eb67d1accdf1c903d9812fd38a27e8e4c9b651697e69b8d2ac856d3025302ba7",
+    "reproduce.py": "0d89a9e71436876101237b4bb6777acba211047649b7a5ad44a5f2e17193b9ef",
+    "result.json": "953cdbfade5e8320ad9c111452a5481a874cca4d498b8f7fd0a4cce072d884a9",
+    "run-cases.py": "4e709693af2bb6c9e4aafc24893f110427b830da1245c063b75acd30d4dbbdf4",
+    "scenario.c": "6a6644b7312e87aaaf4c1f4fef19fee145288de52d6bf2d32c39b82983b992e1"
+  }
+}

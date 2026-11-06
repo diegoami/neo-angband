@@ -35,8 +35,8 @@ From a clone of `diegoami/neo-angband-tracker`, copy these three commands:
 
 ```sh
 git fetch https://github.com/diegoami/neo-angband-tracker.git task/staletarget-322-evidence
-git show PINSHA:docs/audit/c-reports/staletarget-322/reproduce.py > /tmp/reproduce-staletarget-322.py
-python3 /tmp/reproduce-staletarget-322.py --fixtures-ref PINSHA --full-tests
+git show c969dc2493865d934826c69823ad83c3b4dbb8d0:docs/audit/c-reports/staletarget-322/reproduce.py > /tmp/reproduce-staletarget-322.py
+python3 /tmp/reproduce-staletarget-322.py --fixtures-ref c969dc2493865d934826c69823ad83c3b4dbb8d0 --full-tests
 ```
 
 The runner builds original and corrected variants from pristine C
