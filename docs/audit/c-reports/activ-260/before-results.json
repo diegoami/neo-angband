@@ -1,0 +1,16 @@
+{
+  "miswired": {
+    "exit": 0,
+    "passed": false,
+    "geometry": "player=(11,11) target=(11,15) temp_n=0",
+    "rating": "bolt3=0 bolt2=0",
+    "outcome": "bolt3=0 bolt2=0"
+  },
+  "control": {
+    "exit": 0,
+    "passed": true,
+    "geometry": "player=(11,11) target=(11,15) temp_n=0",
+    "rating": "bolt2=52",
+    "outcome": "bolt2=52"
+  }
+}
