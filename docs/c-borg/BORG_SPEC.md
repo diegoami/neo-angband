@@ -4,6 +4,17 @@
 C Borg *does*, so a rebuild can reuse the accumulated knowledge instead of
 rediscovering it.
 
+**Why this document exists in this fork.** This fork tracks bugs in the C
+Borg and in Neo Angband. The C Borg's findings live on the issue board
+(`upstream-c` + `finding` labels) with their provenance in
+`docs/c-bugs/catalogue.json`. That is the authoritative record of *what is
+broken and whether it is fixed*. What the board cannot do is answer the
+question a reader actually has when they open a Borg source file: **what is
+known to be wrong with this function, and what does the Borg rely on here?**
+This document is the index that answers it, in one place, at a known source
+revision. It exists to make the fork's accumulated knowledge usable, not to
+restate it.
+
 **Source of truth:** the C Borg in
 [`angband/angband`](https://github.com/angband/angband) at
 
@@ -763,9 +774,19 @@ decide that stacks should be valued as stacks.
 
 ## 11. Known defects that a rebuild should not inherit
 
-This section is the accumulated knowledge. It is deliberately not exhaustive
-of the 152 tracked findings — see the issue board for those — but it lists
-the defects whose *shape* is worth designing around.
+This section is the accumulated knowledge, in two layers:
+
+* **§11.1 - §11.12 group the defects by their *shape*** — stale state, the
+  wrong variable, dead code, the wrong comparison, and so on — because the
+  shape is what a rebuild has to design around. Each entry names the
+  finding that tracks it.
+* **§11.13 is the complete index**: every one of the 152 tracked findings,
+  keyed by the source site it names, so that a rebuild rewriting a function
+  can see everything known to be wrong with it. §11.14 ranks the files by
+  how many findings name them.
+
+The shapes below are a reading aid, not a filter: the index in §11.13 is
+the full set.
 
 ### 11.1 Stale state between calls
 
@@ -989,6 +1010,194 @@ was looking for.
 **Known defect** (issue #316).
 
 ---
+
+<!-- borg-defect-index:start -->
+### 11.13 Complete defect index by source site
+
+Every tracked C Borg finding, indexed by the source site it names.
+This is the **index**, not a second authority: the issue board owns
+whether a finding is open, fixed or closed, and the JSON catalogue
+owns its provenance. What this table adds is the *reverse* lookup --
+from a function in `src/borg/` to everything known to be wrong with
+it -- which is what a rebuild needs when it rewrites that function.
+
+All 152 findings; 44 source files; 155 site entries.
+
+| Source file | Function | Findings |
+| --- | --- | --- |
+| `borg-messages-react.c` | `(file level)` | CBUG-0002 (#14) |
+| `borg-store-sell.c transaction counters` | `(file level)` | CBUG-0013 (#20) |
+| `borg-store-sell.c transaction wrap` | `(file level)` | CBUG-0014 (#32) |
+| `src/borg/borg-attack-munchkin.c` | `borg_munchkin_mage` | CBUG-0103 (#119), CBUG-0104 (#120), CBUG-0105 (#121) |
+| `src/borg/borg-caution.c` | `borg_caution` | CBUG-0136 (#152), CBUG-0137 (#153), CBUG-0138 (#154), CBUG-0139 (#155), CBUG-0140 (#156), CBUG-0141 (#157) |
+| `src/borg/borg-caution.c` | `borg_heal` | CBUG-0142 (#158), CBUG-0143 (#159) |
+| `src/borg/borg-cave-light.c` | `borg_update_light` | CBUG-0003 (#10), CBUG-0024 (#40) |
+| `src/borg/borg-commands.c` | `borg_cmd_flags` | CBUG-0149 (#165), CBUG-0150 (#166) |
+| `src/borg/borg-commands.c` | `borg_cmd_flow` | CBUG-0147 (#163) |
+| `src/borg/borg-commands.c` | `borg_cmd_grid_target_feature` | CBUG-0148 (#164) |
+| `src/borg/borg-commands.c` | `borg_cmd_object_desc` | CBUG-0151 (#167) |
+| `src/borg/borg-commands.c` | `borg_cmd_power` | CBUG-0146 (#162) |
+| `src/borg/borg-commands.c` | `borg_cmd_steps` | CBUG-0144 (#160) |
+| `src/borg/borg-commands.c` | `borg_cmd_targeting` | CBUG-0145 (#161) |
+| `src/borg/borg-commands.c` | `do_cmd_borg` | CBUG-0152 (#168) |
+| `src/borg/borg-danger.c` | `borg_danger` | CBUG-0053 (#69) |
+| `src/borg/borg-danger.c` | `borg_danger_physical` | CBUG-0004 (#26), CBUG-0045 (#61), CBUG-0046 (#62), CBUG-0047 (#63), CBUG-0048 (#64), CBUG-0049 (#65), CBUG-0050 (#66), CBUG-0051 (#67), CBUG-0052 (#68) |
+| `src/borg/borg-escape.c` | `borg_dimension_door` | CBUG-0018 (#21) |
+| `src/borg/borg-escape.c` | `borg_escape` | CBUG-0017 (#35) |
+| `src/borg/borg-escape.c` | `borg_escape danger level1` | CBUG-0015 (#33) |
+| `src/borg/borg-escape.c` | `borg_escape levels3/4/5/6/8` | CBUG-0016 (#34) |
+| `src/borg/borg-fight-defend.c` | `borg_defend_aux_banishment` | CBUG-0021 (#37) |
+| `src/borg/borg-fight-perm.c` | `borg_perma_aux_bless` | CBUG-0097 (#113) |
+| `src/borg/borg-fight-perm.c` | `borg_perma_aux_fastcast` | CBUG-0096 (#112) |
+| `src/borg/borg-fight-perm.c` | `borg_perma_aux_regen` | CBUG-0094 (#110) |
+| `src/borg/borg-fight-perm.c` | `borg_perma_aux_venom` | CBUG-0095 (#111) |
+| `src/borg/borg-flow-dark.c` | `borg_flow_dark_4` | CBUG-0107 (#123) |
+| `src/borg/borg-flow-dark.c` | `borg_flow_dark_5` | CBUG-0108 (#124) |
+| `src/borg/borg-flow-dark.c` | `borg_flow_dark_interesting` | CBUG-0106 (#122) |
+| `src/borg/borg-flow-glyph.c` | `borg_flow_glyph` | CBUG-0098 (#114), CBUG-0099 (#115), CBUG-0100 (#116), CBUG-0101 (#117), CBUG-0102 (#118) |
+| `src/borg/borg-flow-kill.c` | `borg_flow_kill` | CBUG-0082 (#98) |
+| `src/borg/borg-flow-kill.c` | `borg_flow_kill_aim` | CBUG-0083 (#99) |
+| `src/borg/borg-flow-kill.c` | `borg_follow_kill` | CBUG-0080 (#96) |
+| `src/borg/borg-flow-kill.c` | `borg_init_flow_kill` | CBUG-0085 (#101) |
+| `src/borg/borg-flow-kill.c` | `borg_locate_kill` | CBUG-0086 (#102) |
+| `src/borg/borg-flow-kill.c` | `borg_new_kill` | CBUG-0079 (#95) |
+| `src/borg/borg-flow-kill.c` | `borg_shoot_scoot_safe` | CBUG-0084 (#100) |
+| `src/borg/borg-flow-kill.c` | `borg_update_kill_old` | CBUG-0078 (#94), CBUG-0081 (#97) |
+| `src/borg/borg-flow-misc.c` | `borg_check_rest` | CBUG-0133 (#149) |
+| `src/borg/borg-flow-misc.c` | `borg_flow_spastic` | CBUG-0130 (#146), CBUG-0131 (#147) |
+| `src/borg/borg-flow-misc.c` | `borg_flow_vault` | CBUG-0132 (#148) |
+| `src/borg/borg-flow-misc.c` | `borg_flow_vein` | CBUG-0135 (#151) |
+| `src/borg/borg-flow-misc.c` | `borg_twitchy` | CBUG-0134 (#150) |
+| `src/borg/borg-flow-stairs.c` | `borg_flow_cost_stair` | CBUG-0093 (#109) |
+| `src/borg/borg-flow-stairs.c` | `borg_prep_leave_level_spells` | CBUG-0092 (#108) |
+| `src/borg/borg-flow-take.c` | `borg_flow_take` | CBUG-0055 (#71), CBUG-0056 (#72), CBUG-0057 (#73), CBUG-0059 (#75) |
+| `src/borg/borg-flow-take.c` | `borg_follow_take` | CBUG-0058 (#74) |
+| `src/borg/borg-flow.c` | `borg_flow_enqueue_grid` | CBUG-0114 (#130) |
+| `src/borg/borg-flow.c` | `borg_flow_old` | CBUG-0112 (#128) |
+| `src/borg/borg-flow.c` | `borg_flow_spread` | CBUG-0109 (#125) |
+| `src/borg/borg-flow.c` | `borg_play_step` | CBUG-0110 (#126), CBUG-0111 (#127), CBUG-0113 (#129) |
+| `src/borg/borg-formulas-calc.c` | `adjust_order_operations` | CBUG-0023 (#39) |
+| `src/borg/borg-formulas.c` | `borg_formula_error` | CBUG-0028 (#44) |
+| `src/borg/borg-formulas.c` | `parse_range` | CBUG-0029 (#45) |
+| `src/borg/borg-home-notice.c` | `borg_notice_home_aux` | CBUG-0037 (#53), CBUG-0038 (#54) |
+| `src/borg/borg-home-power.c` | `borg_power_home_aux1` | CBUG-0030 (#46), CBUG-0031 (#47) |
+| `src/borg/borg-init.c` | `borg_init_txt_file` | CBUG-0128 (#144) |
+| `src/borg/borg-init.c` | `borg_proc_setting` | CBUG-0125 (#141), CBUG-0126 (#142), CBUG-0127 (#143) |
+| `src/borg/borg-init.c` | `borg_reset_ignore` | CBUG-0129 (#145) |
+| `src/borg/borg-inventory.c` | `borg_first_empty_inventory_slot` | CBUG-0044 (#60) |
+| `src/borg/borg-inventory.c` | `borg_slot` | CBUG-0043 (#59) |
+| `src/borg/borg-item-analyze.c` | `borg_object_value_known` | CBUG-0054 (#70) |
+| `src/borg/borg-item-decurse.c` | `borg_decurse_any` | CBUG-0075 (#91), CBUG-0076 (#92) |
+| `src/borg/borg-item-decurse.c` | `borg_decurse_armour` | CBUG-0077 (#93) |
+| `src/borg/borg-item-enchant.c` | `borg_pick_armor` | CBUG-0088 (#104) |
+| `src/borg/borg-item-enchant.c` | `borg_pick_weapon` | CBUG-0087 (#103) |
+| `src/borg/borg-item-id.c` | `borg_object_fully_id` | CBUG-0042 (#58) |
+| `src/borg/borg-item-use.c` | `borg_activate_failure` | CBUG-0060 (#76) |
+| `src/borg/borg-item-use.c` | `borg_eat_food_any` | CBUG-0064 (#80) |
+| `src/borg/borg-item-use.c` | `borg_equips_ring` | CBUG-0062 (#78) |
+| `src/borg/borg-item-use.c` | `borg_quaff_crit` | CBUG-0061 (#77) |
+| `src/borg/borg-item-use.c` | `borg_use_staff_fail` | CBUG-0063 (#79) |
+| `src/borg/borg-item-use.c` | `borg_use_things` | CBUG-0065 (#81) |
+| `src/borg/borg-item-val.c` | `borg_init_item_val` | CBUG-0022 (#38) |
+| `src/borg/borg-item-wear.c` | `borg_backup_swap` | CBUG-0066 (#82), CBUG-0067 (#83), CBUG-0068 (#84) |
+| `src/borg/borg-item-wear.c` | `borg_best_stuff_aux` | CBUG-0070 (#86) |
+| `src/borg/borg-item-wear.c` | `borg_one_step_wearing_best` | CBUG-0069 (#85) |
+| `src/borg/borg-item-wear.c` | `borg_wear_stuff` | CBUG-0071 (#87) |
+| `src/borg/borg-junk.c` | `borg_consume` | CBUG-0124 (#140) |
+| `src/borg/borg-junk.c` | `borg_drop_hole` | CBUG-0120 (#136), CBUG-0121 (#137) |
+| `src/borg/borg-junk.c` | `borg_drop_junk` | CBUG-0119 (#135) |
+| `src/borg/borg-junk.c` | `borg_drop_slow` | CBUG-0122 (#138) |
+| `src/borg/borg-junk.c` | `borg_remove_stuff` | CBUG-0123 (#139) |
+| `src/borg/borg-light.c` | `borg_light_beam` | CBUG-0072 (#88), CBUG-0073 (#89) |
+| `src/borg/borg-light.c` | `borg_refuel_lantern` | CBUG-0074 (#90) |
+| `src/borg/borg-log.c` | `borg_display_status` | CBUG-0040 (#56) |
+| `src/borg/borg-log.c` | `borg_write_map` | CBUG-0001 (#13), CBUG-0039 (#55) |
+| `src/borg/borg-magic-play.c` | `borg_play_magic` | CBUG-0032 (#48) |
+| `src/borg/borg-magic.c` | `borg_cheat_spells` | CBUG-0026 (#42) |
+| `src/borg/borg-magic.c` | `borg_init_spell` | CBUG-0025 (#41) |
+| `src/borg/borg-magic.c` | `borg_spell_stat` | CBUG-0027 (#43) |
+| `src/borg/borg-messages-react.c` | `borg_react_prompted` | CBUG-0041 (#57) |
+| `src/borg/borg-prepared.c` | `borg_prepared` | CBUG-0033 (#49), CBUG-0035 (#51) |
+| `src/borg/borg-prepared.c` | `borg_restock` | CBUG-0034 (#50) |
+| `src/borg/borg-recover.c` | `borg_recover` | CBUG-0089 (#105), CBUG-0090 (#106), CBUG-0091 (#107) |
+| `src/borg/borg-reincarnate.c` | `borg_reincarnate_start` | CBUG-0036 (#52) |
+| `src/borg/borg-store-buy.c` | `(file level)` | CBUG-0013 (#20), CBUG-0014 (#32) |
+| `src/borg/borg-store-buy.c` | `borg_good_buy` | CBUG-0005 (#17) |
+| `src/borg/borg-store-buy.c` | `borg_think_home_buy_swap_weapon/armour` | CBUG-0011 (#30), CBUG-0012 (#31) |
+| `src/borg/borg-store-buy.c` | `borg_think_home_buy_useful` | CBUG-0007 (#19), CBUG-0008 (#27), CBUG-0009 (#28) |
+| `src/borg/borg-store-buy.c` | `borg_think_home_grab_useless` | CBUG-0010 (#29) |
+| `src/borg/borg-store-buy.c` | `borg_think_shop_buy_useful` | CBUG-0006 (#18) |
+| `src/borg/borg-store-sell.c` | `borg_count_sell` | CBUG-0118 (#134) |
+| `src/borg/borg-store-sell.c` | `borg_good_sell` | CBUG-0117 (#133) |
+| `src/borg/borg-store-sell.c` | `borg_think_home_sell_best` | CBUG-0116 (#132) |
+| `src/borg/borg-store-sell.c` | `borg_think_home_sell_useful` | CBUG-0115 (#131) |
+| `src/borg/borg-think-store.c` | `borg_choose_shop` | CBUG-0019 (#23), CBUG-0020 (#36) |
+| `src/borg/borg.c` | `(file level)` | CBUG-0002 (#14) |
+
+**155 site entries over 152 findings.** A finding whose site names two files appears under both, which is why the entry count exceeds the finding count.
+<!-- borg-defect-index:end -->
+
+<!-- borg-defect-hotspots:start -->
+### 11.14 Where the defects concentrate
+
+Files in `src/borg/` ordered by how many findings name them. A file
+with many findings is either a hot spot in the code or a hot spot in
+the analysis; either way it is where a rebuild must be careful.
+
+| Rank | Source file | Findings |
+| ---: | --- | ---: |
+| 1 | `src/borg/borg-danger.c` | 10 |
+| 2 | `src/borg/borg-store-buy.c` | 10 |
+| 3 | `src/borg/borg-commands.c` | 9 |
+| 4 | `src/borg/borg-flow-kill.c` | 9 |
+| 5 | `src/borg/borg-caution.c` | 8 |
+| 6 | `src/borg/borg-flow-misc.c` | 6 |
+| 7 | `src/borg/borg-flow.c` | 6 |
+| 8 | `src/borg/borg-item-use.c` | 6 |
+| 9 | `src/borg/borg-item-wear.c` | 6 |
+| 10 | `src/borg/borg-junk.c` | 6 |
+| 11 | `src/borg/borg-flow-glyph.c` | 5 |
+| 12 | `src/borg/borg-flow-take.c` | 5 |
+| 13 | `src/borg/borg-init.c` | 5 |
+| 14 | `src/borg/borg-escape.c` | 4 |
+| 15 | `src/borg/borg-fight-perm.c` | 4 |
+| 16 | `src/borg/borg-store-sell.c` | 4 |
+| 17 | `src/borg/borg-attack-munchkin.c` | 3 |
+| 18 | `src/borg/borg-flow-dark.c` | 3 |
+| 19 | `src/borg/borg-item-decurse.c` | 3 |
+| 20 | `src/borg/borg-light.c` | 3 |
+| 21 | `src/borg/borg-log.c` | 3 |
+| 22 | `src/borg/borg-magic.c` | 3 |
+| 23 | `src/borg/borg-prepared.c` | 3 |
+| 24 | `src/borg/borg-recover.c` | 3 |
+| 25 | `src/borg/borg-cave-light.c` | 2 |
+| 26 | `src/borg/borg-flow-stairs.c` | 2 |
+| 27 | `src/borg/borg-formulas.c` | 2 |
+| 28 | `src/borg/borg-home-notice.c` | 2 |
+| 29 | `src/borg/borg-home-power.c` | 2 |
+| 30 | `src/borg/borg-inventory.c` | 2 |
+| 31 | `src/borg/borg-item-enchant.c` | 2 |
+| 32 | `src/borg/borg-think-store.c` | 2 |
+| 33 | `borg-messages-react.c` | 1 |
+| 34 | `borg-store-sell.c transaction counters` | 1 |
+| 35 | `borg-store-sell.c transaction wrap` | 1 |
+| 36 | `src/borg/borg-fight-defend.c` | 1 |
+| 37 | `src/borg/borg-formulas-calc.c` | 1 |
+| 38 | `src/borg/borg-item-analyze.c` | 1 |
+| 39 | `src/borg/borg-item-id.c` | 1 |
+| 40 | `src/borg/borg-item-val.c` | 1 |
+| 41 | `src/borg/borg-magic-play.c` | 1 |
+| 42 | `src/borg/borg-messages-react.c` | 1 |
+| 43 | `src/borg/borg-reincarnate.c` | 1 |
+| 44 | `src/borg/borg.c` | 1 |
+
+**The top five files carry 46 of the 152 findings.** `borg-danger.c` (10), `borg-store-buy.c` (10), `borg-commands.c` (9), `borg-flow-kill.c` (9), `borg-caution.c` (8).
+
+That distribution is itself a finding: the danger estimate, the
+home shopping, the kill flow, the debug commands and the caution
+phase are where the analysis has concentrated. A rebuild that
+touches those five has the most to get wrong.
+<!-- borg-defect-hotspots:end -->
 
 ## 12. The Borg in town
 
@@ -1245,6 +1454,56 @@ The game must be run from the directory that holds `lib/` (the build's
 | the issue board (`upstream-c` + `finding` labels) | the canonical, live state of every finding |
 | `docs/c-bugs/watch-index.json` | the data-only watch index |
 | `patches/upstream-c/` | stored proposal patches |
+| `tools/borg-defect-index.mjs` | regenerates §11.13 and §11.14 from the catalogue |
 
 The issue board is authoritative for live state; this document is the
 *behavioural* reference.
+
+§11.13 and §11.14 are **generated**. `node tools/borg-defect-index.mjs
+--write` rebuilds them from `docs/c-bugs/findings/`; `--check` fails if they
+have drifted from the catalogue, and the fork's session-docs CI runs that
+check on every pull request. So the index cannot silently fall behind the
+board — a new finding that reaches the catalogue shows up in the table, and
+an edit to the table that the catalogue does not support is caught.
+
+---
+
+## 20. Using this with the fork's tracking workflow
+
+This fork's job is to track C Borg and Neo Angband bugs. This document is
+meant to be used *by* that workflow, not beside it. The short version:
+
+**When a new C Borg finding arrives**, whether it is reported by borg-rs
+onto this board or found by reading the source:
+
+1. File it as an issue with `upstream-c` + `finding`, and the honest
+   evidence label. The ladder the fork uses is
+   `evidence:reported-lead` → `evidence:source-checked` →
+   `evidence:c-game-flags-only` → `evidence:c-game-reproduced`. A reported
+   lead is not a verified defect; the label is what keeps that honest.
+2. Give it a **source site** in the form `src/borg/<file>.c:<function>`.
+   That is what makes it indexable, and §11.13 is built entirely from that
+   field. A finding without a site is a finding nobody can look up.
+3. Add a catalogue record under `docs/c-bugs/findings/` with the same ID,
+   so the JSON and the board stay in step.
+
+**When you reproduce one natively**, raise the evidence label and record
+the reproduction: the seed, the scenario, the controls, and the actual
+output. The evidence ladder exists so that "we read the code" and "we saw
+it happen" never get confused.
+
+**When upstream moves**, `node tools/c-upstream-watch.mjs` reports which
+`src/borg/` paths changed and which catalogue findings reference them. A
+changed path is a **review signal, not proof of a fix** — re-read the
+function, then decide.
+
+**When a rebuild starts**, §11.13 gives the reverse lookup: for each
+function you are about to rewrite, the list of everything known to be wrong
+with it, with the issue to read for the evidence. §11.14 says which files
+carry the most risk.
+
+**What this document deliberately does not do.** It does not restate a
+finding's live state, and it is not a place to close findings. A finding
+moves on the board and in the JSON catalogue; §11.13 is regenerated from
+them. If the two disagree, the board and the catalogue are right and this
+table is stale.
