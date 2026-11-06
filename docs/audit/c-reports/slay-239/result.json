@@ -1,0 +1,51 @@
+{
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "fix": "9ab78ae605ca4463268a669121d69b216285c2f1",
+  "fixtures_ref": "65fa24e6c650aab2a9bbeef75800fa068a602429",
+  "cases": {
+    "before": {
+      "animal": {
+        "exit": 0,
+        "passed": false,
+        "trait": "ws_animal=0",
+        "rating": "auto=17 without=17 with=20",
+        "outcome": "auto=17 without=17 with=20"
+      },
+      "nonanimal": {
+        "exit": 0,
+        "passed": true,
+        "rating": "auto=19 without=19 with=19",
+        "outcome": "auto=19 without=19 with=19"
+      }
+    },
+    "after": {
+      "animal": {
+        "exit": 0,
+        "passed": true,
+        "trait": "ws_animal=2",
+        "rating": "auto=20 without=17 with=20",
+        "outcome": "auto=20 without=17 with=20"
+      },
+      "nonanimal": {
+        "exit": 0,
+        "passed": true,
+        "rating": "auto=19 without=19 with=19",
+        "outcome": "auto=19 without=19 with=19"
+      }
+    }
+  },
+  "identical_full_logs": [
+    "nonanimal"
+  ],
+  "full_tests": {
+    "before": {
+      "units": "965/965",
+      "frontends": "5/5"
+    },
+    "after": {
+      "units": "965/965",
+      "frontends": "5/5"
+    }
+  },
+  "fixed_source_sha256": "92fd28f2aac5d900be47b1cf1304fb4cc854cb970bf6af34e35fa9b56cf0c23c"
+}
