@@ -1,0 +1,38 @@
+{
+  "holy": {
+    "label": "The staff that only pointed at one",
+    "explanation": "A level fifty priest wears a ring carrying the staff-holiness activation and faces three white harpies to its east. The activation floods the area with goodness - every evil monster in sight - but the maneuver kept the bolt radius of zero and valued a single harpy on a line: twenty-eight. The correction uses the LOS-dispel radius of ten, which the corrected launch values as the sight-line sum: sixty.",
+    "before": {
+      "raw": "native-c/staff-262: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Priest level=50 depth=30 sp=276/276\n  los_dispel_reaches_its_blast  MODE holy\nGEOMETRY player=(5,20) harpies=(10,20)(11,19)(11,21) temp_n=3\nRATING holy=28\nOUTCOME holy=28\nFailed\n    native-c/staff-262:224: requirement 'v_holy' == '60' failed\n      v_holy:               28\n      60:               60\nnative-c/staff-262 finished: 0/1 passed\n",
+      "passed": false,
+      "geometry": "player=(5,20) harpies=(10,20)(11,19)(11,21) temp_n=3",
+      "rating": "holy=28",
+      "outcome": "holy=28"
+    },
+    "after": {
+      "raw": "native-c/staff-262: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Priest level=50 depth=30 sp=276/276\n  los_dispel_reaches_its_blast  MODE holy\nGEOMETRY player=(5,20) harpies=(10,20)(11,19)(11,21) temp_n=3\nRATING holy=60\nOUTCOME holy=60\nPassed\nnative-c/staff-262 finished: 1/1 passed\n",
+      "passed": true,
+      "geometry": "player=(5,20) harpies=(10,20)(11,19)(11,21) temp_n=3",
+      "rating": "holy=60",
+      "outcome": "holy=60"
+    }
+  },
+  "control": {
+    "label": "Control: the lesser acid bolt ring",
+    "explanation": "The same priest also wears a ring carrying the lesser acid bolt, a genuine single-target activation. It is valued identically at twenty-eight before and after the correction, and the complete log is byte-identical: the fix changes only the staff-holiness radius.",
+    "before": {
+      "raw": "native-c/staff-262: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Priest level=50 depth=30 sp=276/276\n  los_dispel_reaches_its_blast  MODE control\nGEOMETRY player=(5,20) harpies=(10,20)(11,19)(11,21) temp_n=3\nRATING bolt2=28\nOUTCOME bolt2=28\nPassed\nnative-c/staff-262 finished: 1/1 passed\n",
+      "passed": true,
+      "geometry": "player=(5,20) harpies=(10,20)(11,19)(11,21) temp_n=3",
+      "rating": "bolt2=28",
+      "outcome": "bolt2=28"
+    },
+    "after": {
+      "raw": "native-c/staff-262: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Priest level=50 depth=30 sp=276/276\n  los_dispel_reaches_its_blast  MODE control\nGEOMETRY player=(5,20) harpies=(10,20)(11,19)(11,21) temp_n=3\nRATING bolt2=28\nOUTCOME bolt2=28\nPassed\nnative-c/staff-262 finished: 1/1 passed\n",
+      "passed": true,
+      "geometry": "player=(5,20) harpies=(10,20)(11,19)(11,21) temp_n=3",
+      "rating": "bolt2=28",
+      "outcome": "bolt2=28"
+    }
+  }
+}
