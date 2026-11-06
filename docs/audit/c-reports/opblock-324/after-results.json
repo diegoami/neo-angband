@@ -1,0 +1,21 @@
+{
+  "operators": {
+    "exit": 0,
+    "passed": true,
+    "geometry": "parsed count=1",
+    "rating": "formula_value=7 calc_count=1",
+    "outcome": "formula_value=7 calc_count=1"
+  },
+  "control": {
+    "exit": 0,
+    "passed": true,
+    "geometry": "control count=1",
+    "rating": "control_value=42 control_count=1",
+    "outcome": "control_value=42 control_count=1"
+  },
+  "asan": {
+    "passed": true,
+    "summary": "no leaks reported",
+    "operator_block_leaks": 0
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "operators": {
+    "label": "The precedence pass that kept its scratch array",
+    "explanation": "Parsing \"1 + 2 * 3\" makes the precedence pass build a temporary operator list per block. The list items and the list struct were freed - but not the separately allocated backing array, so every populated operator block of every parsed formula lost 80 bytes. Both variants apply precedence identically (the value is 7 either way, byte-identical logs); only LeakSanitizer sees the difference: 160 bytes in 2 allocations lost before, no leaks at all after.",
+    "before": {
+      "raw": "native-c/opblock-324: starting...\nSETUPSTEP minimal\n  operator_block_backing_array_is_freed  MODE operators\nGEOMETRY parsed count=1\nRATING formula_value=7 calc_count=1\nOUTCOME formula_value=7 calc_count=1\nPassed\nnative-c/opblock-324 finished: 1/1 passed\n",
+      "passed": true,
+      "rating": "formula_value=7 calc_count=1",
+      "outcome": "formula_value=7 calc_count=1",
+      "asan_raw": "native-c/opblock-324: starting...\nSETUPSTEP minimal\n  operator_block_backing_array_is_freed  MODE operators\nGEOMETRY parsed count=1\nRATING formula_value=7 calc_count=1\nOUTCOME formula_value=7 calc_count=1\nPassed\nnative-c/opblock-324 finished: 1/1 passed\n\n=================================================================\n==506034==ERROR: LeakSanitizer: detected memory leaks\n\nDirect leak of 160 byte(s) in 2 object(s) allocated from:\n    #0 0x7b741eb2b60f in malloc ../../../../src/libsanitizer/asan/asan_malloc_linux.cpp:67\n    #1 0x628fb3931ef3 in mem_alloc /tmp/angband-opblock-324-kt7xqidm/source/src/z-virt.c:38\n    #2 0x628fb39e65e5 in borg_array_add /tmp/angband-opblock-324-kt7xqidm/source/src/borg/borg-formulas.c:95\n    #3 0x628fb39ef02e in adjust_order_ops_depth_block /tmp/angband-opblock-324-kt7xqidm/source/src/borg/borg-formulas-calc.c:388\n    #4 0x628fb39ef744 in adjust_order_operations /tmp/angband-opblock-324-kt7xqidm/source/src/borg/borg-formulas-calc.c:466\n    #5 0x628fb39efb7b in parse_calculation /tmp/angband-opblock-324-kt7xqidm/source/src/borg/borg-formulas-calc.c:523\n    #6 0x628fb39efe93 in parse_calculation_line /tmp/angband-opblock-324-kt7xqidm/source/src/borg/borg-formulas-calc.c:566\n    #7 0x628fb35a102a in scenario /tmp/angband-opblock-324-kt7xqidm/evidence/scenario.c:33\n    #8 0x628fb3adda9a in main /tmp/angband-opblock-324-kt7xqidm/source/src/tests/unit-test.c:53\n    #9 0x7b741e62a600  (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a600) (BuildId: 066527e430a32768d82741e00b81eebb1a872294)\n    #10 0x7b741e62a717 in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a717) (BuildId: 066527e430a32768d82741e00b81eebb1a872294)\n    #11 0x628fb35a0e64 in _start (/tmp/angband-opblock-324-kt7xqidm/build-asan/game/T324Observer+0x149e64) (BuildId: 1a55f1459675b155eec6db08341a194caa75e0c8)\n\nSUMMARY: AddressSanitizer: 160 byte(s) leaked in 2 allocation(s).\n",
+      "asan_summary": "160 byte(s) leaked in 2 allocation(s)."
+    },
+    "after": {
+      "raw": "native-c/opblock-324: starting...\nSETUPSTEP minimal\n  operator_block_backing_array_is_freed  MODE operators\nGEOMETRY parsed count=1\nRATING formula_value=7 calc_count=1\nOUTCOME formula_value=7 calc_count=1\nPassed\nnative-c/opblock-324 finished: 1/1 passed\n",
+      "passed": true,
+      "rating": "formula_value=7 calc_count=1",
+      "outcome": "formula_value=7 calc_count=1",
+      "asan_raw": "native-c/opblock-324: starting...\nSETUPSTEP minimal\n  operator_block_backing_array_is_freed  MODE operators\nGEOMETRY parsed count=1\nRATING formula_value=7 calc_count=1\nOUTCOME formula_value=7 calc_count=1\nPassed\nnative-c/opblock-324 finished: 1/1 passed\n",
+      "asan_summary": "no leaks reported"
+    }
+  },
+  "control": {
+    "label": "Control: a bare constant",
+    "explanation": "A constant formula builds no operator list, so nothing reached the leaky path: both variants evaluate 42 with one calculation, and the complete log is byte-identical.",
+    "before": {
+      "raw": "native-c/opblock-324: starting...\nSETUPSTEP minimal\n  operator_block_backing_array_is_freed  MODE control\nGEOMETRY control count=1\nRATING control_value=42 control_count=1\nOUTCOME control_value=42 control_count=1\nPassed\nnative-c/opblock-324 finished: 1/1 passed\n",
+      "passed": true,
+      "rating": "control_value=42 control_count=1",
+      "outcome": "control_value=42 control_count=1"
+    },
+    "after": {
+      "raw": "native-c/opblock-324: starting...\nSETUPSTEP minimal\n  operator_block_backing_array_is_freed  MODE control\nGEOMETRY control count=1\nRATING control_value=42 control_count=1\nOUTCOME control_value=42 control_count=1\nPassed\nnative-c/opblock-324 finished: 1/1 passed\n",
+      "passed": true,
+      "rating": "control_value=42 control_count=1",
+      "outcome": "control_value=42 control_count=1"
+    }
+  }
+}
