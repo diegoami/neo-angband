@@ -5,7 +5,8 @@
    The umbrella is a router, not a shared repository or shared task scope.
 2. Current bug state and upstream-board/source review comes first; then
    triage/evidence and list maintenance, then fixes. Do not turn a reported
-   lead into a verified defect. A closed upstream thread is not proof of a fix.
+   lead into a verified defect. A closure without an upstream fix claim is not
+   a correction receipt; apply rule 9 to an upstream claimed fix.
    Priority applies within this session's component; the independent C/engine
    stream does not wait for the port-repair queue to become empty.
 3. One canonical defect issue in its owner repository. Link other repository
@@ -40,14 +41,22 @@
    correct C or TypeScript build environment; state pins/options/RNG/perception
    and practical limits. Do not change assertions/seeds or waive relevant
    skips to get green. Baseline failures require attribution and tracking.
-9. Source issues here use open/closed for source/upstream correction state.
+9. Source issues use open/closed for upstream correction and our fork import.
+   Trust upstream's explicit fixed resolution or accepted correction; an OPEN
+   proposal's "Fixes #N" text or our own fork merge is not upstream resolution.
+   Use merged-upstream only temporarily while that correction awaits import
+   into the appropriate fork source tree. After import and normal checks,
+   close the original source issue and remove the temporary label. Do not keep
+   it open for hypothetical residual faults, extra independent reproof or a
+   package release; a real recurrence found after adoption gets a NEW linked
+   bug. Closed cases need no permanent merged label.
    Do not put carried/fixed/partial/not-carried or patch-active consumer tags
    on source issues. Link a distinct Mandos adoption issue where applicable.
-   There carried means fixed on our side but still open until the correction
-   is fixed upstream AND adopted downstream with our changes, rebuilt and
-   verified. Then fixed/closed; partial scope stays open. patch-active belongs
-   only on consumer backport maintenance, independently of closure. Proposals
-   or stored patches alone are not applied corrections. No release wait alone.
+   On Mandos adoption issues, carried means fixed on our side but still open
+   until the correction is fixed upstream AND adopted downstream with our
+   changes, rebuilt and verified. Then fixed/closed; partial scope stays open.
+   patch-active belongs only on consumer backport maintenance, independently
+   of closure. Proposals or stored patches alone are not applied corrections.
 10. Preserve owner saves, browser profiles, install data and the running lab.
     A source merge is not a deployment. Read-only references stay pristine;
     work in task worktrees. Run records/evidence already committed are append-only.

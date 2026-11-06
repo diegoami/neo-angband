@@ -1,8 +1,9 @@
-# Three independent sessions
+# Worker lanes across three repositories
 
 | Session | Repository | Root under the Angband umbrella | Owns |
 | --- | --- | --- | --- |
-| C/game/engine fixes | [diegoami/neo-angband-tracker](https://github.com/diegoami/neo-angband-tracker) | neo-angband-tracker/ | C Borg, C Angband game, Neo engine; C branch/worktree in this same fork |
+| Neo engine fixes | [diegoami/neo-angband-tracker](https://github.com/diegoami/neo-angband-tracker) | neo-angband-tracker/ | Neo engine; checkpoint #25 |
+| Native C fixes | same repository | neo-angband-tracker/.worktrees/angband-c/ | C Borg/C game; dedicated checkpoint #207 |
 | Port fixes | [diegoami/neo-angband-borg-mod-tracker](https://github.com/diegoami/neo-angband-borg-mod-tracker) | neo-angband-borg-mod-tracker/ | Upstream TypeScript Borg port defects and isolated Neo proposals |
 | Mandos development | [diegoami/mandos](https://github.com/diegoami/mandos) | better-borg/ | Mandos-only behavior, harness/lab, integration and verified adoption |
 
@@ -16,7 +17,8 @@ One GitHub Angband fork network is available: our neo-angband fork therefore
 hosts Neo engine master and the separately based C workbench/reference topic
 branches. A C proposal must never be based on Neo TypeScript master. The
 native C worktree is .worktrees/angband-c inside the engine session root;
-it is part of the same repository/session, not a fourth independent session.
+it is an independently owned worker lane in the same repository. Its checkpoint
+is #207; Neo engine checkpoint #25 remains separate.
 
 Upstream reports stay on angband/angband or the appropriate neostryder repo
 only under the standing posting rules. Our fork issues are our canonical
