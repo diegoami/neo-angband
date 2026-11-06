@@ -1,0 +1,5 @@
+named-dragon {'exit': 0, 'completed': True, 'passed': False, 'located': 0, 'defend': 1, 'potions_spent': 1, 'see_invisible': 60, 'stamp': 100, 'hp': 421}
+ogre-control {'exit': 0, 'completed': True, 'passed': True, 'located': 1, 'defend': 0, 'potions_spent': 0, 'see_invisible': 0, 'stamp': 0, 'hp': 421}
+unseen-control {'exit': 0, 'completed': True, 'passed': True, 'located': 0, 'defend': 1, 'potions_spent': 1, 'see_invisible': 61, 'stamp': 100, 'hp': 421}
+it-control {'exit': 0, 'completed': True, 'passed': True, 'located': 0, 'defend': 1, 'potions_spent': 1, 'see_invisible': 61, 'stamp': 100, 'hp': 421}
+lower-it-control {'exit': 0, 'completed': True, 'passed': True, 'located': 0, 'defend': 1, 'potions_spent': 1, 'see_invisible': 61, 'stamp': 100, 'hp': 421}

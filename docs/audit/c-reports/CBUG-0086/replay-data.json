@@ -1,0 +1,272 @@
+{
+  "named-dragon": {
+    "label": "Visible Itangast: unnecessary potion",
+    "explanation": "The Warrior already sees and tracks Itangast. The original mistakes the start of that name for the pronoun It and drinks True Seeing. The correction recognizes the dragon and keeps the potion.",
+    "before": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "potions": 2,
+          "see_invisible": 0
+        },
+        {
+          "stage": "defense",
+          "hp": 421,
+          "potions": 1,
+          "see_invisible": 60
+        }
+      ],
+      "outcome": {
+        "located": 0,
+        "defend": 1,
+        "potions_spent": 1,
+        "see_invisible": 60,
+        "stamp": 100,
+        "hp": 421
+      },
+      "raw": "native-c/CBUG-0086: starting...\nSETUP seed=1000 class=Warrior level=40 depth=52 hp=421 monster=Itangast the Fire Drake visible=1 known_index=1\nNATIVE_NAME Itangast the Fire Drake\n  visible_name_does_not_request_invisible_search  MODE named-dragon\nFRAME {\"stage\":\"start\",\"hp\":421,\"potions\":2,\"see_invisible\":0}\nMESSAGE located=0 stamp_before=0 stamp_after=100 danger=488 limit=842\nDECISION defend=1 keys=2 sequence=qc\nENGINE Your eyes feel very sensitive!\nENGINE You have a Potion of True Seeing (c).\nFRAME {\"stage\":\"defense\",\"hp\":421,\"potions\":1,\"see_invisible\":60}\nOUTCOME located=0 defend=1 potions_spent=1 see_invisible=60 stamp=100 hp=421\nFailed\n    native-c/CBUG-0086:117: requirement 'located' == 'known' failed\n      located:                0\n      known:                1\nnative-c/CBUG-0086 finished: 0/1 passed\n"
+    },
+    "after": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "potions": 2,
+          "see_invisible": 0
+        },
+        {
+          "stage": "defense",
+          "hp": 421,
+          "potions": 2,
+          "see_invisible": 0
+        }
+      ],
+      "outcome": {
+        "located": 1,
+        "defend": 0,
+        "potions_spent": 0,
+        "see_invisible": 0,
+        "stamp": 0,
+        "hp": 421
+      },
+      "raw": "native-c/CBUG-0086: starting...\nSETUP seed=1000 class=Warrior level=40 depth=52 hp=421 monster=Itangast the Fire Drake visible=1 known_index=1\nNATIVE_NAME Itangast the Fire Drake\n  visible_name_does_not_request_invisible_search  MODE named-dragon\nFRAME {\"stage\":\"start\",\"hp\":421,\"potions\":2,\"see_invisible\":0}\nMESSAGE located=1 stamp_before=0 stamp_after=0 danger=488 limit=842\nDECISION defend=0 keys=0 sequence=\nFRAME {\"stage\":\"defense\",\"hp\":421,\"potions\":2,\"see_invisible\":0}\nOUTCOME located=1 defend=0 potions_spent=0 see_invisible=0 stamp=0 hp=421\nPassed\nnative-c/CBUG-0086 finished: 1/1 passed\n"
+    }
+  },
+  "ogre-control": {
+    "label": "Control: visible ogre",
+    "explanation": "The native name The Ogre is recognized in both versions. Neither requests a detection potion.",
+    "before": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "potions": 2,
+          "see_invisible": 0
+        },
+        {
+          "stage": "defense",
+          "hp": 421,
+          "potions": 2,
+          "see_invisible": 0
+        }
+      ],
+      "outcome": {
+        "located": 1,
+        "defend": 0,
+        "potions_spent": 0,
+        "see_invisible": 0,
+        "stamp": 0,
+        "hp": 421
+      },
+      "raw": "native-c/CBUG-0086: starting...\nSETUP seed=1000 class=Warrior level=40 depth=52 hp=421 monster=ogre visible=1 known_index=1\nNATIVE_NAME The ogre\n  visible_name_does_not_request_invisible_search  MODE ogre-control\nFRAME {\"stage\":\"start\",\"hp\":421,\"potions\":2,\"see_invisible\":0}\nMESSAGE located=1 stamp_before=0 stamp_after=0 danger=0 limit=842\nDECISION defend=0 keys=0 sequence=\nFRAME {\"stage\":\"defense\",\"hp\":421,\"potions\":2,\"see_invisible\":0}\nOUTCOME located=1 defend=0 potions_spent=0 see_invisible=0 stamp=0 hp=421\nPassed\nnative-c/CBUG-0086 finished: 1/1 passed\n"
+    },
+    "after": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "potions": 2,
+          "see_invisible": 0
+        },
+        {
+          "stage": "defense",
+          "hp": 421,
+          "potions": 2,
+          "see_invisible": 0
+        }
+      ],
+      "outcome": {
+        "located": 1,
+        "defend": 0,
+        "potions_spent": 0,
+        "see_invisible": 0,
+        "stamp": 0,
+        "hp": 421
+      },
+      "raw": "native-c/CBUG-0086: starting...\nSETUP seed=1000 class=Warrior level=40 depth=52 hp=421 monster=ogre visible=1 known_index=1\nNATIVE_NAME The ogre\n  visible_name_does_not_request_invisible_search  MODE ogre-control\nFRAME {\"stage\":\"start\",\"hp\":421,\"potions\":2,\"see_invisible\":0}\nMESSAGE located=1 stamp_before=0 stamp_after=0 danger=0 limit=842\nDECISION defend=0 keys=0 sequence=\nFRAME {\"stage\":\"defense\",\"hp\":421,\"potions\":2,\"see_invisible\":0}\nOUTCOME located=1 defend=0 potions_spent=0 see_invisible=0 stamp=0 hp=421\nPassed\nnative-c/CBUG-0086 finished: 1/1 passed\n"
+    }
+  },
+  "unseen-control": {
+    "label": "Control: unseen ghost called Something",
+    "explanation": "The ghost is genuinely invisible to this character. Both versions treat the native descriptor Something as an unseen attacker and request True Seeing.",
+    "before": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "potions": 2,
+          "see_invisible": 0
+        },
+        {
+          "stage": "defense",
+          "hp": 421,
+          "potions": 1,
+          "see_invisible": 61
+        }
+      ],
+      "outcome": {
+        "located": 0,
+        "defend": 1,
+        "potions_spent": 1,
+        "see_invisible": 61,
+        "stamp": 100,
+        "hp": 421
+      },
+      "raw": "native-c/CBUG-0086: starting...\nSETUP seed=1000 class=Warrior level=40 depth=52 hp=421 monster=ghost visible=0 known_index=0\nNATIVE_NAME Something\n  visible_name_does_not_request_invisible_search  MODE unseen-control\nFRAME {\"stage\":\"start\",\"hp\":421,\"potions\":2,\"see_invisible\":0}\nMESSAGE located=0 stamp_before=0 stamp_after=100 danger=0 limit=842\nDECISION defend=1 keys=2 sequence=qc\nENGINE Your eyes feel very sensitive!\nENGINE You have a Potion of True Seeing (c).\nFRAME {\"stage\":\"defense\",\"hp\":421,\"potions\":1,\"see_invisible\":61}\nOUTCOME located=0 defend=1 potions_spent=1 see_invisible=61 stamp=100 hp=421\nPassed\nnative-c/CBUG-0086 finished: 1/1 passed\n"
+    },
+    "after": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "potions": 2,
+          "see_invisible": 0
+        },
+        {
+          "stage": "defense",
+          "hp": 421,
+          "potions": 1,
+          "see_invisible": 61
+        }
+      ],
+      "outcome": {
+        "located": 0,
+        "defend": 1,
+        "potions_spent": 1,
+        "see_invisible": 61,
+        "stamp": 100,
+        "hp": 421
+      },
+      "raw": "native-c/CBUG-0086: starting...\nSETUP seed=1000 class=Warrior level=40 depth=52 hp=421 monster=ghost visible=0 known_index=0\nNATIVE_NAME Something\n  visible_name_does_not_request_invisible_search  MODE unseen-control\nFRAME {\"stage\":\"start\",\"hp\":421,\"potions\":2,\"see_invisible\":0}\nMESSAGE located=0 stamp_before=0 stamp_after=100 danger=0 limit=842\nDECISION defend=1 keys=2 sequence=qc\nENGINE Your eyes feel very sensitive!\nENGINE You have a Potion of True Seeing (c).\nFRAME {\"stage\":\"defense\",\"hp\":421,\"potions\":1,\"see_invisible\":61}\nOUTCOME located=0 defend=1 potions_spent=1 see_invisible=61 stamp=100 hp=421\nPassed\nnative-c/CBUG-0086 finished: 1/1 passed\n"
+    }
+  },
+  "it-control": {
+    "label": "Control: unseen ghost called It",
+    "explanation": "The native capitalized pronoun It still requests True Seeing in both versions.",
+    "before": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "potions": 2,
+          "see_invisible": 0
+        },
+        {
+          "stage": "defense",
+          "hp": 421,
+          "potions": 1,
+          "see_invisible": 61
+        }
+      ],
+      "outcome": {
+        "located": 0,
+        "defend": 1,
+        "potions_spent": 1,
+        "see_invisible": 61,
+        "stamp": 100,
+        "hp": 421
+      },
+      "raw": "native-c/CBUG-0086: starting...\nSETUP seed=1000 class=Warrior level=40 depth=52 hp=421 monster=ghost visible=0 known_index=0\nNATIVE_NAME It\n  visible_name_does_not_request_invisible_search  MODE it-control\nFRAME {\"stage\":\"start\",\"hp\":421,\"potions\":2,\"see_invisible\":0}\nMESSAGE located=0 stamp_before=0 stamp_after=100 danger=0 limit=842\nDECISION defend=1 keys=2 sequence=qc\nENGINE Your eyes feel very sensitive!\nENGINE You have a Potion of True Seeing (c).\nFRAME {\"stage\":\"defense\",\"hp\":421,\"potions\":1,\"see_invisible\":61}\nOUTCOME located=0 defend=1 potions_spent=1 see_invisible=61 stamp=100 hp=421\nPassed\nnative-c/CBUG-0086 finished: 1/1 passed\n"
+    },
+    "after": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "potions": 2,
+          "see_invisible": 0
+        },
+        {
+          "stage": "defense",
+          "hp": 421,
+          "potions": 1,
+          "see_invisible": 61
+        }
+      ],
+      "outcome": {
+        "located": 0,
+        "defend": 1,
+        "potions_spent": 1,
+        "see_invisible": 61,
+        "stamp": 100,
+        "hp": 421
+      },
+      "raw": "native-c/CBUG-0086: starting...\nSETUP seed=1000 class=Warrior level=40 depth=52 hp=421 monster=ghost visible=0 known_index=0\nNATIVE_NAME It\n  visible_name_does_not_request_invisible_search  MODE it-control\nFRAME {\"stage\":\"start\",\"hp\":421,\"potions\":2,\"see_invisible\":0}\nMESSAGE located=0 stamp_before=0 stamp_after=100 danger=0 limit=842\nDECISION defend=1 keys=2 sequence=qc\nENGINE Your eyes feel very sensitive!\nENGINE You have a Potion of True Seeing (c).\nFRAME {\"stage\":\"defense\",\"hp\":421,\"potions\":1,\"see_invisible\":61}\nOUTCOME located=0 defend=1 potions_spent=1 see_invisible=61 stamp=100 hp=421\nPassed\nnative-c/CBUG-0086 finished: 1/1 passed\n"
+    }
+  },
+  "lower-it-control": {
+    "label": "Control: unseen ghost called it",
+    "explanation": "The native lowercase pronoun it still requests True Seeing; matching remains case-insensitive.",
+    "before": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "potions": 2,
+          "see_invisible": 0
+        },
+        {
+          "stage": "defense",
+          "hp": 421,
+          "potions": 1,
+          "see_invisible": 61
+        }
+      ],
+      "outcome": {
+        "located": 0,
+        "defend": 1,
+        "potions_spent": 1,
+        "see_invisible": 61,
+        "stamp": 100,
+        "hp": 421
+      },
+      "raw": "native-c/CBUG-0086: starting...\nSETUP seed=1000 class=Warrior level=40 depth=52 hp=421 monster=ghost visible=0 known_index=0\nNATIVE_NAME it\n  visible_name_does_not_request_invisible_search  MODE lower-it-control\nFRAME {\"stage\":\"start\",\"hp\":421,\"potions\":2,\"see_invisible\":0}\nMESSAGE located=0 stamp_before=0 stamp_after=100 danger=0 limit=842\nDECISION defend=1 keys=2 sequence=qc\nENGINE Your eyes feel very sensitive!\nENGINE You have a Potion of True Seeing (c).\nFRAME {\"stage\":\"defense\",\"hp\":421,\"potions\":1,\"see_invisible\":61}\nOUTCOME located=0 defend=1 potions_spent=1 see_invisible=61 stamp=100 hp=421\nPassed\nnative-c/CBUG-0086 finished: 1/1 passed\n"
+    },
+    "after": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "potions": 2,
+          "see_invisible": 0
+        },
+        {
+          "stage": "defense",
+          "hp": 421,
+          "potions": 1,
+          "see_invisible": 61
+        }
+      ],
+      "outcome": {
+        "located": 0,
+        "defend": 1,
+        "potions_spent": 1,
+        "see_invisible": 61,
+        "stamp": 100,
+        "hp": 421
+      },
+      "raw": "native-c/CBUG-0086: starting...\nSETUP seed=1000 class=Warrior level=40 depth=52 hp=421 monster=ghost visible=0 known_index=0\nNATIVE_NAME it\n  visible_name_does_not_request_invisible_search  MODE lower-it-control\nFRAME {\"stage\":\"start\",\"hp\":421,\"potions\":2,\"see_invisible\":0}\nMESSAGE located=0 stamp_before=0 stamp_after=100 danger=0 limit=842\nDECISION defend=1 keys=2 sequence=qc\nENGINE Your eyes feel very sensitive!\nENGINE You have a Potion of True Seeing (c).\nFRAME {\"stage\":\"defense\",\"hp\":421,\"potions\":1,\"see_invisible\":61}\nOUTCOME located=0 defend=1 potions_spent=1 see_invisible=61 stamp=100 hp=421\nPassed\nnative-c/CBUG-0086 finished: 1/1 passed\n"
+    }
+  }
+}

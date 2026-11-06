@@ -1,0 +1,11 @@
+native-c/CBUG-0086: starting...
+SETUP seed=1000 class=Warrior level=40 depth=52 hp=421 monster=Itangast the Fire Drake visible=1 known_index=1
+NATIVE_NAME Itangast the Fire Drake
+  visible_name_does_not_request_invisible_search  MODE named-dragon
+FRAME {"stage":"start","hp":421,"potions":2,"see_invisible":0}
+MESSAGE located=1 stamp_before=0 stamp_after=0 danger=488 limit=842
+DECISION defend=0 keys=0 sequence=
+FRAME {"stage":"defense","hp":421,"potions":2,"see_invisible":0}
+OUTCOME located=1 defend=0 potions_spent=0 see_invisible=0 stamp=0 hp=421
+Passed
+native-c/CBUG-0086 finished: 1/1 passed
