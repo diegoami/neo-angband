@@ -35,8 +35,8 @@ From a clone of `diegoami/neo-angband-tracker`, copy these three commands:
 
 ```sh
 git fetch https://github.com/diegoami/neo-angband-tracker.git task/text-287-evidence
-git show PINSHA:docs/audit/c-reports/text-287/reproduce.py > /tmp/reproduce-text-287.py
-python3 /tmp/reproduce-text-287.py --fixtures-ref PINSHA --full-tests
+git show c3c980b3462773810c560931e3ae51b4996c9316:docs/audit/c-reports/text-287/reproduce.py > /tmp/reproduce-text-287.py
+python3 /tmp/reproduce-text-287.py --fixtures-ref c3c980b3462773810c560931e3ae51b4996c9316 --full-tests
 ```
 
 The runner builds original and corrected variants from pristine C
