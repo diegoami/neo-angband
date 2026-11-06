@@ -74,3 +74,53 @@ remain open because432/433 are still unmerged upstream and absent from the relea
 package. No consumer patch-active or lab state changes automatically. The earlier
 resolution receipts remain historical; the new package audit establishes actual
 npm delivery instead of relying only on a version string or maintainer statement.
+
+## Disposable source packaging
+
+This living recipe corrects the earlier beta.3 receipt's generic pack block,
+which omitted the existing workspace-range pinning helper. Npm pack preserves
+`workspace:*` in a manifest unless it is explicitly pinned. Apply the helper
+**only in a new disposable archived source tree**, never an active checkout.
+The source manifests intentionally keep workspace ranges for development.
+
+The runtime source profile pins the approved code merge
+**f576b099b18e0016e0827e43a5770a369f53e279**. Later documentation-only heads do
+not replace that code identity in the consumer's exact-source profile. Official
+npm beta.3 remains a different artifact at release97ceec2925e6715ba725624a61866ab93a196a12;
+source4/15 replacement checks and remaining432/433 boundaries are unchanged.
+
+Run from a Git clone containing the pinned code commit:
+
+```sh
+NEO_BETA3_ARCHIVE="$(mktemp -d /tmp/neo-beta3-source.XXXXXX)"
+NEO_BETA3_PACKS="$(mktemp -d /tmp/neo-beta3-packs.XXXXXX)"
+git archive f576b099b18e0016e0827e43a5770a369f53e279 | tar -x -C "$NEO_BETA3_ARCHIVE"
+cd "$NEO_BETA3_ARCHIVE"
+flock /tmp/angband-validation.lock sh -eu -c '
+  ELECTRON_SKIP_BINARY_DOWNLOAD=1 pnpm install --frozen-lockfile
+  pnpm build
+  node tools/pin-workspace-ranges.mjs --write
+  npm pack ./packages/core ./packages/mod-sdk ./packages/content --ignore-scripts --pack-destination "$1"
+' sh "$NEO_BETA3_PACKS"
+```
+
+Record the source/archive identity and actual tarball hashes. Check packed
+runtime dependency/peer/optional ranges contain no `workspace:` specifier;
+Core's SDK range should be the matching published version. The helper deliberately
+does not rewrite devDependencies, which consumers do not install. For source
+consumer tests, the selected source SDK must also replace transitive SDK resolution
+through the consumer's supported overrides; a direct SDK dependency alone is not
+proof that Core used it. Keep source artifact output separate from downloaded
+official packages and inspect the resulting lock graph.
+
+This builds and packs local artifacts; it publishes nothing and does not install
+or deploy a lab. The active code checkout, its manifests, owner saves and source
+native-C worktrees remain untouched. The port's existing exact-source workflow
+already used this helper. Source299's [interim correction](https://github.com/diegoami/neo-angband-tracker/issues/299#issuecomment-6691845982)
+was recorded immediately while the source PR's valid full gate continued.
+
+This follow-up changes only regular Markdown in existing CI-allowlisted paths;
+no CI classification rule, runtime code, dependency, test, package version or
+historical measurement changes. Original receipt text is preserved behind its
+front-door erratum. Runtime full/live provenance belongs to PR300 and its code
+merge, rather than a repeated fourteen-thousand-test run for this prose correction.
