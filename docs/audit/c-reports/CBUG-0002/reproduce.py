@@ -21,19 +21,20 @@ REMOTE = "https://github.com/diegoami/neo-angband-tracker.git"
 EVIDENCE_PATH = "docs/audit/c-reports/CBUG-0002/"
 FIXED_SOURCE_SHA256 = "fccea5be3bb31c1e3a8e2aecd4a209fc2877abc2845f64cf98cf343550a1e972"
 # This is the complete current proposal: no diagnostic or tracking comment.
-FIX = """diff --git a/src/borg/borg.c b/src/borg/borg.c
---- a/src/borg/borg.c
-+++ b/src/borg/borg.c
-@@ -309,7 +309,7 @@
- 
-     /* Flush messages */
-     borg_parse(NULL);
--    borg.dont_react = false;
-+    borg_dont_react = false;
- 
-     /* Check for key on the queue */
-     borg_ch = borg_inkey(true);
-"""
+FIX = (
+    'diff --git a/src/borg/borg.c b/src/borg/borg.c\n'
+    '--- a/src/borg/borg.c\n'
+    '+++ b/src/borg/borg.c\n'
+    '@@ -309,7 +309,7 @@\n'
+    ' \n'
+    '     /* Flush messages */\n'
+    '     borg_parse(NULL);\n'
+    '-    borg.dont_react = false;\n'
+    '+    borg_dont_react = false;\n'
+    ' \n'
+    '     /* Check for key on the queue */\n'
+    '     borg_ch = borg_inkey(true);\n'
+)
 
 
 def main():

@@ -1,0 +1,8 @@
+{
+  "reason": "Represent the embedded unified diff using quoted lines to avoid literal trailing whitespace; patch bytes and all runtime logic unchanged.",
+  "end_to_end_tested_runner_commit": "2ba1e1ea19e1fb617429682b2702043b1baa7085",
+  "current_runner_sha256": "e0d0f96196c9da38f2a47a3d18e8899d1a60aa3dfdcb90fd05e071c2e6e69651",
+  "embedded_patch_byte_identical": true,
+  "fresh_base_patch_check": true,
+  "corrected_source_sha256": "fccea5be3bb31c1e3a8e2aecd4a209fc2877abc2845f64cf98cf343550a1e972"
+}
