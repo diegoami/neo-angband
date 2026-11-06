@@ -1,0 +1,17 @@
+native-c/shot-path-279: starting...
+SETUP seed=1000 class=Rogue level=20 depth=38 hp=130/130 sp=121/121 ammo=0 phase=1 fail=5
+THREAT name=hill giant direction=0 kill_index=1 power=257 awake=1 ranged=1 friends=1
+SPELLS 26,
+PATH clean_bolt=0 native_projectable=1 blocker=1
+SPEED native=110 borg=110 monster=111 individual_danger=0 fear=0/0
+  caster_does_not_block_its_own_projectile  GEOMETRY caster_clear=0 player_clear=0 same_start=1 wall=0 through_wall=0 blocker_endpoint=1 expected_clear=0
+MODE boulder-blocked
+DANGER current=0 escape_threshold=104
+FRAME {"stage":"start","hp":130,"max_hp":130,"mana":121,"max_mana":121,"scrolls":1,"x":20,"y":20,"enemy_x":20,"enemy_y":14,"distance":6}
+DECISION escape=0 keys=0 sequence=
+FRAME {"stage":"decision","hp":130,"max_hp":130,"mana":121,"max_mana":121,"scrolls":1,"x":20,"y":20,"enemy_x":20,"enemy_y":14,"distance":6}
+ENGINE The hill giant hurls a boulder.
+FRAME {"stage":"attack","hp":130,"max_hp":130,"mana":121,"max_mana":121,"scrolls":1,"x":20,"y":20,"enemy_x":20,"enemy_y":14,"distance":6}
+OUTCOME escape=0 moved=0 distance=6 cast=1 hp_before=130 hp_after=130 hp_lost=0 mana_spent=0 scrolls_spent=0
+Passed
+native-c/shot-path-279 finished: 1/1 passed
