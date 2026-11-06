@@ -1,0 +1,16 @@
+{
+  "veto": {
+    "exit": 0,
+    "passed": true,
+    "geometry": "player=(11,11) weakling=(11,13) bully=(11,25) danger=544 avoidance=4 temp_n=2",
+    "rating": "value=40 danger_gate=1",
+    "outcome": "value=40"
+  },
+  "control": {
+    "exit": 0,
+    "passed": true,
+    "geometry": "player=(11,11) weakling=(11,13) bully=none danger=8 avoidance=4 temp_n=1",
+    "rating": "value=50 danger_gate=1",
+    "outcome": "value=50"
+  }
+}
