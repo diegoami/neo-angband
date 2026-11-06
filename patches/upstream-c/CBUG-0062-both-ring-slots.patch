@@ -1,0 +1,22 @@
+diff --git a/src/borg/borg-item-use.c b/src/borg/borg-item-use.c
+index 020b03bbb..fa72e704b 100644
+--- a/src/borg/borg-item-use.c
++++ b/src/borg/borg-item-use.c
+@@ -728,7 +728,7 @@ bool borg_equips_ring(int ring_sval)
+     int lev, fail, i;
+     int skill;
+
+-    for (i = INVEN_RIGHT; i < INVEN_LEFT; i++) {
++    for (i = INVEN_RIGHT; i <= INVEN_LEFT; i++) {
+         borg_item *item = &borg_items[i];
+
+         if (!item->iqty || !item->aware)
+@@ -783,7 +783,7 @@ bool borg_activate_ring(int ring_sval)
+     int i;
+
+     /* Check the equipment */
+-    for (i = INVEN_RIGHT; i < INVEN_LEFT; i++) {
++    for (i = INVEN_RIGHT; i <= INVEN_LEFT; i++) {
+         borg_item *item = &borg_items[i];
+
+         /*  Make Sure item is IDed */
