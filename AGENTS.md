@@ -33,3 +33,8 @@ in RULES take precedence over historical upstream roadmap/reference prose.
 
 [Upstream technical README](docs/upstream-reference/README.md) is reference
 material, not this fork's task queue or autonomous feature authorization.
+
+Every bug fix must include self-contained verification in its canonical
+issue and PR: copyable pinned commands, actual results, the reasoning they
+support, before/after controls and limits. Follow the verification rule
+in RULES.md; linked logs or passing automation alone are insufficient.

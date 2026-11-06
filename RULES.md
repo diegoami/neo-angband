@@ -23,7 +23,7 @@
    translation is not a port-fidelity defect. Mark Mandos departures explicitly.
 5. No angband/angband issues, PRs or comments from us under the standing pause.
    Keep C proposals in diegoami repositories with reproducible native legal
-   scenarios, controls, human consequence and patch links. Confirmed Neo
+   scenarios, controls, player consequence and patch links. Confirmed Neo
    engine/port reports may use their correct neostryder repository after
    reproduction, provenance and duplicate checks. Local proposals may be
    closed/unmerged with c-proposal/postponed while retaining branches/patches.
@@ -33,9 +33,11 @@
    Start actual fix/proposal branches from the correct pristine source base,
    excluding our session docs. C and Neo have different source trees/bases.
    No amend or force-push; preserve every published topic head and all tags.
-7. Mark intentional code divergence beside its source reference with FORK
-   and explain what/why in the commit. Preserve upstream credit, licensing,
-   AI_USAGE_POLICY and original technical docs. No AI attribution trailers.
+7. Keep proposal source and comments suitable for upstream review. Do not add
+   FORK markers, internal catalogue IDs or tracking labels to source comments.
+   Explain the functional change plainly in commits; keep internal provenance
+   on the issue and in supporting documentation. Preserve upstream credit,
+   licensing, AI_USAGE_POLICY and original technical docs. No AI trailers.
 8. Relevant fail-before/pass-after and controls precede a fix claim. Use the
    correct C or TypeScript build environment; state pins/options/RNG/perception
    and practical limits. Do not change assertions/seeds or waive relevant
@@ -77,3 +79,37 @@
     This prohibition includes indirect monitor follows. Keep Rust provenance
     in Source/discovery fields, not watched Threads status references; verify
     monitor scope before running inherited tooling (see docs/BORG-RS-INTAKE.md).
+
+16. For every defect investigated or fixed by this session, include a self-contained
+    "Verification" section in BOTH the canonical issue and fix PR. Write
+    it for a skeptical maintainer who has not read the conversation. State the
+    observable problem, intended behavior and exact source/build pins; give
+    copyable commands the reviewer can run, the actual relevant output, and explain
+    what each result proves and does not prove. For claims such as an unused
+    field or wrong variable, show a scoped exhaustive symbol search, classify
+    declarations/reads/writes and inspect the decisive call-site context. Do not
+    substitute an assertion, test name, green CI summary or evidence link for
+    this explanation. Provide a reproducible before/failure and after/success
+    sequence with unchanged conditions, negative controls and their outcomes;
+    expose synthetic interventions, reachability assumptions and practical
+    limits. Link immutable full logs/fixtures/patches as supporting detail and
+    explain how to inspect or rerun them. Verbosity is welcome where
+    it makes the reasoning checkable. Update this account when evidence or the
+    patch changes. Passing automation is not owner acceptance: keep readiness
+    for the owner's external filing explicitly subject to their assessment.
+
+17. Make every source issue actionable from its opening screen: explain in everyday
+    language what the Borg/player does, what goes wrong, and what remains working.
+    State the observed harmful outcome and why its priority is justified; separate
+    possible consequences from measured ones. Prioritize reproducible crashes,
+    stuck behavior, wasted resources and bad survival/combat decisions over code
+    anomalies or internal-state differences with no demonstrated practical harm.
+    A clear coding mistake alone does not justify high priority. Reassess imported
+    severity after investigation and park further low-impact work when appropriate.
+    For every proposal prepared for owner filing, put the direct upstream compare/
+    Create pull request link, a copyable plain-language title and description, and
+    one direct immutable link to the evidence explanation near the TOP of the
+    canonical issue. Keep detailed commands/history below the concise explanation
+    (collapsible where useful). Do not make the owner navigate internal PRs,
+    checkpoints or raw logs to find the filing material. This handoff is for the
+    owner; it does not authorize this agent to post upstream under a standing pause.
