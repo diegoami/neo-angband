@@ -1,0 +1,38 @@
+{
+  "glow": {
+    "label": "The light list that outgrew its shelf",
+    "explanation": "The out-of-light flow lists every perma-lit grid on the panel into two arrays of 1536 - with no bound. A fully lit arena panel holds 1600 glowing grids: the original collects all 1600, and AddressSanitizer catches the 1537th write - a global-buffer-overflow in the scan itself, the later swapped-coordinate corruption the report describes follows from it. The correction stops collecting at the bound: 1536, no overflow, and the flow still runs.",
+    "before": {
+      "raw": "native-c/glowoverflow-311: starting...\nSETUPSTEP profile\nSETUP seed=1000 glowing=1600 limit=1536 panel=41x40\n  glow_arrays_are_bounded  MODE glow\nGEOMETRY glow_n=1600 limit=1536\nRATING glow_n=1600 overflow=64\nOUTCOME glow_n=1600 overflow=64\nFailed\n    native-c/glowoverflow-311:131: requirement 'borg_glow_n <= (int)AUTO_LIGHT_MAX' failed\nnative-c/glowoverflow-311 finished: 0/1 passed\n",
+      "passed": false,
+      "rating": "glow_n=1600 overflow=64",
+      "outcome": "glow_n=1600 overflow=64",
+      "asan_raw": "native-c/glowoverflow-311: starting...\nSETUPSTEP profile\nSETUP seed=1000 glowing=1600 limit=1536 panel=41x40\n  glow_arrays_are_bounded  =================================================================\n==574062==ERROR: AddressSanitizer: global-buffer-overflow on address 0x64c657f59c20 at pc 0x64c657bd84e1 bp 0x7ffdc61f3280 sp 0x7ffdc61f3270\nWRITE of size 1 at 0x64c657f59c20 thread T0\n    #0 0x64c657bd84e0 in borg_flow_light /tmp/angband-glowoverflow-311-qaoe783g/source/src/borg/borg-flow-misc.c:843\n    #1 0x64c6577a61e6 in scenario /tmp/angband-glowoverflow-311-qaoe783g/evidence/scenario.c:122\n    #2 0x64c657ce281e in main /tmp/angband-glowoverflow-311-qaoe783g/source/src/tests/unit-test.c:53\n    #3 0x7ac13202a600  (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a600) (BuildId: 066527e430a32768d82741e00b81eebb1a872294)\n    #4 0x7ac13202a717 in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a717) (BuildId: 066527e430a32768d82741e00b81eebb1a872294)\n    #5 0x64c6577a4e44 in _start (/tmp/angband-glowoverflow-311-qaoe783g/build-asan/game/T311Observer+0x149e44) (BuildId: 2eb0b6f6337c7091a4ba8020a9c3d91dc594143d)\n\n0x64c657f59c20 is located 0 bytes after global variable 'borg_glow_y' defined in '/tmp/angband-glowoverflow-311-qaoe783g/source/src/borg/borg-cave-light.c:45:9' (0x64c657f59620) of size 1536\nSUMMARY: AddressSanitizer: global-buffer-overflow /tmp/angband-glowoverflow-311-qaoe783g/source/src/borg/borg-flow-misc.c:843 in borg_flow_light\nShadow bytes around the buggy address:\n  0x64c657f59980: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00\n  0x64c657f59a00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00\n  0x64c657f59a80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00\n  0x64c657f59b00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00\n  0x64c657f59b80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00\n=>0x64c657f59c00: 00 00 00 00[f9]f9 f9 f9 00 00 00 00 02 f9 f9 f9\n  0x64c657f59c80: f9 f9 f9 f9 00 00 00 00 00 00 00 00 00 00 00 00\n  0x64c657f59d00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00\n  0x64c657f59d80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00\n  0x64c657f59e00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00\n  0x64c657f59e80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00\nShadow byte legend (one shadow byte represents 8 application bytes):\n  Addressable:           00\n  Partially addressable: 01 02 03 04 05 06 07 \n  Heap left redzone:       fa\n  Freed heap region:       fd\n  Stack left redzone:      f1\n  Stack mid redzone:       f2\n  Stack right redzone:     f3\n  Stack after return:      f5\n  Stack use after scope:   f8\n  Global redzone:          f9\n  Global init order:       f6\n  Poisoned by user:        f7\n  Container overflow:      fc\n  Array cookie:            ac\n  Intra object redzone:    bb\n  ASan internal:           fe\n  Left alloca redzone:     ca\n  Right alloca redzone:    cb\n==574062==ABORTING\n",
+      "asan_summary": "global-buffer-overflow /tmp/angband-glowoverflow-311-qaoe783g/source/src/borg/borg-flow-misc.c:843 in borg_flow_light"
+    },
+    "after": {
+      "raw": "native-c/glowoverflow-311: starting...\nSETUPSTEP profile\nSETUP seed=1000 glowing=1600 limit=1536 panel=41x40\n  glow_arrays_are_bounded  MODE glow\nGEOMETRY glow_n=1536 limit=1536\nRATING glow_n=1536 overflow=0\nOUTCOME glow_n=1536 overflow=0\nPassed\nnative-c/glowoverflow-311 finished: 1/1 passed\n",
+      "passed": true,
+      "rating": "glow_n=1536 overflow=0",
+      "outcome": "glow_n=1536 overflow=0",
+      "asan_raw": "native-c/glowoverflow-311: starting...\nSETUPSTEP profile\nSETUP seed=1000 glowing=1600 limit=1536 panel=41x40\n  glow_arrays_are_bounded  MODE glow\nGEOMETRY glow_n=1536 limit=1536\nRATING glow_n=1536 overflow=0\nOUTCOME glow_n=1536 overflow=0\nPassed\nnative-c/glowoverflow-311 finished: 1/1 passed\n",
+      "asan_summary": "no sanitizer report"
+    }
+  },
+  "control": {
+    "label": "Control: a thousand glowing grids",
+    "explanation": "A panel with a thousand glowing grids fits the arrays in both variants: glow_n 1000 either way, and the complete log is byte-identical - the correction changes only what happens past the bound.",
+    "before": {
+      "raw": "native-c/glowoverflow-311: starting...\nSETUPSTEP profile\nSETUP seed=1000 glowing=1000 limit=1536 panel=41x40\n  glow_arrays_are_bounded  MODE control\nGEOMETRY glow_n=1000 limit=1536\nRATING glow_n=1000 overflow=0\nOUTCOME glow_n=1000 overflow=0\nPassed\nnative-c/glowoverflow-311 finished: 1/1 passed\n",
+      "passed": true,
+      "rating": "glow_n=1000 overflow=0",
+      "outcome": "glow_n=1000 overflow=0"
+    },
+    "after": {
+      "raw": "native-c/glowoverflow-311: starting...\nSETUPSTEP profile\nSETUP seed=1000 glowing=1000 limit=1536 panel=41x40\n  glow_arrays_are_bounded  MODE control\nGEOMETRY glow_n=1000 limit=1536\nRATING glow_n=1000 overflow=0\nOUTCOME glow_n=1000 overflow=0\nPassed\nnative-c/glowoverflow-311 finished: 1/1 passed\n",
+      "passed": true,
+      "rating": "glow_n=1000 overflow=0",
+      "outcome": "glow_n=1000 overflow=0"
+    }
+  }
+}
