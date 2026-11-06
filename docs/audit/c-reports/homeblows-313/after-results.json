@@ -1,0 +1,16 @@
+{
+  "stack": {
+    "exit": 0,
+    "passed": true,
+    "geometry": "iqty=10 weight=40 weight_one=40",
+    "rating": "borg_blows=2 engine_blows=2",
+    "outcome": "borg_blows=2 engine_blows=2"
+  },
+  "single": {
+    "exit": 0,
+    "passed": true,
+    "geometry": "iqty=1 weight=40 weight_one=40",
+    "rating": "borg_blows=2 engine_blows=2",
+    "outcome": "borg_blows=2 engine_blows=2"
+  }
+}
