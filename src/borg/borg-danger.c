@@ -563,7 +563,6 @@ static int borg_danger_spell(
 
     int hp, total_dam = 0, av;
 
-    bool bolt       = false;
 
     borg_kill *kill = &borg_kills[i];
 
@@ -611,6 +610,7 @@ static int borg_danger_spell(
 
     /* Analyze the spells */
     for (q = 0; q < kill->ranged_attack; q++) {
+        bool bolt = false;
         int p = 0;
 
         int z = 0;
