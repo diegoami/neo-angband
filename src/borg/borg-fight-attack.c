@@ -2708,11 +2708,6 @@ static int borg_attack_aux_spell_dispel(
         && (borg.trait[BI_CURSP] - spell_power < penalty))
         b_n = b_n - (spell_power * 750);
 
-    /* Really penalize use of mana needed for final teleport */
-    /* (6 pts for mage) */
-    if ((borg.trait[BI_MAXSP] > 30) && (borg.trait[BI_CURSP] - spell_power) < 6)
-        b_n = b_n - (spell_power * 750);
-
     /* never tap if we previously missed a tap */
     if (target_closest < 0 && BORG_ATTACK_TAP_UNLIFE == typ && b_n > 0) {
         target_closest = 0;
