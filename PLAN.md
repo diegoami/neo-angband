@@ -1,14 +1,17 @@
 # Engine/C session plan
 
-1. Read the current checkpoint and open issues here. Review official C and Neo
-   engine boards/source and our linked proposals first. Preserve existing
+1. Read the lane checkpoint (Neo engine #25; native C #207, session:c) and
+   open issues here. Review official C and Neo engine boards/source and our linked proposals first. Preserve existing
    linked Mandos consumer receipts; no issue closure by upstream title alone.
-2. Fetch/watch borg-rs read-only, including its current bug file and issue
-   feed (or direct reports in this tracker). Follow docs/BORG-RS-INTAKE.md;
-   deduplicate by source issue/anchor/CBUG ID. Triage reported C leads apart
-   from verified faults, Rust-only issues and unrelated progress notes. The
-   C page points to the issue board; split records are historical provenance,
-   not a second live list. Do not assume borg-rs needs or tracks Neo.
+2. Triage borg-rs reports posted directly to this tracker. Follow
+   docs/BORG-RS-INTAKE.md; deduplicate against canonical issues, source URLs
+   and CBUG IDs. Separate reported C leads from verified native faults,
+   Rust-only issues and progress notes. Do not proactively fetch/poll the
+   borg-rs repository, docs/c-bugs.md or its external issue board. Retained
+   snapshots/watch tooling are legacy/manual evidence, not a live intake queue.
+   No Rust worker/adoption task or new managed clone is created here. Keep
+   Rust provenance in Source/discovery fields, not watched Threads references;
+   do not run monitors that would indirectly poll Rust status.
 3. Choose the source tree before implementation. Neo tasks use pristine
    upstream/master from neostryder/neo-angband. C tasks use angband/master at
    the recorded C pin, via the same fork's native C worktree. Read that tree's
@@ -28,8 +31,8 @@
 7. Keep patch/index/watch receipts current, then link the delivered correction
    to a distinct Mandos adoption/translation task if applicable. Mandos
    translates C corrections into TS only in its derivative, with its own
-   package/plugin/harness/lab scenario proof. borg-rs independently adopts or
-   translates the C correction in Rust and links its own consumer record. Do not
+   package/plugin/harness/lab scenario proof. Any borg-rs translation/adoption
+   is external; do not dispatch or manage Rust work from this plan. Do not
    mutate or deploy the running lab from this session.
 8. Checkpoint at merge/stop. Keep proposals, source fixes and linked consumer adoption distinct. Gameplay features remain parked.
 
