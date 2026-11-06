@@ -1,0 +1,53 @@
+{
+  "schema": "neo/beta3-producer-audit@1",
+  "sourceTask": "https://github.com/diegoami/neo-angband-tracker/issues/299",
+  "parentTask": "https://github.com/diegoami/angband-workspace/issues/22",
+  "release": "97ceec2925e6715ba725624a61866ab93a196a12",
+  "forkBase": "f186aa1fce2e590eb9bbcb91dc369f3f8b6af688",
+  "releaseMerge": "ea570d397",
+  "packages": [
+    {
+      "package": "@rpgm-tools/neo-angband-core",
+      "version": "1.23.0-beta.3",
+      "gitHead": "97ceec2925e6715ba725624a61866ab93a196a12",
+      "tarball": "https://registry.npmjs.org/@rpgm-tools/neo-angband-core/-/neo-angband-core-1.23.0-beta.3.tgz",
+      "integrity": "sha512-49n/FYMc9YPXxf4D1lDHQZkoTiB16XinqtodIRCyoSM1RBzEzlB4X6IozCStd+7onVQf7gZrWgarSiN5nIohjA==",
+      "sha256": "1b4b57f839bebe6d3f542c0b02405ea0f99dc95b18847a2d7ab1e0a29cee492c",
+      "size": 5040392
+    },
+    {
+      "package": "@rpgm-tools/neo-angband-mod-sdk",
+      "version": "1.23.0-beta.3",
+      "gitHead": "97ceec2925e6715ba725624a61866ab93a196a12",
+      "tarball": "https://registry.npmjs.org/@rpgm-tools/neo-angband-mod-sdk/-/neo-angband-mod-sdk-1.23.0-beta.3.tgz",
+      "integrity": "sha512-iDdpM8OlQU4OzNoB3uHEka/y3vohal4y1Tc3JAfftHajX31Q1H+nvF4SXj2u/L02Ad3WCXhh1r2gihEeqo91eg==",
+      "sha256": "ba8dedf1ad1f123d244577ebacee652bc90fe9fd5a9fd2ce99f64428ec976ba2",
+      "size": 1042701
+    },
+    {
+      "package": "@rpgm-tools/neo-angband-content",
+      "version": "1.23.0-beta.3",
+      "gitHead": "97ceec2925e6715ba725624a61866ab93a196a12",
+      "tarball": "https://registry.npmjs.org/@rpgm-tools/neo-angband-content/-/neo-angband-content-1.23.0-beta.3.tgz",
+      "integrity": "sha512-yUJgFzneP5NiwF0Lb5naLFd0kVN9zadA20OyBHan+mmNkAdHYC17zRlF42ijWA6QaYlKa1VGT5qCfqQ8bX9eAw==",
+      "sha256": "50339f37ba3d71d2ca9e8f4215c9f5b33509266fa9770216b913491c16a6979a",
+      "size": 308897
+    }
+  ],
+  "checks": {
+    "noteSpotOnceInLiveHook": true,
+    "classBookCountIsActualArrayLength": true,
+    "publishedDisturbHasInputFlush": false,
+    "publishedRunReportHasSeed": false,
+    "publishedContextHasBirthRngState": false,
+    "publishedSaveHasMasterSeed": false,
+    "forkSourceDisturbHasInputFlush": true
+  },
+  "sourceStates": {
+    "4": "closed; accepted noteSpot imported previously and present in release",
+    "15": "closed; accepted class-book correction present in release",
+    "5": "open; upstream432 unmerged, fork carry retained",
+    "6": "open; upstream433 unmerged, not imported to this fork source"
+  },
+  "consumerBoundary": "Official packages plus independently audited consumer backports are distinct from the fork source profile. Consumers own adoption and patch retirement; no lab deployment."
+}
