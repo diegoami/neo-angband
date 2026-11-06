@@ -1,0 +1,168 @@
+{
+  "two-phase": {
+    "label": "Morgoth-depth pass leaves a stale skip entry",
+    "explanation": "At depth 100 the Borg first evaluates its special Morgoth-depth Teleport Other, which stores the same monster twice (Morgoth assumed present and little mana left). The regular Teleport Other evaluation then targets the kobold: the original also suppresses the hill giant left over in the second slot, valuing the cast at the kobold plus the giant instead of the kobold alone. The fix stops at the listed entries, so the value is one candidate's list.",
+    "before": {
+      "raw": "native-c/CBUG-0051: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Mage level=31 depth=100 hp=162/162 sp=171/171 mode=two-phase near_morgoth=1\n  teleport_other_skips_only_listed  MODE two-phase\nKILL index=1 pos=(11,12) awake=1 danger=16\nKILL index=2 pos=(12,11) awake=1 danger=128\nDANGER p1=144 strong=128 weak=16\nTEMP phase1 n=2\nMORGOTH p2=150 slots_after slot0=2 slot1=2 n=0\nTEMP phase2 n=2\nLAUNCH p2=144\nOUTCOME p2=144 expected_best=128 strong=128 weak=16 tp_other_n=0\nFailed\n    native-c/CBUG-0051:215: requirement 'p2' == 'expected' failed\n      p2:              144\n      expected:              128\nTRACK teardown tp_other_n=0\nnative-c/CBUG-0051 finished: 0/1 passed\n",
+      "morgoth": {
+        "p2": 150,
+        "slot0": 2,
+        "slot1": 2,
+        "n": 0
+      },
+      "outcome": {
+        "p2": 144,
+        "expected_best": 128,
+        "strong": 128,
+        "weak": 16,
+        "tp_other_n": 0
+      },
+      "kills": [
+        {
+          "index": 1,
+          "awake": 1,
+          "danger": 16
+        },
+        {
+          "index": 2,
+          "awake": 1,
+          "danger": 128
+        }
+      ],
+      "passed": false
+    },
+    "after": {
+      "raw": "native-c/CBUG-0051: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Mage level=31 depth=100 hp=162/162 sp=171/171 mode=two-phase near_morgoth=1\n  teleport_other_skips_only_listed  MODE two-phase\nKILL index=1 pos=(11,12) awake=1 danger=16\nKILL index=2 pos=(12,11) awake=1 danger=128\nDANGER p1=144 strong=128 weak=16\nTEMP phase1 n=2\nMORGOTH p2=150 slots_after slot0=2 slot1=2 n=0\nTEMP phase2 n=2\nLAUNCH p2=128\nOUTCOME p2=128 expected_best=128 strong=128 weak=16 tp_other_n=0\nPassed\nTRACK teardown tp_other_n=0\nnative-c/CBUG-0051 finished: 1/1 passed\n",
+      "morgoth": {
+        "p2": 150,
+        "slot0": 2,
+        "slot1": 2,
+        "n": 0
+      },
+      "outcome": {
+        "p2": 128,
+        "expected_best": 128,
+        "strong": 128,
+        "weak": 16,
+        "tp_other_n": 0
+      },
+      "kills": [
+        {
+          "index": 1,
+          "awake": 1,
+          "danger": 16
+        },
+        {
+          "index": 2,
+          "awake": 1,
+          "danger": 128
+        }
+      ],
+      "passed": true
+    }
+  },
+  "no-morgoth-phase": {
+    "label": "Control: no deep pass, no phantom",
+    "explanation": "Without the Morgoth-depth evaluation the second slot is never written. Both versions value the cast at the hill giant's danger, and the logs are identical before and after the fix.",
+    "before": {
+      "raw": "native-c/CBUG-0051: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Mage level=31 depth=100 hp=162/162 sp=171/171 mode=no-morgoth-phase near_morgoth=1\n  teleport_other_skips_only_listed  MODE no-morgoth-phase\nKILL index=1 pos=(11,12) awake=1 danger=16\nKILL index=2 pos=(12,11) awake=1 danger=128\nDANGER p1=144 strong=128 weak=16\nTEMP phase2 n=2\nLAUNCH p2=128\nOUTCOME p2=128 expected_best=128 strong=128 weak=16 tp_other_n=0\nPassed\nTRACK teardown tp_other_n=0\nnative-c/CBUG-0051 finished: 1/1 passed\n",
+      "morgoth": null,
+      "outcome": {
+        "p2": 128,
+        "expected_best": 128,
+        "strong": 128,
+        "weak": 16,
+        "tp_other_n": 0
+      },
+      "kills": [
+        {
+          "index": 1,
+          "awake": 1,
+          "danger": 16
+        },
+        {
+          "index": 2,
+          "awake": 1,
+          "danger": 128
+        }
+      ],
+      "passed": true
+    },
+    "after": {
+      "raw": "native-c/CBUG-0051: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Mage level=31 depth=100 hp=162/162 sp=171/171 mode=no-morgoth-phase near_morgoth=1\n  teleport_other_skips_only_listed  MODE no-morgoth-phase\nKILL index=1 pos=(11,12) awake=1 danger=16\nKILL index=2 pos=(12,11) awake=1 danger=128\nDANGER p1=144 strong=128 weak=16\nTEMP phase2 n=2\nLAUNCH p2=128\nOUTCOME p2=128 expected_best=128 strong=128 weak=16 tp_other_n=0\nPassed\nTRACK teardown tp_other_n=0\nnative-c/CBUG-0051 finished: 1/1 passed\n",
+      "morgoth": null,
+      "outcome": {
+        "p2": 128,
+        "expected_best": 128,
+        "strong": 128,
+        "weak": 16,
+        "tp_other_n": 0
+      },
+      "kills": [
+        {
+          "index": 1,
+          "awake": 1,
+          "danger": 16
+        },
+        {
+          "index": 2,
+          "awake": 1,
+          "danger": 128
+        }
+      ],
+      "passed": true
+    }
+  },
+  "single": {
+    "label": "Control: a stale self-entry is harmless",
+    "explanation": "Only the kobold exists, so the deep pass stores the kobold in both slots. When the regular evaluation later reads one slot past its list, it finds the kobold itself: a duplicate, not a phantom. Both versions value the cast identically.",
+    "before": {
+      "raw": "native-c/CBUG-0051: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Mage level=31 depth=100 hp=162/162 sp=171/171 mode=single near_morgoth=1\n  teleport_other_skips_only_listed  MODE single\nKILL index=1 pos=(11,12) awake=1 danger=16\nDANGER p1=16 strong=0 weak=16\nTEMP phase1 n=1\nMORGOTH p2=150 slots_after slot0=1 slot1=1 n=0\nTEMP phase2 n=1\nLAUNCH p2=16\nOUTCOME p2=16 expected_best=16 strong=0 weak=16 tp_other_n=0\nPassed\nTRACK teardown tp_other_n=0\nnative-c/CBUG-0051 finished: 1/1 passed\n",
+      "morgoth": {
+        "p2": 150,
+        "slot0": 1,
+        "slot1": 1,
+        "n": 0
+      },
+      "outcome": {
+        "p2": 16,
+        "expected_best": 16,
+        "strong": 0,
+        "weak": 16,
+        "tp_other_n": 0
+      },
+      "kills": [
+        {
+          "index": 1,
+          "awake": 1,
+          "danger": 16
+        }
+      ],
+      "passed": true
+    },
+    "after": {
+      "raw": "native-c/CBUG-0051: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Mage level=31 depth=100 hp=162/162 sp=171/171 mode=single near_morgoth=1\n  teleport_other_skips_only_listed  MODE single\nKILL index=1 pos=(11,12) awake=1 danger=16\nDANGER p1=16 strong=0 weak=16\nTEMP phase1 n=1\nMORGOTH p2=150 slots_after slot0=1 slot1=1 n=0\nTEMP phase2 n=1\nLAUNCH p2=16\nOUTCOME p2=16 expected_best=16 strong=0 weak=16 tp_other_n=0\nPassed\nTRACK teardown tp_other_n=0\nnative-c/CBUG-0051 finished: 1/1 passed\n",
+      "morgoth": {
+        "p2": 150,
+        "slot0": 1,
+        "slot1": 1,
+        "n": 0
+      },
+      "outcome": {
+        "p2": 16,
+        "expected_best": 16,
+        "strong": 0,
+        "weak": 16,
+        "tp_other_n": 0
+      },
+      "kills": [
+        {
+          "index": 1,
+          "awake": 1,
+          "danger": 16
+        }
+      ],
+      "passed": true
+    }
+  }
+}
