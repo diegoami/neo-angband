@@ -1,0 +1,235 @@
+{
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "fix": "405e4fd4880e7bef27d6a6328765a904638c8257",
+  "fixtures_ref": "8b30eb5845ae542b41f2601d4370c044f13c21ac",
+  "cases": {
+    "before-normal": {
+      "no-target": {
+        "exit": 0,
+        "passed": false,
+        "asan": false,
+        "oob_read": false,
+        "decision": {
+          "return": 0,
+          "keys": 3
+        },
+        "outcome": {
+          "return": 0,
+          "keys": 3
+        }
+      },
+      "live-shot": {
+        "exit": 0,
+        "passed": true,
+        "asan": false,
+        "oob_read": false,
+        "decision": {
+          "return": 4,
+          "keys": 11
+        },
+        "outcome": {
+          "return": 4,
+          "keys": 11
+        }
+      },
+      "simulated": {
+        "exit": 0,
+        "passed": true,
+        "asan": false,
+        "oob_read": false,
+        "decision": {
+          "return": 4,
+          "keys": 0
+        },
+        "outcome": {
+          "return": 4,
+          "keys": 0
+        }
+      }
+    },
+    "before-asan": {
+      "no-target": {
+        "exit": 1,
+        "passed": false,
+        "asan": true,
+        "oob_read": true
+      },
+      "live-shot": {
+        "exit": 0,
+        "passed": true,
+        "asan": false,
+        "oob_read": false,
+        "decision": {
+          "return": 4,
+          "keys": 11
+        },
+        "outcome": {
+          "return": 4,
+          "keys": 11
+        }
+      },
+      "simulated": {
+        "exit": 0,
+        "passed": true,
+        "asan": false,
+        "oob_read": false,
+        "decision": {
+          "return": 4,
+          "keys": 0
+        },
+        "outcome": {
+          "return": 4,
+          "keys": 0
+        }
+      }
+    },
+    "after-normal": {
+      "no-target": {
+        "exit": 0,
+        "passed": true,
+        "asan": false,
+        "oob_read": false,
+        "decision": {
+          "return": 0,
+          "keys": 0
+        },
+        "outcome": {
+          "return": 0,
+          "keys": 0
+        }
+      },
+      "live-shot": {
+        "exit": 0,
+        "passed": true,
+        "asan": false,
+        "oob_read": false,
+        "decision": {
+          "return": 4,
+          "keys": 11
+        },
+        "outcome": {
+          "return": 4,
+          "keys": 11
+        }
+      },
+      "simulated": {
+        "exit": 0,
+        "passed": true,
+        "asan": false,
+        "oob_read": false,
+        "decision": {
+          "return": 4,
+          "keys": 0
+        },
+        "outcome": {
+          "return": 4,
+          "keys": 0
+        }
+      }
+    },
+    "after-asan": {
+      "no-target": {
+        "exit": 0,
+        "passed": true,
+        "asan": false,
+        "oob_read": false,
+        "decision": {
+          "return": 0,
+          "keys": 0
+        },
+        "outcome": {
+          "return": 0,
+          "keys": 0
+        }
+      },
+      "live-shot": {
+        "exit": 0,
+        "passed": true,
+        "asan": false,
+        "oob_read": false,
+        "decision": {
+          "return": 4,
+          "keys": 11
+        },
+        "outcome": {
+          "return": 4,
+          "keys": 11
+        }
+      },
+      "simulated": {
+        "exit": 0,
+        "passed": true,
+        "asan": false,
+        "oob_read": false,
+        "decision": {
+          "return": 4,
+          "keys": 0
+        },
+        "outcome": {
+          "return": 4,
+          "keys": 0
+        }
+      }
+    }
+  },
+  "identical_controls": [
+    "live-shot",
+    "simulated"
+  ],
+  "full_tests": {
+    "before": {
+      "units": "965/965",
+      "frontends": "5/5"
+    },
+    "after": {
+      "units": "965/965",
+      "frontends": "5/5"
+    }
+  },
+  "fixed_source_sha256": "1750601167e32b6d7983a3134d52696a24d44d707a91a08d8413f5feee527385",
+  "compiler": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+  "cmake": "cmake version 4.2.3",
+  "browser": {
+    "engine": "Google Chrome for Testing 156.0.8078.4 (headless dump-dom)",
+    "verification": "19 checks: 3 situations x 2 variants x 2 steps rendered; no-target 3 keys before and 0 after with the recorded asan READ signature; controls equal; no undefined fields; zero console errors"
+  },
+  "maintenance_base": "f186aa1fce2e590eb9bbcb91dc369f3f8b6af688",
+  "sha256": {
+    "README.md": "fcb5b53d458f98ca5373b04391ae1f655674a8d1486fd5a6e1ecb18de45099af",
+    "after-alltests.log": "5a72e30d2e813b68a49ff4653c033f31e37faa66dd28cbc2adb1ae35ec8005da",
+    "after-asan-build.log": "34feddb350b49e16c608d8f1e2fa3fb08c020bfd80b7d8ffbeac756fd4df7ed5",
+    "after-asan-scenarios.log": "545c45f3a09d7c173e95b78ffd07e5ba0814e192551b1b50f462ef27b90343d2",
+    "after-live-shot.log": "1a0bb575da7e826189716802884292d2644ffaf23a86e2f6e90352cc682cb649",
+    "after-no-target.log": "543f19d33a48a3ffe7a20312638fcc27084a1d2b584143dd0e408933fe0eb1d0",
+    "after-normal-build.log": "2f8312a8aa27dc0ba0a867af7d3597d7cb75d8bf02eb0b06e0faea8a85d3a9b9",
+    "after-normal-scenarios.log": "545c45f3a09d7c173e95b78ffd07e5ba0814e192551b1b50f462ef27b90343d2",
+    "after-results.json": "bdf08ca58ed11d1bdea67df6ced6807baf4d462844572ba57b173aa6e0da24a6",
+    "after-simulated.log": "e8d9fa7820fc15e6aa21589ebdbe068bd0a4b7d687b8bed6922adfa3f9b8e7b8",
+    "asan-after-live-shot.log": "1a0bb575da7e826189716802884292d2644ffaf23a86e2f6e90352cc682cb649",
+    "asan-after-no-target.log": "543f19d33a48a3ffe7a20312638fcc27084a1d2b584143dd0e408933fe0eb1d0",
+    "asan-after-results.json": "bdf08ca58ed11d1bdea67df6ced6807baf4d462844572ba57b173aa6e0da24a6",
+    "asan-after-simulated.log": "e8d9fa7820fc15e6aa21589ebdbe068bd0a4b7d687b8bed6922adfa3f9b8e7b8",
+    "asan-before-live-shot.log": "1a0bb575da7e826189716802884292d2644ffaf23a86e2f6e90352cc682cb649",
+    "asan-before-no-target.log": "b64ae9228c9f48a4562afcbac3419ed3a3dae5730ac3897279a477ee45c9177a",
+    "asan-before-simulated.log": "e8d9fa7820fc15e6aa21589ebdbe068bd0a4b7d687b8bed6922adfa3f9b8e7b8",
+    "before-alltests.log": "cc1abbf5c6fb34d63db6b86175782a6183c92578c04a3128f789c709a8509f0f",
+    "before-asan-build.log": "ab234853e882e892023cfb6c9fe78b1cc6beac706e3101084c90e4433b9bfd33",
+    "before-asan-scenarios.log": "78fc9411abea82f2eab623b2eec369d83d3c9fd5766fe6d3eff7de3f57e3add6",
+    "before-live-shot.log": "1a0bb575da7e826189716802884292d2644ffaf23a86e2f6e90352cc682cb649",
+    "before-no-target.log": "1c73061346945ee71cacd386b91cc8d0d6bdfff064544a9723ff151c3a15dec7",
+    "before-normal-build.log": "f40146dcafac2374fdb25e2139558aa4deac1fbb8a5d42fd0e87885fd31297a0",
+    "before-normal-scenarios.log": "53d39b4dc43e2e5594eb45402e96b3d0b522aa3fd892f2ba0ef12c93a7edcb10",
+    "before-results.json": "7f85ace8da4dbd7827ce48313091a1fd108a0897568fb26f65c59895968332f9",
+    "before-simulated.log": "e8d9fa7820fc15e6aa21589ebdbe068bd0a4b7d687b8bed6922adfa3f9b8e7b8",
+    "borg.txt": "80738da248ed74e343925e0348fc75da993d8c03ffff03c7bce1a9090005be47",
+    "configure-asan.log": "8de44a76b0c8e1e2eafdb4941ced201a3a0d8270ea2263b9a0baf617ed22a876",
+    "configure.log": "19dac307f73e2280bbf957d2d8d5eda909bfebce1907a97b972e5b35efb67d90",
+    "make_replay.py": "4479bd35ecc73e305411c2ca1560d8bab24c5563bdec07f15cfd33df5bd5cf8e",
+    "replay-data.json": "5c7d62509d5a6c2e42656ea440d639b703594b6f9029c15ce834427f37441ea6",
+    "replay.html": "c12dafdd1baa26aef4139f8f6028210007588daad4cbaa9cc04e6eaf8b33939d",
+    "reproduce.py": "4c531a54601b382abd31f2a3c1184c708692c264db3b62e73eaba06ea9b76db7",
+    "result.json": "91c401cbe03212044c391ff67b29add4c4805447c916109dd78774fa52698f6f",
+    "run-cases.py": "14b1dea4154caacdf97fe176948f720ad0cfae23ba801602bbc86b27d08faf9d",
+    "scenario.c": "4d15c1575716ff072acf905502d4c35aa58785455ca88722c7115df086c45e41"
+  }
+}

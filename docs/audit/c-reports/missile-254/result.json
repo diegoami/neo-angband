@@ -1,0 +1,191 @@
+{
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "fix": "405e4fd4880e7bef27d6a6328765a904638c8257",
+  "fixtures_ref": "8b30eb5845ae542b41f2601d4370c044f13c21ac",
+  "cases": {
+    "before-normal": {
+      "no-target": {
+        "exit": 0,
+        "passed": false,
+        "asan": false,
+        "oob_read": false,
+        "decision": {
+          "return": 0,
+          "keys": 3
+        },
+        "outcome": {
+          "return": 0,
+          "keys": 3
+        }
+      },
+      "live-shot": {
+        "exit": 0,
+        "passed": true,
+        "asan": false,
+        "oob_read": false,
+        "decision": {
+          "return": 4,
+          "keys": 11
+        },
+        "outcome": {
+          "return": 4,
+          "keys": 11
+        }
+      },
+      "simulated": {
+        "exit": 0,
+        "passed": true,
+        "asan": false,
+        "oob_read": false,
+        "decision": {
+          "return": 4,
+          "keys": 0
+        },
+        "outcome": {
+          "return": 4,
+          "keys": 0
+        }
+      }
+    },
+    "before-asan": {
+      "no-target": {
+        "exit": 1,
+        "passed": false,
+        "asan": true,
+        "oob_read": true
+      },
+      "live-shot": {
+        "exit": 0,
+        "passed": true,
+        "asan": false,
+        "oob_read": false,
+        "decision": {
+          "return": 4,
+          "keys": 11
+        },
+        "outcome": {
+          "return": 4,
+          "keys": 11
+        }
+      },
+      "simulated": {
+        "exit": 0,
+        "passed": true,
+        "asan": false,
+        "oob_read": false,
+        "decision": {
+          "return": 4,
+          "keys": 0
+        },
+        "outcome": {
+          "return": 4,
+          "keys": 0
+        }
+      }
+    },
+    "after-normal": {
+      "no-target": {
+        "exit": 0,
+        "passed": true,
+        "asan": false,
+        "oob_read": false,
+        "decision": {
+          "return": 0,
+          "keys": 0
+        },
+        "outcome": {
+          "return": 0,
+          "keys": 0
+        }
+      },
+      "live-shot": {
+        "exit": 0,
+        "passed": true,
+        "asan": false,
+        "oob_read": false,
+        "decision": {
+          "return": 4,
+          "keys": 11
+        },
+        "outcome": {
+          "return": 4,
+          "keys": 11
+        }
+      },
+      "simulated": {
+        "exit": 0,
+        "passed": true,
+        "asan": false,
+        "oob_read": false,
+        "decision": {
+          "return": 4,
+          "keys": 0
+        },
+        "outcome": {
+          "return": 4,
+          "keys": 0
+        }
+      }
+    },
+    "after-asan": {
+      "no-target": {
+        "exit": 0,
+        "passed": true,
+        "asan": false,
+        "oob_read": false,
+        "decision": {
+          "return": 0,
+          "keys": 0
+        },
+        "outcome": {
+          "return": 0,
+          "keys": 0
+        }
+      },
+      "live-shot": {
+        "exit": 0,
+        "passed": true,
+        "asan": false,
+        "oob_read": false,
+        "decision": {
+          "return": 4,
+          "keys": 11
+        },
+        "outcome": {
+          "return": 4,
+          "keys": 11
+        }
+      },
+      "simulated": {
+        "exit": 0,
+        "passed": true,
+        "asan": false,
+        "oob_read": false,
+        "decision": {
+          "return": 4,
+          "keys": 0
+        },
+        "outcome": {
+          "return": 4,
+          "keys": 0
+        }
+      }
+    }
+  },
+  "identical_full_logs": [
+    "live-shot",
+    "simulated"
+  ],
+  "full_tests": {
+    "before": {
+      "units": "965/965",
+      "frontends": "5/5"
+    },
+    "after": {
+      "units": "965/965",
+      "frontends": "5/5"
+    }
+  },
+  "asan_no_target": "heap-buffer-overflow READ in borg-fight-attack.c",
+  "fixed_source_sha256": "1750601167e32b6d7983a3134d52696a24d44d707a91a08d8413f5feee527385"
+}
