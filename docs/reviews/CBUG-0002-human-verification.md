@@ -1,9 +1,24 @@
 # Human verification: CBUG-0002 / source issue #14 / local proposal #210
 
-After a knockout, the C Borg can continue receiving the game's combat messages
-while discarding their parsed reactions. The proposed correction clears the
-actual reaction gate at the existing end-of-message-batch reset. Here is how a
-human can check the claim without trusting that explanation or a green test.
+When the Borg recovers from being knocked out, it should resume handling fight
+messages such as "You hit the kobold" and "You have slain the kobold". Instead,
+a flag remains stuck on "ignore these messages". The Borg still reads the screen
+and player statistics and can send commands; its entire input is not cut off.
+
+The cause is a reset of the wrong variable: `borg.dont_react` is a struct member
+that nothing reads, while the fight-message handler checks the separate global
+`borg_dont_react`. The fix resets the global at the existing reset point.
+
+The demonstrated problem is lost fight information after recovery. Lost messages
+could leave the Borg with stale information about enemies, but the existing run
+does not demonstrate a worse decision, a player death or lost progress. Other
+screen/stat updates still exist. **Priority is medium, reduced from high:** the
+persistent message-processing fault is real, but high practical severity has not
+been established. Further investigation is parked behind bugs with demonstrated
+crashes, stuck behavior, resource waste or harmful survival/combat decisions.
+
+Here is how a human can check the cause and the measured effect without trusting
+that explanation or a green test.
 
 Run the source commands from any clone of diegoami/neo-angband-tracker containing
 these commits. They inspect immutable Git objects, so your checkout can remain
