@@ -41,8 +41,8 @@ From a clone of `diegoami/neo-angband-tracker`, copy these three commands:
 
 ```sh
 git fetch https://github.com/diegoami/neo-angband-tracker.git task/reserve-258-evidence
-git show PINSHA:docs/audit/c-reports/reserve-258/reproduce.py > /tmp/reproduce-reserve-258.py
-python3 /tmp/reproduce-reserve-258.py --fixtures-ref PINSHA --full-tests
+git show 47b1142e6201ac7b82da31b86d3b291a5d06dc2b:docs/audit/c-reports/reserve-258/reproduce.py > /tmp/reproduce-reserve-258.py
+python3 /tmp/reproduce-reserve-258.py --fixtures-ref 47b1142e6201ac7b82da31b86d3b291a5d06dc2b --full-tests
 ```
 
 The runner builds original and corrected variants from pristine C
