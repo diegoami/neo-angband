@@ -1,0 +1,13 @@
+diff --git a/src/borg/borg-item-wear.c b/src/borg/borg-item-wear.c
+index 9464197d..24e7084c 100644
+--- a/src/borg/borg-item-wear.c
++++ b/src/borg/borg-item-wear.c
+@@ -700,7 +700,7 @@ bool borg_backup_swap(int p)
+     }
+ 
+     /* Pass on the swap which yields the best result */
+-    if (b_p1 <= b_p2) {
++    if (weapon_swap && (!armour_swap || b_p2 <= b_p1)) {
+         b_p  = b_p2;
+         swap = weapon_swap - 1;
+     } else {

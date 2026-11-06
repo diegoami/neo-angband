@@ -23,3 +23,8 @@ C commit `66e1012113fd7db634b19ffe86a470b58a7f7967` against pristine C
 The emergency gear routine overlooks cold protection before the correction;
 a controlled next breath costs79HP instead of26HP. This is a stored/local
 proposal, not a correction applied to an engine or consumer.
+
+Current CBUG-0066 source head: `017ba47ebc8731fa0a61361a6f6777759a748d2a`. Use the
+[clean cumulative patch](upstream-c/CBUG-0066-safer-swap-clean.patch);
+[comment-cleanup verification](../docs/audit/c-reports/CBUG-0066/SOURCE-UPDATE.md).
+Original tested patch/log receipts remain unchanged as historical evidence.
