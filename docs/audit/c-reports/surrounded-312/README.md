@@ -32,8 +32,8 @@ From a clone of `diegoami/neo-angband-tracker`, copy these three commands:
 
 ```sh
 git fetch https://github.com/diegoami/neo-angband-tracker.git task/surrounded-312-evidence
-git show PINSHA:docs/audit/c-reports/surrounded-312/reproduce.py > /tmp/reproduce-surrounded-312.py
-python3 /tmp/reproduce-surrounded-312.py --fixtures-ref PINSHA --full-tests
+git show 2685a3340819668aa6a23c2d3645f90b89c24721:docs/audit/c-reports/surrounded-312/reproduce.py > /tmp/reproduce-surrounded-312.py
+python3 /tmp/reproduce-surrounded-312.py --fixtures-ref 2685a3340819668aa6a23c2d3645f90b89c24721 --full-tests
 ```
 
 The runner builds original and corrected variants from pristine C

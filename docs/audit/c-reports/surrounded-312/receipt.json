@@ -1,0 +1,84 @@
+{
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "fix": "d366ef4e75e40f17fb293135c05fa74524f2e184",
+  "fixtures_ref": "72e61f67abf33aca68ee7f4e29db9e4e823de306",
+  "cases": {
+    "before": {
+      "traps": {
+        "exit": 0,
+        "passed": false,
+        "geometry": "mode=traps kills_cnt=0",
+        "rating": "surrounded=1",
+        "outcome": "surrounded=1"
+      },
+      "walls": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "mode=walls kills_cnt=0",
+        "rating": "surrounded=0",
+        "outcome": "surrounded=0"
+      }
+    },
+    "after": {
+      "traps": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "mode=traps kills_cnt=0",
+        "rating": "surrounded=0",
+        "outcome": "surrounded=0"
+      },
+      "walls": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "mode=walls kills_cnt=0",
+        "rating": "surrounded=0",
+        "outcome": "surrounded=0"
+      }
+    }
+  },
+  "identical_controls": [
+    "walls"
+  ],
+  "full_tests": {
+    "before": {
+      "units": "965/965",
+      "frontends": "5/5"
+    },
+    "after": {
+      "units": "965/965",
+      "frontends": "5/5"
+    }
+  },
+  "fixed_source_sha256": "64c3b613a63cec10b66808a996b1cd9dcb3be9a0968da1cf2f567ae14dbc689f",
+  "compiler": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+  "cmake": "cmake version 4.2.3",
+  "browser": {
+    "engine": "Google Chrome for Testing 156.0.8078.4 (headless dump-dom)",
+    "verification": "16 checks against the rendered DOM and payload: 2 situations x 2 variants; phantom surrounded=yes before vs no after with zero monsters; plain-wall control surrounded=0 byte-identical raw logs; no n/a or undefined fields; zero console errors; generated replay JS validated with node --check"
+  },
+  "maintenance_base": "f186aa1fce2e590eb9bbcb91dc369f3f8b6af688",
+  "sha256": {
+    "README.md": "6f0823d64de11947950b581086b12426e293a5e70f348dd056d740f6d48d6b0b",
+    "after-alltests.log": "65ba6b4d9ad24a55c95823e492a0eff91cd14a28580a076bfde34afb9a7dc342",
+    "after-build.log": "e2b87e1cd58a1fe99727314f232efa554105e4f92f8aefdd6f299b396e48fb2b",
+    "after-results.json": "d89832cd4be3d0b3906529749809e914c43243d5680e4ff8d35963eee4faa27f",
+    "after-scenarios.log": "409f3a4037a7dc63166144e4a91d6ad960d33f90bf279de841d832ebed114dec",
+    "after-traps.log": "7d50637d19fe3ce2210a92d7059d9afc7b32c2da6604d1498b4944fbd7f20803",
+    "after-walls.log": "cf28bba24dae390a571210f2711f34c44c3087e9db69c0c14a63933398251e72",
+    "before-alltests.log": "cb7b90335816745924152b57693491bb26d837f5cbf4a19a4d084c07d91fabd1",
+    "before-build.log": "782852ec614ef2f6ebfc0a835fca2e88ae5621955a3da8b5cb52743857921f92",
+    "before-results.json": "139e654915dcaa8123b1805d60ee8ba396848ce29e02e10c3b6f92ed5d51fd3c",
+    "before-scenarios.log": "9de86b1a522cb69724c588871a371a8d25dc97647f77ce3aec5ed2b9db08a609",
+    "before-traps.log": "3f299fa214da8dffb10ca31b68f9922c9dd80f54c9c565d570b2e3a3511785b4",
+    "before-walls.log": "cf28bba24dae390a571210f2711f34c44c3087e9db69c0c14a63933398251e72",
+    "borg.txt": "80738da248ed74e343925e0348fc75da993d8c03ffff03c7bce1a9090005be47",
+    "configure.log": "2a9d44afb6183a115f6e8478743ba2dbf763441d0cd85b23868aea6b8a8c00d7",
+    "make_replay.py": "dbb8749adab6bb0d6d44cbe948dbf1c3125850bda40d7829869fec5fb594d544",
+    "replay-data.json": "d8a64aa17ed74f92087040850e3b8f111eca5a891bd4b96fe5223cbecf082cac",
+    "replay.html": "432b61711ec82ac515cc55136d06a6c2773284b3efe007f9de4c5f9da3559855",
+    "reproduce.py": "3fa4df239e342ecf38eb21ff8fe7129c88c23564a89a42181707754a042c5770",
+    "result.json": "26184b507dc91d4e72205b5b561800727b58d91d924c1cbad5635161568720ea",
+    "run-cases.py": "142ad683fbb16e46409b30b9f064010fa084612467d3408d2f6ffc199ab3bfbc",
+    "scenario.c": "98e0b5176037e344e206d68fcc83665a30003401cbb7246f1522f425849cbbac"
+  }
+}
