@@ -1,0 +1,53 @@
+{
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "fix": "66b183340a567811051a5745c8d3a53792963860",
+  "fixtures_ref": "3c7b2c8076be2afbbb5a39857ccb851466de92c8",
+  "cases": {
+    "before": {
+      "phial": {
+        "exit": 0,
+        "passed": false,
+        "geometry": "light_mod=4 bi_light=8",
+        "rating": "bi_light=8",
+        "outcome": "bi_light=8"
+      },
+      "torch": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "light_mod=0 bi_light=2",
+        "rating": "bi_light=2",
+        "outcome": "bi_light=2"
+      }
+    },
+    "after": {
+      "phial": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "light_mod=4 bi_light=4",
+        "rating": "bi_light=4",
+        "outcome": "bi_light=4"
+      },
+      "torch": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "light_mod=0 bi_light=2",
+        "rating": "bi_light=2",
+        "outcome": "bi_light=2"
+      }
+    }
+  },
+  "identical_full_logs": [
+    "torch"
+  ],
+  "full_tests": {
+    "before": {
+      "units": "965/965",
+      "frontends": "5/5"
+    },
+    "after": {
+      "units": "965/965",
+      "frontends": "5/5"
+    }
+  },
+  "fixed_source_sha256": "ea64f941fe38a8f2ea8e374b232587da547a27286fd2a0f57bc50e1569b1dbeb"
+}
