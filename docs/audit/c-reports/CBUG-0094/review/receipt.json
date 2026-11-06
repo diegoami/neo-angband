@@ -1,0 +1,256 @@
+{
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "fix": "31a042d00581ed914d30f17cca1ed0e70e99d21f",
+  "fixtures_ref": "c9f8ab50686e6c5baf3081a749f7f5f905c4580a",
+  "before": {
+    "regen-only": {
+      "exit": 0,
+      "completed": true,
+      "passed": false,
+      "commands": 2,
+      "regen": 2,
+      "haste": 0,
+      "mana_spent": 40,
+      "action_energy": 200,
+      "heal": 14,
+      "fast": 0
+    },
+    "speed-wins": {
+      "exit": 0,
+      "completed": true,
+      "passed": false,
+      "commands": 2,
+      "regen": 1,
+      "haste": 1,
+      "mana_spent": 32,
+      "action_energy": 200,
+      "heal": 8,
+      "fast": 55
+    },
+    "speed-only": {
+      "exit": 0,
+      "completed": true,
+      "passed": true,
+      "commands": 1,
+      "regen": 0,
+      "haste": 1,
+      "mana_spent": 12,
+      "action_energy": 100,
+      "heal": 0,
+      "fast": 68
+    },
+    "already-active": {
+      "exit": 0,
+      "completed": true,
+      "passed": true,
+      "commands": 0,
+      "regen": 0,
+      "haste": 0,
+      "mana_spent": 0,
+      "action_energy": 0,
+      "heal": 7,
+      "fast": 0
+    },
+    "unlearned": {
+      "exit": 0,
+      "completed": true,
+      "passed": true,
+      "commands": 0,
+      "regen": 0,
+      "haste": 0,
+      "mana_spent": 0,
+      "action_energy": 0,
+      "heal": 0,
+      "fast": 0
+    },
+    "blind": {
+      "exit": 0,
+      "completed": true,
+      "passed": true,
+      "commands": 0,
+      "regen": 0,
+      "haste": 0,
+      "mana_spent": 0,
+      "action_energy": 0,
+      "heal": 0,
+      "fast": 0
+    },
+    "confused": {
+      "exit": 0,
+      "completed": true,
+      "passed": true,
+      "commands": 0,
+      "regen": 0,
+      "haste": 0,
+      "mana_spent": 0,
+      "action_energy": 0,
+      "heal": 0,
+      "fast": 0
+    },
+    "town": {
+      "exit": 0,
+      "completed": true,
+      "passed": true,
+      "commands": 0,
+      "regen": 0,
+      "haste": 0,
+      "mana_spent": 0,
+      "action_energy": 0,
+      "heal": 0,
+      "fast": 0
+    },
+    "low-mana": {
+      "exit": 0,
+      "completed": true,
+      "passed": true,
+      "commands": 0,
+      "regen": 0,
+      "haste": 0,
+      "mana_spent": 0,
+      "action_energy": 0,
+      "heal": 0,
+      "fast": 0
+    }
+  },
+  "after": {
+    "regen-only": {
+      "exit": 0,
+      "completed": true,
+      "passed": true,
+      "commands": 1,
+      "regen": 1,
+      "haste": 0,
+      "mana_spent": 20,
+      "action_energy": 100,
+      "heal": 8,
+      "fast": 0
+    },
+    "speed-wins": {
+      "exit": 0,
+      "completed": true,
+      "passed": true,
+      "commands": 1,
+      "regen": 0,
+      "haste": 1,
+      "mana_spent": 12,
+      "action_energy": 100,
+      "heal": 0,
+      "fast": 68
+    },
+    "speed-only": {
+      "exit": 0,
+      "completed": true,
+      "passed": true,
+      "commands": 1,
+      "regen": 0,
+      "haste": 1,
+      "mana_spent": 12,
+      "action_energy": 100,
+      "heal": 0,
+      "fast": 68
+    },
+    "already-active": {
+      "exit": 0,
+      "completed": true,
+      "passed": true,
+      "commands": 0,
+      "regen": 0,
+      "haste": 0,
+      "mana_spent": 0,
+      "action_energy": 0,
+      "heal": 7,
+      "fast": 0
+    },
+    "unlearned": {
+      "exit": 0,
+      "completed": true,
+      "passed": true,
+      "commands": 0,
+      "regen": 0,
+      "haste": 0,
+      "mana_spent": 0,
+      "action_energy": 0,
+      "heal": 0,
+      "fast": 0
+    },
+    "blind": {
+      "exit": 0,
+      "completed": true,
+      "passed": true,
+      "commands": 0,
+      "regen": 0,
+      "haste": 0,
+      "mana_spent": 0,
+      "action_energy": 0,
+      "heal": 0,
+      "fast": 0
+    },
+    "confused": {
+      "exit": 0,
+      "completed": true,
+      "passed": true,
+      "commands": 0,
+      "regen": 0,
+      "haste": 0,
+      "mana_spent": 0,
+      "action_energy": 0,
+      "heal": 0,
+      "fast": 0
+    },
+    "town": {
+      "exit": 0,
+      "completed": true,
+      "passed": true,
+      "commands": 0,
+      "regen": 0,
+      "haste": 0,
+      "mana_spent": 0,
+      "action_energy": 0,
+      "heal": 0,
+      "fast": 0
+    },
+    "low-mana": {
+      "exit": 0,
+      "completed": true,
+      "passed": true,
+      "commands": 0,
+      "regen": 0,
+      "haste": 0,
+      "mana_spent": 0,
+      "action_energy": 0,
+      "heal": 0,
+      "fast": 0
+    }
+  },
+  "identical_controls": [
+    "speed-only",
+    "already-active",
+    "unlearned",
+    "blind",
+    "confused",
+    "town",
+    "low-mana"
+  ],
+  "full_tests": {
+    "before": {
+      "units": "965/965",
+      "frontends": "5/5"
+    },
+    "after": {
+      "units": "965/965",
+      "frontends": "5/5"
+    }
+  },
+  "fixed_source_sha256": "7ac6bb54192d2dae6a4dfe82d93c3ba0c7d3f7b796a60cede58190010582bba7",
+  "browser_verification": "Chromium HTML-content rendering: all nine modes and all three step buttons verified against recorded mana; no JavaScript errors. Managed browser blocks file-scheme navigation.",
+  "case_logs_identical_to_original": 18,
+  "source_unchanged": "31a042d00581ed914d30f17cca1ed0e70e99d21f",
+  "original_evidence_preserved": "a19c8733c0dfa8139b04eecd8117429ec5f55cd6",
+  "sha256": {
+    "REVIEW.md": "3bc6dd432cb77ff55fa9ecbd98f0233b6cdf75087e042a8f6f2a42db930d4fa4",
+    "replay.html": "2230958ef9a27046bb905a58395800d174821320911a55b4f3bd360c913c0ddd",
+    "replay-data.json": "be72335dbd389dad876684e068801fe458c144f8b99dbe710cb876873edaa493",
+    "review/make_replay.py": "5e86c595d25f39c39ee3adb1dc87c906f41ac2301763756d864b086474c10b3f",
+    "review/reproduce.py": "c34f63ef512651f823b71dd432e7b39c85393670958b5d28e02473397506e3cd"
+  }
+}
