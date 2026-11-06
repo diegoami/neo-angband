@@ -428,6 +428,11 @@ draft's plain `file.c:N` citations are gone; the remaining new ones are
 this file's own (its example of the plain form in §1, and this sentence),
 which the tool resolves against `reference/` and leaves unchecked.
 
+`node tools/citation-check.mjs --check` exits 1 on this branch **and on
+`master`**, because of the same two `OUT_OF_RANGE` rows
+(`packages/core/src/game/effect-exp-seam.test.ts:3`,
+`packages/web/src/main.ts:11593`); this branch adds none.
+
 The diff against `master` touches only `docs/c-borg/BORG_SPEC.md` and
 `docs/audit/c-reports/spec-checks/`; nothing under `.github/`, no C or
 TypeScript source.
