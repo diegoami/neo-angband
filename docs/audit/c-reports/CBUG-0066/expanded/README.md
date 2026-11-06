@@ -128,3 +128,11 @@ case logs match the captured replay exactly. END-TO-END-RESULT.json records
 the source/fixture pins, helper-code hashes and full-gate log hashes. The nine
 replay modes and decision/damage controls were also checked in a browser with
 no JavaScript errors. The C proposal itself is unchanged.
+
+## Why not simply reverse the comparison?
+
+[The same native tests run against all three conditions](SIMPLE-COMPARISON.md)
+show that a simple reversal passes7/9 but selects an absent item in both
+single-backup cases. The guarded version passes9/9. Use `--compare-simple`
+to repeat that additional check; the disposable source/binary are restored
+to the guarded version afterwards.

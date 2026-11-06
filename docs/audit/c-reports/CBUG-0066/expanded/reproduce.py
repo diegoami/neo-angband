@@ -38,6 +38,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--fixtures-ref", default="FETCH_HEAD")
     parser.add_argument("--full-tests", action="store_true")
+    parser.add_argument("--compare-simple", action="store_true", help="also test reversing the comparison without availability guards")
     args = parser.parse_args()
     for command in ("git", "cmake", "flock"):
         if not shutil.which(command):
@@ -50,7 +51,7 @@ def main():
 
     # Read the bundle before creating a worktree, so a missing fetch fails clearly.
     payload = {name: read(DIRECTORY + name) for name in
-               ("scenario.c", "run-expanded.py", "make_replay.py")}
+               ("scenario.c", "run-expanded.py", "make_replay.py", "compare_simple.py")}
     configuration = read("docs/audit/c-reports/CBUG-0066/borg.txt")
     if subprocess.run(["git", "cat-file", "-e", BASE + "^{commit}"], cwd=repo,
                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode:
@@ -126,6 +127,8 @@ add_compile_definitions(PRIVATE_USER_PATH="{root / 'test-user'}")
             raise RuntimeError(f"Baseline control failed: {mode}")
         if (evidence / f"before-{mode}.log").read_bytes() != (evidence / f"after-{mode}.log").read_bytes():
             raise RuntimeError(f"Control output changed: {mode}")
+    if args.compare_simple:
+        subprocess.run([sys.executable, str(evidence / "compare_simple.py"), str(root)], check=True)
     subprocess.run([sys.executable, str(evidence / "make_replay.py"), str(evidence)], check=True)
     summary = {"base": BASE, "fixtures_ref": ref, "fixed_source_sha256": FIXED_SOURCE_SHA256,
                "affected": {m: {"before_hp_lost": before[m]["hp_lost"], "after_hp_lost": after[m]["hp_lost"]} for m in affected},
