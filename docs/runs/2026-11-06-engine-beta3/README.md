@@ -111,3 +111,11 @@ Full release-merge identity: ea570d3975803e2d7dece67915b8f9a2e4d4689c.
 The focused terminal log is deliberately tracked as reviewed public test evidence
 although the repository's general *.log rule ignores disposable logs. It contains
 only this synthetic source build/test output, not lab/profile/credential data.
+
+Privacy normalization follow-up: the terminal output contained one pnpm store
+path naming the local user home. The initial tracked-file scan flagged that
+path; the command wrapper incorrectly continued into the normal commit/push.
+A new normal follow-up replaces only that filesystem prefix with `<user-home>/`;
+all build/test outcomes remain unchanged. No credential or owner lab/profile
+data was involved, and no history rewrite is performed. The clean final scan
+is the applicable result; the failed attempt is retained in this receipt.

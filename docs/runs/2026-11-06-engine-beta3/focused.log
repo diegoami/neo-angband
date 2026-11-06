@@ -2,7 +2,7 @@ Scope: all 9 workspace projects
 ✓ Lockfile passes supply-chain policies (verified 4d ago)
 Lockfile is up to date, resolution step is skipped
 Packages are hard linked from the content-addressable store to the virtual store.
-  Content-addressable store is at: /home/diego/.local/share/pnpm/store/v11
+  Content-addressable store is at: <user-home>/.local/share/pnpm/store/v11
   Virtual store is at:             node_modules/.pnpm
 Packages: +738
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
