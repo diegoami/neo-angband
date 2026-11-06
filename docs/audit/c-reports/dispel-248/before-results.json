@@ -1,0 +1,55 @@
+{
+  "living": {
+    "exit": 0,
+    "passed": false,
+    "gate": {
+      "spell_okay": 1,
+      "legal": 1,
+      "temp_n": 1
+    },
+    "launch": {
+      "direct": -1
+    },
+    "rating": {
+      "value": -21,
+      "expected_average": 39,
+      "clevel": 26
+    },
+    "outcome": {
+      "hp_before": 225,
+      "hp_after": 159,
+      "hp_lost": 66,
+      "undead": 0
+    }
+  },
+  "undead": {
+    "exit": 0,
+    "passed": true,
+    "gate": {
+      "spell_okay": 1,
+      "legal": 1,
+      "temp_n": 1
+    },
+    "launch": {
+      "direct": -1
+    },
+    "rating": {
+      "value": -21,
+      "expected_average": 39,
+      "clevel": 26
+    },
+    "outcome": {
+      "hp_before": 47,
+      "hp_after": 47,
+      "hp_lost": 0,
+      "undead": 1
+    }
+  },
+  "bolt": {
+    "exit": 0,
+    "passed": true,
+    "rating": {
+      "bolt_control": 11
+    }
+  }
+}
