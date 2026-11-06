@@ -5,7 +5,7 @@ cases=('long-gap','recent','boundary-four','same-turn','bypass-control','reserve
 rows={}
 for mode in cases:
  env=os.environ|{'CBUG0061_MODE':mode,'CBUG0061_PROFILE':str(root/'profile')}
- result=subprocess.run([binary],env=env,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
+ result=subprocess.run([str(Path(binary).resolve()),"-v"],env=env,cwd=Path(binary).resolve().parent,timeout=60,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
  raw=re.sub(r'\x1b\[[0-9;]*m','',result.stdout);(root/f'{phase}-{mode}.log').write_text(raw)
  match=re.search(r'OUTCOME (.*)',raw)
  row={'exit':result.returncode,'completed':bool(match),'passed':'native-c/CBUG-0061 finished: 1/1 passed' in raw}
