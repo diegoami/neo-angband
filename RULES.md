@@ -148,3 +148,19 @@
     yourself. The owner must not have to request a translation. Do not inflate
     severity or claim combat harm, extra enemy attacks or deaths that the
     experiment did not demonstrate.
+
+18. Every posted native C fix follows the evidence-package standard in
+    [docs/C-FIX-POSTING.md](docs/C-FIX-POSTING.md): one source branch from
+    pristine c-borg-reference plus one evidence branch from owned master
+    whose docs/audit/c-reports/<ID>/ directory carries both the generators
+    (scenario.c, run-cases.py, make_replay.py, reproduce.py, borg.txt) and
+    the captured artifacts of the verified run (replay.html with
+    replay-data.json, README.md guide, receipt.json hashes, every phase log
+    including asan variants and gates). The verification matrix is
+    fail-before/pass-after, byte-identical unchanged controls, full native
+    gates on both variants, an asan variant for memory-safety defects, and a
+    headless render check of the exact committed replay with no console
+    errors. Reproduce commands pin an immutable fixtures sha; appended
+    artifacts move the head past the pin and the README states the
+    relationship. Real game messages and production Borg choices only; no
+    hand-fed text, manufactured counts or waived checks.
