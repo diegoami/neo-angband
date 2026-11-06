@@ -10,8 +10,8 @@ for mode,(label,explanation) in CASES.items():
  for phase in ('before','after'):
   raw=(root/f'{phase}-{mode}.log').read_text()
   entry={'raw':raw,'passed':'native-c/dispel-248 finished: 1/1 passed' in raw}
-  for tag,key in (('RATING value','rating'),('RATING bolt','bolt'),('OUTCOME','outcome'),('LAUNCH','launch')):
-   match=re.search(re.escape(tag)+r' (.*)',raw)
+  for tag,key in (('RATING value=','rating'),('RATING bolt_control=','bolt'),('OUTCOME ','outcome'),('LAUNCH ','launch')):
+   match=re.search(re.escape(tag)+r'(.*)',raw)
    entry[key]={k:int(v) for k,v in re.findall(r'(\w+)=(-?\d+)',match[1])} if match else None
   item[phase]=entry
  data[mode]=item
