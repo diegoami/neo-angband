@@ -39,8 +39,8 @@ From a clone of `diegoami/neo-angband-tracker`, copy these three commands:
 
 ```sh
 git fetch https://github.com/diegoami/neo-angband-tracker.git task/cbug-0051-evidence
-git show EVSHA:docs/audit/c-reports/CBUG-0051/reproduce.py > /tmp/reproduce-cbug-0051.py
-python3 /tmp/reproduce-cbug-0051.py --fixtures-ref EVSHA --full-tests
+git show 83cedb3fe33f494d58d2ceb0016c0feab95be6d8:docs/audit/c-reports/CBUG-0051/reproduce.py > /tmp/reproduce-cbug-0051.py
+python3 /tmp/reproduce-cbug-0051.py --fixtures-ref 83cedb3fe33f494d58d2ceb0016c0feab95be6d8 --full-tests
 ```
 
 The runner builds original and corrected variants from pristine C
