@@ -204,3 +204,10 @@ This is a local C proposal/stored patch. Source issue #82 remains open. No
 upstream submission, consumer translation/application, engine merge, lab change,
 publication or deployment is performed here. The owner can use the direct
 comparison and copyable proposal text on the canonical issue when satisfied.
+
+## Expanded scenarios and visible replay
+
+[Additional fire/lightning/two-threat cases, a step-by-step visible replay, and
+complete copy/paste reproduction](expanded/README.md) extend this evidence.
+The original run records above remain unchanged. The new bundle includes all
+files, uses fresh temporary directories, and applies the clean one-line fix.
