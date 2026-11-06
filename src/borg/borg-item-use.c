@@ -56,7 +56,8 @@ bool borg_quaff_crit(bool no_check)
     }
 
     /* Avoid drinking CCW twice in a row */
-    if (borg_timer(when_last_quaff) > 4 && borg_timer(when_last_quaff) > 0
+    if (when_last_quaff && borg_timer(when_last_quaff) <= 4
+        && borg_timer(when_last_quaff) > 0
         && (randint1(100) < 75))
         return false;
 
