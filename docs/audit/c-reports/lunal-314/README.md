@@ -31,8 +31,8 @@ From a clone of `diegoami/neo-angband-tracker`, copy these three commands:
 
 ```sh
 git fetch https://github.com/diegoami/neo-angband-tracker.git task/lunal-314-evidence
-git show PINSHA:docs/audit/c-reports/lunal-314/reproduce.py > /tmp/reproduce-lunal-314.py
-python3 /tmp/reproduce-lunal-314.py --fixtures-ref PINSHA --full-tests
+git show 0995f346e3b7ff050576376836b4bd625ddd9f00:docs/audit/c-reports/lunal-314/reproduce.py > /tmp/reproduce-lunal-314.py
+python3 /tmp/reproduce-lunal-314.py --fixtures-ref 0995f346e3b7ff050576376836b4bd625ddd9f00 --full-tests
 ```
 
 The runner builds original and corrected variants from pristine C
