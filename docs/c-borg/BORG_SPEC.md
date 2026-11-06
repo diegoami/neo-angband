@@ -4,9 +4,25 @@
 C Borg *does*, so a rebuild can reuse the accumulated knowledge instead of
 rediscovering it.
 
-**Source of truth:** `angband/angband` at the pinned C revision
-`e473720ed88a0f0c7ca66815cef3000eb4a38bc3`, file `src/borg/` (59 `.c` files,
-64,147 lines of C plus headers).
+**Source of truth:** the C Borg in
+[`angband/angband`](https://github.com/angband/angband) at
+
+```
+e473720ed88a0f0c7ca66815cef3000eb4a38bc3
+```
+
+file `src/borg/` (59 `.c` files, 64,147 lines of C plus headers).
+
+That commit **is** the current `angband/angband` `master` head — it is not a
+fork-local snapshot and not an import of an older release. The comparison
+`angband/angband` `e473720ed...master` reports `status: identical`,
+`ahead_by: 0`, `behind_by: 0`, so `src/borg/` here is byte-for-byte what
+upstream ships today. The same commit is recorded as this session's C
+baseline in [`session.json`](../../session.json) (`baselines.c`) and as the C
+source pin in [`docs/c-bugs/catalogue.json`](../c-bugs/catalogue.json)
+(`sources.c.commit`); the repository's own watcher
+(`node tools/c-upstream-watch.mjs`) compares the two and reports *"Official
+source still equals the recorded reference."*
 
 **Scope:** the C Borg only. This document says nothing about the Neo
 TypeScript port (`neostryder/neo-angband-mod-borg`) or the Mandos derivative,
@@ -17,6 +33,67 @@ rebuild must satisfy.
 Borg does this, and a rebuild that does not do this will play differently.
 Where it says "known defect", it means the current C Borg does *not* do the
 sane thing; the sane thing is stated alongside, and the choice is left open.
+
+---
+
+## 0. The upstream commit id, and why it is the one to use
+
+Every claim in this document is a claim about one specific commit of the
+upstream C Borg. That commit is:
+
+| Field | Value |
+| --- | --- |
+| Repository | `angband/angband` |
+| Branch | `master` |
+| Commit | `e473720ed88a0f0c7ca66815cef3000eb4a38bc3` |
+| Commit date | 2026-10-27 |
+| Subject | `Term_clear() and loop over height calling Term_erase() are not synonyms` |
+| Path read | `src/borg/` |
+| Size read | 59 `.c` files, 64,147 lines (plus headers) |
+
+**This commit is upstream's current `master` head.** The commit's subject is
+about `Term_clear()`/`Term_erase()` and has nothing to do with the Borg; it
+simply happens to be the newest upstream commit, and it carries `src/borg/`
+along unchanged.
+
+Three ways to re-establish the link, all of which must agree:
+
+```sh
+# 1. what upstream ships right now
+gh api repos/angband/angband/commits/master --jq '.sha'
+#   -> e473720ed88a0f0c7ca66815cef3000eb4a38bc3
+
+# 2. what the session has pinned
+python3 -c "import json;print(json.load(open('session.json'))['baselines']['c'])"
+#   -> e473720ed88a0f0c7ca66815cef3000eb4a38bc3
+
+# 3. what the catalogue records as the C source
+python3 -c "import json;print(json.load(open('docs/c-bugs/catalogue.json'))['sources']['c']['commit'])"
+#   -> e473720ed88a0f0c7ca66815cef3000eb4a38bc3
+
+# and the difference between upstream now and the pin
+gh api "repos/angband/angband/compare/e473720ed88a0f0c7ca66815cef3000eb4a38bc3...master" \
+  --jq '"status=\(.status) ahead=\(.ahead_by) behind=\(.behind_by)"'
+#   -> status=identical ahead=0 behind=0
+```
+
+**Rules that follow from the link being direct.**
+
+1. A defect reported against this commit is a defect in **upstream's current
+   `master`**, not in a fork's copy of an old release. It can be filed
+   upstream as-is.
+2. When upstream `master` moves, the pin moves with it. The check to repeat
+   is the comparison above, plus `node tools/c-upstream-watch.mjs`, which
+   reports the affected C files and which catalogue findings reference them.
+   A changed `src/borg/` path is a **review signal, not proof of a fix**
+   (the watcher's own words).
+3. The local `c-borg-reference` branch and the native C worktree
+   (`.worktrees/angband-c`) carry this same commit as their C source base;
+   `git diff e473720ed origin/c-borg-reference -- src/borg` is empty, so the
+   reference is pristine.
+4. Every finding linked from §11 must name the commit it was read at. A
+   finding that survives a `master` move is re-checked at the new head; a
+   finding that does not is closed as fixed *by upstream*, not by us.
 
 ---
 
@@ -1042,12 +1119,16 @@ deliberate divergence that must be recorded.
 
 ### 18.1 Source
 
-`angband/angband` at `e473720ed88a0f0c7ca66815cef3000eb4a38bc3`,
-`src/borg/` (59 `.c` files, 64,147 lines). Read file by file.
+`angband/angband` `master` at
+`e473720ed88a0f0c7ca66815cef3000eb4a38bc3` — which **is** upstream's current
+`master` head (see §0), `src/borg/`, 59 `.c` files and 64,147 lines. Read
+file by file. The local `c-borg-reference` branch carries the same commit
+and is unmodified (`git diff e473720ed origin/c-borg-reference -- src/borg`
+is empty).
 
 ### 18.2 The native C game and the headless harness
 
-The C game was built from the pinned tree with `SUPPORT_BORG=ON`, and
+The C game was built from that upstream commit with `SUPPORT_BORG=ON`, and
 driven by the **headless deterministic Borg harness**
 (`SUPPORT_BORG_HARNESS=ON`): a front end that supplies a terminal which
 draws nothing and never sleeps, scripts the birth screens, sends `^Z z` to
