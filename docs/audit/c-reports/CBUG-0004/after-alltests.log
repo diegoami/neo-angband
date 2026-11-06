@@ -1,0 +1,273 @@
+[  0%] Built target OurUnitTestLib
+Copying needed files
+[  0%] Built target TransferLib
+[ 54%] Built target OurCoreLib
+[ 55%] Linking C executable unittests/artifact/name/name
+[ 55%] Linking C executable unittests/z-virt/string/string
+[ 56%] Built target unittest-artifact-name
+[ 56%] Built target unittest-z-virt-string
+[ 56%] Linking C executable unittests/cave/scatter/scatter
+[ 56%] Linking C executable unittests/cave/find/find
+[ 57%] Built target unittest-cave-scatter
+[ 57%] Linking C executable unittests/command/lookup/lookup
+[ 57%] Built target unittest-cave-find
+[ 57%] Linking C executable unittests/effects/chain/chain
+[ 57%] Built target unittest-command-lookup
+[ 57%] Linking C executable unittests/effects/destruction/destruction
+[ 58%] Built target unittest-effects-chain
+[ 58%] Linking C executable unittests/effects/earthquake/earthquake
+[ 58%] Built target unittest-effects-destruction
+[ 59%] Linking C executable unittests/effects/info/info
+[ 60%] Built target unittest-effects-earthquake
+[ 60%] Linking C executable unittests/game/basic/basic
+[ 60%] Built target unittest-effects-info
+[ 60%] Built target unittest-game-basic
+[ 61%] Linking C executable unittests/game/mage/mage
+[ 61%] Linking C executable unittests/game/status/status
+[ 61%] Built target unittest-game-status
+[ 61%] Built target unittest-game-mage
+[ 62%] Linking C executable unittests/message/message/message
+[ 62%] Linking C executable unittests/monster/attack/attack
+[ 62%] Built target unittest-message-message
+[ 62%] Built target unittest-monster-attack
+[ 63%] Linking C executable unittests/monster/desc/desc
+[ 63%] Linking C executable unittests/monster/monster/monster
+[ 63%] Built target unittest-monster-monster
+[ 63%] Built target unittest-monster-desc
+[ 63%] Linking C executable unittests/object/attack/attack
+[ 64%] Linking C executable unittests/object/alloc/alloc
+[ 64%] Built target unittest-object-attack
+[ 64%] Built target unittest-object-alloc
+[ 65%] Linking C executable unittests/object/info/info
+[ 65%] Linking C executable unittests/object/pile/pile
+[ 65%] Built target unittest-object-pile
+[ 66%] Linking C executable unittests/object/slays/slays
+[ 66%] Built target unittest-object-info
+[ 66%] Linking C executable unittests/object/util/util
+[ 66%] Built target unittest-object-slays
+[ 66%] Built target unittest-object-util
+[ 67%] Linking C executable unittests/parse/a-info/a-info
+[ 67%] Linking C executable unittests/parse/blowe/blowe
+[ 67%] Built target unittest-parse-a-info
+[ 67%] Built target unittest-parse-blowe
+[ 68%] Linking C executable unittests/parse/blowm/blowm
+[ 68%] Linking C executable unittests/parse/body/body
+[ 68%] Built target unittest-parse-blowm
+[ 68%] Built target unittest-parse-body
+[ 68%] Linking C executable unittests/parse/c-info/c-info
+[ 69%] Linking C executable unittests/parse/brand/brand
+[ 69%] Built target unittest-parse-brand
+[ 69%] Built target unittest-parse-c-info
+[ 69%] Linking C executable unittests/parse/e-info/e-info
+[ 69%] Linking C executable unittests/parse/curse/curse
+[ 69%] Built target unittest-parse-e-info
+[ 70%] Built target unittest-parse-curse
+[ 70%] Linking C executable unittests/parse/f-info/f-info
+[ 70%] Linking C executable unittests/parse/flavor/flavor
+[ 70%] Built target unittest-parse-flavor
+[ 71%] Built target unittest-parse-f-info
+[ 71%] Linking C executable unittests/parse/graphics/graphics
+[ 71%] Linking C executable unittests/parse/h-info/h-info
+[ 71%] Built target unittest-parse-h-info
+[ 72%] Built target unittest-parse-graphics
+[ 72%] Linking C executable unittests/parse/hints/hints
+[ 72%] Linking C executable unittests/parse/k-info/k-info
+[ 73%] Built target unittest-parse-hints
+[ 73%] Built target unittest-parse-k-info
+[ 73%] Linking C executable unittests/parse/mbase/mbase
+[ 73%] Linking C executable unittests/parse/lore/lore
+[ 74%] Built target unittest-parse-lore
+[ 74%] Built target unittest-parse-mbase
+[ 74%] Linking C executable unittests/parse/names/names
+[ 74%] Linking C executable unittests/parse/mspell/mspell
+[ 75%] Built target unittest-parse-names
+[ 75%] Built target unittest-parse-mspell
+[ 75%] Linking C executable unittests/parse/objbase/objbase
+[ 75%] Linking C executable unittests/parse/objact/objact
+[ 75%] Built target unittest-parse-objbase
+[ 76%] Built target unittest-parse-objact
+[ 76%] Linking C executable unittests/parse/objprop/objprop
+[ 76%] Linking C executable unittests/parse/p-info/p-info
+[ 76%] Built target unittest-parse-p-info
+[ 77%] Built target unittest-parse-objprop
+[ 77%] Linking C executable unittests/parse/pain/pain
+[ 77%] Linking C executable unittests/parse/parse/parse
+[ 77%] Built target unittest-parse-parse
+[ 78%] Built target unittest-parse-pain
+[ 79%] Linking C executable unittests/parse/pit/pit
+[ 79%] Linking C executable unittests/parse/partrap/partrap
+[ 79%] Built target unittest-parse-pit
+[ 80%] Built target unittest-parse-partrap
+[ 80%] Linking C executable unittests/parse/pprop/pprop
+[ 81%] Linking C executable unittests/parse/proj/proj
+[ 81%] Built target unittest-parse-pprop
+[ 81%] Built target unittest-parse-proj
+[ 81%] Linking C executable unittests/parse/ptimed/ptimed
+[ 82%] Linking C executable unittests/parse/r-info/r-info
+[ 82%] Built target unittest-parse-ptimed
+[ 82%] Built target unittest-parse-r-info
+[ 82%] Linking C executable unittests/parse/readstore/readstore
+[ 83%] Linking C executable unittests/parse/realm/realm
+[ 83%] Built target unittest-parse-readstore
+[ 83%] Built target unittest-parse-realm
+[ 83%] Linking C executable unittests/parse/shape/shape
+[ 84%] Linking C executable unittests/parse/slay/slay
+[ 84%] Built target unittest-parse-shape
+[ 84%] Built target unittest-parse-slay
+[ 84%] Linking C executable unittests/parse/ui_knowledge/ui_knowledge
+[ 85%] Linking C executable unittests/parse/v-info/v-info
+[ 85%] Built target unittest-parse-ui_knowledge
+[ 85%] Built target unittest-parse-v-info
+[ 85%] Linking C executable unittests/parse/world/world
+[ 86%] Linking C executable unittests/parse/z-info/z-info
+[ 86%] Built target unittest-parse-world
+[ 86%] Built target unittest-parse-z-info
+[ 86%] Linking C executable unittests/player/birth/birth
+[ 87%] Linking C executable unittests/player/calc-inventory/calc-inventory
+[ 87%] Built target unittest-player-birth
+[ 87%] Built target unittest-player-calc-inventory
+[ 87%] Linking C executable unittests/player/combine-pack/combine-pack
+[ 88%] Linking C executable unittests/player/digging/digging
+[ 88%] Built target unittest-player-combine-pack
+[ 88%] Built target unittest-player-digging
+[ 88%] Linking C executable unittests/player/history/history
+[ 89%] Linking C executable unittests/player/inven-carry-num/inven-carry-num
+[ 89%] Built target unittest-player-history
+[ 89%] Linking C executable unittests/player/inven-wield/inven-wield
+[ 89%] Built target unittest-player-inven-carry-num
+[ 89%] Linking C executable unittests/player/pathfind/pathfind
+[ 89%] Built target unittest-player-inven-wield
+[ 89%] Linking C executable unittests/player/playerstat/playerstat
+[ 90%] Built target unittest-player-pathfind
+[ 90%] Linking C executable unittests/player/pscore/pscore
+[ 90%] Built target unittest-player-playerstat
+[ 90%] Linking C executable unittests/player/timed/timed
+[ 91%] Built target unittest-player-pscore
+[ 91%] Linking C executable unittests/player/util/util
+[ 91%] Built target unittest-player-timed
+[ 91%] Linking C executable unittests/trivial/trivial/trivial
+[ 92%] Built target unittest-player-util
+[ 92%] Linking C executable unittests/z-bitflag/bitflag/bitflag
+[ 92%] Built target unittest-trivial-trivial
+[ 92%] Linking C executable unittests/z-dice/dice/dice
+[ 93%] Built target unittest-z-bitflag-bitflag
+[ 93%] Linking C executable unittests/z-expression/expression/expression
+[ 93%] Built target unittest-z-dice-dice
+[ 93%] Linking C executable unittests/z-file/filename-index/filename-index
+[ 94%] Built target unittest-z-expression-expression
+[ 94%] Linking C executable unittests/z-file/path-normalize/path-normalize
+[ 94%] Built target unittest-z-file-filename-index
+[ 94%] Linking C executable unittests/z-quark/quark/quark
+[ 95%] Built target unittest-z-file-path-normalize
+[ 95%] Linking C executable unittests/z-queue/qp/qp
+[ 95%] Built target unittest-z-quark-quark
+[ 95%] Linking C executable unittests/z-textblock/textblock/textblock
+[ 96%] Built target unittest-z-queue-qp
+[ 96%] Linking C executable unittests/z-util/guard/guard
+[ 96%] Built target unittest-z-textblock-textblock
+[ 96%] Linking C executable unittests/z-util/meanvar/meanvar
+[ 97%] Built target unittest-z-util-guard
+[ 97%] Linking C executable unittests/z-util/rational/rational
+[ 97%] Built target unittest-z-util-meanvar
+[ 97%] Linking C executable unittests/z-util/util/util
+[ 98%] Built target unittest-z-util-rational
+[ 98%] Linking C executable unittests/z-virt/mem/mem
+[ 98%] Built target unittest-z-util-util
+[ 99%] Built target OurExecutable
+[100%] Built target unittest-z-virt-mem
+Running 86 suites:
+    artifact/name                              [01;32m1/1[0m passed
+    cave/find                                  [01;32m4/4[0m passed
+    cave/scatter                               [01;32m6/6[0m passed
+    command/lookup                             [01;32m2/2[0m passed
+    effects/chain                            [01;32m20/20[0m passed
+    effects/destruction                        [01;32m2/2[0m passed
+    effects/earthquake                         [01;32m2/2[0m passed
+    effects/info                               [01;32m4/4[0m passed
+    game/basic                                 [01;32m6/6[0m passed
+    game/mage                                  [01;32m1/1[0m passed
+    game/status                                [01;32m7/7[0m passed
+    message/message                          [01;32m11/11[0m passed
+    monster/attack                             [01;32m2/2[0m passed
+    monster/desc                               [01;32m7/7[0m passed
+    monster/monster                            [01;32m2/2[0m passed
+    object/alloc                               [01;32m1/1[0m passed
+    object/attack                              [01;32m1/1[0m passed
+    object/info                                [01;32m3/3[0m passed
+    object/pile                                [01;32m1/1[0m passed
+    object/slays                               [01;32m6/6[0m passed
+    object/util                                [01;32m3/3[0m passed
+    parse/a-info                             [01;32m29/29[0m passed
+    parse/blowe                              [01;32m14/14[0m passed
+    parse/blowm                              [01;32m10/10[0m passed
+    parse/body                                 [01;32m5/5[0m passed
+    parse/brand                              [01;32m11/11[0m passed
+    parse/c-info                             [01;32m48/48[0m passed
+    parse/curse                              [01;32m27/27[0m passed
+    parse/e-info                             [01;32m30/30[0m passed
+    parse/f-info                             [01;32m23/23[0m passed
+    parse/flavor                               [01;32m4/4[0m passed
+    parse/graphics                             [01;32m2/2[0m passed
+    parse/h-info                               [01;32m3/3[0m passed
+    parse/hints                                [01;32m1/1[0m passed
+    parse/k-info                             [01;32m40/40[0m passed
+    parse/lore                                 [01;32m1/1[0m passed
+    parse/mbase                                [01;32m9/9[0m passed
+    parse/mspell                             [01;32m23/23[0m passed
+    parse/names                                [01;32m5/5[0m passed
+    parse/objact                             [01;32m16/16[0m passed
+    parse/objbase                            [01;32m11/11[0m passed
+    parse/objprop                            [01;32m20/20[0m passed
+    parse/p-info                             [01;32m25/25[0m passed
+    parse/pain                                 [01;32m4/4[0m passed
+    parse/parser                             [01;32m32/32[0m passed
+    parse/partrap                            [01;32m34/34[0m passed
+    parse/pit                                [01;32m20/20[0m passed
+    parse/pprop                                [01;32m7/7[0m passed
+    parse/proj                               [01;32m19/19[0m passed
+    parse/ptimed                             [01;32m36/36[0m passed
+    parse/r-info                             [01;32m50/50[0m passed
+    parse/store                                [01;32m5/5[0m passed
+    parse/realm                                [01;32m8/8[0m passed
+    parser/shape                             [01;32m27/27[0m passed
+    parse/slay                               [01;32m13/13[0m passed
+    parse/ui_knowledge                         [01;32m8/8[0m passed
+    parse/v-info                               [01;32m8/8[0m passed
+    parse/world                                [01;32m1/1[0m passed
+    parse/z-info                             [01;32m95/95[0m passed
+    player/birth                               [01;32m1/1[0m passed
+    player/calc-inventory                      [01;32m9/9[0m passed
+    player/combine-pack                        [01;32m4/4[0m passed
+    player/digging                             [01;32m1/1[0m passed
+    player/history                             [01;32m1/1[0m passed
+    player/inven-carry-num                   [01;32m10/10[0m passed
+    player/inven-wield                       [01;32m14/14[0m passed
+    player/pathfind                            [01;32m1/1[0m passed
+    player/player                              [01;32m2/2[0m passed
+    player/pscore                              [01;32m6/6[0m passed
+    player/timed                             [01;32m14/14[0m passed
+    player/util                                [01;32m2/2[0m passed
+    trivial/trivial                            [01;32m2/2[0m passed
+    z-bitflag/bitflag                        [01;32m22/22[0m passed
+    z-dice/dice                                [01;32m4/4[0m passed
+    z-expression/expression                    [01;32m4/4[0m passed
+    z-file/filename-index                      [01;32m3/3[0m passed
+    z-file/path-normalize                      [01;32m7/7[0m passed
+    z-quark/quark                              [01;32m2/2[0m passed
+    z-queue/qp                                 [01;32m6/6[0m passed
+    z-textblock/textblock                      [01;32m5/5[0m passed
+    z-util/guard                               [01;32m4/4[0m passed
+    z-util/meanvar                             [01;32m6/6[0m passed
+    z-util/rational                            [01;32m4/4[0m passed
+    z-util/util                                [01;32m6/6[0m passed
+    z-virt/mem                                 [01;32m2/2[0m passed
+    z-virt/string                              [01;32m7/7[0m passed
+Total: [01;32m965/965[0m passed ([01;32m100.0%[0m)
+[100%] Built target allunittests
+Running: tests/trivial/matcher... [01;32mPassed[00m
+Running: tests/birth/Hu-Wa... [01;32mPassed[00m
+Running: tests/birth/new-game-0... [01;32mPassed[00m
+Running: tests/birth/Dw-Pa... [01;32mPassed[00m
+Running: tests/birth/new-game-1... [01;32mPassed[00m
+Total: 5/5
+[100%] Built target alltests
