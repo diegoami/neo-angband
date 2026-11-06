@@ -1,0 +1,164 @@
+{
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "fix": "6912b85cb7b902616ad786dfc20afe3b4cf28b10",
+  "fixtures_ref": "77bddc19421eaff33c70f6cebc2588c8ca632ce8",
+  "cases": {
+    "before": {
+      "living": {
+        "exit": 0,
+        "passed": false,
+        "gate": {
+          "spell_okay": 1,
+          "legal": 1,
+          "temp_n": 1
+        },
+        "launch": {
+          "direct": -1
+        },
+        "rating": {
+          "value": -21,
+          "expected_average": 39,
+          "clevel": 26
+        },
+        "outcome": {
+          "hp_before": 225,
+          "hp_after": 159,
+          "hp_lost": 66,
+          "undead": 0
+        }
+      },
+      "undead": {
+        "exit": 0,
+        "passed": true,
+        "gate": {
+          "spell_okay": 1,
+          "legal": 1,
+          "temp_n": 1
+        },
+        "launch": {
+          "direct": -1
+        },
+        "rating": {
+          "value": -21,
+          "expected_average": 39,
+          "clevel": 26
+        },
+        "outcome": {
+          "hp_before": 47,
+          "hp_after": 47,
+          "hp_lost": 0,
+          "undead": 1
+        }
+      },
+      "bolt": {
+        "exit": 0,
+        "passed": true,
+        "rating": {
+          "bolt_control": 11
+        }
+      }
+    },
+    "after": {
+      "living": {
+        "exit": 0,
+        "passed": true,
+        "gate": {
+          "spell_okay": 1,
+          "legal": 1,
+          "temp_n": 1
+        },
+        "launch": {
+          "direct": 39
+        },
+        "rating": {
+          "value": 19,
+          "expected_average": 39,
+          "clevel": 26
+        },
+        "outcome": {
+          "hp_before": 225,
+          "hp_after": 159,
+          "hp_lost": 66,
+          "undead": 0
+        }
+      },
+      "undead": {
+        "exit": 0,
+        "passed": true,
+        "gate": {
+          "spell_okay": 1,
+          "legal": 1,
+          "temp_n": 1
+        },
+        "launch": {
+          "direct": -1
+        },
+        "rating": {
+          "value": -21,
+          "expected_average": 39,
+          "clevel": 26
+        },
+        "outcome": {
+          "hp_before": 47,
+          "hp_after": 47,
+          "hp_lost": 0,
+          "undead": 1
+        }
+      },
+      "bolt": {
+        "exit": 0,
+        "passed": true,
+        "rating": {
+          "bolt_control": 11
+        }
+      }
+    }
+  },
+  "identical_controls": [
+    "bolt"
+  ],
+  "full_tests": {
+    "before": {
+      "units": "965/965",
+      "frontends": "5/5"
+    },
+    "after": {
+      "units": "965/965",
+      "frontends": "5/5"
+    }
+  },
+  "fixed_source_sha256": "a859c54c27c2487423a309dc8b39b1e053945b9732554c99e4b8bfadcb8c6e40",
+  "compiler": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+  "cmake": "cmake version 4.2.3",
+  "browser": {
+    "engine": "Google Chrome for Testing 156.0.8078.4 (headless dump-dom)",
+    "verification": "19 checks: 3 situations x 2 variants x 2 steps rendered; living -21/19 with the recorded 66-HP native cast; undead 0/0; no undefined fields; zero console errors (the render check caught and fixed two replay template defects before posting)"
+  },
+  "maintenance_base": "f186aa1fce2e590eb9bbcb91dc369f3f8b6af688",
+  "sha256": {
+    "README.md": "f825ff0dd0acdcd00b39eef2cab0f55aec4b2f510475e5b404e916b931ce0406",
+    "after-alltests.log": "c0a1fd85e276909927161225f4d23bb98771f0c74b9e55bd7df953a260e521f7",
+    "after-bolt.log": "bce76a0a7d3c216cdeec8e9964f6f70eb253c4bb3d20f0b56fb69d92aa3f302d",
+    "after-build.log": "a9ecde344073197709949252f5078acaa03843ec4e4d222cfd70a5db76de9e1b",
+    "after-living.log": "c5f51b6692e34fc4815f33f15def975fe6303a2f34106f805bb97b158639528e",
+    "after-results.json": "223ff3d6baaa2ab0267f8bfae0ab5fd2dd317eb8d7cd9beb99326f0f9fc3980b",
+    "after-scenarios.log": "91f52db0dd3ac7f3f48aab43bf71db799fa5272e42793cabdee57c4416e51ab3",
+    "after-undead.log": "d599fcaec0d8814194e499bb7a3c120ac24023efb01d1cf1c4d54c50ab5daac8",
+    "before-alltests.log": "63c4e742b5423c1c555f8982bc145137588d3d74769bc07c9d89eceb9be875d4",
+    "before-bolt.log": "bce76a0a7d3c216cdeec8e9964f6f70eb253c4bb3d20f0b56fb69d92aa3f302d",
+    "before-build.log": "36cfee3ced7bfa77aa8d1eba5b9a087509d4ff71b820f3ba449bea6c606b71f2",
+    "before-living.log": "16c31397464c0117932b1adbe2b5cf7acfcb98b03d0a6aab48d85fe24301b1a8",
+    "before-results.json": "cbbf22fb0e54144d2b9289a46c7736b6c928d7e50c94b7dee9640d391ee084be",
+    "before-scenarios.log": "e4737b2349d718760a3f68060b483a8f1c21bd7cf5111dad57ee2de59173d6b6",
+    "before-undead.log": "d599fcaec0d8814194e499bb7a3c120ac24023efb01d1cf1c4d54c50ab5daac8",
+    "borg.txt": "80738da248ed74e343925e0348fc75da993d8c03ffff03c7bce1a9090005be47",
+    "configure.log": "39ca3f036a6ed64a74724a59d2adaa007bc812fb388087bcc9e0d77fcd340eaf",
+    "make_replay.py": "8b274213063cdd64b9d15d7d27add186a2600c72cbf32e1f2e844378bf266565",
+    "replay-data.json": "1c5d3141eff2e199cf245ad5f8dfba092e606adf3bd230e766a576af2445d607",
+    "replay.html": "fb63f693a827f0e08a88630886f9bb7f8739ace390763a2ff158120f332e39f4",
+    "reproduce.py": "97432f624da63448042b9afb9fafc22db6906b4ed4d4b2b5ec809d938a8d8911",
+    "result.json": "8f5cedb19a6fd837f4235c3da6d100083ff9caa0dc8267610c1dd1f9fc58f7fa",
+    "run-cases.py": "dbc33189748c2741c9cf073764b77554d64e2e7104a5857160b18fbb97a75f4f",
+    "scenario.c": "75b1d78926f9ff729d84804249762865d6150ded32b8c2fabaa85bfebfef911e"
+  }
+}
