@@ -1,0 +1,16 @@
+{
+  "town": {
+    "exit": 0,
+    "passed": true,
+    "geometry": "lunal_mode=0 fleeing_lunal=0",
+    "rating": "lunal_mode=0 fleeing_lunal=0",
+    "outcome": "lunal_mode=0 fleeing_lunal=0"
+  },
+  "pack": {
+    "exit": 0,
+    "passed": true,
+    "geometry": "lunal_mode=1 fleeing_lunal=1",
+    "rating": "lunal_mode=1 fleeing_lunal=1",
+    "outcome": "lunal_mode=1 fleeing_lunal=1"
+  }
+}
