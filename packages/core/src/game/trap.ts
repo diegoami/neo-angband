@@ -214,8 +214,6 @@ export function squareSetFeatTrapSideEffect(state: GameState, grid: Loc): void {
 export function installChunkFeatHook(state: GameState): void {
   state.chunk.onFeatSet = (grid: Loc): void => {
     squareSetFeatTrapSideEffect(state, grid);
-    /* FORK: carry neostryder/neo-angband#429 (cave-square.c:1261).
-     * Live terrain changes must reach guarded player memory immediately. */
     noteSpot(state, grid);
   };
 }

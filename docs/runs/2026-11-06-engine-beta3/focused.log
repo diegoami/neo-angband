@@ -1,0 +1,68 @@
+Scope: all 9 workspace projects
+✓ Lockfile passes supply-chain policies (verified 4d ago)
+Lockfile is up to date, resolution step is skipped
+Packages are hard linked from the content-addressable store to the virtual store.
+  Content-addressable store is at: <user-home>/.local/share/pnpm/store/v11
+  Virtual store is at:             node_modules/.pnpm
+Packages: +738
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Progress: resolved 738, reused 738, downloaded 0, added 738, done
+
+devDependencies:
++ @eslint/js 10.0.1
++ @playwright/test 1.63.0
++ @types/node 24.13.3
++ eslint 10.8.0
++ jsdom 30.1.1
++ playwright 1.63.0
++ typescript 5.9.3
++ typescript-eslint 8.65.0
++ vitest 4.1.11
+
+Done in 424ms using pnpm v12.3.4
+$ tsc -b
+
+ RUN  v4.1.11 /tmp/angband-engine-beta3
+
+vitest: packages/web/public/tiles is empty; running sync-tiles
+sync-tiles: 21 copied, 0 already current
+
+ Test Files  3 passed (3)
+      Tests  61 passed (61)
+   Start at  18:53:48
+   Duration  925ms (transform 1.56s, setup 0ms, import 2.31s, tests 63ms, environment 0ms)
+
+✔ only reviewed inert regular records take the small lane (0.734823ms)
+✔ README, CONTRIBUTING and installation prose select real doc contracts (0.329727ms)
+✔ runtime, tests, dependencies, workflows, config, unknown docs and runnable evidence stay full (0.147382ms)
+✔ empty, removed, renamed, executable, symlink and malformed paths stay full (0.088488ms)
+✔ event ranges use exact PR merge base/head and push before/after; manual/initial/unsupported fail full (0.376328ms)
+✔ raw parser retains filenames and rejects truncation or unsupported records (0.172565ms)
+✔ real git PR merge and push changes classify correctly, with uncertainty controls (49.81551ms)
+✔ workflows keep full gates, no branch-push duplicate or issue events, and scoped metadata coverage (0.465988ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 89.71656
+11 inherited jobs restricted to neostryder/neo-angband; fork tag/manual/release/schedule events skip every job, including always() jobs
+diegoami/neo-angband-tracker: engine-and-c-fixes; bootstrap files and origin verified
+   1.23.0-beta.3 packages/core/src/version.ts - ENGINE_VERSION
+   1.23.0-beta.3 package.json - the workspace root manifest
+   1.23.0-beta.3 packages/cli/package.json - the cli manifest
+   1.23.0-beta.3 packages/content/package.json - the content manifest
+   1.23.0-beta.3 packages/core/package.json - the core manifest
+   1.23.0-beta.3 packages/desktop/package.json - the desktop manifest
+   1.23.0-beta.3 packages/linoleum/package.json - the linoleum manifest
+   1.23.0-beta.3 packages/mcp/package.json - the mcp manifest
+   1.23.0-beta.3 packages/mod-sdk/package.json - the mod-sdk manifest
+   1.23.0-beta.3 packages/web/package.json - the web manifest
+   1.23.0-beta.3 packages/linoleum/src/version.ts - LINOLEUM_TOOLS_VERSION
+   1.23.0-beta.3 packages/core/README.md - the ENGINE_VERSION example output
+   1.23.0-beta.3 docs/RELEASING.md - every example tag in the runbook
+   1.23.0-beta.3 docs/RELEASING.md - every example tag push in the runbook
+
+[version] 14 sites agree on 1.23.0-beta.3

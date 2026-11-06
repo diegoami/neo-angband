@@ -57,3 +57,20 @@ not become beta.3 through this source closure. Preserve each patch-active
 removal unit until that consumer proves its replacement. No source update,
 package publication, patch removal, consumer state change or lab deployment is
 part of this ledger correction. Historical run receipts remain append-only.
+
+## Exact beta.3 integration — 2026-11-06
+
+Owner task [299](https://github.com/diegoami/neo-angband-tracker/issues/299)
+imports the exact released97ceec2925e6715ba725624a61866ab93a196a12 by normal
+merge while preserving existing fork corrections/docs/workflow containment.
+[Source/package audit and consumer handoff](runs/2026-11-06-engine-beta3/README.md)
+records registry gitHead/integrities, actual archive hashes and independent
+replacement-unit checks. Published beta.3 includes noteSpot429 and class counts0cc75;
+it still lacks input-flush432 and seed/birth433. The fork keeps its existing
+input-flush correction, but433 remains unapplied in this source profile.
+
+Source4/15 were already closed after accepted source correction/import; source5/6
+remain open because432/433 are still unmerged upstream and absent from the released
+package. No consumer patch-active or lab state changes automatically. The earlier
+resolution receipts remain historical; the new package audit establishes actual
+npm delivery instead of relying only on a version string or maintainer statement.
