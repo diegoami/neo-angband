@@ -40,8 +40,8 @@ From a clone of `diegoami/neo-angband-tracker`, copy these three commands:
 
 ```sh
 git fetch https://github.com/diegoami/neo-angband-tracker.git task/slay-239-evidence
-git show PINSHA:docs/audit/c-reports/slay-239/reproduce.py > /tmp/reproduce-slay-239.py
-python3 /tmp/reproduce-slay-239.py --fixtures-ref PINSHA --full-tests
+git show 8bb78983a83384993eaaa7d3c2da09be43c65fd4:docs/audit/c-reports/slay-239/reproduce.py > /tmp/reproduce-slay-239.py
+python3 /tmp/reproduce-slay-239.py --fixtures-ref 8bb78983a83384993eaaa7d3c2da09be43c65fd4 --full-tests
 ```
 
 The runner builds original and corrected variants from pristine C
