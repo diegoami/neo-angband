@@ -1,0 +1,122 @@
+{
+  "near-far": {
+    "label": "A close target and a distant bystander",
+    "explanation": "A Necromancer with Vampire Strike faces a kobold five grids away while a hill giant stands twenty grids away. The closeness scan picks the kobold but leaves its distance variable holding the last entry examined \u2014 the giant. The original refuses to cast; the correction judges the chosen kobold and casts.",
+    "before": {
+      "raw": "native-c/vampire-257: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Necromancer level=26 depth=30 hp=158/158 sp=144/144\n  vampire_strike_uses_chosen_distance  MODE near-far\nGEOMETRY near=5 far=20 max_range=20\nDECISION acted=0 keys=0 sequence=\nOUTCOME acted=0 keys=0 cast_spell=0\nFailed\n    native-c/vampire-257:191: requirement 'acted ? 1 : 0' == '1' failed\n      acted ? 1 : 0:                0\n      1:                1\nnative-c/vampire-257 finished: 0/1 passed\n",
+      "passed": false,
+      "geometry": {
+        "near": 5,
+        "far": 20,
+        "max_range": 20
+      },
+      "decision": {
+        "acted": 0,
+        "keys": 0
+      },
+      "outcome": {
+        "acted": 0,
+        "keys": 0,
+        "cast_spell": 0
+      }
+    },
+    "after": {
+      "raw": "native-c/vampire-257: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Necromancer level=26 depth=30 hp=158/158 sp=144/144\n  vampire_strike_uses_chosen_distance  MODE near-far\nGEOMETRY near=5 far=20 max_range=20\nDECISION acted=1 keys=3 sequence=mbb\nOUTCOME acted=1 keys=3 cast_spell=1\nPassed\nnative-c/vampire-257 finished: 1/1 passed\n",
+      "passed": true,
+      "geometry": {
+        "near": 5,
+        "far": 20,
+        "max_range": 20
+      },
+      "decision": {
+        "acted": 1,
+        "keys": 3
+      },
+      "outcome": {
+        "acted": 1,
+        "keys": 3,
+        "cast_spell": 1
+      }
+    }
+  },
+  "near-near": {
+    "label": "Control: both monsters close",
+    "explanation": "With a second kobold two grids away both versions cast Vampire Strike. The logs are identical before and after the correction.",
+    "before": {
+      "raw": "native-c/vampire-257: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Necromancer level=26 depth=30 hp=158/158 sp=144/144\n  vampire_strike_uses_chosen_distance  MODE near-near\nGEOMETRY near=2 far=0 max_range=20\nDECISION acted=1 keys=3 sequence=mbb\nOUTCOME acted=1 keys=3 cast_spell=1\nPassed\nnative-c/vampire-257 finished: 1/1 passed\n",
+      "passed": true,
+      "geometry": {
+        "near": 2,
+        "far": 0,
+        "max_range": 20
+      },
+      "decision": {
+        "acted": 1,
+        "keys": 3
+      },
+      "outcome": {
+        "acted": 1,
+        "keys": 3,
+        "cast_spell": 1
+      }
+    },
+    "after": {
+      "raw": "native-c/vampire-257: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Necromancer level=26 depth=30 hp=158/158 sp=144/144\n  vampire_strike_uses_chosen_distance  MODE near-near\nGEOMETRY near=2 far=0 max_range=20\nDECISION acted=1 keys=3 sequence=mbb\nOUTCOME acted=1 keys=3 cast_spell=1\nPassed\nnative-c/vampire-257 finished: 1/1 passed\n",
+      "passed": true,
+      "geometry": {
+        "near": 2,
+        "far": 0,
+        "max_range": 20
+      },
+      "decision": {
+        "acted": 1,
+        "keys": 3
+      },
+      "outcome": {
+        "acted": 1,
+        "keys": 3,
+        "cast_spell": 1
+      }
+    }
+  },
+  "far": {
+    "label": "Control: only a distant monster",
+    "explanation": "With only the far hill giant in the list both versions refuse the cast: the chosen distance really is twenty. The logs are identical before and after the correction.",
+    "before": {
+      "raw": "native-c/vampire-257: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Necromancer level=26 depth=30 hp=158/158 sp=144/144\n  vampire_strike_uses_chosen_distance  MODE far\nGEOMETRY near=20 far=20 max_range=20\nDECISION acted=0 keys=0 sequence=\nOUTCOME acted=0 keys=0 cast_spell=0\nPassed\nnative-c/vampire-257 finished: 1/1 passed\n",
+      "passed": true,
+      "geometry": {
+        "near": 20,
+        "far": 20,
+        "max_range": 20
+      },
+      "decision": {
+        "acted": 0,
+        "keys": 0
+      },
+      "outcome": {
+        "acted": 0,
+        "keys": 0,
+        "cast_spell": 0
+      }
+    },
+    "after": {
+      "raw": "native-c/vampire-257: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Necromancer level=26 depth=30 hp=158/158 sp=144/144\n  vampire_strike_uses_chosen_distance  MODE far\nGEOMETRY near=20 far=20 max_range=20\nDECISION acted=0 keys=0 sequence=\nOUTCOME acted=0 keys=0 cast_spell=0\nPassed\nnative-c/vampire-257 finished: 1/1 passed\n",
+      "passed": true,
+      "geometry": {
+        "near": 20,
+        "far": 20,
+        "max_range": 20
+      },
+      "decision": {
+        "acted": 0,
+        "keys": 0
+      },
+      "outcome": {
+        "acted": 0,
+        "keys": 0,
+        "cast_spell": 0
+      }
+    }
+  }
+}
