@@ -1,0 +1,15 @@
+{
+  "animal": {
+    "exit": 0,
+    "passed": false,
+    "trait": "ws_animal=0",
+    "rating": "auto=17 without=17 with=20",
+    "outcome": "auto=17 without=17 with=20"
+  },
+  "nonanimal": {
+    "exit": 0,
+    "passed": true,
+    "rating": "auto=19 without=19 with=19",
+    "outcome": "auto=19 without=19 with=19"
+  }
+}
