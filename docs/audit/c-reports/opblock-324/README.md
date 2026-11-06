@@ -34,8 +34,8 @@ From a clone of `diegoami/neo-angband-tracker`, copy these three commands:
 
 ```sh
 git fetch https://github.com/diegoami/neo-angband-tracker.git task/opblock-324-evidence
-git show PINSHA:docs/audit/c-reports/opblock-324/reproduce.py > /tmp/reproduce-opblock-324.py
-python3 /tmp/reproduce-opblock-324.py --fixtures-ref PINSHA --full-tests
+git show b6eac1ed1f7b93bc42ecc5877e235bc92b19ffdf:docs/audit/c-reports/opblock-324/reproduce.py > /tmp/reproduce-opblock-324.py
+python3 /tmp/reproduce-opblock-324.py --fixtures-ref b6eac1ed1f7b93bc42ecc5877e235bc92b19ffdf --full-tests
 ```
 
 The runner builds original and corrected variants from pristine C
