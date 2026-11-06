@@ -2576,21 +2576,20 @@ static int borg_attack_aux_spell_bolt_reserve(
          * There should only be one close monster.
          * We do not want to risk fainting.
          */
-        if (d < 7)
+        if (d < 7) {
             near_monsters++;
 
-        /* If it has too many hp to be taken out with this */
-        /* spell, don't bother trying */
-        /* NOTE: the +4 is because the damage is toned down
-                 as an 'average damage' */
-        if (kill->power > (dam + 4))
-            return 0;
+            /* If it has too many hp to be taken out with this */
+            /* spell, don't bother trying */
+            /* NOTE: the +4 is because the damage is toned down
+                     as an 'average damage' */
+            if (kill->power > (dam + 4))
+                return 0;
 
-        /* Do not use it in town */
-        if (borg.trait[BI_CDEPTH] == 0)
-            return 0;
-
-        break;
+            /* Do not use it in town */
+            if (borg.trait[BI_CDEPTH] == 0)
+                return 0;
+        }
     }
 
     /* Should only be 1 near monster */
