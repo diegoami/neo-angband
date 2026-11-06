@@ -44,8 +44,8 @@ From a clone of `diegoami/neo-angband-tracker`, copy these three commands:
 
 ```sh
 git fetch https://github.com/diegoami/neo-angband-tracker.git task/activ-260-evidence
-git show PINSHA:docs/audit/c-reports/activ-260/reproduce.py > /tmp/reproduce-activ-260.py
-python3 /tmp/reproduce-activ-260.py --fixtures-ref PINSHA --full-tests
+git show 460ca1570b2801fed38cc853e82599cd87e8acd2:docs/audit/c-reports/activ-260/reproduce.py > /tmp/reproduce-activ-260.py
+python3 /tmp/reproduce-activ-260.py --fixtures-ref 460ca1570b2801fed38cc853e82599cd87e8acd2 --full-tests
 ```
 
 The runner builds original and corrected variants from pristine C
