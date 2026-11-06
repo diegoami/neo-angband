@@ -106,3 +106,8 @@ Any real failure retains its result and requires attribution; no existing skips,
 seeds, assertions or timeouts are waived. Parent owns merge/post-main observation
 and workspace recovery pins; consumers own their own patches/plugin/gates and
 lab deployment is not authorized by a source merge.
+
+Full release-merge identity: ea570d3975803e2d7dece67915b8f9a2e4d4689c.
+The focused terminal log is deliberately tracked as reviewed public test evidence
+although the repository's general *.log rule ignores disposable logs. It contains
+only this synthetic source build/test output, not lab/profile/credential data.
