@@ -4717,6 +4717,9 @@ int borg_calculate_attack_effectiveness(int attack_type)
             act_wonder, rad, dam, BORG_ATTACK_MISSILE, true, -1));
 
     case BF_ACT_STAFF_HOLY:
+        /* The effect floods the area with goodness: an area-of-sight
+         * dispel, not a single-target bolt. */
+        rad = 10;
         if (borg.trait[BI_CURHP] < borg.trait[BI_MAXHP] / 2)
             dam = 500;
         else
