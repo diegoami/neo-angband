@@ -30,8 +30,8 @@ From a clone of `diegoami/neo-angband-tracker`, copy these three commands:
 
 ```sh
 git fetch https://github.com/diegoami/neo-angband-tracker.git task/light-238-evidence
-git show PINSHA:docs/audit/c-reports/light-238/reproduce.py > /tmp/reproduce-light-238.py
-python3 /tmp/reproduce-light-238.py --fixtures-ref PINSHA --full-tests
+git show 488c10497b9ed995d5eed18cea196b720ae4845b:docs/audit/c-reports/light-238/reproduce.py > /tmp/reproduce-light-238.py
+python3 /tmp/reproduce-light-238.py --fixtures-ref 488c10497b9ed995d5eed18cea196b720ae4845b --full-tests
 ```
 
 The runner builds original and corrected variants from pristine C
