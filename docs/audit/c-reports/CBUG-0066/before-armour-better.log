@@ -1,0 +1,22 @@
+native-c/CBUG-0066: starting...
+ENGINE: The young white dragon breathes frost.
+ENGINE: The young white dragon breathes frost.
+SETUP seed=1000 level=40 max_depth=50 hp=263 monster_hp=239 kill=1
+SPEED engine=116 borg=116 dragon=111 weight=305 carry=2400
+CANDIDATES armour=5 weapon=6 cold=0 fire=0
+PACK 0: Ration of Food
+PACK 1: Potion of Berserk Strength
+PACK 2: Scroll of Word of Recall
+PACK 3: Wooden Torch (5000 turns)
+PACK 4: Small Metal Shield of Resist Cold [5,+0]
+PACK 5: Dagger of Flame (1d4) (+0,+0)
+  cold_dragon_emergency_swap  MODE armour-better
+DANGER initial=99 avoidance=263
+DANGER armour=47 weapon=99
+DECISION swapped=0 command=0 letter=0 pack_index=-1
+PROTECTION cold=0 fire=0
+ENGINE: The young white dragon breathes frost.
+OUTCOME hp_before=263 hp_after=184 hp_lost=79
+[01;31mFailed[00m
+    native-c/CBUG-0066:184: requirement 'swapped' failed
+native-c/CBUG-0066 finished: 0/1 passed

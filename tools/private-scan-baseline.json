@@ -77,6 +77,12 @@
       "path": "packages/web/src/report.test.ts",
       "count": 1,
       "why": "An invented fixture home, asserting a report does NOT carry the player's own name out of a Windows path."
+    },
+    {
+      "rule": "user-home-path",
+      "path": "docs/audit/c-reports/CBUG-0066/configure.log",
+      "count": 1,
+      "why": "Immutable native C configure receipt: one local Python interpreter installation path reported by CMake. It records the existing public account used for this run, not private data or an executable recipe. Preserve the raw run record and its published SHA256; all replay commands and writable profiles use disposable OS-temp paths. This exact-file/count entry permits no other log or account-path additions."
     }
   ]
 }

@@ -1,0 +1,8 @@
+Copying needed files
+[  0%] Built target TransferLib
+[  0%] Built target OurUnitTestLib
+[ 98%] Built target OurCoreLib
+[ 98%] Building C object CMakeFiles/CBUG0066Observer.dir/tmp/native-c-82-evidence/scenario.c.o
+[100%] Built target OurExecutable
+[100%] Linking C executable game/CBUG0066Observer
+[100%] Built target CBUG0066Observer

@@ -1,0 +1,23 @@
+native-c/CBUG-0066: starting...
+ENGINE: The young white dragon breathes frost.
+ENGINE: The young white dragon breathes frost.
+SETUP seed=1000 level=40 max_depth=50 hp=263 monster_hp=239 kill=1
+SPEED engine=116 borg=116 dragon=111 weight=305 carry=2400
+CANDIDATES armour=5 weapon=6 cold=0 fire=0
+PACK 0: Ration of Food
+PACK 1: Potion of Berserk Strength
+PACK 2: Scroll of Word of Recall
+PACK 3: Wooden Torch (5000 turns)
+PACK 4: Small Metal Shield of Resist Cold [5,+0]
+PACK 5: Dagger of Frost (1d4) (+0,+0)
+  cold_dragon_emergency_swap  MODE tie
+DANGER initial=99 avoidance=263
+DANGER armour=47 weapon=47
+DECISION swapped=1 command=119 letter=102 pack_index=5
+SELECTED cold_shield=0 fire_weapon=1
+ENGINE: You are wielding a Dagger of Frost (1d4) (+0,+0) (a).
+PROTECTION cold=1 fire=0
+ENGINE: The young white dragon breathes frost.
+OUTCOME hp_before=263 hp_after=237 hp_lost=26
+[01;32mPassed[00m
+native-c/CBUG-0066 finished: 1/1 passed

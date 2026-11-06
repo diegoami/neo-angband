@@ -1,0 +1,35 @@
+{
+  "binary_sha256": "0ab4cc91615dc3e6872cc321a47d66dc1c347d2c99d91362aeac0dc3c56e7a4d",
+  "modes": {
+    "armour-better": {
+      "exit": 0,
+      "passed": true,
+      "sha256": "44605ea21b52194283d8b233e33bcc6225455b2a610b5c40eb69909005beb5df"
+    },
+    "weapon-better": {
+      "exit": 0,
+      "passed": true,
+      "sha256": "3de3d9ad8abb3ab136a111644de8cf6e8f1e723b5168c358ad632fe55f2d3dd5"
+    },
+    "armour-only": {
+      "exit": 0,
+      "passed": true,
+      "sha256": "ef749edac878e3fbe63f396b32a6ed98fb92f2be44c5597c95d58322b1ac4d17"
+    },
+    "weapon-only": {
+      "exit": 0,
+      "passed": true,
+      "sha256": "80d3dc0f0ecc9438082968b3a46d379198e2ccaa0dd5d62b6cf1d26043756675"
+    },
+    "tie": {
+      "exit": 0,
+      "passed": true,
+      "sha256": "ab550c37e72ca61e047cea38a04e27c0594873e08d5b45d66ec4ddb399394d03"
+    },
+    "no-benefit": {
+      "exit": 0,
+      "passed": true,
+      "sha256": "7f787c376802a27b03c2e101b8a58e322979e4b68658f4f5d405fd87bf9a208c"
+    }
+  }
+}

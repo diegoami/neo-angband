@@ -1,0 +1,22 @@
+{
+  "comparison": "if (b_p2 <= b_p1)",
+  "passes": 7,
+  "failures": 2,
+  "failed_cases": [
+    "armour-only",
+    "weapon-only"
+  ],
+  "failure_reason": "Both single-backup cases select pack_index=-1, an absent item.",
+  "guarded_condition_passes": 9,
+  "cases": {
+    "armour-better": true,
+    "weapon-better": true,
+    "armour-only": false,
+    "weapon-only": false,
+    "tie": true,
+    "no-benefit": true,
+    "fire-armour": true,
+    "electric-weapon": true,
+    "both-helpful": true
+  }
+}

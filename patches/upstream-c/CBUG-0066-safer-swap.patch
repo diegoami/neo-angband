@@ -1,0 +1,28 @@
+From 66e1012113fd7db634b19ffe86a470b58a7f7967 Mon Sep 17 00:00:00 2001
+From: Diego Amicabile <diego.amicabile@soprasteria.com>
+Date: Fri, 6 Nov 2026 01:46:59 +0100
+Subject: [PATCH] Borg: choose the safer available emergency swap
+
+FORK: compare backup weapon and armour by lower danger, excluding absent candidates. Keep the existing weapon preference on equal danger. A native cold-dragon scenario previously rejected the protective item and lost 79 HP; the correction equips it and loses 26 HP from the same breath. Both candidate directions reproduce the fault, four controls are unchanged, and native full gates pass. Source: diegoami/neo-angband-tracker#82 / CBUG-0066; discovery credited to borg-rs. Local proposal only.
+---
+ src/borg/borg-item-wear.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/borg/borg-item-wear.c b/src/borg/borg-item-wear.c
+index 9464197d..754b379c 100644
+--- a/src/borg/borg-item-wear.c
++++ b/src/borg/borg-item-wear.c
+@@ -699,8 +699,8 @@ bool borg_backup_swap(int p)
+             b_p2 = 9999;
+     }
+ 
+-    /* Pass on the swap which yields the best result */
+-    if (b_p1 <= b_p2) {
++    /* FORK (CBUG-0066): prefer the lower danger among available swaps. */
++    if (weapon_swap && (!armour_swap || b_p2 <= b_p1)) {
+         b_p  = b_p2;
+         swap = weapon_swap - 1;
+     } else {
+-- 
+2.53.0
+
