@@ -1,0 +1,38 @@
+{
+  "veto": {
+    "label": "The distant dragon that vetoed the emergency bolt",
+    "explanation": "A level-fourteen mage with no mana - the emergency premise - faces a kobold two grids away while a young red dragon stands far across the arena, observed first so it owns the lower kill index. The original monster loop breaks at the first live monster: the distant dragon is the one examined, its hit points veto the emergency magic missile, and the maneuver is valued at zero. The correction scans every monster and applies the veto to the near ones it describes: the dragon is skipped, the kobold qualifies, and the maneuver is valued.",
+    "before": {
+      "raw": "native-c/reserve-258: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Mage level=14 depth=5 avoidance=4\n  reserve_bolt_checks_near_monsters  MODE veto\nGEOMETRY player=(11,11) weakling=(11,13) bully=(11,25) danger=544 avoidance=4 temp_n=2\nRATING value=0 danger_gate=1\nOUTCOME value=0\nFailed\n    native-c/reserve-258:189: requirement 'v > 0' failed\nnative-c/reserve-258 finished: 0/1 passed\n",
+      "passed": false,
+      "geometry": "player=(11,11) weakling=(11,13) bully=(11,25) danger=544 avoidance=4 temp_n=2",
+      "rating": "value=0 danger_gate=1",
+      "outcome": "value=0"
+    },
+    "after": {
+      "raw": "native-c/reserve-258: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Mage level=14 depth=5 avoidance=4\n  reserve_bolt_checks_near_monsters  MODE veto\nGEOMETRY player=(11,11) weakling=(11,13) bully=(11,25) danger=544 avoidance=4 temp_n=2\nRATING value=40 danger_gate=1\nOUTCOME value=40\nPassed\nnative-c/reserve-258 finished: 1/1 passed\n",
+      "passed": true,
+      "geometry": "player=(11,11) weakling=(11,13) bully=(11,25) danger=544 avoidance=4 temp_n=2",
+      "rating": "value=40 danger_gate=1",
+      "outcome": "value=40"
+    }
+  },
+  "control": {
+    "label": "Control: only the kobold",
+    "explanation": "The same mage with no mana faces only the kobold. The first live monster is the right one, so the original and the correction value the maneuver identically at fifty, and the complete log is byte-identical: the fix changes only which monsters the scan examines.",
+    "before": {
+      "raw": "native-c/reserve-258: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Mage level=14 depth=5 avoidance=4\n  reserve_bolt_checks_near_monsters  MODE control\nGEOMETRY player=(11,11) weakling=(11,13) bully=none danger=8 avoidance=4 temp_n=1\nRATING value=50 danger_gate=1\nOUTCOME value=50\nPassed\nnative-c/reserve-258 finished: 1/1 passed\n",
+      "passed": true,
+      "geometry": "player=(11,11) weakling=(11,13) bully=none danger=8 avoidance=4 temp_n=1",
+      "rating": "value=50 danger_gate=1",
+      "outcome": "value=50"
+    },
+    "after": {
+      "raw": "native-c/reserve-258: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Mage level=14 depth=5 avoidance=4\n  reserve_bolt_checks_near_monsters  MODE control\nGEOMETRY player=(11,11) weakling=(11,13) bully=none danger=8 avoidance=4 temp_n=1\nRATING value=50 danger_gate=1\nOUTCOME value=50\nPassed\nnative-c/reserve-258 finished: 1/1 passed\n",
+      "passed": true,
+      "geometry": "player=(11,11) weakling=(11,13) bully=none danger=8 avoidance=4 temp_n=1",
+      "rating": "value=50 danger_gate=1",
+      "outcome": "value=50"
+    }
+  }
+}
