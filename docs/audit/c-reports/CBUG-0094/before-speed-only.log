@@ -1,0 +1,10 @@
+native-c/CBUG-0094: starting...
+SETUP seed=1000 class=Druid level=50 depth=50 hp=326/326 sp=401/401 wisdom=208 amulet_wis=6
+ELIGIBILITY learned=0 native_fail=3 borg_fail=3 cost=20 okay=0
+  preparation_has_one_action  MODE speed-only
+DECISION result=1 keys=3 no_rest_prep=-15536 sequence=mbb
+ENGINE You feel yourself moving faster!
+CAST spell=Haste Self sp_before=401 sp_after=389 energy=100 heal=0 fast=68
+OUTCOME commands=1 regen=0 haste=1 mana_spent=12 action_energy=100 heal=0 fast=68
+Passed
+native-c/CBUG-0094 finished: 1/1 passed
