@@ -1,0 +1,104 @@
+{
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "fix": "253ab11468bd91f47f2a458ecc3f333a00eaa677",
+  "fixtures_ref": "9f6ee40d7005abe79a07767e48ca8deaa921b96d",
+  "cases": {
+    "before": {
+      "reload": {
+        "exit": 0,
+        "passed": false,
+        "geometry": "freed retained=1 count=0",
+        "rating": "retained=1 reload_value=7 reload_count=1",
+        "outcome": "retained=1 reload_value=7 reload_count=1"
+      },
+      "control": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "control count=1",
+        "rating": "control_value=3 control_count=1",
+        "outcome": "control_value=3 control_count=1"
+      },
+      "asan": {
+        "passed": false,
+        "summary": "320 byte(s) leaked in 4 allocation(s).",
+        "calc_array_leak": true,
+        "operator_block_leaks": 2,
+        "token_array_leaks": 1
+      }
+    },
+    "after": {
+      "reload": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "freed retained=0 count=0",
+        "rating": "retained=0 reload_value=7 reload_count=1",
+        "outcome": "retained=0 reload_value=7 reload_count=1"
+      },
+      "control": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "control count=1",
+        "rating": "control_value=3 control_count=1",
+        "outcome": "control_value=3 control_count=1"
+      },
+      "asan": {
+        "passed": true,
+        "summary": "240 byte(s) leaked in 3 allocation(s).",
+        "calc_array_leak": false,
+        "operator_block_leaks": 2,
+        "token_array_leaks": 1
+      }
+    }
+  },
+  "identical_controls": [
+    "control"
+  ],
+  "full_tests": {
+    "before": {
+      "units": "965/965",
+      "frontends": "5/5"
+    },
+    "after": {
+      "units": "965/965",
+      "frontends": "5/5"
+    }
+  },
+  "fixed_source_sha256": "6b4ca3c15fd47e20a1e9f4020fbc251372d24530fcf561fcb8c5bf320d314aa2",
+  "compiler": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+  "cmake": "cmake version 4.2.3",
+  "sanitizer": "AddressSanitizer + LeakSanitizer (gcc 15.2.0), reload path: 320 bytes in 4 allocations lost before (incl. the overwritten backing array via borg_array_add <- parse_calculation_line), 240 in 3 after (sibling leads 324/323 remain in both)",
+  "browser": {
+    "engine": "Google Chrome for Testing 156.0.8078.4 (headless dump-dom)",
+    "verification": "22 checks against the rendered DOM: 2 situations x 2 variants; retained=yes before and retained=no after with reload value 7 both; leak summaries 320/4 and 240/3; control value 3 byte-identical raw logs; no n/a or undefined fields; zero console errors"
+  },
+  "maintenance_base": "f186aa1fce2e590eb9bbcb91dc369f3f8b6af688",
+  "sha256": {
+    "README.md": "71569753ad21778ddc3f7e1560c1715e10bd5e31125a25315b8f59b7611fc4f1",
+    "after-alltests.log": "4ba4365693098d2d3cb9e0f0e0cb9f10a4554a3e9140f6e7bfb7cd9cafd36022",
+    "after-asan-reload.log": "f886bf3e3821fbe9d2eae5b181e5aecf397ee229d510466d9c4a313c59798b5e",
+    "after-build-asan.log": "3966b8697c08f4f7c16f8d1f9e88cd1266c096fb1c688ee569eb4492790ea109",
+    "after-build.log": "a8171a4cf51175e97fc811d45fd0baa63fada0aec9159144959db47ecc10b8a0",
+    "after-control.log": "6d80fb5d22c779b285086c091c18ccd7232244f2f4c3793c04fb103ca881a1d0",
+    "after-reload.log": "9f62699ed2945596e526f26520710a623523e22c7fb1251cdb24ddb4dc1eeef9",
+    "after-results.json": "42df6fa2e702893c55acb79fdc6e4463bceaa6b5e23cbd4b5e8bd861761ef6f9",
+    "after-scenarios.log": "f13184b81d8792cfd9f386ce2dd8c5c97946f0df12f5efba6a971f0e06002844",
+    "before-alltests.log": "c158928fd832cb5551f15812b4f576b5dfd72ff273efea045fc9ecf4befe44c5",
+    "before-asan-reload.log": "301056ff265e70d928b96dfb5fce99222ce974d771029b8356eca732a95a50eb",
+    "before-build-asan.log": "4e28ae0cf7e9d5f45408ab526ebb4c762f224ed1c9dffe383b9240bc2abc1a51",
+    "before-build.log": "fd50932958066fe78e50a6514c4c05a0e9b63b5049ee542819d5becff86699b2",
+    "before-control.log": "6d80fb5d22c779b285086c091c18ccd7232244f2f4c3793c04fb103ca881a1d0",
+    "before-reload.log": "26b35248c345312333c022bcd3e37e8c940e6aa18aa658732393e0e7a457bfca",
+    "before-results.json": "5beaeebb9ede23773e9c6eb0dc7062fb55f5aa417b768d3218869783ccdebdeb",
+    "before-scenarios.log": "29f8274311265639c8520272d9d7f971c811bc9d94be33bc92bef4129e942119",
+    "borg.txt": "80738da248ed74e343925e0348fc75da993d8c03ffff03c7bce1a9090005be47",
+    "configure-asan.log": "f65fb2a8afbf3c721ef70d174e1783308a528afc26bd1c6a12c9083fd75e3fb7",
+    "configure.log": "a8f5d6c0edcca133ce8d3b69ebf736e550a43eb4517c552bfb907c056258a61f",
+    "make_replay.py": "fcf6a5806bb8c82eaa7b34f84d627ea68f48d9fa993d6a597c296a7c8ac3edfd",
+    "replay-data.json": "2dffde1eedbebcbc6fe24cc1077c3878b65588e0f9837034bf93c51ccd36dc65",
+    "replay.html": "bb54f24e29836b728dcdb963dd40bbf5b399b78d1ec1e766989769194116db3d",
+    "reproduce.py": "8160f3887deeec82fd7dc5353b23bcd18944092432e51eec1bf1cdb9ea36e195",
+    "result.json": "e46023a4c8173d29dda1a041666c8e824863b52500203c626e538fa331b9d34b",
+    "run-cases.py": "c59219b55a263e162e61740773f8b12ba2e099ea4fc5ed7c7c0ff3fe9f909f6a",
+    "scenario.c": "f4d6d50c122bad2914bbfc36d43a66c07f2f8774dad1afea6301ed6a9efbf76b"
+  }
+}

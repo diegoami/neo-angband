@@ -1,0 +1,23 @@
+{
+  "reload": {
+    "exit": 0,
+    "passed": false,
+    "geometry": "freed retained=1 count=0",
+    "rating": "retained=1 reload_value=7 reload_count=1",
+    "outcome": "retained=1 reload_value=7 reload_count=1"
+  },
+  "control": {
+    "exit": 0,
+    "passed": true,
+    "geometry": "control count=1",
+    "rating": "control_value=3 control_count=1",
+    "outcome": "control_value=3 control_count=1"
+  },
+  "asan": {
+    "passed": false,
+    "summary": "320 byte(s) leaked in 4 allocation(s).",
+    "calc_array_leak": true,
+    "operator_block_leaks": 2,
+    "token_array_leaks": 1
+  }
+}

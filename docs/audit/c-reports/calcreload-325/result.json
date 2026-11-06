@@ -1,0 +1,67 @@
+{
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "fix": "253ab11468bd91f47f2a458ecc3f333a00eaa677",
+  "fixtures_ref": "9f6ee40d7005abe79a07767e48ca8deaa921b96d",
+  "cases": {
+    "before": {
+      "reload": {
+        "exit": 0,
+        "passed": false,
+        "geometry": "freed retained=1 count=0",
+        "rating": "retained=1 reload_value=7 reload_count=1",
+        "outcome": "retained=1 reload_value=7 reload_count=1"
+      },
+      "control": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "control count=1",
+        "rating": "control_value=3 control_count=1",
+        "outcome": "control_value=3 control_count=1"
+      },
+      "asan": {
+        "passed": false,
+        "summary": "320 byte(s) leaked in 4 allocation(s).",
+        "calc_array_leak": true,
+        "operator_block_leaks": 2,
+        "token_array_leaks": 1
+      }
+    },
+    "after": {
+      "reload": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "freed retained=0 count=0",
+        "rating": "retained=0 reload_value=7 reload_count=1",
+        "outcome": "retained=0 reload_value=7 reload_count=1"
+      },
+      "control": {
+        "exit": 0,
+        "passed": true,
+        "geometry": "control count=1",
+        "rating": "control_value=3 control_count=1",
+        "outcome": "control_value=3 control_count=1"
+      },
+      "asan": {
+        "passed": true,
+        "summary": "240 byte(s) leaked in 3 allocation(s).",
+        "calc_array_leak": false,
+        "operator_block_leaks": 2,
+        "token_array_leaks": 1
+      }
+    }
+  },
+  "identical_full_logs": [
+    "control"
+  ],
+  "full_tests": {
+    "before": {
+      "units": "965/965",
+      "frontends": "5/5"
+    },
+    "after": {
+      "units": "965/965",
+      "frontends": "5/5"
+    }
+  },
+  "fixed_source_sha256": "6b4ca3c15fd47e20a1e9f4020fbc251372d24530fcf561fcb8c5bf320d314aa2"
+}
