@@ -1,0 +1,90 @@
+{
+  "checked_at": "2026-11-06T00:47:32.711909+00:00",
+  "queries": [
+    {
+      "query": "repo:angband/angband borg swap",
+      "total_count": 9,
+      "incomplete_results": false,
+      "items": [
+        {
+          "number": 6284,
+          "title": "Remove remaining borg 'Hack --' comments + rework hacky borg comments",
+          "state": "closed",
+          "url": "https://github.com/angband/angband/pull/6284"
+        },
+        {
+          "number": 6282,
+          "title": "Remove borg 'Hack --' comments pt 3",
+          "state": "closed",
+          "url": "https://github.com/angband/angband/pull/6282"
+        },
+        {
+          "number": 6271,
+          "title": "Remove misleading \"hack\" comments from remaining legitimate borg code",
+          "state": "closed",
+          "url": "https://github.com/angband/angband/pull/6271"
+        },
+        {
+          "number": 6142,
+          "title": "borg: miscalculating quiver slots",
+          "state": "closed",
+          "url": "https://github.com/angband/angband/pull/6142"
+        },
+        {
+          "number": 6041,
+          "title": "Borg prep morg",
+          "state": "closed",
+          "url": "https://github.com/angband/angband/pull/6041"
+        },
+        {
+          "number": 6032,
+          "title": "Borg Struggling to Collect Potions",
+          "state": "closed",
+          "url": "https://github.com/angband/angband/issues/6032"
+        },
+        {
+          "number": 5945,
+          "title": "Borg decurse swap",
+          "state": "closed",
+          "url": "https://github.com/angband/angband/pull/5945"
+        },
+        {
+          "number": 5742,
+          "title": "Borg: manual restart with different class",
+          "state": "closed",
+          "url": "https://github.com/angband/angband/issues/5742"
+        },
+        {
+          "number": 5676,
+          "title": "Borg 4x",
+          "state": "closed",
+          "url": "https://github.com/angband/angband/pull/5676"
+        }
+      ]
+    },
+    {
+      "query": "repo:angband/angband \"b_p1\"",
+      "total_count": 0,
+      "incomplete_results": false,
+      "items": []
+    },
+    {
+      "query": "repo:angband/angband borg \"backup\"",
+      "total_count": 1,
+      "incomplete_results": false,
+      "items": [
+        {
+          "number": 6140,
+          "title": "borg: move some borg files to the archive directory",
+          "state": "closed",
+          "url": "https://github.com/angband/angband/pull/6140"
+        }
+      ]
+    }
+  ],
+  "reviewed_related": {
+    "5945": "decurse availability guards in borg-item-decurse.c, different path",
+    "6041": "ring refresh/recharge handling, not emergency danger selection"
+  },
+  "source_reconciliation": "official master fetched, unchanged at recorded base; exact comparison still reversed"
+}

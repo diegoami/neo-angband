@@ -1,0 +1,17 @@
+{
+  "affected_modes": [
+    "armour-better",
+    "weapon-better"
+  ],
+  "hp_lost_before": 79,
+  "hp_lost_after": 26,
+  "hp_saved": 53,
+  "identical_controls": [
+    "armour-only",
+    "weapon-only",
+    "tie",
+    "no-benefit"
+  ],
+  "native_unit_checks": "965/965 before and after",
+  "native_frontend_tests": "5/5 before and after"
+}

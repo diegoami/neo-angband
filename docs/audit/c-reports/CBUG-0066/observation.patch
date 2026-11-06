@@ -1,0 +1,29 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 64d29ef1..d496fa01 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1112,3 +1112,11 @@ else()
+     add_custom_target(allunittests)
+ endif()
+ add_dependencies(alltests allunittests)
++
++# Disposable native diagnostic harness; excluded from the source proposal.
++add_executable(CBUG0066Observer /tmp/native-c-82-evidence/scenario.c
++    $<TARGET_OBJECTS:OurCoreLib> $<TARGET_OBJECTS:OurUnitTestLib>)
++target_include_directories(CBUG0066Observer PRIVATE src src/tests)
++target_compile_definitions(CBUG0066Observer PRIVATE ALLOW_BORG)
++target_link_libraries(CBUG0066Observer PRIVATE ${ANGBAND_CORE_LINK_LIBRARIES})
++add_compile_definitions(PRIVATE_USER_PATH="/tmp/native-c-82-tests")
+diff --git a/tests/run-test b/tests/run-test
+index 9d68f5a0..ff82a5e6 100755
+--- a/tests/run-test
++++ b/tests/run-test
+@@ -9,7 +9,7 @@ usage() {
+ }
+ 
+ run() {
+-	rm -rf ~/.angband/Test
++	rm -rf /tmp/native-c-82-tests/Test
+ 
+ 	test="$1"
+         exe="$2"
