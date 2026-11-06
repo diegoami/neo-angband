@@ -27,8 +27,8 @@ From a clone of `diegoami/neo-angband-tracker`, copy these three commands:
 
 ```sh
 git fetch https://github.com/diegoami/neo-angband-tracker.git task/cbug-0062-evidence
-git show FETCH_HEAD:docs/audit/c-reports/CBUG-0062/reproduce.py > /tmp/reproduce-cbug-0062.py
-python3 /tmp/reproduce-cbug-0062.py
+git show bfe3fc402e8ae6cdec74d8b35fa8f50e612f2a8e:docs/audit/c-reports/CBUG-0062/reproduce.py > /tmp/reproduce-cbug-0062.py
+python3 /tmp/reproduce-cbug-0062.py --fixtures-ref bfe3fc402e8ae6cdec74d8b35fa8f50e612f2a8e
 ```
 
 The script creates fresh temporary source/build/profile directories, builds
@@ -72,7 +72,7 @@ controls have identical complete logs across all four versions:
 To also run both complete native regression gates:
 
 ```sh
-python3 /tmp/reproduce-cbug-0062.py --full-tests
+python3 /tmp/reproduce-cbug-0062.py --fixtures-ref bfe3fc402e8ae6cdec74d8b35fa8f50e612f2a8e --full-tests
 ```
 
 Expected gates:965/965 unit checks and5/5 frontend tests on original and complete

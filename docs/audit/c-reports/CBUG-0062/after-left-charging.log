@@ -1,0 +1,11 @@
+native-c/CBUG-0062: starting...
+SETUP seed=1000 class=Warrior level=40 depth=30 hp=421 device_native=51 device_borg=51 target_hp=70 distance=6
+RINGS right_fire=0 left_fire=1 right_timeout=0 left_timeout=10 right_known=1 left_known=1
+ACTIVATION native_failure_per1000=49
+  attack_uses_ready_ring_on_either_hand  MODE left-charging
+FRAME {"stage":"start","hp":421,"mana":0,"enemy_hp":70,"enemy_start_hp":70,"right_timeout":0,"left_timeout":10,"fire_protection":0}
+DECISION score=0 keys=0 goal_x=0 goal_y=0 sequence=
+FRAME {"stage":"activation","hp":421,"mana":0,"enemy_hp":70,"enemy_start_hp":70,"right_timeout":0,"left_timeout":10,"fire_protection":0}
+OUTCOME activated=0 selected_slot=-1 enemy_before=70 enemy_after=70 damage=0 killed=0 right_timeout=0 left_timeout=10 fire_protection=0
+Passed
+native-c/CBUG-0062 finished: 1/1 passed

@@ -1,0 +1,1038 @@
+{
+  "left-ready": {
+    "label": "Charged fire ring on the left",
+    "explanation": "A charged Ring of Flames is on the left hand; an ordinary Strength ring is on the right. The original ring-attack check overlooks the fire ring. The complete correction uses it.",
+    "before": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 0,
+          "fire_protection": 0
+        },
+        {
+          "stage": "activation",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 0,
+          "fire_protection": 0
+        }
+      ],
+      "outcome": {
+        "activated": 0,
+        "selected_slot": -1,
+        "enemy_before": 70,
+        "enemy_after": 70,
+        "damage": 0,
+        "killed": 0,
+        "right_timeout": 0,
+        "left_timeout": 0,
+        "fire_protection": 0
+      },
+      "raw": "native-c/CBUG-0062: starting...\nSETUP seed=1000 class=Warrior level=40 depth=30 hp=421 device_native=51 device_borg=51 target_hp=70 distance=6\nRINGS right_fire=0 left_fire=1 right_timeout=0 left_timeout=0 right_known=1 left_known=1\nACTIVATION native_failure_per1000=49\n  attack_uses_ready_ring_on_either_hand  MODE left-ready\nFRAME {\"stage\":\"start\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":0,\"fire_protection\":0}\nDECISION score=0 keys=0 goal_x=0 goal_y=0 sequence=\nFRAME {\"stage\":\"activation\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":0,\"fire_protection\":0}\nOUTCOME activated=0 selected_slot=-1 enemy_before=70 enemy_after=70 damage=0 killed=0 right_timeout=0 left_timeout=0 fire_protection=0\nFailed\n    native-c/CBUG-0062:153: requirement 'activation >= 0' == 'expected' failed\n      activation >= 0:                0\n      expected:                1\nnative-c/CBUG-0062 finished: 0/1 passed\n"
+    },
+    "detection-only": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 0,
+          "fire_protection": 0
+        },
+        {
+          "stage": "activation",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 0,
+          "fire_protection": 0
+        }
+      ],
+      "outcome": {
+        "activated": 0,
+        "selected_slot": -1,
+        "enemy_before": 70,
+        "enemy_after": 70,
+        "damage": 0,
+        "killed": 0,
+        "right_timeout": 0,
+        "left_timeout": 0,
+        "fire_protection": 0
+      },
+      "raw": "native-c/CBUG-0062: starting...\nSETUP seed=1000 class=Warrior level=40 depth=30 hp=421 device_native=51 device_borg=51 target_hp=70 distance=6\nRINGS right_fire=0 left_fire=1 right_timeout=0 left_timeout=0 right_known=1 left_known=1\nACTIVATION native_failure_per1000=49\n  attack_uses_ready_ring_on_either_hand  MODE left-ready\nFRAME {\"stage\":\"start\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":0,\"fire_protection\":0}\nDECISION score=160 keys=10 goal_x=20 goal_y=14 sequence=*p88888855\nFRAME {\"stage\":\"activation\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":0,\"fire_protection\":0}\nOUTCOME activated=0 selected_slot=-1 enemy_before=70 enemy_after=70 damage=0 killed=0 right_timeout=0 left_timeout=0 fire_protection=0\nFailed\n    native-c/CBUG-0062:153: requirement 'activation >= 0' == 'expected' failed\n      activation >= 0:                0\n      expected:                1\nnative-c/CBUG-0062 finished: 0/1 passed\n"
+    },
+    "activation-only": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 0,
+          "fire_protection": 0
+        },
+        {
+          "stage": "activation",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 0,
+          "fire_protection": 0
+        }
+      ],
+      "outcome": {
+        "activated": 0,
+        "selected_slot": -1,
+        "enemy_before": 70,
+        "enemy_after": 70,
+        "damage": 0,
+        "killed": 0,
+        "right_timeout": 0,
+        "left_timeout": 0,
+        "fire_protection": 0
+      },
+      "raw": "native-c/CBUG-0062: starting...\nSETUP seed=1000 class=Warrior level=40 depth=30 hp=421 device_native=51 device_borg=51 target_hp=70 distance=6\nRINGS right_fire=0 left_fire=1 right_timeout=0 left_timeout=0 right_known=1 left_known=1\nACTIVATION native_failure_per1000=49\n  attack_uses_ready_ring_on_either_hand  MODE left-ready\nFRAME {\"stage\":\"start\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":0,\"fire_protection\":0}\nDECISION score=0 keys=0 goal_x=0 goal_y=0 sequence=\nFRAME {\"stage\":\"activation\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":0,\"fire_protection\":0}\nOUTCOME activated=0 selected_slot=-1 enemy_before=70 enemy_after=70 damage=0 killed=0 right_timeout=0 left_timeout=0 fire_protection=0\nFailed\n    native-c/CBUG-0062:153: requirement 'activation >= 0' == 'expected' failed\n      activation >= 0:                0\n      expected:                1\nnative-c/CBUG-0062 finished: 0/1 passed\n"
+    },
+    "after": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 0,
+          "fire_protection": 0
+        },
+        {
+          "stage": "activation",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 0,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 98,
+          "fire_protection": 37
+        }
+      ],
+      "outcome": {
+        "activated": 1,
+        "selected_slot": 3,
+        "enemy_before": 70,
+        "enemy_after": 0,
+        "damage": 70,
+        "killed": 1,
+        "right_timeout": 0,
+        "left_timeout": 98,
+        "fire_protection": 37
+      },
+      "raw": "native-c/CBUG-0062: starting...\nSETUP seed=1000 class=Warrior level=40 depth=30 hp=421 device_native=51 device_borg=51 target_hp=70 distance=6\nRINGS right_fire=0 left_fire=1 right_timeout=0 left_timeout=0 right_known=1 left_known=1\nACTIVATION native_failure_per1000=49\n  attack_uses_ready_ring_on_either_hand  MODE left-ready\nFRAME {\"stage\":\"start\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":0,\"fire_protection\":0}\nDECISION score=160 keys=12 goal_x=20 goal_y=14 sequence=*p8888885Ad5\nENGINE You feel resistant to fire!\nFRAME {\"stage\":\"activation\",\"hp\":421,\"mana\":0,\"enemy_hp\":0,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":98,\"fire_protection\":37}\nOUTCOME activated=1 selected_slot=3 enemy_before=70 enemy_after=0 damage=70 killed=1 right_timeout=0 left_timeout=98 fire_protection=37\nPassed\nnative-c/CBUG-0062 finished: 1/1 passed\n"
+    }
+  },
+  "right-charging-left-ready": {
+    "label": "Right fire ring recharging; left ready",
+    "explanation": "The right fire ring cannot be used yet, but the left one is ready. The correction uses the available left ring.",
+    "before": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 10,
+          "left_timeout": 0,
+          "fire_protection": 0
+        },
+        {
+          "stage": "activation",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 10,
+          "left_timeout": 0,
+          "fire_protection": 0
+        }
+      ],
+      "outcome": {
+        "activated": 0,
+        "selected_slot": -1,
+        "enemy_before": 70,
+        "enemy_after": 70,
+        "damage": 0,
+        "killed": 0,
+        "right_timeout": 10,
+        "left_timeout": 0,
+        "fire_protection": 0
+      },
+      "raw": "native-c/CBUG-0062: starting...\nSETUP seed=1000 class=Warrior level=40 depth=30 hp=421 device_native=51 device_borg=51 target_hp=70 distance=6\nRINGS right_fire=1 left_fire=1 right_timeout=10 left_timeout=0 right_known=1 left_known=1\nACTIVATION native_failure_per1000=49\n  attack_uses_ready_ring_on_either_hand  MODE right-charging-left-ready\nFRAME {\"stage\":\"start\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":10,\"left_timeout\":0,\"fire_protection\":0}\nDECISION score=0 keys=0 goal_x=0 goal_y=0 sequence=\nFRAME {\"stage\":\"activation\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":10,\"left_timeout\":0,\"fire_protection\":0}\nOUTCOME activated=0 selected_slot=-1 enemy_before=70 enemy_after=70 damage=0 killed=0 right_timeout=10 left_timeout=0 fire_protection=0\nFailed\n    native-c/CBUG-0062:153: requirement 'activation >= 0' == 'expected' failed\n      activation >= 0:                0\n      expected:                1\nnative-c/CBUG-0062 finished: 0/1 passed\n"
+    },
+    "detection-only": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 10,
+          "left_timeout": 0,
+          "fire_protection": 0
+        },
+        {
+          "stage": "activation",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 10,
+          "left_timeout": 0,
+          "fire_protection": 0
+        }
+      ],
+      "outcome": {
+        "activated": 0,
+        "selected_slot": -1,
+        "enemy_before": 70,
+        "enemy_after": 70,
+        "damage": 0,
+        "killed": 0,
+        "right_timeout": 10,
+        "left_timeout": 0,
+        "fire_protection": 0
+      },
+      "raw": "native-c/CBUG-0062: starting...\nSETUP seed=1000 class=Warrior level=40 depth=30 hp=421 device_native=51 device_borg=51 target_hp=70 distance=6\nRINGS right_fire=1 left_fire=1 right_timeout=10 left_timeout=0 right_known=1 left_known=1\nACTIVATION native_failure_per1000=49\n  attack_uses_ready_ring_on_either_hand  MODE right-charging-left-ready\nFRAME {\"stage\":\"start\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":10,\"left_timeout\":0,\"fire_protection\":0}\nDECISION score=160 keys=10 goal_x=20 goal_y=14 sequence=*p88888855\nFRAME {\"stage\":\"activation\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":10,\"left_timeout\":0,\"fire_protection\":0}\nOUTCOME activated=0 selected_slot=-1 enemy_before=70 enemy_after=70 damage=0 killed=0 right_timeout=10 left_timeout=0 fire_protection=0\nFailed\n    native-c/CBUG-0062:153: requirement 'activation >= 0' == 'expected' failed\n      activation >= 0:                0\n      expected:                1\nnative-c/CBUG-0062 finished: 0/1 passed\n"
+    },
+    "activation-only": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 10,
+          "left_timeout": 0,
+          "fire_protection": 0
+        },
+        {
+          "stage": "activation",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 10,
+          "left_timeout": 0,
+          "fire_protection": 0
+        }
+      ],
+      "outcome": {
+        "activated": 0,
+        "selected_slot": -1,
+        "enemy_before": 70,
+        "enemy_after": 70,
+        "damage": 0,
+        "killed": 0,
+        "right_timeout": 10,
+        "left_timeout": 0,
+        "fire_protection": 0
+      },
+      "raw": "native-c/CBUG-0062: starting...\nSETUP seed=1000 class=Warrior level=40 depth=30 hp=421 device_native=51 device_borg=51 target_hp=70 distance=6\nRINGS right_fire=1 left_fire=1 right_timeout=10 left_timeout=0 right_known=1 left_known=1\nACTIVATION native_failure_per1000=49\n  attack_uses_ready_ring_on_either_hand  MODE right-charging-left-ready\nFRAME {\"stage\":\"start\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":10,\"left_timeout\":0,\"fire_protection\":0}\nDECISION score=0 keys=0 goal_x=0 goal_y=0 sequence=\nFRAME {\"stage\":\"activation\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":10,\"left_timeout\":0,\"fire_protection\":0}\nOUTCOME activated=0 selected_slot=-1 enemy_before=70 enemy_after=70 damage=0 killed=0 right_timeout=10 left_timeout=0 fire_protection=0\nFailed\n    native-c/CBUG-0062:153: requirement 'activation >= 0' == 'expected' failed\n      activation >= 0:                0\n      expected:                1\nnative-c/CBUG-0062 finished: 0/1 passed\n"
+    },
+    "after": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 10,
+          "left_timeout": 0,
+          "fire_protection": 0
+        },
+        {
+          "stage": "activation",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 0,
+          "enemy_start_hp": 70,
+          "right_timeout": 10,
+          "left_timeout": 98,
+          "fire_protection": 37
+        }
+      ],
+      "outcome": {
+        "activated": 1,
+        "selected_slot": 3,
+        "enemy_before": 70,
+        "enemy_after": 0,
+        "damage": 70,
+        "killed": 1,
+        "right_timeout": 10,
+        "left_timeout": 98,
+        "fire_protection": 37
+      },
+      "raw": "native-c/CBUG-0062: starting...\nSETUP seed=1000 class=Warrior level=40 depth=30 hp=421 device_native=51 device_borg=51 target_hp=70 distance=6\nRINGS right_fire=1 left_fire=1 right_timeout=10 left_timeout=0 right_known=1 left_known=1\nACTIVATION native_failure_per1000=49\n  attack_uses_ready_ring_on_either_hand  MODE right-charging-left-ready\nFRAME {\"stage\":\"start\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":10,\"left_timeout\":0,\"fire_protection\":0}\nDECISION score=160 keys=12 goal_x=20 goal_y=14 sequence=*p8888885Ad5\nENGINE You feel resistant to fire!\nFRAME {\"stage\":\"activation\",\"hp\":421,\"mana\":0,\"enemy_hp\":0,\"enemy_start_hp\":70,\"right_timeout\":10,\"left_timeout\":98,\"fire_protection\":37}\nOUTCOME activated=1 selected_slot=3 enemy_before=70 enemy_after=0 damage=70 killed=1 right_timeout=10 left_timeout=98 fire_protection=37\nPassed\nnative-c/CBUG-0062 finished: 1/1 passed\n"
+    }
+  },
+  "right-control": {
+    "label": "Control: fire ring on the right",
+    "explanation": "The right-hand fire ring works in every version. The other ring is an ordinary Strength ring.",
+    "before": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 0,
+          "fire_protection": 0
+        },
+        {
+          "stage": "activation",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 0,
+          "enemy_start_hp": 70,
+          "right_timeout": 98,
+          "left_timeout": 0,
+          "fire_protection": 37
+        }
+      ],
+      "outcome": {
+        "activated": 1,
+        "selected_slot": 2,
+        "enemy_before": 70,
+        "enemy_after": 0,
+        "damage": 70,
+        "killed": 1,
+        "right_timeout": 98,
+        "left_timeout": 0,
+        "fire_protection": 37
+      },
+      "raw": "native-c/CBUG-0062: starting...\nSETUP seed=1000 class=Warrior level=40 depth=30 hp=421 device_native=51 device_borg=51 target_hp=70 distance=6\nRINGS right_fire=1 left_fire=0 right_timeout=0 left_timeout=0 right_known=1 left_known=1\nACTIVATION native_failure_per1000=49\n  attack_uses_ready_ring_on_either_hand  MODE right-control\nFRAME {\"stage\":\"start\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":0,\"fire_protection\":0}\nDECISION score=160 keys=12 goal_x=20 goal_y=14 sequence=*p8888885Ac5\nENGINE You feel resistant to fire!\nFRAME {\"stage\":\"activation\",\"hp\":421,\"mana\":0,\"enemy_hp\":0,\"enemy_start_hp\":70,\"right_timeout\":98,\"left_timeout\":0,\"fire_protection\":37}\nOUTCOME activated=1 selected_slot=2 enemy_before=70 enemy_after=0 damage=70 killed=1 right_timeout=98 left_timeout=0 fire_protection=37\nPassed\nnative-c/CBUG-0062 finished: 1/1 passed\n"
+    },
+    "detection-only": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 0,
+          "fire_protection": 0
+        },
+        {
+          "stage": "activation",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 0,
+          "enemy_start_hp": 70,
+          "right_timeout": 98,
+          "left_timeout": 0,
+          "fire_protection": 37
+        }
+      ],
+      "outcome": {
+        "activated": 1,
+        "selected_slot": 2,
+        "enemy_before": 70,
+        "enemy_after": 0,
+        "damage": 70,
+        "killed": 1,
+        "right_timeout": 98,
+        "left_timeout": 0,
+        "fire_protection": 37
+      },
+      "raw": "native-c/CBUG-0062: starting...\nSETUP seed=1000 class=Warrior level=40 depth=30 hp=421 device_native=51 device_borg=51 target_hp=70 distance=6\nRINGS right_fire=1 left_fire=0 right_timeout=0 left_timeout=0 right_known=1 left_known=1\nACTIVATION native_failure_per1000=49\n  attack_uses_ready_ring_on_either_hand  MODE right-control\nFRAME {\"stage\":\"start\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":0,\"fire_protection\":0}\nDECISION score=160 keys=12 goal_x=20 goal_y=14 sequence=*p8888885Ac5\nENGINE You feel resistant to fire!\nFRAME {\"stage\":\"activation\",\"hp\":421,\"mana\":0,\"enemy_hp\":0,\"enemy_start_hp\":70,\"right_timeout\":98,\"left_timeout\":0,\"fire_protection\":37}\nOUTCOME activated=1 selected_slot=2 enemy_before=70 enemy_after=0 damage=70 killed=1 right_timeout=98 left_timeout=0 fire_protection=37\nPassed\nnative-c/CBUG-0062 finished: 1/1 passed\n"
+    },
+    "activation-only": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 0,
+          "fire_protection": 0
+        },
+        {
+          "stage": "activation",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 0,
+          "enemy_start_hp": 70,
+          "right_timeout": 98,
+          "left_timeout": 0,
+          "fire_protection": 37
+        }
+      ],
+      "outcome": {
+        "activated": 1,
+        "selected_slot": 2,
+        "enemy_before": 70,
+        "enemy_after": 0,
+        "damage": 70,
+        "killed": 1,
+        "right_timeout": 98,
+        "left_timeout": 0,
+        "fire_protection": 37
+      },
+      "raw": "native-c/CBUG-0062: starting...\nSETUP seed=1000 class=Warrior level=40 depth=30 hp=421 device_native=51 device_borg=51 target_hp=70 distance=6\nRINGS right_fire=1 left_fire=0 right_timeout=0 left_timeout=0 right_known=1 left_known=1\nACTIVATION native_failure_per1000=49\n  attack_uses_ready_ring_on_either_hand  MODE right-control\nFRAME {\"stage\":\"start\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":0,\"fire_protection\":0}\nDECISION score=160 keys=12 goal_x=20 goal_y=14 sequence=*p8888885Ac5\nENGINE You feel resistant to fire!\nFRAME {\"stage\":\"activation\",\"hp\":421,\"mana\":0,\"enemy_hp\":0,\"enemy_start_hp\":70,\"right_timeout\":98,\"left_timeout\":0,\"fire_protection\":37}\nOUTCOME activated=1 selected_slot=2 enemy_before=70 enemy_after=0 damage=70 killed=1 right_timeout=98 left_timeout=0 fire_protection=37\nPassed\nnative-c/CBUG-0062 finished: 1/1 passed\n"
+    },
+    "after": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 0,
+          "fire_protection": 0
+        },
+        {
+          "stage": "activation",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 0,
+          "enemy_start_hp": 70,
+          "right_timeout": 98,
+          "left_timeout": 0,
+          "fire_protection": 37
+        }
+      ],
+      "outcome": {
+        "activated": 1,
+        "selected_slot": 2,
+        "enemy_before": 70,
+        "enemy_after": 0,
+        "damage": 70,
+        "killed": 1,
+        "right_timeout": 98,
+        "left_timeout": 0,
+        "fire_protection": 37
+      },
+      "raw": "native-c/CBUG-0062: starting...\nSETUP seed=1000 class=Warrior level=40 depth=30 hp=421 device_native=51 device_borg=51 target_hp=70 distance=6\nRINGS right_fire=1 left_fire=0 right_timeout=0 left_timeout=0 right_known=1 left_known=1\nACTIVATION native_failure_per1000=49\n  attack_uses_ready_ring_on_either_hand  MODE right-control\nFRAME {\"stage\":\"start\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":0,\"fire_protection\":0}\nDECISION score=160 keys=12 goal_x=20 goal_y=14 sequence=*p8888885Ac5\nENGINE You feel resistant to fire!\nFRAME {\"stage\":\"activation\",\"hp\":421,\"mana\":0,\"enemy_hp\":0,\"enemy_start_hp\":70,\"right_timeout\":98,\"left_timeout\":0,\"fire_protection\":37}\nOUTCOME activated=1 selected_slot=2 enemy_before=70 enemy_after=0 damage=70 killed=1 right_timeout=98 left_timeout=0 fire_protection=37\nPassed\nnative-c/CBUG-0062 finished: 1/1 passed\n"
+    }
+  },
+  "both-ready": {
+    "label": "Control: both fire rings ready",
+    "explanation": "Every version keeps the existing preference for the right-hand ring.",
+    "before": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 0,
+          "fire_protection": 0
+        },
+        {
+          "stage": "activation",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 0,
+          "enemy_start_hp": 70,
+          "right_timeout": 98,
+          "left_timeout": 0,
+          "fire_protection": 37
+        }
+      ],
+      "outcome": {
+        "activated": 1,
+        "selected_slot": 2,
+        "enemy_before": 70,
+        "enemy_after": 0,
+        "damage": 70,
+        "killed": 1,
+        "right_timeout": 98,
+        "left_timeout": 0,
+        "fire_protection": 37
+      },
+      "raw": "native-c/CBUG-0062: starting...\nSETUP seed=1000 class=Warrior level=40 depth=30 hp=421 device_native=51 device_borg=51 target_hp=70 distance=6\nRINGS right_fire=1 left_fire=1 right_timeout=0 left_timeout=0 right_known=1 left_known=1\nACTIVATION native_failure_per1000=49\n  attack_uses_ready_ring_on_either_hand  MODE both-ready\nFRAME {\"stage\":\"start\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":0,\"fire_protection\":0}\nDECISION score=160 keys=12 goal_x=20 goal_y=14 sequence=*p8888885Ac5\nENGINE You feel resistant to fire!\nFRAME {\"stage\":\"activation\",\"hp\":421,\"mana\":0,\"enemy_hp\":0,\"enemy_start_hp\":70,\"right_timeout\":98,\"left_timeout\":0,\"fire_protection\":37}\nOUTCOME activated=1 selected_slot=2 enemy_before=70 enemy_after=0 damage=70 killed=1 right_timeout=98 left_timeout=0 fire_protection=37\nPassed\nnative-c/CBUG-0062 finished: 1/1 passed\n"
+    },
+    "detection-only": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 0,
+          "fire_protection": 0
+        },
+        {
+          "stage": "activation",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 0,
+          "enemy_start_hp": 70,
+          "right_timeout": 98,
+          "left_timeout": 0,
+          "fire_protection": 37
+        }
+      ],
+      "outcome": {
+        "activated": 1,
+        "selected_slot": 2,
+        "enemy_before": 70,
+        "enemy_after": 0,
+        "damage": 70,
+        "killed": 1,
+        "right_timeout": 98,
+        "left_timeout": 0,
+        "fire_protection": 37
+      },
+      "raw": "native-c/CBUG-0062: starting...\nSETUP seed=1000 class=Warrior level=40 depth=30 hp=421 device_native=51 device_borg=51 target_hp=70 distance=6\nRINGS right_fire=1 left_fire=1 right_timeout=0 left_timeout=0 right_known=1 left_known=1\nACTIVATION native_failure_per1000=49\n  attack_uses_ready_ring_on_either_hand  MODE both-ready\nFRAME {\"stage\":\"start\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":0,\"fire_protection\":0}\nDECISION score=160 keys=12 goal_x=20 goal_y=14 sequence=*p8888885Ac5\nENGINE You feel resistant to fire!\nFRAME {\"stage\":\"activation\",\"hp\":421,\"mana\":0,\"enemy_hp\":0,\"enemy_start_hp\":70,\"right_timeout\":98,\"left_timeout\":0,\"fire_protection\":37}\nOUTCOME activated=1 selected_slot=2 enemy_before=70 enemy_after=0 damage=70 killed=1 right_timeout=98 left_timeout=0 fire_protection=37\nPassed\nnative-c/CBUG-0062 finished: 1/1 passed\n"
+    },
+    "activation-only": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 0,
+          "fire_protection": 0
+        },
+        {
+          "stage": "activation",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 0,
+          "enemy_start_hp": 70,
+          "right_timeout": 98,
+          "left_timeout": 0,
+          "fire_protection": 37
+        }
+      ],
+      "outcome": {
+        "activated": 1,
+        "selected_slot": 2,
+        "enemy_before": 70,
+        "enemy_after": 0,
+        "damage": 70,
+        "killed": 1,
+        "right_timeout": 98,
+        "left_timeout": 0,
+        "fire_protection": 37
+      },
+      "raw": "native-c/CBUG-0062: starting...\nSETUP seed=1000 class=Warrior level=40 depth=30 hp=421 device_native=51 device_borg=51 target_hp=70 distance=6\nRINGS right_fire=1 left_fire=1 right_timeout=0 left_timeout=0 right_known=1 left_known=1\nACTIVATION native_failure_per1000=49\n  attack_uses_ready_ring_on_either_hand  MODE both-ready\nFRAME {\"stage\":\"start\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":0,\"fire_protection\":0}\nDECISION score=160 keys=12 goal_x=20 goal_y=14 sequence=*p8888885Ac5\nENGINE You feel resistant to fire!\nFRAME {\"stage\":\"activation\",\"hp\":421,\"mana\":0,\"enemy_hp\":0,\"enemy_start_hp\":70,\"right_timeout\":98,\"left_timeout\":0,\"fire_protection\":37}\nOUTCOME activated=1 selected_slot=2 enemy_before=70 enemy_after=0 damage=70 killed=1 right_timeout=98 left_timeout=0 fire_protection=37\nPassed\nnative-c/CBUG-0062 finished: 1/1 passed\n"
+    },
+    "after": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 0,
+          "fire_protection": 0
+        },
+        {
+          "stage": "activation",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 0,
+          "enemy_start_hp": 70,
+          "right_timeout": 98,
+          "left_timeout": 0,
+          "fire_protection": 37
+        }
+      ],
+      "outcome": {
+        "activated": 1,
+        "selected_slot": 2,
+        "enemy_before": 70,
+        "enemy_after": 0,
+        "damage": 70,
+        "killed": 1,
+        "right_timeout": 98,
+        "left_timeout": 0,
+        "fire_protection": 37
+      },
+      "raw": "native-c/CBUG-0062: starting...\nSETUP seed=1000 class=Warrior level=40 depth=30 hp=421 device_native=51 device_borg=51 target_hp=70 distance=6\nRINGS right_fire=1 left_fire=1 right_timeout=0 left_timeout=0 right_known=1 left_known=1\nACTIVATION native_failure_per1000=49\n  attack_uses_ready_ring_on_either_hand  MODE both-ready\nFRAME {\"stage\":\"start\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":0,\"fire_protection\":0}\nDECISION score=160 keys=12 goal_x=20 goal_y=14 sequence=*p8888885Ac5\nENGINE You feel resistant to fire!\nFRAME {\"stage\":\"activation\",\"hp\":421,\"mana\":0,\"enemy_hp\":0,\"enemy_start_hp\":70,\"right_timeout\":98,\"left_timeout\":0,\"fire_protection\":37}\nOUTCOME activated=1 selected_slot=2 enemy_before=70 enemy_after=0 damage=70 killed=1 right_timeout=98 left_timeout=0 fire_protection=37\nPassed\nnative-c/CBUG-0062 finished: 1/1 passed\n"
+    }
+  },
+  "left-charging": {
+    "label": "Control: left fire ring recharging",
+    "explanation": "The left ring is not ready to use. No version activates it.",
+    "before": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 10,
+          "fire_protection": 0
+        },
+        {
+          "stage": "activation",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 10,
+          "fire_protection": 0
+        }
+      ],
+      "outcome": {
+        "activated": 0,
+        "selected_slot": -1,
+        "enemy_before": 70,
+        "enemy_after": 70,
+        "damage": 0,
+        "killed": 0,
+        "right_timeout": 0,
+        "left_timeout": 10,
+        "fire_protection": 0
+      },
+      "raw": "native-c/CBUG-0062: starting...\nSETUP seed=1000 class=Warrior level=40 depth=30 hp=421 device_native=51 device_borg=51 target_hp=70 distance=6\nRINGS right_fire=0 left_fire=1 right_timeout=0 left_timeout=10 right_known=1 left_known=1\nACTIVATION native_failure_per1000=49\n  attack_uses_ready_ring_on_either_hand  MODE left-charging\nFRAME {\"stage\":\"start\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":10,\"fire_protection\":0}\nDECISION score=0 keys=0 goal_x=0 goal_y=0 sequence=\nFRAME {\"stage\":\"activation\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":10,\"fire_protection\":0}\nOUTCOME activated=0 selected_slot=-1 enemy_before=70 enemy_after=70 damage=0 killed=0 right_timeout=0 left_timeout=10 fire_protection=0\nPassed\nnative-c/CBUG-0062 finished: 1/1 passed\n"
+    },
+    "detection-only": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 10,
+          "fire_protection": 0
+        },
+        {
+          "stage": "activation",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 10,
+          "fire_protection": 0
+        }
+      ],
+      "outcome": {
+        "activated": 0,
+        "selected_slot": -1,
+        "enemy_before": 70,
+        "enemy_after": 70,
+        "damage": 0,
+        "killed": 0,
+        "right_timeout": 0,
+        "left_timeout": 10,
+        "fire_protection": 0
+      },
+      "raw": "native-c/CBUG-0062: starting...\nSETUP seed=1000 class=Warrior level=40 depth=30 hp=421 device_native=51 device_borg=51 target_hp=70 distance=6\nRINGS right_fire=0 left_fire=1 right_timeout=0 left_timeout=10 right_known=1 left_known=1\nACTIVATION native_failure_per1000=49\n  attack_uses_ready_ring_on_either_hand  MODE left-charging\nFRAME {\"stage\":\"start\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":10,\"fire_protection\":0}\nDECISION score=0 keys=0 goal_x=0 goal_y=0 sequence=\nFRAME {\"stage\":\"activation\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":10,\"fire_protection\":0}\nOUTCOME activated=0 selected_slot=-1 enemy_before=70 enemy_after=70 damage=0 killed=0 right_timeout=0 left_timeout=10 fire_protection=0\nPassed\nnative-c/CBUG-0062 finished: 1/1 passed\n"
+    },
+    "activation-only": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 10,
+          "fire_protection": 0
+        },
+        {
+          "stage": "activation",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 10,
+          "fire_protection": 0
+        }
+      ],
+      "outcome": {
+        "activated": 0,
+        "selected_slot": -1,
+        "enemy_before": 70,
+        "enemy_after": 70,
+        "damage": 0,
+        "killed": 0,
+        "right_timeout": 0,
+        "left_timeout": 10,
+        "fire_protection": 0
+      },
+      "raw": "native-c/CBUG-0062: starting...\nSETUP seed=1000 class=Warrior level=40 depth=30 hp=421 device_native=51 device_borg=51 target_hp=70 distance=6\nRINGS right_fire=0 left_fire=1 right_timeout=0 left_timeout=10 right_known=1 left_known=1\nACTIVATION native_failure_per1000=49\n  attack_uses_ready_ring_on_either_hand  MODE left-charging\nFRAME {\"stage\":\"start\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":10,\"fire_protection\":0}\nDECISION score=0 keys=0 goal_x=0 goal_y=0 sequence=\nFRAME {\"stage\":\"activation\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":10,\"fire_protection\":0}\nOUTCOME activated=0 selected_slot=-1 enemy_before=70 enemy_after=70 damage=0 killed=0 right_timeout=0 left_timeout=10 fire_protection=0\nPassed\nnative-c/CBUG-0062 finished: 1/1 passed\n"
+    },
+    "after": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 10,
+          "fire_protection": 0
+        },
+        {
+          "stage": "activation",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 10,
+          "fire_protection": 0
+        }
+      ],
+      "outcome": {
+        "activated": 0,
+        "selected_slot": -1,
+        "enemy_before": 70,
+        "enemy_after": 70,
+        "damage": 0,
+        "killed": 0,
+        "right_timeout": 0,
+        "left_timeout": 10,
+        "fire_protection": 0
+      },
+      "raw": "native-c/CBUG-0062: starting...\nSETUP seed=1000 class=Warrior level=40 depth=30 hp=421 device_native=51 device_borg=51 target_hp=70 distance=6\nRINGS right_fire=0 left_fire=1 right_timeout=0 left_timeout=10 right_known=1 left_known=1\nACTIVATION native_failure_per1000=49\n  attack_uses_ready_ring_on_either_hand  MODE left-charging\nFRAME {\"stage\":\"start\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":10,\"fire_protection\":0}\nDECISION score=0 keys=0 goal_x=0 goal_y=0 sequence=\nFRAME {\"stage\":\"activation\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":10,\"fire_protection\":0}\nOUTCOME activated=0 selected_slot=-1 enemy_before=70 enemy_after=70 damage=0 killed=0 right_timeout=0 left_timeout=10 fire_protection=0\nPassed\nnative-c/CBUG-0062 finished: 1/1 passed\n"
+    }
+  },
+  "no-ring": {
+    "label": "Control: no fire ring equipped",
+    "explanation": "Both rings are ordinary Strength rings. No fire-ring attack is available.",
+    "before": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 0,
+          "fire_protection": 0
+        },
+        {
+          "stage": "activation",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 0,
+          "fire_protection": 0
+        }
+      ],
+      "outcome": {
+        "activated": 0,
+        "selected_slot": -1,
+        "enemy_before": 70,
+        "enemy_after": 70,
+        "damage": 0,
+        "killed": 0,
+        "right_timeout": 0,
+        "left_timeout": 0,
+        "fire_protection": 0
+      },
+      "raw": "native-c/CBUG-0062: starting...\nSETUP seed=1000 class=Warrior level=40 depth=30 hp=421 device_native=51 device_borg=51 target_hp=70 distance=6\nRINGS right_fire=0 left_fire=0 right_timeout=0 left_timeout=0 right_known=1 left_known=1\nACTIVATION native_failure_per1000=49\n  attack_uses_ready_ring_on_either_hand  MODE no-ring\nFRAME {\"stage\":\"start\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":0,\"fire_protection\":0}\nDECISION score=0 keys=0 goal_x=0 goal_y=0 sequence=\nFRAME {\"stage\":\"activation\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":0,\"fire_protection\":0}\nOUTCOME activated=0 selected_slot=-1 enemy_before=70 enemy_after=70 damage=0 killed=0 right_timeout=0 left_timeout=0 fire_protection=0\nPassed\nnative-c/CBUG-0062 finished: 1/1 passed\n"
+    },
+    "detection-only": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 0,
+          "fire_protection": 0
+        },
+        {
+          "stage": "activation",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 0,
+          "fire_protection": 0
+        }
+      ],
+      "outcome": {
+        "activated": 0,
+        "selected_slot": -1,
+        "enemy_before": 70,
+        "enemy_after": 70,
+        "damage": 0,
+        "killed": 0,
+        "right_timeout": 0,
+        "left_timeout": 0,
+        "fire_protection": 0
+      },
+      "raw": "native-c/CBUG-0062: starting...\nSETUP seed=1000 class=Warrior level=40 depth=30 hp=421 device_native=51 device_borg=51 target_hp=70 distance=6\nRINGS right_fire=0 left_fire=0 right_timeout=0 left_timeout=0 right_known=1 left_known=1\nACTIVATION native_failure_per1000=49\n  attack_uses_ready_ring_on_either_hand  MODE no-ring\nFRAME {\"stage\":\"start\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":0,\"fire_protection\":0}\nDECISION score=0 keys=0 goal_x=0 goal_y=0 sequence=\nFRAME {\"stage\":\"activation\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":0,\"fire_protection\":0}\nOUTCOME activated=0 selected_slot=-1 enemy_before=70 enemy_after=70 damage=0 killed=0 right_timeout=0 left_timeout=0 fire_protection=0\nPassed\nnative-c/CBUG-0062 finished: 1/1 passed\n"
+    },
+    "activation-only": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 0,
+          "fire_protection": 0
+        },
+        {
+          "stage": "activation",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 0,
+          "fire_protection": 0
+        }
+      ],
+      "outcome": {
+        "activated": 0,
+        "selected_slot": -1,
+        "enemy_before": 70,
+        "enemy_after": 70,
+        "damage": 0,
+        "killed": 0,
+        "right_timeout": 0,
+        "left_timeout": 0,
+        "fire_protection": 0
+      },
+      "raw": "native-c/CBUG-0062: starting...\nSETUP seed=1000 class=Warrior level=40 depth=30 hp=421 device_native=51 device_borg=51 target_hp=70 distance=6\nRINGS right_fire=0 left_fire=0 right_timeout=0 left_timeout=0 right_known=1 left_known=1\nACTIVATION native_failure_per1000=49\n  attack_uses_ready_ring_on_either_hand  MODE no-ring\nFRAME {\"stage\":\"start\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":0,\"fire_protection\":0}\nDECISION score=0 keys=0 goal_x=0 goal_y=0 sequence=\nFRAME {\"stage\":\"activation\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":0,\"fire_protection\":0}\nOUTCOME activated=0 selected_slot=-1 enemy_before=70 enemy_after=70 damage=0 killed=0 right_timeout=0 left_timeout=0 fire_protection=0\nPassed\nnative-c/CBUG-0062 finished: 1/1 passed\n"
+    },
+    "after": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 0,
+          "fire_protection": 0
+        },
+        {
+          "stage": "activation",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 0,
+          "fire_protection": 0
+        }
+      ],
+      "outcome": {
+        "activated": 0,
+        "selected_slot": -1,
+        "enemy_before": 70,
+        "enemy_after": 70,
+        "damage": 0,
+        "killed": 0,
+        "right_timeout": 0,
+        "left_timeout": 0,
+        "fire_protection": 0
+      },
+      "raw": "native-c/CBUG-0062: starting...\nSETUP seed=1000 class=Warrior level=40 depth=30 hp=421 device_native=51 device_borg=51 target_hp=70 distance=6\nRINGS right_fire=0 left_fire=0 right_timeout=0 left_timeout=0 right_known=1 left_known=1\nACTIVATION native_failure_per1000=49\n  attack_uses_ready_ring_on_either_hand  MODE no-ring\nFRAME {\"stage\":\"start\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":0,\"fire_protection\":0}\nDECISION score=0 keys=0 goal_x=0 goal_y=0 sequence=\nFRAME {\"stage\":\"activation\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":0,\"fire_protection\":0}\nOUTCOME activated=0 selected_slot=-1 enemy_before=70 enemy_after=70 damage=0 killed=0 right_timeout=0 left_timeout=0 fire_protection=0\nPassed\nnative-c/CBUG-0062 finished: 1/1 passed\n"
+    }
+  },
+  "blind-control": {
+    "label": "Control: character is blind",
+    "explanation": "Blindness prevents this ring attack. Every version rejects it.",
+    "before": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 0,
+          "fire_protection": 0
+        },
+        {
+          "stage": "activation",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 0,
+          "fire_protection": 0
+        }
+      ],
+      "outcome": {
+        "activated": 0,
+        "selected_slot": -1,
+        "enemy_before": 70,
+        "enemy_after": 70,
+        "damage": 0,
+        "killed": 0,
+        "right_timeout": 0,
+        "left_timeout": 0,
+        "fire_protection": 0
+      },
+      "raw": "native-c/CBUG-0062: starting...\nSETUP seed=1000 class=Warrior level=40 depth=30 hp=421 device_native=51 device_borg=51 target_hp=70 distance=6\nRINGS right_fire=1 left_fire=0 right_timeout=0 left_timeout=0 right_known=1 left_known=1\nACTIVATION native_failure_per1000=49\n  attack_uses_ready_ring_on_either_hand  MODE blind-control\nFRAME {\"stage\":\"start\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":0,\"fire_protection\":0}\nDECISION score=0 keys=0 goal_x=0 goal_y=0 sequence=\nFRAME {\"stage\":\"activation\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":0,\"fire_protection\":0}\nOUTCOME activated=0 selected_slot=-1 enemy_before=70 enemy_after=70 damage=0 killed=0 right_timeout=0 left_timeout=0 fire_protection=0\nPassed\nnative-c/CBUG-0062 finished: 1/1 passed\n"
+    },
+    "detection-only": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 0,
+          "fire_protection": 0
+        },
+        {
+          "stage": "activation",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 0,
+          "fire_protection": 0
+        }
+      ],
+      "outcome": {
+        "activated": 0,
+        "selected_slot": -1,
+        "enemy_before": 70,
+        "enemy_after": 70,
+        "damage": 0,
+        "killed": 0,
+        "right_timeout": 0,
+        "left_timeout": 0,
+        "fire_protection": 0
+      },
+      "raw": "native-c/CBUG-0062: starting...\nSETUP seed=1000 class=Warrior level=40 depth=30 hp=421 device_native=51 device_borg=51 target_hp=70 distance=6\nRINGS right_fire=1 left_fire=0 right_timeout=0 left_timeout=0 right_known=1 left_known=1\nACTIVATION native_failure_per1000=49\n  attack_uses_ready_ring_on_either_hand  MODE blind-control\nFRAME {\"stage\":\"start\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":0,\"fire_protection\":0}\nDECISION score=0 keys=0 goal_x=0 goal_y=0 sequence=\nFRAME {\"stage\":\"activation\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":0,\"fire_protection\":0}\nOUTCOME activated=0 selected_slot=-1 enemy_before=70 enemy_after=70 damage=0 killed=0 right_timeout=0 left_timeout=0 fire_protection=0\nPassed\nnative-c/CBUG-0062 finished: 1/1 passed\n"
+    },
+    "activation-only": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 0,
+          "fire_protection": 0
+        },
+        {
+          "stage": "activation",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 0,
+          "fire_protection": 0
+        }
+      ],
+      "outcome": {
+        "activated": 0,
+        "selected_slot": -1,
+        "enemy_before": 70,
+        "enemy_after": 70,
+        "damage": 0,
+        "killed": 0,
+        "right_timeout": 0,
+        "left_timeout": 0,
+        "fire_protection": 0
+      },
+      "raw": "native-c/CBUG-0062: starting...\nSETUP seed=1000 class=Warrior level=40 depth=30 hp=421 device_native=51 device_borg=51 target_hp=70 distance=6\nRINGS right_fire=1 left_fire=0 right_timeout=0 left_timeout=0 right_known=1 left_known=1\nACTIVATION native_failure_per1000=49\n  attack_uses_ready_ring_on_either_hand  MODE blind-control\nFRAME {\"stage\":\"start\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":0,\"fire_protection\":0}\nDECISION score=0 keys=0 goal_x=0 goal_y=0 sequence=\nFRAME {\"stage\":\"activation\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":0,\"fire_protection\":0}\nOUTCOME activated=0 selected_slot=-1 enemy_before=70 enemy_after=70 damage=0 killed=0 right_timeout=0 left_timeout=0 fire_protection=0\nPassed\nnative-c/CBUG-0062 finished: 1/1 passed\n"
+    },
+    "after": {
+      "frames": [
+        {
+          "stage": "start",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 0,
+          "fire_protection": 0
+        },
+        {
+          "stage": "activation",
+          "hp": 421,
+          "mana": 0,
+          "enemy_hp": 70,
+          "enemy_start_hp": 70,
+          "right_timeout": 0,
+          "left_timeout": 0,
+          "fire_protection": 0
+        }
+      ],
+      "outcome": {
+        "activated": 0,
+        "selected_slot": -1,
+        "enemy_before": 70,
+        "enemy_after": 70,
+        "damage": 0,
+        "killed": 0,
+        "right_timeout": 0,
+        "left_timeout": 0,
+        "fire_protection": 0
+      },
+      "raw": "native-c/CBUG-0062: starting...\nSETUP seed=1000 class=Warrior level=40 depth=30 hp=421 device_native=51 device_borg=51 target_hp=70 distance=6\nRINGS right_fire=1 left_fire=0 right_timeout=0 left_timeout=0 right_known=1 left_known=1\nACTIVATION native_failure_per1000=49\n  attack_uses_ready_ring_on_either_hand  MODE blind-control\nFRAME {\"stage\":\"start\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":0,\"fire_protection\":0}\nDECISION score=0 keys=0 goal_x=0 goal_y=0 sequence=\nFRAME {\"stage\":\"activation\",\"hp\":421,\"mana\":0,\"enemy_hp\":70,\"enemy_start_hp\":70,\"right_timeout\":0,\"left_timeout\":0,\"fire_protection\":0}\nOUTCOME activated=0 selected_slot=-1 enemy_before=70 enemy_after=70 damage=0 killed=0 right_timeout=0 left_timeout=0 fire_protection=0\nPassed\nnative-c/CBUG-0062 finished: 1/1 passed\n"
+    }
+  }
+}

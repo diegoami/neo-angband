@@ -1,0 +1,35 @@
+-- The C compiler identification is GNU 14.2.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Found Python: /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12 (found version "3.12.14") found components: Interpreter
+-- Could NOT find Sphinx (missing: SPHINX_EXECUTABLE) 
+-- Performing Test HAVE_linker_c_lgcov
+-- Performing Test HAVE_linker_c_lgcov - Success
+-- Performing Test HAVE_c_coverage
+-- Performing Test HAVE_c_coverage - Success
+-- Performing Test HAVE_c_fprofile_arcs
+-- Performing Test HAVE_c_fprofile_arcs - Success
+-- Performing Test HAVE_c_ftest_coverage
+-- Performing Test HAVE_c_ftest_coverage - Success
+-- Performing Test HAVE_c_fprofile_abs_path
+-- Performing Test HAVE_c_fprofile_abs_path - Success
+-- Found X11: /workspace/work/sysroot/usr/include
+-- Looking for XOpenDisplay in /usr/lib/x86_64-linux-gnu/libX11.so.6
+-- Looking for XOpenDisplay in /usr/lib/x86_64-linux-gnu/libX11.so.6 - found
+-- Looking for gethostbyname
+-- Looking for gethostbyname - found
+-- Looking for connect
+-- Looking for connect - found
+-- Looking for remove
+-- Looking for remove - found
+-- Looking for shmat
+-- Looking for shmat - found
+-- Support for X11 front end - Ready
+-- Support for spoiler front end - Ready
+-- Support for test front end - Ready
+-- Configuring done (1.3s)
+-- Generating done (0.9s)
+-- Build files have been written to: /tmp/angband-cbug0062-alim8uv5/build

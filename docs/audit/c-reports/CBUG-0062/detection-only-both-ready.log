@@ -1,0 +1,12 @@
+native-c/CBUG-0062: starting...
+SETUP seed=1000 class=Warrior level=40 depth=30 hp=421 device_native=51 device_borg=51 target_hp=70 distance=6
+RINGS right_fire=1 left_fire=1 right_timeout=0 left_timeout=0 right_known=1 left_known=1
+ACTIVATION native_failure_per1000=49
+  attack_uses_ready_ring_on_either_hand  MODE both-ready
+FRAME {"stage":"start","hp":421,"mana":0,"enemy_hp":70,"enemy_start_hp":70,"right_timeout":0,"left_timeout":0,"fire_protection":0}
+DECISION score=160 keys=12 goal_x=20 goal_y=14 sequence=*p8888885Ac5
+ENGINE You feel resistant to fire!
+FRAME {"stage":"activation","hp":421,"mana":0,"enemy_hp":0,"enemy_start_hp":70,"right_timeout":98,"left_timeout":0,"fire_protection":37}
+OUTCOME activated=1 selected_slot=2 enemy_before=70 enemy_after=0 damage=70 killed=1 right_timeout=98 left_timeout=0 fire_protection=37
+Passed
+native-c/CBUG-0062 finished: 1/1 passed
