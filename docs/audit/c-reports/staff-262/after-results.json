@@ -1,0 +1,16 @@
+{
+  "holy": {
+    "exit": 0,
+    "passed": true,
+    "geometry": "player=(5,20) harpies=(10,20)(11,19)(11,21) temp_n=3",
+    "rating": "holy=60",
+    "outcome": "holy=60"
+  },
+  "control": {
+    "exit": 0,
+    "passed": true,
+    "geometry": "player=(5,20) harpies=(10,20)(11,19)(11,21) temp_n=3",
+    "rating": "bolt2=28",
+    "outcome": "bolt2=28"
+  }
+}
