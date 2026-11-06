@@ -121,3 +121,30 @@
     before/after result and unchanged controls before code-level receipts.
     Explain the strength and limits of the measured consequence plainly; an
     extra cast/mana cost must not be presented as measured combat harm.
+
+17. Every bug report and PR must explain the problem to a maintainer who has
+    not read our conversation or investigated this code. Before function names,
+    variables, test counts or build details, explain the situation the Borg
+    encounters, what it actually does wrong, the consequence measured, and
+    what it does after the fix. Use concrete actions and ordinary language:
+    "The Borg chooses haste but casts regeneration first, spending an extra
+    20 mana. After the fix, it casts only haste."
+
+    Do not lead with "preparation scoring", "simulation side effects",
+    "native fixture" or "command energy". Explain necessary technical terms
+    when introducing them. Then provide a section headed "Verification":
+    copyable pinned commands, relevant actual output, and why that output
+    supports the claim. Describe unaffected controls, unchanged before/after
+    conditions and experiment limits. Passing tests and linked logs alone
+    are insufficient. Keep the full technical evidence below the explanation;
+    do not label ordinary explanations "Human".
+
+    Use CBUG-0066 (PR226/issue82) as a worked example of reasoning, not merely
+    a reproduction recipe: demonstrate the bad choice, show its consequence,
+    compare unchanged conditions and explain why the correction works. Test
+    plausible simpler alternatives when relevant. Before posting, read the
+    opening without the technical sections. Could a new maintainer explain
+    what goes wrong, why it matters and what changes? If not, rewrite it
+    yourself. The owner must not have to request a translation. Do not inflate
+    severity or claim combat harm, extra enemy attacks or deaths that the
+    experiment did not demonstrate.

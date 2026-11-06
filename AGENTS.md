@@ -38,3 +38,10 @@ player sees and the measured consequence, provide three copyable commands
 that build the comparison and generate an offline browser replay, explain
 what to click and what changes, and keep source pins/raw logs below the
 readable walkthrough. Do not substitute technical receipts for that format.
+Apply RULES17 before posting every report or PR: situation, wrong action,
+measured consequence and corrected action come before technical terms.
+CBUG-0066 is the worked reasoning example, not only a replay recipe. Read
+the opening alone and rewrite it until a maintainer new to the code can
+explain the problem and change. Then provide "Verification" with pinned
+commands, relevant actual output, controls and limits; never label the
+ordinary explanation "Human" or imply unmeasured combat harm.

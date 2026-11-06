@@ -111,3 +111,15 @@ Agent posting there remains paused. Check live status rather than assuming
 acceptance. Shared policy/evidence review and source adoption are distinct;
 checkpoint207 records outstanding decisions. Do not restart knockout experiments
 or promote deferred source100 from a source-reading lead into a verified bug.
+
+## Reporting the next native C bug
+
+Follow RULES17 before posting. A maintainer new to this work must first learn
+what situation the Borg encounters, what it does wrong, what consequence was
+measured and what changes after the fix. Use CBUG-0066 (PR226/issue82) as the
+worked example of reasoning: show the bad choice and its consequence under
+unchanged conditions, explain the correction, and test plausible simpler
+alternatives when relevant. The replay supports that explanation; it does
+not replace it. Put pinned commands, relevant output, controls and limits
+under "Verification" after the plain explanation. Read the opening alone
+before posting and rewrite it yourself if it still needs a translation.
