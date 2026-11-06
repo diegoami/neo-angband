@@ -85,3 +85,19 @@
     it makes the reasoning checkable. Update this account when evidence or the
     patch changes. Passing automation is not human acceptance: keep readiness
     for the owner's external filing explicitly subject to their assessment.
+
+16. Make every source issue actionable from its opening screen: explain in everyday
+    language what the Borg/player does, what goes wrong, and what remains working.
+    State the observed harmful outcome and why its priority is justified; separate
+    possible consequences from measured ones. Prioritize reproducible crashes,
+    stuck behavior, wasted resources and bad survival/combat decisions over code
+    anomalies or internal-state differences with no demonstrated practical harm.
+    A clear coding mistake alone does not justify high priority. Reassess imported
+    severity after investigation and park further low-impact work when appropriate.
+    For every proposal prepared for owner filing, put the direct upstream compare/
+    Create pull request link, a copyable human-readable title and description, and
+    one direct immutable link to the human-readable evidence near the TOP of the
+    canonical issue. Keep detailed commands/history below the concise explanation
+    (collapsible where useful). Do not make the owner navigate internal PRs,
+    checkpoints or raw logs to find the filing material. This handoff is for the
+    owner; it does not authorize this agent to post upstream under a standing pause.
