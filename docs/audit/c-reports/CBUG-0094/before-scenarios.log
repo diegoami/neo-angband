@@ -1,0 +1,9 @@
+before regen-only {"exit": 0, "completed": true, "passed": false, "commands": 2, "regen": 2, "haste": 0, "mana_spent": 40, "action_energy": 200, "heal": 14, "fast": 0}
+before speed-wins {"exit": 0, "completed": true, "passed": false, "commands": 2, "regen": 1, "haste": 1, "mana_spent": 32, "action_energy": 200, "heal": 8, "fast": 55}
+before speed-only {"exit": 0, "completed": true, "passed": true, "commands": 1, "regen": 0, "haste": 1, "mana_spent": 12, "action_energy": 100, "heal": 0, "fast": 68}
+before already-active {"exit": 0, "completed": true, "passed": true, "commands": 0, "regen": 0, "haste": 0, "mana_spent": 0, "action_energy": 0, "heal": 7, "fast": 0}
+before unlearned {"exit": 0, "completed": true, "passed": true, "commands": 0, "regen": 0, "haste": 0, "mana_spent": 0, "action_energy": 0, "heal": 0, "fast": 0}
+before blind {"exit": 0, "completed": true, "passed": true, "commands": 0, "regen": 0, "haste": 0, "mana_spent": 0, "action_energy": 0, "heal": 0, "fast": 0}
+before confused {"exit": 0, "completed": true, "passed": true, "commands": 0, "regen": 0, "haste": 0, "mana_spent": 0, "action_energy": 0, "heal": 0, "fast": 0}
+before town {"exit": 0, "completed": true, "passed": true, "commands": 0, "regen": 0, "haste": 0, "mana_spent": 0, "action_energy": 0, "heal": 0, "fast": 0}
+before low-mana {"exit": 0, "completed": true, "passed": true, "commands": 0, "regen": 0, "haste": 0, "mana_spent": 0, "action_energy": 0, "heal": 0, "fast": 0}

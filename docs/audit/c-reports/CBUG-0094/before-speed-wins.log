@@ -1,0 +1,15 @@
+native-c/CBUG-0094: starting...
+SETUP seed=1000 class=Druid level=50 depth=50 hp=326/326 sp=401/401 wisdom=208 amulet_wis=6
+ELIGIBILITY learned=1 native_fail=3 borg_fail=3 cost=20 okay=1
+  preparation_has_one_action  MODE speed-wins
+DECISION result=1 keys=6 no_rest_prep=-15536 sequence=mbdmbb
+ENGINE Your metabolism speeds up!
+CAST spell=Rapid Regeneration sp_before=401 sp_after=381 energy=100 heal=8 fast=0
+ENGINE You feel yourself moving faster!
+CAST spell=Haste Self sp_before=381 sp_after=369 energy=100 heal=8 fast=55
+OUTCOME commands=2 regen=1 haste=1 mana_spent=32 action_energy=200 heal=8 fast=55
+Failed
+    native-c/CBUG-0094:173: requirement 'count' == 'expected' failed
+      count:                2
+      expected:                1
+native-c/CBUG-0094 finished: 0/1 passed

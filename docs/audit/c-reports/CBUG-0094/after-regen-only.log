@@ -1,0 +1,10 @@
+native-c/CBUG-0094: starting...
+SETUP seed=1000 class=Druid level=50 depth=50 hp=326/326 sp=401/401 wisdom=208 amulet_wis=6
+ELIGIBILITY learned=1 native_fail=3 borg_fail=3 cost=20 okay=1
+  preparation_has_one_action  MODE regen-only
+DECISION result=1 keys=3 no_rest_prep=6000 sequence=mbd
+ENGINE Your metabolism speeds up!
+CAST spell=Rapid Regeneration sp_before=401 sp_after=381 energy=100 heal=8 fast=0
+OUTCOME commands=1 regen=1 haste=0 mana_spent=20 action_energy=100 heal=8 fast=0
+Passed
+native-c/CBUG-0094 finished: 1/1 passed

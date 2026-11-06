@@ -1,0 +1,8 @@
+native-c/CBUG-0094: starting...
+SETUP seed=1000 class=Druid level=50 depth=0 hp=326/326 sp=401/401 wisdom=208 amulet_wis=6
+ELIGIBILITY learned=1 native_fail=3 borg_fail=3 cost=20 okay=1
+  preparation_has_one_action  MODE town
+DECISION result=0 keys=0 no_rest_prep=0 sequence=
+OUTCOME commands=0 regen=0 haste=0 mana_spent=0 action_energy=0 heal=0 fast=0
+Passed
+native-c/CBUG-0094 finished: 1/1 passed
