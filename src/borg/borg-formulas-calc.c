@@ -549,6 +549,9 @@ static void calc_free(struct borg_calculation *calc)
             token_free(calc->token_array->items[i]);
             calc->token_array->items[i] = NULL;
         }
+        /* Release the backing pointer array too: borg_array_add()
+         * allocated it separately from the array struct. */
+        mem_free(calc->token_array->items);
         if (calc->token_array)
             mem_free(calc->token_array);
         calc->token_array = NULL;
