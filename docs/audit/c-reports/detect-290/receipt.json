@@ -1,0 +1,134 @@
+{
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "fix": "02fb00af6abdb165fc1b445c42dc85d2263a3cdd",
+  "fixtures_ref": "b7eb76c64b6702ba6d4aa1ce5ec3a1b27472e60a",
+  "cases": {
+    "normal": {
+      "stale": {
+        "exit": -11,
+        "passed": false,
+        "asan": false,
+        "oob_row": false
+      },
+      "fresh": {
+        "exit": 0,
+        "passed": true,
+        "asan": false,
+        "oob_row": false,
+        "geometry": "new_cave=28x28 panels=1,1 last_row_mark=1",
+        "rating": "last_row_mark=1 rows=2",
+        "outcome": "last_row_mark=1"
+      }
+    },
+    "asan": {
+      "stale": {
+        "exit": 1,
+        "passed": false,
+        "asan": true,
+        "oob_row": true
+      },
+      "fresh": {
+        "exit": 0,
+        "passed": true,
+        "asan": false,
+        "oob_row": false,
+        "geometry": "new_cave=28x28 panels=1,1 last_row_mark=1",
+        "rating": "last_row_mark=1 rows=2",
+        "outcome": "last_row_mark=1"
+      }
+    }
+  },
+  "after": {
+    "normal": {
+      "stale": {
+        "exit": 0,
+        "passed": true,
+        "asan": false,
+        "oob_row": false,
+        "geometry": "new_cave=28x28 panels=1,1 last_row_mark=0",
+        "rating": "last_row_mark=0 rows=2",
+        "outcome": "last_row_mark=0"
+      },
+      "fresh": {
+        "exit": 0,
+        "passed": true,
+        "asan": false,
+        "oob_row": false,
+        "geometry": "new_cave=28x28 panels=1,1 last_row_mark=1",
+        "rating": "last_row_mark=1 rows=2",
+        "outcome": "last_row_mark=1"
+      }
+    },
+    "asan": {
+      "stale": {
+        "exit": 0,
+        "passed": true,
+        "asan": false,
+        "oob_row": false,
+        "geometry": "new_cave=28x28 panels=1,1 last_row_mark=0",
+        "rating": "last_row_mark=0 rows=2",
+        "outcome": "last_row_mark=0"
+      },
+      "fresh": {
+        "exit": 0,
+        "passed": true,
+        "asan": false,
+        "oob_row": false,
+        "geometry": "new_cave=28x28 panels=1,1 last_row_mark=1",
+        "rating": "last_row_mark=1 rows=2",
+        "outcome": "last_row_mark=1"
+      }
+    }
+  },
+  "identical_controls": [
+    "fresh"
+  ],
+  "full_tests": {
+    "before": {
+      "units": "965/965",
+      "frontends": "5/5"
+    },
+    "after": {
+      "units": "965/965",
+      "frontends": "5/5"
+    }
+  },
+  "fixed_source_sha256": "0eadbb2d75bf66417466164f2893603b9e44e82cd6ba03470a086e47711aa1ef",
+  "compiler": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+  "cmake": "cmake version 4.2.3",
+  "sanitizer": "AddressSanitizer from gcc 15.2.0; scenario runs disable leak detection and the strcmp interceptor (unrelated pristine-base overread in borg-util.c name sorting)",
+  "browser": {
+    "engine": "Google Chrome for Testing 156.0.8078.4 (headless dump-dom)",
+    "verification": "20 checks against the rendered DOM: 2 situations x 2 variants; stale crashes before and completes after with last_row_mark=0; fresh control 1/1 byte-identical raw logs; no n/a or undefined fields; zero console errors"
+  },
+  "maintenance_base": "f186aa1fce2e590eb9bbcb91dc369f3f8b6af688",
+  "sha256": {
+    "README.md": "85719f93a354bcf8c0d43ddf7b2dfe95366a2e8bcb8b632e3ca14a716d132287",
+    "after-alltests.log": "d1a2b314fe397b48359296fc62c03be55d93a595a4c4da4825b3869f76dffed9",
+    "after-asan-build.log": "876527ed926d2e157de00b95840db44d7c7d44b20e2b66dbea597d27cfdf1f1b",
+    "asan/after-fresh.log": "85e82dee675dbc61918d33893b15d28e0218e741f25c2c855812a9e83ce2dcc1",
+    "asan/after-results.json": "656eeaef33d071d1dba5daeae91d14415c91a79b49dbcc33da0c681e90a6ddee",
+    "asan/after-stale.log": "b6bddf10ee93122a538d6aba333e7bd2f3e758e22fa34a9bb1f35372fb6db990",
+    "asan/before-fresh.log": "85e82dee675dbc61918d33893b15d28e0218e741f25c2c855812a9e83ce2dcc1",
+    "asan/before-results.json": "e0d0aa746d1a0a1888c46507276db7ab4c02621ebd206bd61e4a5054d2733487",
+    "asan/before-stale.log": "049f3d5f4000cc276340100bcf5edd899fee5bc9c070b5efdaca08dda5356e49",
+    "before-alltests.log": "30360674ca16efb4b8963ce88185eaf5f04fc58b2f851a870e63bc4248697a2d",
+    "before-asan-build.log": "033f33a7a9319ad8cf3a5576a098e9271684f795ad06e3b4230cb7773f6404b3",
+    "borg.txt": "80738da248ed74e343925e0348fc75da993d8c03ffff03c7bce1a9090005be47",
+    "configure-asan.log": "f6eaf6e61d695e2f7aea8b1590b6c3f4d45a0205759aef0aae69c3a57aa00d86",
+    "configure.log": "c82681edd749a704ca59a4a5b16cd47bc7abd3df55efeb55b9561eb90c06b7d3",
+    "make_replay.py": "af02339d84aaf40ccd6cdafb0a8235b60608ce17a4ee31937111aa0d7d19476d",
+    "normal/after-fresh.log": "85e82dee675dbc61918d33893b15d28e0218e741f25c2c855812a9e83ce2dcc1",
+    "normal/after-results.json": "656eeaef33d071d1dba5daeae91d14415c91a79b49dbcc33da0c681e90a6ddee",
+    "normal/after-stale.log": "b6bddf10ee93122a538d6aba333e7bd2f3e758e22fa34a9bb1f35372fb6db990",
+    "normal/before-fresh.log": "85e82dee675dbc61918d33893b15d28e0218e741f25c2c855812a9e83ce2dcc1",
+    "normal/before-results.json": "c3e8c4843aa01f6fdb46c163b17f7b224d339f6e708398eb557a3bb18d850c05",
+    "normal/before-stale.log": "a30fcce5deb5847f01b5c42525918054407279ebe5397ef85ee5aab7e4536a41",
+    "replay-data.json": "94550f16eba47f1bdbbbc8ed6a43e88e8d81d89c65c158432a7a22736746e478",
+    "replay.html": "aec1fec5c7fd7f06b0f9585039f7afdea8dba37de1233e7a6fce00f7a8750140",
+    "reproduce.py": "39f7d4753ae938a2c72a5991d648f13e61a680d71a3513a8c344697c18105c5e",
+    "result.json": "67f7b90b61c8d1393e9304028c58cae5022ffc230720feafa195adcbd2e86b7b",
+    "run-cases.py": "349de4cbb2e2099e7667c93cb203175432942e5e333bfa1b7f28b5d4e2e8952e",
+    "scenario.c": "79ebc0931bf93d3f4fbf5c41377bade4d5d17982b00691c7ae1d7c447bd01dae"
+  }
+}

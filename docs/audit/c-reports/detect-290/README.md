@@ -42,8 +42,8 @@ From a clone of `diegoami/neo-angband-tracker`, copy these three commands:
 
 ```sh
 git fetch https://github.com/diegoami/neo-angband-tracker.git task/detect-290-evidence
-git show PINSHA:docs/audit/c-reports/detect-290/reproduce.py > /tmp/reproduce-detect-290.py
-python3 /tmp/reproduce-detect-290.py --fixtures-ref PINSHA --full-tests
+git show bab03cb2204389ddad6ce017ae84614fdd39fc66:docs/audit/c-reports/detect-290/reproduce.py > /tmp/reproduce-detect-290.py
+python3 /tmp/reproduce-detect-290.py --fixtures-ref bab03cb2204389ddad6ce017ae84614fdd39fc66 --full-tests
 ```
 
 The runner builds original and corrected variants from pristine C
