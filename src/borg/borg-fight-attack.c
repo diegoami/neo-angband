@@ -578,11 +578,11 @@ static int borg_launch_damage_one(int i, int dam, int typ, int ammo_location)
             dam = 0;
         break;
 
-    /*  Dispel life */
+    /*  Dispel life: the game's drain only hurts living monsters
+     * (nonliving is undead or nonliving). */
     case BORG_ATTACK_DRAIN_LIFE:
-        if (!(rf_has(r_ptr->flags, RF_NONLIVING)))
-            dam = 0;
-        if (!(rf_has(r_ptr->flags, RF_UNDEAD)))
+        if (rf_has(r_ptr->flags, RF_NONLIVING)
+            || rf_has(r_ptr->flags, RF_UNDEAD))
             dam = 0;
         break;
 
