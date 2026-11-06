@@ -4631,7 +4631,7 @@ int borg_calculate_attack_effectiveness(int attack_type)
         rad = 0;
         dam = (12 * (8 + 1) / 2);
         return (borg_attack_aux_activation(
-            act_acid_bolt2, rad, dam, BORG_ATTACK_ACID, true, -1));
+            act_acid_bolt3, rad, dam, BORG_ATTACK_ACID, true, -1));
 
     case BF_ACT_ACID_BALL:
         rad = 2;
@@ -4691,7 +4691,7 @@ int borg_calculate_attack_effectiveness(int attack_type)
         rad = 10;
         dam = 60;
         return (borg_attack_aux_activation(
-            act_dispel_undead, rad, dam, BORG_ATTACK_DISP_ALL, false, -1));
+            act_dispel_all, rad, dam, BORG_ATTACK_DISP_ALL, false, -1));
 
     case BF_ACT_LOSSLOW:
         rad = 10;
