@@ -1,0 +1,22 @@
+{
+  "glow": {
+    "exit": 0,
+    "passed": false,
+    "geometry": "glow_n=1600 limit=1536",
+    "rating": "glow_n=1600 overflow=64",
+    "outcome": "glow_n=1600 overflow=64"
+  },
+  "control": {
+    "exit": 0,
+    "passed": true,
+    "geometry": "glow_n=1000 limit=1536",
+    "rating": "glow_n=1000 overflow=0",
+    "outcome": "glow_n=1000 overflow=0"
+  },
+  "asan": {
+    "passed": false,
+    "summary": "SUMMARY: AddressSanitizer: global-buffer-overflow /tmp/angband-glowoverflow-311-qaoe783g/source/src/borg/borg-flow-misc.c:843 in borg_flow_light",
+    "write": "WRITE of size 1",
+    "in_flow_light": true
+  }
+}
