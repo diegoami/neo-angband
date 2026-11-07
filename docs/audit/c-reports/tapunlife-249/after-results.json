@@ -1,0 +1,62 @@
+{
+  "undead": {
+    "exit": 0,
+    "passed": true,
+    "setup": {
+      "maxsp": 78,
+      "failtap": 2,
+      "failbolt": 2,
+      "maxrange": 20
+    },
+    "decision": {
+      "acted": 1,
+      "keys": 10
+    },
+    "outcome": {
+      "acted": 1,
+      "keys": 10,
+      "tap_cast": 1
+    },
+    "sequence": "* p 6 6 6 6 5 m c a"
+  },
+  "non-undead": {
+    "exit": 0,
+    "passed": true,
+    "setup": {
+      "maxsp": 78,
+      "failtap": 2,
+      "failbolt": 2,
+      "maxrange": 20
+    },
+    "decision": {
+      "acted": 1,
+      "keys": 12
+    },
+    "outcome": {
+      "acted": 1,
+      "keys": 12,
+      "tap_cast": 0
+    },
+    "sequence": "* p 2 2 2 2 2 5 m b a 5"
+  },
+  "bat": {
+    "exit": 0,
+    "passed": true,
+    "setup": {
+      "maxsp": 78,
+      "failtap": 2,
+      "failbolt": 2,
+      "maxrange": 20
+    },
+    "decision": {
+      "acted": 1,
+      "keys": 10
+    },
+    "outcome": {
+      "acted": 1,
+      "keys": 10,
+      "tap_cast": 1
+    },
+    "sequence": "* p 6 6 6 6 5 m c a"
+  }
+}
