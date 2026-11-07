@@ -1,0 +1,58 @@
+{
+  "stairs": {
+    "exit": 1,
+    "passed": false,
+    "asan": true,
+    "underflow": true,
+    "defend_site": true
+  },
+  "clear-floor": {
+    "exit": 0,
+    "passed": true,
+    "asan": false,
+    "underflow": false,
+    "defend_site": false,
+    "phaseA": {
+      "num": 0
+    },
+    "phaseB": {
+      "num": 1
+    },
+    "message": {
+      "failed_floor": 0,
+      "total_new": 4
+    },
+    "outcome": {
+      "glyph_created": 1,
+      "hp": 8,
+      "num_final": 1
+    },
+    "decisionA": {
+      "acted": 1,
+      "keys": 3
+    },
+    "decisionB": {
+      "acted": 1,
+      "keys": 4
+    }
+  },
+  "pairing": {
+    "exit": 0,
+    "passed": true,
+    "asan": false,
+    "underflow": false,
+    "defend_site": false,
+    "phaseB": {
+      "num": 1
+    },
+    "outcome": {
+      "glyph_created": 1,
+      "hp": 8,
+      "num_final": 1
+    },
+    "decisionB": {
+      "acted": 1,
+      "keys": 4
+    }
+  }
+}

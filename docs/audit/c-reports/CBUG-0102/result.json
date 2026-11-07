@@ -1,0 +1,324 @@
+{
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "fix": "ec172531ec38fdd3ac2783d21e3faf6dc1e2b3f3",
+  "fixtures_ref": "f1f53106526412cfe44fa01c73d00e7dbf4dbeed",
+  "cases": {
+    "before-normal": {
+      "stairs": {
+        "exit": 0,
+        "passed": false,
+        "asan": false,
+        "underflow": false,
+        "defend_site": false,
+        "phaseA": {
+          "num": -1
+        },
+        "phaseB": {
+          "num": 0
+        },
+        "message": {
+          "failed_floor": 1,
+          "total_new": 5
+        },
+        "outcome": {
+          "glyph_created": 1,
+          "hp": 8,
+          "num_final": 0
+        },
+        "decisionA": {
+          "acted": 1,
+          "keys": 3
+        },
+        "decisionB": {
+          "acted": 1,
+          "keys": 4
+        }
+      },
+      "clear-floor": {
+        "exit": 0,
+        "passed": true,
+        "asan": false,
+        "underflow": false,
+        "defend_site": false,
+        "phaseA": {
+          "num": 0
+        },
+        "phaseB": {
+          "num": 1
+        },
+        "message": {
+          "failed_floor": 0,
+          "total_new": 4
+        },
+        "outcome": {
+          "glyph_created": 1,
+          "hp": 8,
+          "num_final": 1
+        },
+        "decisionA": {
+          "acted": 1,
+          "keys": 3
+        },
+        "decisionB": {
+          "acted": 1,
+          "keys": 4
+        }
+      },
+      "pairing": {
+        "exit": 0,
+        "passed": true,
+        "asan": false,
+        "underflow": false,
+        "defend_site": false,
+        "phaseB": {
+          "num": 1
+        },
+        "outcome": {
+          "glyph_created": 1,
+          "hp": 8,
+          "num_final": 1
+        },
+        "decisionB": {
+          "acted": 1,
+          "keys": 4
+        }
+      }
+    },
+    "before-asan": {
+      "stairs": {
+        "exit": 1,
+        "passed": false,
+        "asan": true,
+        "underflow": true,
+        "defend_site": true
+      },
+      "clear-floor": {
+        "exit": 0,
+        "passed": true,
+        "asan": false,
+        "underflow": false,
+        "defend_site": false,
+        "phaseA": {
+          "num": 0
+        },
+        "phaseB": {
+          "num": 1
+        },
+        "message": {
+          "failed_floor": 0,
+          "total_new": 4
+        },
+        "outcome": {
+          "glyph_created": 1,
+          "hp": 8,
+          "num_final": 1
+        },
+        "decisionA": {
+          "acted": 1,
+          "keys": 3
+        },
+        "decisionB": {
+          "acted": 1,
+          "keys": 4
+        }
+      },
+      "pairing": {
+        "exit": 0,
+        "passed": true,
+        "asan": false,
+        "underflow": false,
+        "defend_site": false,
+        "phaseB": {
+          "num": 1
+        },
+        "outcome": {
+          "glyph_created": 1,
+          "hp": 8,
+          "num_final": 1
+        },
+        "decisionB": {
+          "acted": 1,
+          "keys": 4
+        }
+      }
+    },
+    "after-normal": {
+      "stairs": {
+        "exit": 0,
+        "passed": true,
+        "asan": false,
+        "underflow": false,
+        "defend_site": false,
+        "phaseA": {
+          "num": 0
+        },
+        "phaseB": {
+          "num": 1
+        },
+        "message": {
+          "failed_floor": 1,
+          "total_new": 5
+        },
+        "outcome": {
+          "glyph_created": 1,
+          "hp": 8,
+          "num_final": 1
+        },
+        "decisionA": {
+          "acted": 1,
+          "keys": 3
+        },
+        "decisionB": {
+          "acted": 1,
+          "keys": 4
+        }
+      },
+      "clear-floor": {
+        "exit": 0,
+        "passed": true,
+        "asan": false,
+        "underflow": false,
+        "defend_site": false,
+        "phaseA": {
+          "num": 0
+        },
+        "phaseB": {
+          "num": 1
+        },
+        "message": {
+          "failed_floor": 0,
+          "total_new": 4
+        },
+        "outcome": {
+          "glyph_created": 1,
+          "hp": 8,
+          "num_final": 1
+        },
+        "decisionA": {
+          "acted": 1,
+          "keys": 3
+        },
+        "decisionB": {
+          "acted": 1,
+          "keys": 4
+        }
+      },
+      "pairing": {
+        "exit": 0,
+        "passed": true,
+        "asan": false,
+        "underflow": false,
+        "defend_site": false,
+        "phaseB": {
+          "num": 1
+        },
+        "outcome": {
+          "glyph_created": 1,
+          "hp": 8,
+          "num_final": 1
+        },
+        "decisionB": {
+          "acted": 1,
+          "keys": 4
+        }
+      }
+    },
+    "after-asan": {
+      "stairs": {
+        "exit": 0,
+        "passed": true,
+        "asan": false,
+        "underflow": false,
+        "defend_site": false,
+        "phaseA": {
+          "num": 0
+        },
+        "phaseB": {
+          "num": 1
+        },
+        "message": {
+          "failed_floor": 1,
+          "total_new": 5
+        },
+        "outcome": {
+          "glyph_created": 1,
+          "hp": 8,
+          "num_final": 1
+        },
+        "decisionA": {
+          "acted": 1,
+          "keys": 3
+        },
+        "decisionB": {
+          "acted": 1,
+          "keys": 4
+        }
+      },
+      "clear-floor": {
+        "exit": 0,
+        "passed": true,
+        "asan": false,
+        "underflow": false,
+        "defend_site": false,
+        "phaseA": {
+          "num": 0
+        },
+        "phaseB": {
+          "num": 1
+        },
+        "message": {
+          "failed_floor": 0,
+          "total_new": 4
+        },
+        "outcome": {
+          "glyph_created": 1,
+          "hp": 8,
+          "num_final": 1
+        },
+        "decisionA": {
+          "acted": 1,
+          "keys": 3
+        },
+        "decisionB": {
+          "acted": 1,
+          "keys": 4
+        }
+      },
+      "pairing": {
+        "exit": 0,
+        "passed": true,
+        "asan": false,
+        "underflow": false,
+        "defend_site": false,
+        "phaseB": {
+          "num": 1
+        },
+        "outcome": {
+          "glyph_created": 1,
+          "hp": 8,
+          "num_final": 1
+        },
+        "decisionB": {
+          "acted": 1,
+          "keys": 4
+        }
+      }
+    }
+  },
+  "identical_full_logs": [
+    "clear-floor",
+    "pairing"
+  ],
+  "full_tests": {
+    "before": {
+      "units": "965/965",
+      "frontends": "5/5"
+    },
+    "after": {
+      "units": "965/965",
+      "frontends": "5/5"
+    }
+  },
+  "asan_stairs_abort": "heap-buffer-overflow write in borg-fight-defend.c",
+  "fixed_source_sha256": "3189a4b646b8f7db4df82c88302acba015a4333332c995b8f367f7062cbafd69"
+}

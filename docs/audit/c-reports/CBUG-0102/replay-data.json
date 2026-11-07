@@ -1,0 +1,170 @@
+{
+  "stairs": {
+    "label": "Emergency unknown scroll read on a doorway",
+    "explanation": "A wounded level-1 Warrior on an open doorway reads an unknown scroll to survive a summoner. The scroll is a Rune of Protection and the doorway cannot hold one, so the game reports no clear floor. The tracker count goes below zero; the next glyph creation then writes before the start of the arrays.",
+    "before": {
+      "raw": "native-c/CBUG-0102: starting...\nSETUPSTEP profile\nSETUPSTEP birth\nSETUPSTEP borg\nSETUPSTEP monster mage\nSETUP seed=1000 class=Warrior level=1 depth=5 hp=8/20 sp=0/0 mode=stairs\nTHREAT name=mage kill_index=1 awake=1 ranged=8\nSPELLS 46,47,48,59,60,67,70,78,\nGRID player=(11,11) feat=3 trappable=0 mage=(11,10)\nTRACK start num=0 size=200\n  failed_glyph_keeps_count_in_bounds  MODE stairs\nDANGER phaseA current=154 emergency_gate=32\nBMIRROR before i=0 letter=a tval=28 sval=5 aware=1\nBMIRROR before i=1 letter=b tval=26 sval=26 aware=1\nBMIRROR before i=2 letter=c tval=25 sval=33 aware=0\nBMIRROR before i=3 letter=d tval=19 sval=1 aware=1\nSTATE fleeing=1 ready_morgoth=0 recalling=0 near_unique=0 leaving=1 descending=0\nDECISION phaseA acted=1 keys=3 sequence=rc<Escape>\nPACK i=0 letter=a tval=28 sval=5 n=1 aware=1 unknown=0 borg(tval=28 sval=5 aware=1)\nPACK i=1 letter=b tval=26 sval=26 n=1 aware=1 unknown=0 borg(tval=26 sval=26 aware=1)\nPACK i=2 letter=c tval=25 sval=33 n=1 aware=0 unknown=1 borg(tval=25 sval=33 aware=0)\nPACK i=3 letter=d tval=19 sval=1 n=2 aware=1 unknown=0 borg(tval=19 sval=1 aware=1)\nENGINE turn=1 hp=8: There is no clear floor on which to cast the spell.\nENGINE turn=1 hp=8: Welcome to level 2.\nENGINE turn=1 hp=8: Welcome to level 3.\nENGINE turn=1 hp=8: Welcome to level 4.\nENGINE turn=1 hp=8: You have a Scroll of Rune of Protection (c).\nMESSAGE failed_floor=1 total_new=5\nTRACK phaseA num=-1\nDANGER phaseB p1=154 p2=88 avoidance=180\nDECISION phaseB acted=1 keys=4 sequence=<Escape><Escape>rd\nTRACK phaseB_acted num=0\nENGINE turn=1 hp=8: You have a Scroll of Rune of Protection (1st c).\nOUTCOME glyph_created=1 warded_grid=(10,10) hp=8 num_final=0\nFailed\n    native-c/CBUG-0102:330: requirement 'num_a' == '0' failed\n      num_a:               -1\n      0:                0\nTRACK teardown num=0\nnative-c/CBUG-0102 finished: 0/1 passed\n",
+      "phaseA": {
+        "num": -1
+      },
+      "phaseB": {
+        "num": 0
+      },
+      "message": {
+        "failed_floor": 1,
+        "total_new": 5
+      },
+      "outcome": {
+        "glyph_created": 1,
+        "hp": 8,
+        "num_final": 0
+      },
+      "decision": [
+        "DECISION phaseA acted=1 keys=3 sequence=rc<Escape>",
+        "ENGINE turn=1 hp=8: There is no clear floor on which to cast the spell.",
+        "ENGINE turn=1 hp=8: Welcome to level 2.",
+        "ENGINE turn=1 hp=8: Welcome to level 3.",
+        "ENGINE turn=1 hp=8: Welcome to level 4.",
+        "ENGINE turn=1 hp=8: You have a Scroll of Rune of Protection (c).",
+        "DECISION phaseB acted=1 keys=4 sequence=<Escape><Escape>rd",
+        "ENGINE turn=1 hp=8: You have a Scroll of Rune of Protection (1st c)."
+      ],
+      "passed": false,
+      "crash": false
+    },
+    "after": {
+      "raw": "native-c/CBUG-0102: starting...\nSETUPSTEP profile\nSETUPSTEP birth\nSETUPSTEP borg\nSETUPSTEP monster mage\nSETUP seed=1000 class=Warrior level=1 depth=5 hp=8/20 sp=0/0 mode=stairs\nTHREAT name=mage kill_index=1 awake=1 ranged=8\nSPELLS 46,47,48,59,60,67,70,78,\nGRID player=(11,11) feat=3 trappable=0 mage=(11,10)\nTRACK start num=0 size=200\n  failed_glyph_keeps_count_in_bounds  MODE stairs\nDANGER phaseA current=154 emergency_gate=32\nBMIRROR before i=0 letter=a tval=28 sval=5 aware=1\nBMIRROR before i=1 letter=b tval=26 sval=26 aware=1\nBMIRROR before i=2 letter=c tval=25 sval=33 aware=0\nBMIRROR before i=3 letter=d tval=19 sval=1 aware=1\nSTATE fleeing=1 ready_morgoth=0 recalling=0 near_unique=0 leaving=1 descending=0\nDECISION phaseA acted=1 keys=3 sequence=rc<Escape>\nPACK i=0 letter=a tval=28 sval=5 n=1 aware=1 unknown=0 borg(tval=28 sval=5 aware=1)\nPACK i=1 letter=b tval=26 sval=26 n=1 aware=1 unknown=0 borg(tval=26 sval=26 aware=1)\nPACK i=2 letter=c tval=25 sval=33 n=1 aware=0 unknown=1 borg(tval=25 sval=33 aware=0)\nPACK i=3 letter=d tval=19 sval=1 n=2 aware=1 unknown=0 borg(tval=19 sval=1 aware=1)\nENGINE turn=1 hp=8: There is no clear floor on which to cast the spell.\nENGINE turn=1 hp=8: Welcome to level 2.\nENGINE turn=1 hp=8: Welcome to level 3.\nENGINE turn=1 hp=8: Welcome to level 4.\nENGINE turn=1 hp=8: You have a Scroll of Rune of Protection (c).\nMESSAGE failed_floor=1 total_new=5\nTRACK phaseA num=0\nDANGER phaseB p1=154 p2=88 avoidance=180\nDECISION phaseB acted=1 keys=4 sequence=<Escape><Escape>rd\nTRACK phaseB_acted num=1\nENGINE turn=1 hp=8: You have a Scroll of Rune of Protection (1st c).\nOUTCOME glyph_created=1 warded_grid=(10,10) hp=8 num_final=1\nPassed\nTRACK teardown num=1\nnative-c/CBUG-0102 finished: 1/1 passed\n",
+      "phaseA": {
+        "num": 0
+      },
+      "phaseB": {
+        "num": 1
+      },
+      "message": {
+        "failed_floor": 1,
+        "total_new": 5
+      },
+      "outcome": {
+        "glyph_created": 1,
+        "hp": 8,
+        "num_final": 1
+      },
+      "decision": [
+        "DECISION phaseA acted=1 keys=3 sequence=rc<Escape>",
+        "ENGINE turn=1 hp=8: There is no clear floor on which to cast the spell.",
+        "ENGINE turn=1 hp=8: Welcome to level 2.",
+        "ENGINE turn=1 hp=8: Welcome to level 3.",
+        "ENGINE turn=1 hp=8: Welcome to level 4.",
+        "ENGINE turn=1 hp=8: You have a Scroll of Rune of Protection (c).",
+        "DECISION phaseB acted=1 keys=4 sequence=<Escape><Escape>rd",
+        "ENGINE turn=1 hp=8: You have a Scroll of Rune of Protection (1st c)."
+      ],
+      "passed": true,
+      "crash": false
+    }
+  },
+  "clear-floor": {
+    "label": "Control: the same read on open floor",
+    "explanation": "The same emergency read happens on ordinary floor. The rune is created, no failure message exists, and the count stays in bounds in both versions. The logs are identical before and after the fix.",
+    "before": {
+      "raw": "native-c/CBUG-0102: starting...\nSETUPSTEP profile\nSETUPSTEP birth\nSETUPSTEP borg\nSETUPSTEP monster mage\nSETUP seed=1000 class=Warrior level=1 depth=5 hp=8/20 sp=0/0 mode=clear-floor\nTHREAT name=mage kill_index=1 awake=1 ranged=8\nSPELLS 46,47,48,59,60,67,70,78,\nGRID player=(11,11) feat=1 trappable=1 mage=(11,10)\nTRACK start num=0 size=200\n  failed_glyph_keeps_count_in_bounds  MODE clear-floor\nDANGER phaseA current=308 emergency_gate=32\nBMIRROR before i=0 letter=a tval=28 sval=5 aware=1\nBMIRROR before i=1 letter=b tval=26 sval=26 aware=1\nBMIRROR before i=2 letter=c tval=25 sval=33 aware=0\nBMIRROR before i=3 letter=d tval=19 sval=1 aware=1\nSTATE fleeing=1 ready_morgoth=0 recalling=0 near_unique=0 leaving=1 descending=0\nDECISION phaseA acted=1 keys=3 sequence=rc<Escape>\nPACK i=0 letter=a tval=28 sval=5 n=1 aware=1 unknown=0 borg(tval=28 sval=5 aware=1)\nPACK i=1 letter=b tval=26 sval=26 n=1 aware=1 unknown=0 borg(tval=26 sval=26 aware=1)\nPACK i=2 letter=c tval=25 sval=33 n=1 aware=0 unknown=1 borg(tval=25 sval=33 aware=0)\nPACK i=3 letter=d tval=19 sval=1 n=2 aware=1 unknown=0 borg(tval=19 sval=1 aware=1)\nENGINE turn=1 hp=8: Welcome to level 2.\nENGINE turn=1 hp=8: Welcome to level 3.\nENGINE turn=1 hp=8: Welcome to level 4.\nENGINE turn=1 hp=8: You have no more Scrolls of Rune of Protection (c).\nMESSAGE failed_floor=0 total_new=4\nTRACK phaseA num=0\nDANGER phaseB p1=308 p2=88 avoidance=180\nDECISION phaseB acted=1 keys=4 sequence=<Escape><Escape>rc\nTRACK phaseB_acted num=1\nENGINE turn=1 hp=8: You have no more Scrolls of Rune of Protection (c).\nOUTCOME glyph_created=1 warded_grid=(10,10) hp=8 num_final=1\nPassed\nTRACK teardown num=1\nnative-c/CBUG-0102 finished: 1/1 passed\n",
+      "phaseA": {
+        "num": 0
+      },
+      "phaseB": {
+        "num": 1
+      },
+      "message": {
+        "failed_floor": 0,
+        "total_new": 4
+      },
+      "outcome": {
+        "glyph_created": 1,
+        "hp": 8,
+        "num_final": 1
+      },
+      "decision": [
+        "DECISION phaseA acted=1 keys=3 sequence=rc<Escape>",
+        "ENGINE turn=1 hp=8: Welcome to level 2.",
+        "ENGINE turn=1 hp=8: Welcome to level 3.",
+        "ENGINE turn=1 hp=8: Welcome to level 4.",
+        "ENGINE turn=1 hp=8: You have no more Scrolls of Rune of Protection (c).",
+        "DECISION phaseB acted=1 keys=4 sequence=<Escape><Escape>rc",
+        "ENGINE turn=1 hp=8: You have no more Scrolls of Rune of Protection (c)."
+      ],
+      "passed": true,
+      "crash": false
+    },
+    "after": {
+      "raw": "native-c/CBUG-0102: starting...\nSETUPSTEP profile\nSETUPSTEP birth\nSETUPSTEP borg\nSETUPSTEP monster mage\nSETUP seed=1000 class=Warrior level=1 depth=5 hp=8/20 sp=0/0 mode=clear-floor\nTHREAT name=mage kill_index=1 awake=1 ranged=8\nSPELLS 46,47,48,59,60,67,70,78,\nGRID player=(11,11) feat=1 trappable=1 mage=(11,10)\nTRACK start num=0 size=200\n  failed_glyph_keeps_count_in_bounds  MODE clear-floor\nDANGER phaseA current=308 emergency_gate=32\nBMIRROR before i=0 letter=a tval=28 sval=5 aware=1\nBMIRROR before i=1 letter=b tval=26 sval=26 aware=1\nBMIRROR before i=2 letter=c tval=25 sval=33 aware=0\nBMIRROR before i=3 letter=d tval=19 sval=1 aware=1\nSTATE fleeing=1 ready_morgoth=0 recalling=0 near_unique=0 leaving=1 descending=0\nDECISION phaseA acted=1 keys=3 sequence=rc<Escape>\nPACK i=0 letter=a tval=28 sval=5 n=1 aware=1 unknown=0 borg(tval=28 sval=5 aware=1)\nPACK i=1 letter=b tval=26 sval=26 n=1 aware=1 unknown=0 borg(tval=26 sval=26 aware=1)\nPACK i=2 letter=c tval=25 sval=33 n=1 aware=0 unknown=1 borg(tval=25 sval=33 aware=0)\nPACK i=3 letter=d tval=19 sval=1 n=2 aware=1 unknown=0 borg(tval=19 sval=1 aware=1)\nENGINE turn=1 hp=8: Welcome to level 2.\nENGINE turn=1 hp=8: Welcome to level 3.\nENGINE turn=1 hp=8: Welcome to level 4.\nENGINE turn=1 hp=8: You have no more Scrolls of Rune of Protection (c).\nMESSAGE failed_floor=0 total_new=4\nTRACK phaseA num=0\nDANGER phaseB p1=308 p2=88 avoidance=180\nDECISION phaseB acted=1 keys=4 sequence=<Escape><Escape>rc\nTRACK phaseB_acted num=1\nENGINE turn=1 hp=8: You have no more Scrolls of Rune of Protection (c).\nOUTCOME glyph_created=1 warded_grid=(10,10) hp=8 num_final=1\nPassed\nTRACK teardown num=1\nnative-c/CBUG-0102 finished: 1/1 passed\n",
+      "phaseA": {
+        "num": 0
+      },
+      "phaseB": {
+        "num": 1
+      },
+      "message": {
+        "failed_floor": 0,
+        "total_new": 4
+      },
+      "outcome": {
+        "glyph_created": 1,
+        "hp": 8,
+        "num_final": 1
+      },
+      "decision": [
+        "DECISION phaseA acted=1 keys=3 sequence=rc<Escape>",
+        "ENGINE turn=1 hp=8: Welcome to level 2.",
+        "ENGINE turn=1 hp=8: Welcome to level 3.",
+        "ENGINE turn=1 hp=8: Welcome to level 4.",
+        "ENGINE turn=1 hp=8: You have no more Scrolls of Rune of Protection (c).",
+        "DECISION phaseB acted=1 keys=4 sequence=<Escape><Escape>rc",
+        "ENGINE turn=1 hp=8: You have no more Scrolls of Rune of Protection (c)."
+      ],
+      "passed": true,
+      "crash": false
+    }
+  },
+  "pairing": {
+    "label": "Control: ordinary tracked creation",
+    "explanation": "Without any emergency, the defense chooser reads a known Rune of Protection on clear floor. The creation is tracked normally in both versions and the native grid is warded.",
+    "before": {
+      "raw": "native-c/CBUG-0102: starting...\nSETUPSTEP profile\nSETUPSTEP birth\nSETUPSTEP borg\nSETUPSTEP monster mage\nSETUP seed=1000 class=Warrior level=1 depth=5 hp=8/20 sp=0/0 mode=pairing\nTHREAT name=mage kill_index=1 awake=1 ranged=8\nSPELLS 46,47,48,59,60,67,70,78,\nGRID player=(10,10) feat=1 trappable=1 mage=(11,10)\nTRACK start num=0 size=200\n  failed_glyph_keeps_count_in_bounds  MODE pairing\nDANGER phaseB p1=308 p2=88 avoidance=180\nDECISION phaseB acted=1 keys=4 sequence=<Escape><Escape>rc\nTRACK phaseB_acted num=1\nENGINE turn=1 hp=8: You have no more Scrolls of Rune of Protection (c).\nOUTCOME glyph_created=1 warded_grid=(10,10) hp=8 num_final=1\nPassed\nTRACK teardown num=1\nnative-c/CBUG-0102 finished: 1/1 passed\n",
+      "phaseA": null,
+      "phaseB": {
+        "num": 1
+      },
+      "message": null,
+      "outcome": {
+        "glyph_created": 1,
+        "hp": 8,
+        "num_final": 1
+      },
+      "decision": [
+        "DECISION phaseB acted=1 keys=4 sequence=<Escape><Escape>rc",
+        "ENGINE turn=1 hp=8: You have no more Scrolls of Rune of Protection (c)."
+      ],
+      "passed": true,
+      "crash": false
+    },
+    "after": {
+      "raw": "native-c/CBUG-0102: starting...\nSETUPSTEP profile\nSETUPSTEP birth\nSETUPSTEP borg\nSETUPSTEP monster mage\nSETUP seed=1000 class=Warrior level=1 depth=5 hp=8/20 sp=0/0 mode=pairing\nTHREAT name=mage kill_index=1 awake=1 ranged=8\nSPELLS 46,47,48,59,60,67,70,78,\nGRID player=(10,10) feat=1 trappable=1 mage=(11,10)\nTRACK start num=0 size=200\n  failed_glyph_keeps_count_in_bounds  MODE pairing\nDANGER phaseB p1=308 p2=88 avoidance=180\nDECISION phaseB acted=1 keys=4 sequence=<Escape><Escape>rc\nTRACK phaseB_acted num=1\nENGINE turn=1 hp=8: You have no more Scrolls of Rune of Protection (c).\nOUTCOME glyph_created=1 warded_grid=(10,10) hp=8 num_final=1\nPassed\nTRACK teardown num=1\nnative-c/CBUG-0102 finished: 1/1 passed\n",
+      "phaseA": null,
+      "phaseB": {
+        "num": 1
+      },
+      "message": null,
+      "outcome": {
+        "glyph_created": 1,
+        "hp": 8,
+        "num_final": 1
+      },
+      "decision": [
+        "DECISION phaseB acted=1 keys=4 sequence=<Escape><Escape>rc",
+        "ENGINE turn=1 hp=8: You have no more Scrolls of Rune of Protection (c)."
+      ],
+      "passed": true,
+      "crash": false
+    }
+  }
+}
