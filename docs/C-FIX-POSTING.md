@@ -10,6 +10,10 @@ have to reverse-engineer it from old PR bodies.
 Worked examples: [CBUG-0102 package](https://github.com/diegoami/neo-angband-tracker/tree/task/cbug-0102-evidence/docs/audit/c-reports/CBUG-0102)
 (small, complete, includes asan), [CBUG-0048 package](https://github.com/diegoami/neo-angband-tracker/tree/task/cbug-0048-evidence/docs/audit/c-reports/CBUG-0048)
 (four source variants), [CBUG-0066](https://github.com/diegoami/neo-angband-tracker/pull/226) (the owner-accepted reasoning example).
+Current fixture templates by scenario class (evidence dirs are now named by
+slug, `docs/audit/c-reports/<slug>-<issue>/`): `staletarget-322` (full-game
+arena fixture: warrior, `borg_update` entrypoint, keypress drain) and
+`vampire-257` (`borg_attack(false)` acting mode with `known_item()`).
 
 ## 1. Branches
 
@@ -136,3 +140,59 @@ head; append commits instead.
   macro returns on failure, so record values and assert at the end.
 - Monsters with `base:` inheritance can carry INVISIBLE (quylthulg); check
   `monster_is_invisible` before building an observation scenario.
+- `player->body.slots[]` is indexed by **body slot** — look it up with
+  `slot_by_name(player, "light")` etc. Using the INVEN_* constant as the index
+  (INVEN_LIGHT) is out of bounds and gives a heap-use-after-free in the
+  fixture itself.
+- Stock light sources (torch, lantern) carry LIGHT_2/LIGHT_3 **flags** with a
+  zero OBJ_MOD_LIGHT modifier; only artifact lights carry the modifier. To get
+  a light with a modifier in a fixture, instantiate from the object's artifact
+  pointer and `copy_artifact_data`.
+- The borg unique scan re-derives `borg_race_death` from `r_info[].max_num` on
+  every pass and only runs on the new-level branch — flip
+  `borg.status.old_depth` to re-trigger it.
+- Borg messages queue via `borg_react` and are processed across several
+  use-gated passes inside `borg_update`; a single update call may not surface
+  a queued message. Run several passes before asserting on message state.
+- Run observer binaries with cwd=`build/game` — the `lib/` tree is staged
+  there, and **only by a full build**. Build the whole tree once (never just
+  the observer target); the same applies to the ASAN build dir.
+- `grep -c` exits 1 on zero matches: never chain a build with `&&` after a
+  `grep -c` that may legitimately print 0.
+- `reproduce.py` already takes `/tmp/angband-validation.lock` internally per
+  command — don't wrap the runner itself in `flock`.
+- When one LSan report shows several leaks, attribute them by allocation
+  stack signature, not by size alone (e.g. three formula leaks split by
+  `borg_array_add ← parse_calculation_line` vs `← adjust_order_ops_depth_block`
+  vs `← tokenize_math`), and fix/verify them one at a time.
+- ASAN reports **global-buffer-overflow** for static arrays (the borg glow
+  arrays, issue #311) as well as heap-buffer-overflow; a scenario that
+  only exercises heap objects can miss it.
+- Evidence-branch iteration: rebuild the branch from the maintenance base as
+  a **single new commit**, never amend after push; iterate worktrees are
+  disposable.
+
+## 7. Triage dispositions for leads that don't become fixes
+
+Not every reported lead should get a fixture. This session's working taxonomy
+(posted as a comment on the issue, with file:line evidence, never just an
+assertion):
+
+- **latent** — the defect exists in code but no stock configuration reaches
+  it. Verify across the *whole* stock dataset before claiming it (e.g. all 94
+  stock uniques enumerated in depth order; no race in p_race.txt carrying
+  RES_FIRE/RES_ACID). Comment only, no promotion.
+- **unreachable** — no code path reaches it (e.g. the only timed-and-
+  unwearable items are rods, and rods are handled elsewhere).
+- **masked** — another check already decides the case; the suspect value
+  never influences an action. Trace the full decision path, not just the
+  first function (the leaked value may be dominated by a later branch's
+  clause or return).
+- **consequence-free / dead code** — no post-scan consumer reads the value;
+  or the variable is never read after the suspect write.
+- **owner-intent** — comment-vs-code disagreement, or a possible deliberate
+  omission (damage formula, caster glove penalties). Ask the owner with the
+  candidate interpretations spelled out; do not guess a fix.
+
+A triage comment must carry the same standard of evidence as a fix:
+file:line traces and stock-data checks that a maintainer can re-run.
