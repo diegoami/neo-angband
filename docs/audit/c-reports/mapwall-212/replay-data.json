@@ -1,0 +1,140 @@
+{
+  "door-close": {
+    "label": "A floor grid turns into a closed door",
+    "explanation": "The Borg has a flow routed through a floor grid (flow value 50, knowledge recorded, stone-to-mud stamps set). Between two map passes the door on that grid closes. The original takes the grid's old wall state after overwriting it with the new feature, sees no change and keeps everything stale; the correction invalidates the flow (value 255), clears knowledge and resets the wizard-light and detect-walls stamps.",
+    "before": {
+      "raw": "native-c/mapwall-212: starting...\nSETUPSTEP profile\nSETUP pass1 feat=1 flow=50 know=1 icky=1\nSETUP seed=1000 class=Warrior level=1 depth=30 changed=1\n  wall_change_invalidates_flow  MODE door-close\nSTATE flow=50 know=1 icky=1 wizard_light=1 detect_walls=1\nOUTCOME invalidated=0 flow255=0\nFailed\n    native-c/mapwall-212:135: requirement 'flow == 255' failed\nnative-c/mapwall-212 finished: 0/1 passed\n",
+      "passed": false,
+      "setup": {
+        "feat": 1,
+        "flow": 50,
+        "know": 1,
+        "icky": 1
+      },
+      "state": {
+        "flow": 50,
+        "know": 1,
+        "icky": 1,
+        "wizard_light": 1,
+        "detect_walls": 1
+      },
+      "outcome": {
+        "invalidated": 0,
+        "flow255": 0
+      }
+    },
+    "after": {
+      "raw": "native-c/mapwall-212: starting...\nSETUPSTEP profile\nSETUP pass1 feat=1 flow=50 know=1 icky=1\nSETUP seed=1000 class=Warrior level=1 depth=30 changed=1\n  wall_change_invalidates_flow  MODE door-close\nSTATE flow=255 know=0 icky=0 wizard_light=0 detect_walls=0\nOUTCOME invalidated=1 flow255=1\nPassed\nnative-c/mapwall-212 finished: 1/1 passed\n",
+      "passed": true,
+      "setup": {
+        "feat": 1,
+        "flow": 50,
+        "know": 1,
+        "icky": 1
+      },
+      "state": {
+        "flow": 255,
+        "know": 0,
+        "icky": 0,
+        "wizard_light": 0,
+        "detect_walls": 0
+      },
+      "outcome": {
+        "invalidated": 1,
+        "flow255": 1
+      }
+    }
+  },
+  "door-open": {
+    "label": "A closed door opens",
+    "explanation": "The same grid changes from a closed door to floor. The flow value stays (only new walls get 255) but knowledge and the stamps are cleared in the corrected version; the original keeps everything stale.",
+    "before": {
+      "raw": "native-c/mapwall-212: starting...\nSETUPSTEP profile\nSETUP pass1 feat=2 flow=50 know=1 icky=1\nSETUP seed=1000 class=Warrior level=1 depth=30 changed=1\n  wall_change_invalidates_flow  MODE door-open\nSTATE flow=50 know=1 icky=1 wizard_light=1 detect_walls=1\nOUTCOME invalidated=0 flow255=0\nFailed\n    native-c/mapwall-212:145: requirement 'know == 0' failed\nnative-c/mapwall-212 finished: 0/1 passed\n",
+      "passed": false,
+      "setup": {
+        "feat": 2,
+        "flow": 50,
+        "know": 1,
+        "icky": 1
+      },
+      "state": {
+        "flow": 50,
+        "know": 1,
+        "icky": 1,
+        "wizard_light": 1,
+        "detect_walls": 1
+      },
+      "outcome": {
+        "invalidated": 0,
+        "flow255": 0
+      }
+    },
+    "after": {
+      "raw": "native-c/mapwall-212: starting...\nSETUPSTEP profile\nSETUP pass1 feat=2 flow=50 know=1 icky=1\nSETUP seed=1000 class=Warrior level=1 depth=30 changed=1\n  wall_change_invalidates_flow  MODE door-open\nSTATE flow=50 know=0 icky=0 wizard_light=0 detect_walls=0\nOUTCOME invalidated=1 flow255=0\nPassed\nnative-c/mapwall-212 finished: 1/1 passed\n",
+      "passed": true,
+      "setup": {
+        "feat": 2,
+        "flow": 50,
+        "know": 1,
+        "icky": 1
+      },
+      "state": {
+        "flow": 50,
+        "know": 0,
+        "icky": 0,
+        "wizard_light": 0,
+        "detect_walls": 0
+      },
+      "outcome": {
+        "invalidated": 1,
+        "flow255": 0
+      }
+    }
+  },
+  "no-change": {
+    "label": "Control: the grid is unchanged",
+    "explanation": "With no feature change between the passes nothing is invalidated in either version. The complete logs are byte-identical.",
+    "before": {
+      "raw": "native-c/mapwall-212: starting...\nSETUPSTEP profile\nSETUP pass1 feat=1 flow=50 know=1 icky=1\nSETUP seed=1000 class=Warrior level=1 depth=30 changed=1\n  wall_change_invalidates_flow  MODE no-change\nSTATE flow=50 know=1 icky=1 wizard_light=1 detect_walls=1\nOUTCOME invalidated=0 flow255=0\nPassed\nnative-c/mapwall-212 finished: 1/1 passed\n",
+      "passed": true,
+      "setup": {
+        "feat": 1,
+        "flow": 50,
+        "know": 1,
+        "icky": 1
+      },
+      "state": {
+        "flow": 50,
+        "know": 1,
+        "icky": 1,
+        "wizard_light": 1,
+        "detect_walls": 1
+      },
+      "outcome": {
+        "invalidated": 0,
+        "flow255": 0
+      }
+    },
+    "after": {
+      "raw": "native-c/mapwall-212: starting...\nSETUPSTEP profile\nSETUP pass1 feat=1 flow=50 know=1 icky=1\nSETUP seed=1000 class=Warrior level=1 depth=30 changed=1\n  wall_change_invalidates_flow  MODE no-change\nSTATE flow=50 know=1 icky=1 wizard_light=1 detect_walls=1\nOUTCOME invalidated=0 flow255=0\nPassed\nnative-c/mapwall-212 finished: 1/1 passed\n",
+      "passed": true,
+      "setup": {
+        "feat": 1,
+        "flow": 50,
+        "know": 1,
+        "icky": 1
+      },
+      "state": {
+        "flow": 50,
+        "know": 1,
+        "icky": 1,
+        "wizard_light": 1,
+        "detect_walls": 1
+      },
+      "outcome": {
+        "invalidated": 0,
+        "flow255": 0
+      }
+    }
+  }
+}

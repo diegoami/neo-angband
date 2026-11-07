@@ -1,0 +1,151 @@
+{
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "fix": "5bd789ee0ff0a471162d7e3ebefb1ac4d501803c",
+  "fixtures_ref": "9fe10e42709c480e7b09c8472f9205b9281d6a1c",
+  "cases": {
+    "before": {
+      "door-close": {
+        "exit": 0,
+        "passed": false,
+        "setup": {
+          "feat": 1,
+          "flow": 50,
+          "know": 1,
+          "icky": 1
+        },
+        "state": {
+          "flow": 50,
+          "know": 1,
+          "icky": 1,
+          "wizard_light": 1,
+          "detect_walls": 1
+        },
+        "outcome": {
+          "invalidated": 0,
+          "flow255": 0
+        }
+      },
+      "door-open": {
+        "exit": 0,
+        "passed": false,
+        "setup": {
+          "feat": 2,
+          "flow": 50,
+          "know": 1,
+          "icky": 1
+        },
+        "state": {
+          "flow": 50,
+          "know": 1,
+          "icky": 1,
+          "wizard_light": 1,
+          "detect_walls": 1
+        },
+        "outcome": {
+          "invalidated": 0,
+          "flow255": 0
+        }
+      },
+      "no-change": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "feat": 1,
+          "flow": 50,
+          "know": 1,
+          "icky": 1
+        },
+        "state": {
+          "flow": 50,
+          "know": 1,
+          "icky": 1,
+          "wizard_light": 1,
+          "detect_walls": 1
+        },
+        "outcome": {
+          "invalidated": 0,
+          "flow255": 0
+        }
+      }
+    },
+    "after": {
+      "door-close": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "feat": 1,
+          "flow": 50,
+          "know": 1,
+          "icky": 1
+        },
+        "state": {
+          "flow": 255,
+          "know": 0,
+          "icky": 0,
+          "wizard_light": 0,
+          "detect_walls": 0
+        },
+        "outcome": {
+          "invalidated": 1,
+          "flow255": 1
+        }
+      },
+      "door-open": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "feat": 2,
+          "flow": 50,
+          "know": 1,
+          "icky": 1
+        },
+        "state": {
+          "flow": 50,
+          "know": 0,
+          "icky": 0,
+          "wizard_light": 0,
+          "detect_walls": 0
+        },
+        "outcome": {
+          "invalidated": 1,
+          "flow255": 0
+        }
+      },
+      "no-change": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "feat": 1,
+          "flow": 50,
+          "know": 1,
+          "icky": 1
+        },
+        "state": {
+          "flow": 50,
+          "know": 1,
+          "icky": 1,
+          "wizard_light": 1,
+          "detect_walls": 1
+        },
+        "outcome": {
+          "invalidated": 0,
+          "flow255": 0
+        }
+      }
+    }
+  },
+  "identical_full_logs": [
+    "no-change"
+  ],
+  "full_tests": {
+    "before": {
+      "units": "965/965",
+      "frontends": "5/5"
+    },
+    "after": {
+      "units": "965/965",
+      "frontends": "5/5"
+    }
+  },
+  "fixed_source_sha256": "45e7c1b6b82a87953ee29cb3238f0a177c2a5a9809a6788c2ce5d632eb28b2d8"
+}

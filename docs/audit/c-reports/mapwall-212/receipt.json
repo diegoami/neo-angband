@@ -1,0 +1,192 @@
+{
+  "cbug": "mapwall-212",
+  "issue": 212,
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "fix": "5bd789ee0ff0a471162d7e3ebefb1ac4d501803c",
+  "fixtures_ref": "9fe10e42709c480e7b09c8472f9205b9281d6a1c",
+  "cases": {
+    "before": {
+      "door-close": {
+        "exit": 0,
+        "passed": false,
+        "setup": {
+          "feat": 1,
+          "flow": 50,
+          "know": 1,
+          "icky": 1
+        },
+        "state": {
+          "flow": 50,
+          "know": 1,
+          "icky": 1,
+          "wizard_light": 1,
+          "detect_walls": 1
+        },
+        "outcome": {
+          "invalidated": 0,
+          "flow255": 0
+        }
+      },
+      "door-open": {
+        "exit": 0,
+        "passed": false,
+        "setup": {
+          "feat": 2,
+          "flow": 50,
+          "know": 1,
+          "icky": 1
+        },
+        "state": {
+          "flow": 50,
+          "know": 1,
+          "icky": 1,
+          "wizard_light": 1,
+          "detect_walls": 1
+        },
+        "outcome": {
+          "invalidated": 0,
+          "flow255": 0
+        }
+      },
+      "no-change": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "feat": 1,
+          "flow": 50,
+          "know": 1,
+          "icky": 1
+        },
+        "state": {
+          "flow": 50,
+          "know": 1,
+          "icky": 1,
+          "wizard_light": 1,
+          "detect_walls": 1
+        },
+        "outcome": {
+          "invalidated": 0,
+          "flow255": 0
+        }
+      }
+    },
+    "after": {
+      "door-close": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "feat": 1,
+          "flow": 50,
+          "know": 1,
+          "icky": 1
+        },
+        "state": {
+          "flow": 255,
+          "know": 0,
+          "icky": 0,
+          "wizard_light": 0,
+          "detect_walls": 0
+        },
+        "outcome": {
+          "invalidated": 1,
+          "flow255": 1
+        }
+      },
+      "door-open": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "feat": 2,
+          "flow": 50,
+          "know": 1,
+          "icky": 1
+        },
+        "state": {
+          "flow": 50,
+          "know": 0,
+          "icky": 0,
+          "wizard_light": 0,
+          "detect_walls": 0
+        },
+        "outcome": {
+          "invalidated": 1,
+          "flow255": 0
+        }
+      },
+      "no-change": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "feat": 1,
+          "flow": 50,
+          "know": 1,
+          "icky": 1
+        },
+        "state": {
+          "flow": 50,
+          "know": 1,
+          "icky": 1,
+          "wizard_light": 1,
+          "detect_walls": 1
+        },
+        "outcome": {
+          "invalidated": 0,
+          "flow255": 0
+        }
+      }
+    }
+  },
+  "identical_full_logs": [
+    "no-change"
+  ],
+  "full_tests": {
+    "before": {
+      "units": "965/965",
+      "frontends": "5/5"
+    },
+    "after": {
+      "units": "965/965",
+      "frontends": "5/5"
+    }
+  },
+  "fail_before": {
+    "door-close": "scenario asserts the corrected invalidation; the original keeps the stale state (flow=50 know=1) and fails the suite",
+    "door-open": "same, knowledge kept stale"
+  },
+  "controls": "no-change full logs byte-identical before/after",
+  "fixture_interventions": "flow=50, know/icky=true and the wizard-light/detect-walls stamps planted before the second pass, in the state a flow routine and a stone-to-mud detection would have left; feature changed between passes with square_set_feat",
+  "render_check": {
+    "tool": "Chrome for Testing headless (--headless=new --dump-dom --virtual-time-budget)",
+    "checks": 15,
+    "asserted_against": "rendered DOM per scenario: explanation, both tracked states, raw logs; plus node --check on the generated replay script"
+  },
+  "compiler": "gcc 15.2.0",
+  "cmake": "4.2.3",
+  "browser": "Chrome for Testing chromium-1248",
+  "sha256": {
+    "README.md": "7e7c8cc02506ae50a2a6580a74566cc3db06425641a8033aea20f92ff5f4a86a",
+    "after-alltests.log": "4e1def58468f26c1d3838c04f4a82c6b24de0e038dc0d67966361cbc54ed9654",
+    "after-build.log": "4b9f8df28476b51b9bb309dc4739f57c14f7591a7278836e9dcd7c94ef52517c",
+    "after-door-close.log": "c953f683d03a0831a94b3cb5bd6935597dd972bbd79df638bc6b95058059adbb",
+    "after-door-open.log": "45d0e7dbba74720a68990e4c61fe10a9cb24453ecfa0e63078ce3637d4c77efb",
+    "after-no-change.log": "5be488375ec26d1d51d3b30be5387fd3d3b3087ce5f8c6b521d53c72f6112756",
+    "after-results.json": "8f14d26be254fa8b3327b006c13ade776a1e5891c79b38e4e6379f3b08f34a8b",
+    "after-scenarios.log": "8949226c7b2af691df6ad105d3754a1e8a0e2db48cbcd32f8e9b2b35c8922d05",
+    "before-alltests.log": "0e82639b6d270dc84f8ea89cc848ddf8db229bcf268a529ef21b718c79ebebd0",
+    "before-build.log": "9e045edf9415450f6058f881e6b398b7f70ba9f6ad65222eb2695d93cb70f7f6",
+    "before-door-close.log": "d9947bff09b68b0e2858abee3fdc74a238231d4f512c2c9cb499a40a6c3342ce",
+    "before-door-open.log": "933dd5d5b9b0bc3fd67a0a4a6516cea282de4281de96dd51d3a620133a987dc5",
+    "before-no-change.log": "5be488375ec26d1d51d3b30be5387fd3d3b3087ce5f8c6b521d53c72f6112756",
+    "before-results.json": "8496e9e13df983217705ee87b3021352e17f61c0525bb0e9b672e8fb2510e066",
+    "before-scenarios.log": "41f07e79bc86bd6a082e07579e466ac0ad2f3c140349e3076043f1a1af1e8831",
+    "borg.txt": "80738da248ed74e343925e0348fc75da993d8c03ffff03c7bce1a9090005be47",
+    "configure.log": "6f2ad027cf82c2798d3dc9836a6ad1d5a605fec5bce9ecc72f9dc392cb56073f",
+    "make_replay.py": "36e0700105d40eb5fa468ef3eda49b65262f23e8e44228407f3f8b3da0213dc7",
+    "replay-data.json": "6704b7a20ac4799028da6ede53af64695cd354c8f62a7e4b6cfd8cbae10a8772",
+    "replay.html": "3540e0de69a17b6e4fbf1a5e9c98dc1d57fac6ef5a4e1058bb3f3e27cde2c7e8",
+    "reproduce.py": "3f34d444054b7aea422e4b94f25fb94d809283a10cc199e9afcf18be514e1c21",
+    "result.json": "23ac9001676f9df423bd59483e755fdc2929b71e9d8ae8176fd41c27b3383a68",
+    "run-cases.py": "ad6e95b5f108ac0b9d93e7688d4bb1e01346183139bd12aae07c896866d91639",
+    "scenario.c": "0289086d572e648d81ad74ceff80e5f01fc197df9c7c6d8eeb20a101fcbae897"
+  }
+}
