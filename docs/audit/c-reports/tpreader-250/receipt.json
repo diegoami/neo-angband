@@ -1,0 +1,150 @@
+{
+  "cbug": "tpreader-250",
+  "issue": 250,
+  "aspect": "reader (borg-danger.c one-past-the-count); the writer side is tracked on the same issue",
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "fix": "e890819a6b5ac6e7f7135dcc2b234fcc520b9752",
+  "fixtures_ref": "6cc5ae14af46a8c269bb5ca22609f882791aa485",
+  "cases": {
+    "before": {
+      "stale-hit": {
+        "exit": 0,
+        "passed": false,
+        "setup": {
+          "idx0": 0,
+          "idx1": 1
+        },
+        "danger": {
+          "danger": 0
+        },
+        "outcome": {
+          "danger": 0
+        }
+      },
+      "in-list": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "idx0": 1,
+          "idx1": 0
+        },
+        "danger": {
+          "danger": 0
+        },
+        "outcome": {
+          "danger": 0
+        }
+      },
+      "empty": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "idx0": 0,
+          "idx1": 0
+        },
+        "danger": {
+          "danger": 179
+        },
+        "outcome": {
+          "danger": 1
+        }
+      }
+    },
+    "after": {
+      "stale-hit": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "idx0": 0,
+          "idx1": 1
+        },
+        "danger": {
+          "danger": 179
+        },
+        "outcome": {
+          "danger": 1
+        }
+      },
+      "in-list": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "idx0": 1,
+          "idx1": 0
+        },
+        "danger": {
+          "danger": 0
+        },
+        "outcome": {
+          "danger": 0
+        }
+      },
+      "empty": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "idx0": 0,
+          "idx1": 0
+        },
+        "danger": {
+          "danger": 179
+        },
+        "outcome": {
+          "danger": 1
+        }
+      }
+    }
+  },
+  "identical_full_logs": [
+    "in-list",
+    "empty"
+  ],
+  "full_tests": {
+    "before": {
+      "units": "965/965",
+      "frontends": "5/5"
+    },
+    "after": {
+      "units": "965/965",
+      "frontends": "5/5"
+    }
+  },
+  "fail_before": {
+    "stale-hit": "scenario asserts the counted danger; the original returns 0 via the stale match and fails the suite"
+  },
+  "controls": "in-list and empty full logs byte-identical before/after",
+  "render_check": {
+    "tool": "Chrome for Testing headless (--headless=new --dump-dom --virtual-time-budget)",
+    "checks": 18,
+    "asserted_against": "rendered DOM per scenario: explanation, both danger scores, verdict, raw logs; plus node --check on the generated replay script"
+  },
+  "compiler": "gcc 15.2.0",
+  "cmake": "4.2.3",
+  "browser": "Chrome for Testing chromium-1248",
+  "sha256": {
+    "README.md": "23f48dc0a9a82441e3f8488023b7d9933f894c1a3da27635213ca0da8112640d",
+    "after-alltests.log": "8718eabba45d8b4c863f775a263678ed3550222a55a99678020e8a20d7364efb",
+    "after-build.log": "de80be678bb3122f22baf5085bbbcc66f4522682d96c8182d41558a471db1ed4",
+    "after-empty.log": "2c6c99077fab9c1c936ab164d39dd2c62263305f7d5548862b89b3e864f2d836",
+    "after-in-list.log": "9cf7e62f4ee0280f814ffe1bb0c7f38820d9c8d4e9af393667a2432bfca302fc",
+    "after-results.json": "6535c4b371ee2d152e603fe94f44c0d25dad2ba313162bb73ffa64301a15d567",
+    "after-scenarios.log": "3be413983ff48149bfabef3b212a2fb7f2e6a4e4c569de2b4388d24645d1157e",
+    "after-stale-hit.log": "9f765a0c5b83ad524f63ccd37617eb59add3e8f1f6d458fffb1eefebd70bc704",
+    "before-alltests.log": "41df4d8b559d2f228ab9b3dffdd8b23a1809477aa964802c399d855b1e9ccf2b",
+    "before-build.log": "ab6b15c37e11cf3b92cf108cef50cb7e2ccc369ad4bf5fc8a339452f71bb2519",
+    "before-empty.log": "2c6c99077fab9c1c936ab164d39dd2c62263305f7d5548862b89b3e864f2d836",
+    "before-in-list.log": "9cf7e62f4ee0280f814ffe1bb0c7f38820d9c8d4e9af393667a2432bfca302fc",
+    "before-results.json": "4fde60c8c41ef4baf1b40f749940db4110539a7ddf421d74d6ecc6ec153f8d06",
+    "before-scenarios.log": "73791c9ceee1201219a97ce911de6347ac65503b56b55c69f6246427b0386cd5",
+    "before-stale-hit.log": "5e9b3544510d99113f92e7275f6e5fe4c506375a9888f48f8f53964b7ae95b51",
+    "borg.txt": "80738da248ed74e343925e0348fc75da993d8c03ffff03c7bce1a9090005be47",
+    "configure.log": "2316f519726988016e9dcca59a15079eab421028beb262408655f516060ccd6b",
+    "make_replay.py": "d9966cd8728edde3e73863f0f0550518fe99f5f8d092fc8023a4f8c6ee340002",
+    "replay-data.json": "ee942909c77494de22bbe80a3ccdb8f764797adb7aaed7266b18f440b3288b49",
+    "replay.html": "598204302ae5308bfba1a625027d1a49aec6c161d794ec74ce4998846cb97dc9",
+    "reproduce.py": "4a4a76620cc9d6439239f99937ea3bc7bd4d023962a8dd7410fc9b51d65d56f4",
+    "result.json": "044760e0bac21034747df76b0aee0242a06de5fc879d9ee3b3dc31cd1fed18c2",
+    "run-cases.py": "a4802bbf5be96526e3d09455d674319e84c2cb0479947de41e6da53ada77bf66",
+    "scenario.c": "cb16b9b3a8d3467077a04086cb481db661f21991ef7601389624a34097d36b8d"
+  }
+}

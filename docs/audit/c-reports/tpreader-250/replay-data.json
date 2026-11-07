@@ -1,0 +1,98 @@
+{
+  "stale-hit": {
+    "label": "A stale entry one past the count names the giant",
+    "explanation": "A hill giant stands adjacent to the Warrior while the Teleport Other exclusion list holds one real entry (not the giant) and a stale leftover one past the count \u2014 the state a longer earlier evaluation leaves. The original reads that stale entry, matches the giant and rates its danger as zero; the correction reads only the real entries and rates the danger 179.",
+    "before": {
+      "raw": "native-c/tpreader-250: starting...\nSETUPSTEP profile\nSETUP giant kill=1 power=226\nSETUP n=1 idx0=0 idx1=1\nSETUP seed=1000 class=Warrior level=1 depth=30 hp=20/20\n  stale_tp_other_entry_does_not_exclude_danger  MODE stale-hit\nDANGER danger=0\nOUTCOME danger=0\nFailed\n    native-c/tpreader-250:166: requirement 'd > 0 ? 1 : 0' == '1' failed\n      d > 0 ? 1 : 0:                0\n      1:                1\nnative-c/tpreader-250 finished: 0/1 passed\n",
+      "passed": false,
+      "setup": {
+        "idx0": 0,
+        "idx1": 1
+      },
+      "danger": {
+        "danger": 0
+      },
+      "outcome": {
+        "danger": 0
+      }
+    },
+    "after": {
+      "raw": "native-c/tpreader-250: starting...\nSETUPSTEP profile\nSETUP giant kill=1 power=226\nSETUP n=1 idx0=0 idx1=1\nSETUP seed=1000 class=Warrior level=1 depth=30 hp=20/20\n  stale_tp_other_entry_does_not_exclude_danger  MODE stale-hit\nDANGER danger=179\nOUTCOME danger=1\nPassed\nnative-c/tpreader-250 finished: 1/1 passed\n",
+      "passed": true,
+      "setup": {
+        "idx0": 0,
+        "idx1": 1
+      },
+      "danger": {
+        "danger": 179
+      },
+      "outcome": {
+        "danger": 1
+      }
+    }
+  },
+  "in-list": {
+    "label": "Control: the giant genuinely is in the list",
+    "explanation": "With the giant actually excluded (a real entry), both versions rate the danger zero. The complete logs are byte-identical.",
+    "before": {
+      "raw": "native-c/tpreader-250: starting...\nSETUPSTEP profile\nSETUP giant kill=1 power=226\nSETUP n=1 idx0=1 idx1=0\nSETUP seed=1000 class=Warrior level=1 depth=30 hp=20/20\n  stale_tp_other_entry_does_not_exclude_danger  MODE in-list\nDANGER danger=0\nOUTCOME danger=0\nPassed\nnative-c/tpreader-250 finished: 1/1 passed\n",
+      "passed": true,
+      "setup": {
+        "idx0": 1,
+        "idx1": 0
+      },
+      "danger": {
+        "danger": 0
+      },
+      "outcome": {
+        "danger": 0
+      }
+    },
+    "after": {
+      "raw": "native-c/tpreader-250: starting...\nSETUPSTEP profile\nSETUP giant kill=1 power=226\nSETUP n=1 idx0=1 idx1=0\nSETUP seed=1000 class=Warrior level=1 depth=30 hp=20/20\n  stale_tp_other_entry_does_not_exclude_danger  MODE in-list\nDANGER danger=0\nOUTCOME danger=0\nPassed\nnative-c/tpreader-250 finished: 1/1 passed\n",
+      "passed": true,
+      "setup": {
+        "idx0": 1,
+        "idx1": 0
+      },
+      "danger": {
+        "danger": 0
+      },
+      "outcome": {
+        "danger": 0
+      }
+    }
+  },
+  "empty": {
+    "label": "Control: empty list",
+    "explanation": "With no exclusions at all, both versions rate the giant's danger 179. The complete logs are byte-identical.",
+    "before": {
+      "raw": "native-c/tpreader-250: starting...\nSETUPSTEP profile\nSETUP giant kill=1 power=226\nSETUP n=0 idx0=0 idx1=0\nSETUP seed=1000 class=Warrior level=1 depth=30 hp=20/20\n  stale_tp_other_entry_does_not_exclude_danger  MODE empty\nDANGER danger=179\nOUTCOME danger=1\nPassed\nnative-c/tpreader-250 finished: 1/1 passed\n",
+      "passed": true,
+      "setup": {
+        "idx0": 0,
+        "idx1": 0
+      },
+      "danger": {
+        "danger": 179
+      },
+      "outcome": {
+        "danger": 1
+      }
+    },
+    "after": {
+      "raw": "native-c/tpreader-250: starting...\nSETUPSTEP profile\nSETUP giant kill=1 power=226\nSETUP n=0 idx0=0 idx1=0\nSETUP seed=1000 class=Warrior level=1 depth=30 hp=20/20\n  stale_tp_other_entry_does_not_exclude_danger  MODE empty\nDANGER danger=179\nOUTCOME danger=1\nPassed\nnative-c/tpreader-250 finished: 1/1 passed\n",
+      "passed": true,
+      "setup": {
+        "idx0": 0,
+        "idx1": 0
+      },
+      "danger": {
+        "danger": 179
+      },
+      "outcome": {
+        "danger": 1
+      }
+    }
+  }
+}

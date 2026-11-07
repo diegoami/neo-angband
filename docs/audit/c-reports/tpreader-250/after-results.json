@@ -1,0 +1,44 @@
+{
+  "stale-hit": {
+    "exit": 0,
+    "passed": true,
+    "setup": {
+      "idx0": 0,
+      "idx1": 1
+    },
+    "danger": {
+      "danger": 179
+    },
+    "outcome": {
+      "danger": 1
+    }
+  },
+  "in-list": {
+    "exit": 0,
+    "passed": true,
+    "setup": {
+      "idx0": 1,
+      "idx1": 0
+    },
+    "danger": {
+      "danger": 0
+    },
+    "outcome": {
+      "danger": 0
+    }
+  },
+  "empty": {
+    "exit": 0,
+    "passed": true,
+    "setup": {
+      "idx0": 0,
+      "idx1": 0
+    },
+    "danger": {
+      "danger": 179
+    },
+    "outcome": {
+      "danger": 1
+    }
+  }
+}
