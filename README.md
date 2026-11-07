@@ -1,21 +1,57 @@
 # Angband and Neo Angband repair tracker
 
-This is diegoami's shared engine/C repair fork. It owns the C bug catalogue,
-canonical C/game/Neo engine trackers, native evidence, patches and isolated
-fix proposals. It does not own the Neo Borg TypeScript port or Mandos product
-work. One Angband fork means C and Neo engine work share this repository;
-their source trees, build commands and proposal bases remain separate.
+This is diegoami's shared engine/C repair fork. It is a **tracker and
+evidence store, not a game release**. Neo Angband builds come from
+[neostryder/neo-angband](https://github.com/neostryder/neo-angband/releases).
+The Neo source on this repository's `master` is the reference that engine fixes
+start from, plus our session documentation.
+
+## What this fork is for
+
+1. **Finding and proving bugs in original Angband, above all its C Borg.**
+   Each defect in the C Borg or the C game has one canonical issue here, with
+   source lines, evidence level and any local fix proposal. The C source is
+   pinned at angband/angband `e473720ed88a0f0c7ca66815cef3000eb4a38bc3`.
+2. **Repairing the Neo Angband engine** (TypeScript), with its own source tree
+   and regression tests.
+3. **Understanding the C Borg well enough to build a better one.** The C
+   Borg's specification and the plan for a tunable Borg live here. So do the
+   ideas for early-game experiments and quick gains, filed as enhancement
+   issues. Other repositories build on this:
+   - [better-borg-c](https://github.com/diegoami/better-borg-c): a native C
+     Angband/Borg product that carries the fixes verified here;
+   - [borg-rs](https://github.com/diegoami/borg-rs): a Rust port of the C Borg;
+   - [Mandos](https://github.com/diegoami/mandos): a TypeScript derivative that
+     translates applicable C fixes for itself.
+
+What it does not own: the Neo Borg TypeScript port
+([neo-angband-borg-mod-tracker](https://github.com/diegoami/neo-angband-borg-mod-tracker)),
+Mandos product work, and any Rust work. No angband/angband issues, PRs or
+comments are submitted from here under the standing owner pause.
+
+## Find your way
+
+| I want to... | Go to |
+| --- | --- |
+| Understand how the C Borg works | [The C Borg: purpose and architecture](docs/c-borg/BORG_SPEC.md) and the [C Borg documents index](docs/c-borg/README.md) |
+| See the C Borg's known bugs | [C findings and candidates](docs/C-BUGS.md), or the [open findings on the board](https://github.com/diegoami/neo-angband-tracker/issues?q=is%3Aissue+label%3Aupstream-c+label%3Afinding+is%3Aopen) |
+| See the plan for a tunable, better Borg | [Tunable Borg Plan](docs/c-borg/TUNABLE-BORG-PLAN.md) and its [review prompt](docs/c-borg/TUNABLE-BORG-PLAN-REVIEW-PROMPT.md) |
+| See quick gains and experiment ideas | [Open enhancement issues](https://github.com/diegoami/neo-angband-tracker/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) |
+| Check how the specification and the findings were verified | [Source-level check programs](docs/audit/c-reports/spec-checks/README.md), the [re-check record](docs/audit/c-reports/spec-checks/RECHECK.md) and the [findings' provenance](docs/audit/c-reports/spec-checks/PROVENANCE.md) |
+| Reuse one of our C fixes | [Reusing a local C fix](docs/c-fix-handoff.md) and the [proposal patches](patches) |
+| Report a C lead from borg-rs | [borg-rs intake contract](docs/BORG-RS-INTAKE.md) |
+| Start or resume a session | [AGENTS](AGENTS.md), [RULES](RULES.md), [PLAN](PLAN.md), the [session map](docs/SESSION.md) and the checkpoints below |
+| Read the Neo engine's own documentation | [Neo Angband documentation](docs/README.md) and the [upstream README](docs/upstream-reference/README.md) |
 
 ## Two responsibilities in this one fork
+
+One Angband fork means C and Neo engine work share this repository; their
+source trees, build commands and proposal bases remain separate.
 
 1. **Original Angband:** the C game and especially its C Borg. Use the native
    C source/worktree, C build and native before/after/control evidence.
 2. **Neo Angband:** the TypeScript game engine and engine APIs. Use the Neo
    source tree/toolchain and its own engine regression tests.
-
-The Neo Borg TypeScript mod is a different repository/session:
-[neo-angband-borg-mod-tracker](https://github.com/diegoami/neo-angband-borg-mod-tracker).
-Mandos product development and downstream adoption are also separate.
 
 Read [AGENTS](AGENTS.md), [RULES](RULES.md), [PLAN](PLAN.md) and the latest
 [Neo engine checkpoint #25](https://github.com/diegoami/neo-angband-tracker/issues/25)
@@ -32,7 +68,6 @@ to start a Neo session. The independently owned native C lane uses
 [Known C bugs/candidates](docs/C-BUGS.md) distinguish reports from independently
 verified defects. Metadata is split by stable finding ID; live issue status
 belongs on our issue board. [Reuse a C proposal](docs/c-fix-handoff.md).
-No angband/angband submissions from us under the standing owner pause.
 
 Neo source/toolchain: Node26 (the .nvmrc line), pnpm12.3.4 from package.json; pnpm install
 --frozen-lockfile, pnpm typecheck/build/test as appropriate. C uses its own

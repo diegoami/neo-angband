@@ -1,5 +1,7 @@
 # Security Policy
 
+> **Fork notice.** This file is upstream Neo Angband's security policy, kept unchanged below for credit and to stay in step with the upstream source. It does not describe this repository: diegoami/neo-angband-tracker is a bug tracker and evidence store for the original Angband C Borg and C game and the Neo Angband engine. It publishes no game builds and runs no service. Report vulnerabilities in Neo Angband itself to upstream as described below; questions about this tracker go to [its issue board](https://github.com/diegoami/neo-angband-tracker/issues).
+
 ## Reporting a vulnerability
 
 Report security issues privately by email to **strider-angband (at) rpgm.tools** or through [GitHub private vulnerability reporting](https://github.com/neostryder/neo-angband/security/advisories/new).
