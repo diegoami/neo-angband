@@ -1,6 +1,6 @@
-*better-borg-c and borg-rs · evaluation and plan · 2026-11-07*
+*better-borg-c and borg-rs · evaluation and plan · revision 2, 2026-11-07*
 
-> This file is the reviewable source of the plan. A rendered copy was published as a private page for the owner. Live state (issues, labels, carries) belongs to the boards of neo-angband-tracker, better-borg-c and borg-rs, not to this file.
+> This file is the reviewable source of the plan; a rendered copy is published as a private page for the owner. Revision 2 answers the review in [#360](https://github.com/diegoami/neo-angband-tracker/issues/360) of revision 1 (`7e008cc93`). Live state (issues, labels, carries) belongs to the boards of neo-angband-tracker, better-borg-c and borg-rs, not to this file.
 
 # Tunable Borg Plan
 
@@ -8,177 +8,186 @@ How to get a Borg that we can tune and improve by experiment, without throwing a
 
 > **Recommendation.** Keep the C Borg as the working engine and grow a policy layer on top of it, in three steps that each pay off on their own:
 >
-> 1. **Expose parameters with C-Borg defaults.** Move the decision constants that matter for survival into configuration. With every parameter at its default, the build must reproduce the pinned Borg's trace byte for byte.
-> 2. **Tune by racing on a frozen seed population.** Use the deterministic native runner that better-borg-c already has, run in parallel, with survival statistics and held-out seeds.
+> 1. **Expose parameters with baseline defaults.** Move the decision constants that matter for survival into configuration. With every parameter at its default, the build must reproduce the trace of the frozen *carry baseline* it was built from (see Baselines below), byte for byte, on the frozen seeds.
+> 2. **Tune by racing on a frozen seed population,** with a prespecified objective, survival statistics and held-out seeds.
 > 3. **Replace modules one at a time** (caution, dive policy, fight-or-flee) behind switches. A replacement is kept only when it beats the original on the same harness. The original module stays as the reference.
 >
 > Do not rewrite the Borg from scratch, and do not start with machine learning. Both throw away tested behaviour before we can measure what it is worth.
 >
-> **First step: bring the fixes into borg-rs.** Before any tuning, borg-rs carries better-borg-c's verified fixes, one per commit. It is accepted when its key stream equals the matching better-borg-c build's on the existing suites, checked once at the end. From then on the two repositories start from the same Borg, and every later change can be checked in both.
+> **First step: bring the fixes into borg-rs.** Freeze an ordered manifest of better-borg-c's carries and port it to borg-rs, one commit per fix. Accept it when the borg-rs suites produce the same key logs as a C oracle built from the same manifest, with a short translation audit for every fix (R0–R1 below). From then on both repositories start from the same baseline.
 >
-> **Two repositories, one contract.** Then run steps 1 and 2 in **better-borg-c**, which has the measurement runner and death dossiers. Prepare **borg-rs** to take over step 3: its explicit state and Rust traits make module replacement and state snapshots far easier than in C. Both use the same parameter names, profiles, seed sets and outcome definitions. At the same profile, the C and Rust Borgs must produce the same key stream, which turns borg-rs into a differential test of every parameter and fix. Decide later, from measurements, which one becomes the long-term base.
+> **Two repositories, one contract.** Both use the same parameter names, profiles, seed sets, calendar policy and outcome definitions. Key-stream identity between C and Rust at the same profile is evidence that the *tested executions* agree; it does not prove every fix or parameter correct, so unreached changes keep a source review. Before building full parameter layers in both, run a small pilot in each (Phase 2a) and decide from it where new policy work lives.
 
 ## What we already have
 
 ### neo-angband-tracker and better-borg-c
 
-- **A specification of the C Borg** (`docs/c-borg/BORG_SPEC.md` in neo-angband-tracker, PR #317). It covers the perception channels, the dungeon decision ladder, flow, danger, caution, depth preparation and modes, and every claim is cited at the upstream pin `e473720`. This is the map of where the decisions live.
-- **A bug-fixed C product.** better-borg-c carries 15 verified fixes (`patches/0001`–`0015`), each with its own provenance and removal unit.
-- **A deterministic native runner** (`tools/measure-native.py`). It plays a normal birth with the normal game loop, logs both RNG states, and classifies each run as death, cap, stall, crash or harness failure. Replays from the same seed are byte-identical. A 400,000-engine-turn run takes about 95–113 wall seconds; 20,000 turns take 8–15 s.
-- **Death dossiers** (`docs/deaths/`) with T-minus snapshots, plus a death-analysis plan.
-- **An existing external tuning language.** `borg.txt` has a formula section, about 790 lines, with *Power*, *Depth Requirement* and *Restock Requirement* blocks. With `borg_uses_dynamic_calcs` set it replaces `borg_power()`, the depth preparation checks and the restock checks without recompiling.
+- **A specification of the C Borg** (`docs/c-borg/BORG_SPEC.md` in neo-angband-tracker, PR #317), cited at the upstream pin `e473720`. It covers perception, the dungeon decision ladder, flow, danger, caution, depth preparation and modes: the map of where the decisions live.
+- **A bug-fixed C product.** better-borg-c carries **34** verified fixes at `702f091` (`patches/series.json`; 31 at `8a7eba1ad`), each with its source and applied commits, consumer issue, verification document and removal unit.
+- **A native measurement runner** (`tools/measure-native.py`): ordinary birth, the production game loop, both RNG states logged, an explicitly instrumented observer build. It classifies runs as death, successful completion, turn-cap survival, wall timeout, stall, crash or harness failure. Qualified repeats under recorded conditions are byte-identical; seasonal monster selection still depends on the calendar, and not every complete trajectory has been repeated. Recorded run times: about 95–113 s for 400,000 engine turns and 8–15 s for 20,000 (particular trajectories and builds, run one at a time).
+- **Death dossiers** (`docs/deaths/`) with T-minus observations from replays, plus a death-analysis plan.
+- **An external tuning language.** `borg.txt` has a formula section (lines 340–1129) with *Power*, *Depth Requirement* and *Restock Requirement* blocks. With `borg_uses_dynamic_calcs` set, `borg_power_dynamic()` replaces the **equipment and inventory** contributions to `borg_power()`, `borg_prepared_dynamic()` replaces the **static per-depth branch** of `borg_prepared()`, and `borg_restock()` dispatches to `borg_restock_dynamic()`. What stays in code: the outer `borg_power()` (the 40,000-per-prepared-depth bonus and the swap values) and the later preparation gates (king, town, the *Healing* stock, the unique gates). A formula change cannot move those.
 
-What is missing is scale and a tuning surface for everything else. So far the cohorts have three seeds. Danger, caution, escape, healing, flow fear and the ladder order are hard-coded: the Borg's `.c` files contain about 4,600 numeric literals of two or more digits (713 in `borg-power.c`, 376 in `borg-danger.c`, 179 in `borg-caution.c`).
+What is missing is scale, and a tuning surface for everything else. So far the cohorts reuse three starting seeds (11, 29, 47). Danger, caution, escape, healing, flow fear and the ladder order are hard-coded: a lexical count finds 4,594 decimal literals of two or more digits in the Borg's `.c` files (comments, strings and character literals removed), 713 of them in `borg-power.c`, 376 in `borg-danger.c` and 179 in `borg-caution.c`. That is an inventory, not a count of independent decisions.
 
 ### borg-rs
 
-- **A faithful Rust port of all 59 modules** (about 73,000 lines; milestones M1 deterministic C harness, M2 c2rust transpile and M3 safe idiomatic Rust are done). `unsafe` appears only in the engine boundary (`engine.rs` and the engine declarations). It links as a static library behind the same `inkey_hack` seam and drives the unmodified C engine.
-- **Equivalence by key stream.** For the same seed, the Rust Borg's key log is byte-identical to the C Borg's on every suite: smoke, full (45 runs), deep (9), classes (16) and config (7, munchkin and lunal). Its `harness/diff` reports the first divergence by seed, turn and key. Each build records a `BUILD_ID`.
-- **A headless, parallel harness**: the `borgh` frontend (`-DSUPPORT_BORG_HARNESS=ON`, hooks under `#ifdef BORG_HARNESS`), with scripted birth, a fixed seed, a fixed holiday date and a fixed 80×24 terminal. The 45-run, 100,000-turn suite takes about 138 s with 4 jobs on its 4-core machine.
-- **All Borg state in one place.** Every former C global lives in `BorgState`, with one sub-struct per module. That is the precondition for serialising the Borg's memory (which the C dossiers cannot restore on load), for cloning state for what-if evaluation, and for replacing a module behind a trait.
-- **Narrower scope today.** C bugs are kept on purpose (`docs/c-bugs.md`) and reported to neo-angband-tracker; none of better-borg-c's 15 carried fixes is in it yet. Verification covers the suites' seeds and turn limits only: nothing deeper than dungeon level 27, no Morgoth, no self-lunal. "No new tactics" is its current rule.
+- **A faithful Rust port of all 59 modules** (73,079 lines across `src/**/*.rs`, declarations included; M1 deterministic C harness, M2 c2rust transpile and M3 safe idiomatic Rust done). `unsafe` is confined to the engine boundary (`engine.rs` and the engine declarations). It links behind the same `inkey_hack` seam and drives the unmodified C engine.
+- **Equivalence by key stream.** For the same seed the Rust Borg's key log is byte-identical to the C Borg's on all **80** suite runs: smoke 3, full 45, deep 9, classes 16, config 7. `harness/diff` reports the first divergence by seed, turn and key; each build records a `BUILD_ID`.
+- **A headless harness**: the `borgh` frontend (`-DSUPPORT_BORG_HARNESS=ON`, hooks under `#ifdef BORG_HARNESS`) with scripted birth, a fixed seed, a fixed holiday date and a fixed 80×24 terminal. The full suite took 137.85 s with four jobs on its four-core machine.
+- **Borg state centralised.** Former C globals live in `BorgState`, one sub-struct per module. That makes serialising Borg memory and swapping modules much more practical than in C, though not automatic (see R4).
+- **Narrower scope today.** C bugs are kept on purpose (`docs/c-bugs.md`), none of the 34 carries is ported, verification reaches no deeper than dungeon level 27 (no Morgoth, no self-lunal thinker; several suites use cheat death), and "faithful port, no new tactics" is the rule.
 
 ### How the two compare for this goal
 
 |  | better-borg-c | borg-rs |
 | --- | --- | --- |
-| Bug fixes | 15 verified carries | none yet (faithful to the pin) |
+| Bug fixes | 34 verified carries | none yet (faithful to the pin) |
 | Tracks upstream C | directly (same tree) | by porting each upstream Borg change |
 | Measurement | native runner, outcome classes, death dossiers, frozen cohorts | seed suites, key-stream identity, build identity |
-| Adding parameters | C edits across many files | fields on `BorgState` sub-structs; easy to type and document |
+| Adding parameters | C edits across many files | fields on `BorgState` sub-structs |
 | Replacing a module | preprocessor or function-pointer switches | Rust traits; the compiler checks the interface |
-| Saving and cloning Borg memory | hard (scattered globals) | feasible (one struct) |
-| Correctness oracle | pristine C trace | the C Borg's key log, and later better-borg-c's at the same profile |
+| Saving Borg memory | hard (scattered globals) | more practical (one struct), still real work |
+| Correctness oracle | pristine C trace, then its own carry baseline | the C key log, then the C carry baseline at the same profile |
 
-> **Scope decisions needed first.** better-borg-c's RULES.md (rule 12) and AGENTS.md exclude new gameplay strategies; its scope is bug carries and measurement. borg-rs's rules make it a faithful port with no new tactics and no translated C fixes. This plan needs an explicit owner decision for each. Keep strategy changes labelled and stored apart from bug carries in both, so the carries stay reusable and their removal units stay clean.
+> **Scope and ownership decisions are needed first** (listed in full under Decisions). Each repository's rules currently exclude part of this plan, and each track needs an owning session.
 
 ## Approaches compared
 
 | Approach | Keeps C Borg knowledge | Freedom to change decisions | Cost and risk |
 | --- | --- | --- | --- |
-| **A. Tune existing knobs only** (35 `borg.txt` settings plus the formula section) | all | Low. Power, depth preparation and restock only; danger, caution and the ladder stay fixed. | Cheapest; can start this week. Hits a ceiling quickly. |
-| **B. Parameterise in place** (constants to config, defaults = pin) | all | Medium. Any threshold or weight can move, but the structure stays. | Moderate C work. Trace identity at the defaults makes regressions detectable. |
-| **C. Module replacement on B** (switchable variants per subsystem) | as reference | High within a module. Rung order and new rules are possible. | Each module is its own project; it is measured, and stays reversible. |
-| **D. Rewrite from the specification** | mostly lost | Total | Very high. Years of edge-case handling (prompts, stores, flow) would have to be rediscovered before it plays as well. |
-| **E. Learned policy** (reinforcement or imitation learning) | indirect | Total in principle | Very long horizons, sparse death signal, huge state; compute far beyond one workstation. At most later, for one narrow decision trained on harness logs. |
+| **A. Tune existing knobs only** (35 `borg.txt` settings plus the formula section) | all | Low: the formula-controlled parts of power, preparation and restock only | Cheapest; can start at once. Hits a ceiling quickly. |
+| **B. Parameterise in place** (constants to config, defaults = baseline) | all | Medium: thresholds and weights move, the structure stays | Moderate work. Identity at defaults makes regressions detectable on the tested runs. |
+| **C. Module replacement on B** | as reference | High within a module, including rung order and new rules | Each module is its own project; measured and reversible. |
+| **C′. Policy development in the Rust port** | all (port is key-identical) | As C, with safe refactoring and traits | Fixes must be ported first; every upstream change is ported by hand. |
+| **D. Rewrite from the specification** | mostly lost | Total | Very high; years of edge-case handling would be rediscovered. |
+| **E. Learned policy** | indirect | Total in principle | Long horizons, sparse death signal, huge state; at most later, for one narrow decision. |
 
-The plan is **A, then B, then C**: a gradual replacement. The C Borg keeps doing perception, flow, items, stores and key generation; we take over decisions one surface at a time, and only where measurement says we did better.
+The plan is **A, then B, then C or C′**: a gradual replacement in which the existing Borg keeps doing perception, flow, items, stores and key generation, and decisions are taken over one surface at a time. The strongest alternative is to do B and C only in Rust from the start, which avoids building two parameter layers. The plan does not settle that by argument: Phase 2a pilots both and decides.
 
-borg-rs adds a sixth option that sits between C and D: **module replacement in the Rust port**. It keeps all the C Borg's knowledge, because the port is key-for-key identical, and it adds safe refactoring, traits and serialisable state. Its cost is that the bug fixes must be translated first, and every later upstream change must be ported.
+## Baselines and identity
+
+The plan uses three kinds of identity, and keeps them apart:
+
+- **P0, the pristine reference:** upstream `e473720`, no fixes. Used to show what a fix changed. Fixes are *meant* to break identity with P0.
+- **Bn, a carry baseline:** an immutable, ordered manifest of carries (patch IDs and their applied commits) frozen at a named better-borg-c commit. B1 is the manifest R1 starts from. A later carry does not change B1; it goes into B2, measured as a new baseline. Results stay attached to the baseline they were measured on and are never relabelled.
+- **Profile defaults:** the profile `baseline-Bn` sets every parameter to its default. Its trace must equal the Bn build's trace, byte for byte, on the frozen seeds. That is tested equivalence on those executions, not zero risk. A parameterisation must keep integer widths, signedness, evaluation order, rounding, short-circuiting and the Borg's private-RNG draw order exactly.
 
 ## Architecture
 
-- **Substrate (unchanged C Borg).** Perception (`borg_update()`, the direct reads), memory, flow (`borg_flow_*`), item handling, stores, the key queue, and prompt answering. Bug carries go here, as today.
-- **Parameter layer.** One table of named parameters, read from `borg.txt` (or a sibling file) at start. Each entry has a default equal to the pinned constant, a valid range, a source location and a unit. The table is dumped into every run record. The `CONFIG` value type the formula language already has can read the same table.
-- **Module switches.** A small number of seams where a variant can replace the original's decision: `borg_caution()` steps, `borg_escape()`, `borg_heal()`, `borg_prepared()`/dive policy, and the order of rungs in `borg_think_dungeon()`. Variant 0 is always the original code path.
-- **Profiles.** A named profile is a complete parameter set plus module choices. `c-borg-1.0` is all defaults, and is the control in every comparison.
-
-**The defining invariant:** profile `c-borg-1.0` reproduces the pinned Borg's full native trace byte for byte on the frozen seeds. The existing runner already compares traces, so this is cheap to enforce. It makes the parameterisation itself zero-risk, and it lets every later experiment be read as a delta against the C Borg.
+- **Substrate (the existing Borg).** Perception (`borg_update()`, the direct reads), memory, flow (`borg_flow_*`), item handling, stores, the key queue and prompt answering. Bug carries go here, as today.
+- **Parameter layer.** One table of named parameters with a default equal to the baseline constant, a valid range, a source location and a unit (engine turns or Borg-clock ticks, which differ). It is read from `borg.txt` (or a sibling file) at start and dumped into every run record. The formula language's `CONFIG` value type can read the same table.
+- **Module switches.** A few seams where a variant can replace the original decision: `borg_caution()` steps, `borg_escape()`, `borg_heal()`, the dive policy around `borg_prepared()`, and the rung order in `borg_think_dungeon()`. Variant 0 is always the original code path.
+- **Profiles.** A named profile is a complete parameter set plus module choices. `baseline-Bn` is the control in every comparison on Bn.
 
 ### The shared contract between the two repositories
 
-- **One parameter table:** the same names, units, ranges and defaults in both, read from the same `borg.txt` syntax, so a profile file works unchanged in C and in Rust.
-- **One harness contract:** the same seed sets, outcome classes (death, cap, stall, crash, harness failure), engine-turn caps and result-record schema. The quickest route is to agree on one headless frontend for population runs (borg-rs's `borgh`) and keep better-borg-c's observer for death dossiers. Both repositories should ship the same frontend patch, so their runs are comparable.
-- **Differential identity:** at any profile both repositories implement, C and Rust must emit the same key stream on the frozen seeds. A divergence means a wrong parameter wiring or a wrong fix translation in one of them, and the diff tool names the seed, turn and key where it starts.
-- **One results store and report,** keyed by repository, build ID, profile hash and seed, so the two repositories' measurements can be read side by side.
+- **One parameter table:** the same names, units, ranges and defaults in both, read from the same `borg.txt` syntax, so a profile file works unchanged in C and in Rust (for the parameters both implement).
+- **One run contract:** the same seed sets, birth script, terminal size, options, data files, **calendar policy** (a fixed date, as `borgh` uses), engine-turn caps and logging semantics. Without all of these, "same seed and profile" does not mean the same game.
+- **One outcome schema:** death (with cause), successful completion (victory), turn-cap survival, wall timeout, stall, crash and harness failure. Crashes, stalls and timeouts are operational outcomes counted per profile; they are never silently right-censored as if unrelated to the policy.
+- **Differential identity:** at a profile both repositories implement, the key streams must match on the frozen seeds. A match is evidence for those executions only. Changes those runs do not execute keep a source review.
+- **One results store,** keyed by repository, baseline, build ID, profile hash and seed.
+- **Two frontends, kept apart in purpose:** `borgh` for population and identity runs, better-borg-c's observer build for causal evidence and death dossiers. Neither validates the other automatically.
 
 ## The first tuning surface
 
-These are the decision points the specification identifies as the main levers for survival and progress. Each becomes a handful of named parameters.
+These are the decision points the specification identifies as the main levers for survival and progress. Start with a small, justified subset; about 40–60 parameters is a ceiling, not a first batch.
 
 | Group | Where (pin) | Current values | What it trades |
 | --- | --- | --- | --- |
-| Flow fear thresholds | `borg_flow_spread()`, `borg_flow_enqueue_grid()` | `avoidance` × 3/10, 5/10 at level 50, ×2 scary, ×3, ×5 ignoring, ×25 after 5000 turns, ×100 starving | Routes through danger vs. detours and stalling |
+| Flow fear thresholds | `borg_flow_spread()`, `borg_flow_enqueue_grid()` | sequential overrides of `avoidance`: × 3/10; × 5/10 at **maximum** character level 50; × 2 scary; × 3 (two cases); × 5 ignoring; × 25 after 5000 **Borg-clock** ticks on the level; × 100 starving; × 3/10 at character level 0 | Routes through danger vs. detours and stalling |
 | Bravery boosts | `borg_think_dungeon()` | 2×`BI_CURHP`, 4×`BI_MAXHP`, 30000 | Getting unstuck vs. walking into lethal grids |
-| Retreat and flight | `borg_caution()` | retreat at danger > avoidance/3; flee after more than 3 escapes; desperate dashes at stair distance 3 / 2 / 20 | Early disengagement vs. lost experience and loot |
-| Escape choice | `borg_escape()` | allowed failure 10 / 25 / 35 %; `risky_boost` 0 or 3 | Teleporting too late vs. wasting escapes |
-| Healing | `borg_heal()` | hit-point-loss bands vs. chance thresholds; +5 when risky | Potions spent vs. deaths with unused cures |
-| Depth preparation | `borg_prepared_aux()`, Depth section | per-band requirements; "character level < depth" rule | Dive speed vs. readiness. Probably the biggest single lever. |
+| Retreat and flight | `borg_caution()` | retreat at danger > avoidance/3; leave after more than 3 escapes (with exceptions); desperate stair dashes at distance `< 3`, `<= 2`, `< 20` (with extra conditions) | Early disengagement vs. lost experience and loot |
+| Escape choice | `borg_escape()` | allowed failure 10 / 25 / 35 %, plus other hard-coded allowances; `risky_boost` 0 or 3 | Teleporting too late vs. wasting escapes |
+| Healing | `borg_heal()` (in `borg-caution.c`) | hit-point-loss bands vs. random chance thresholds; +5 when risky | Potions spent vs. deaths with unused cures |
+| Depth preparation | `borg_prepared_aux()`, Depth section | per-band requirements; "character level < depth" rule (dynamic mode changes which branches apply) | Dive speed vs. readiness. Probably the biggest single lever. |
 | Restock | `borg_restock()`, Restock section | food, light, cures, escapes per depth | Trips to town vs. running dry |
-| Time on level | boredom (10000), `borg_time_to_stay_on_level()`, stair leash (`BI_CLEVEL`×3+14) | as coded | Farming experience vs. exposure |
-| Anti-bounce | `borg_check_bounciness()`, `borg_danger()` | 200 / 300 / 500 / 700 | Loop breaking vs. discarding danger knowledge |
-| Power weights | Power section | weights as in `borg.txt` | What kit the Borg values |
-| Mana reserve | `borg_spell_okay()` | per class, from character level 35 | Escape mana vs. offence |
-| Existing switches | `borg.txt` | `borg_plays_risky`, `borg_kills_uniques`, `borg_worships_*`, `borg_uses_swaps`, munchkin, self-lunal | Style presets |
-
-That is about 40–60 parameters to start. The rest of the roughly 4,600 constants stay in code until screening shows a reason to move them.
+| Time on level | boredom (10000), `borg_time_to_stay_on_level()`, stair leash (`BI_CLEVEL`×3+14) | as coded; counters in Borg-clock ticks, not engine turns | Farming experience vs. exposure |
+| Anti-bounce | `borg_check_bounciness()`, `borg_danger()` | 200 / 300 / 500 / 700 selected; 1200 and others remain | Loop breaking vs. discarding danger knowledge |
+| Power weights | Power section | weights as in `borg.txt` (formula part only, see above) | What kit the Borg values |
+| Mana reserve | `borg_spell_okay()` | per class from character level 35, with spell exceptions | Escape mana vs. offence (late game only) |
+| Existing switches | `borg.txt` | `borg_plays_risky`, `borg_kills_uniques`, `borg_worships_*` (weight-branch selectors, not multipliers), `borg_uses_swaps`, munchkin, self-lunal | Style presets |
 
 ## What "best" means
 
-"Survivability" alone is a trap: a Borg that never leaves dungeon level 1 never dies. The objective has to reward progress while it penalises death. Use two primary measures, read together on a Pareto front:
+The primary objective is **prespecified before any search**: the share of runs **alive at turn T having reached dungeon level D** (for example dlvl 10 at 400,000 engine turns). This rewards neither a Borg that never dives nor one that dives and dies at once. Report alongside it:
 
-- **Survival:** the share of runs alive at the engine-turn cap, and the restricted mean survival time in engine turns. Runs that hit the cap are censored, not counted as wins; use Kaplan–Meier curves.
-- **Progress:** the share of runs that reach dungeon level *D* alive by turn *T* (for example dlvl 10 by 400,000 turns, dlvl 30 by 4,000,000), and the maximum depth and character level reached.
+- milestone attainment (reached D by T) with death as a competing outcome;
+- restricted mean survival time in engine turns, with Kaplan–Meier curves; turn-cap survival is censored;
+- distributions of maximum depth and character level;
+- operational outcomes (stalls, timeouts, crashes) per profile.
 
-Track as guardrails: stalls, wall-clock timeouts, money-scum loops and town idling. A profile that gains survival by stalling is rejected.
+Before selection, fix a **progress floor** and a **survival tolerance** relative to the baseline profile. A survival/progress Pareto front is useful for exploration, but it is not an acceptance rule: a never-diving profile can stay on it.
 
 ### How many runs a decision needs
 
-Deaths are noisy yes/no outcomes. With a two-sided test at α = 0.05 and 80 % power, the runs needed *per profile* are:
+With a two-sided test at α = 0.05 and 80 % power (normal approximation for two independent proportions):
 
-| Death rate, control → variant | Runs per profile | Core-hours at 400k turns |
-| --- | --- | --- |
-| 50 % → 40 % | ~390 | ~12 |
-| 30 % → 20 % | ~290 | ~9 |
-| 30 % → 25 % | ~1,250 | ~38 |
+| Death rate, control → variant | Runs per profile | Core-hours, both profiles, 110 s/run | Ideal wall time on 20 cores |
+| --- | --- | --- | --- |
+| 50 % → 40 % | 388 | 23.7 | 71 min |
+| 30 % → 20 % | 294 | 18.0 | 54 min |
+| 30 % → 25 % | 1,251 | 76.5 | 3.8 h |
 
-Core-hours assume about 110 s per 400,000-turn run, and count both profiles of a comparison. On the 20-core workstation, a 30 % → 20 % comparison takes about half an hour of wall time, if the shared validation lock allows that much parallel load. Paired seeds help: run every profile on the same seeds and compare with McNemar's test. Pairing helps less than it seems, because the RNG streams diverge after the first different decision. The cohort of three used so far cannot detect any realistic difference. Deeper caps cost roughly ten times more per run.
+"Ideal" excludes overhead and contention; on four dedicated cores the 30 % → 20 % comparison is about 4.5 hours. Single-run times do not establish parallel throughput, so Phase 0 measures it. Paired seeds with McNemar's test can reduce the runs needed; how much depends on the number of discordant pairs, which a pilot measures. The three-seed cohorts used so far cannot detect any realistic difference. Costs at longer caps are measured, not extrapolated.
 
 ## Test harness
 
-The harness has four levels, from fast and exact to slow and statistical:
+1. **Identity test.** `baseline-Bn` reproduces the Bn trace byte for byte on the frozen seeds. Runs on every change to the parameter layer.
+2. **Decision fixtures.** Hand-built boards that call one decision function and check its output, as the existing native scenarios do. Every module variant comes with fixtures showing where it decides differently.
+3. **Situation suite — diagnostic until qualified.** It needs a small, qualified inventory of **loadable** positions: the dossiers' T-minus snapshots are textual observations from replays, not necessarily loadable saves at each point, while the existing recent living saves are loadable. A fresh Borg started from a save tests recovery from incomplete memory, not the original Borg's situation. Use it for diagnosis; do not base acceptance on it until R4 provides paired checkpoints.
+4. **Population runs.** Full games from birth on three frozen seed sets: *training* for search, *validation* for choosing (repeated validation choices count as part of the search), and *test*, opened once for a frozen candidate. Extend to more races and classes once Warrior results stabilise.
 
-1. **Identity test.** Profile `c-borg-1.0` must reproduce the pinned trace byte for byte on the frozen seeds. This runs on every change to the parameter layer and every bug carry.
-2. **Decision fixtures.** Hand-built boards that call a single decision function and check its output, as the existing native scenarios already do: "with this danger and these items, does the Borg phase, heal or fight?" Every module variant comes with fixtures that show where its decision differs from the original's.
-3. **Situation suite.** Saves taken from the death dossiers (the T-minus-*n* snapshots), with a fresh Borg started from each, scored by survival over the next *N* turns. The dossiers record that the Borg's in-memory state is not restored on load, so this suite tests "can this profile handle this position", not an exact replay. It is cheap and aimed at the actual causes of death.
-4. **Population runs.** Full games from birth on frozen seed sets: a *training* set for search, a *validation* set for choosing between candidates, and a *test* set opened once per milestone. Extend to more races and classes once Warrior results stabilise, so that tuning does not overfit one class.
-
-**Runner changes needed:** parallel workers with isolated directories (one run per core), parameter injection through `borg.txt` so no rebuild is needed per profile, an append-only results store (JSONL or SQLite) keyed by build hash, profile hash and seed, and a summary report with survival curves and paired comparisons. Keep generated runs out of Git, as the current measurement rules require.
+**Runner changes needed:** one lock-owning batch coordinator with a bounded worker count, isolated run directories, parameter injection through `borg.txt` (no rebuild per profile), the shared outcome schema, an append-only results store, and a report with survival curves and paired comparisons. Generated runs stay out of Git.
 
 ## Search strategy
 
-- **Screening first.** Run one-at-a-time sweeps and Morris screening on short caps (20,000–100,000 turns) to find the 5–10 parameters that actually move the outcome. Most will not.
-- **Racing for tuning.** Use irace-style racing or successive halving. Start many candidate profiles on a few seeds, drop the clearly worse ones, and promote the survivors to more seeds and longer caps. This is built for noisy, expensive evaluations, which is exactly what game runs are. Use CMA-ES or Bayesian optimisation within a racing round if the space is continuous and smooth.
-- **Confirm on held-out seeds,** always against `c-borg-1.0`, before a profile is called better.
-- **Death-driven module work.** Rank causes of death from the dossiers and the population runs, pick the dominant one, design a module variant that addresses it, and prove it on fixtures, then on the situation suite, then on the population.
+- **Screening first,** on short caps, to find the parameters that move the outcome. Group parameters by when they can act (activation-aware): short caps cannot exercise late-game parameters such as the level-35 mana reserve, so a parameter whose code never ran is untested, not dropped. Keep interactions in the screening design, and add occasional longer evaluations.
+- **Racing for tuning** (irace-style racing or successive halving): many candidates on few seeds, drop the clearly worse, promote the rest to more seeds and longer caps. CMA-ES or Bayesian optimisation within a round where the space is continuous.
+- **Confirm on held-out seeds** against `baseline-Bn` with the prespecified objective.
+- **Death-driven module work:** rank causes of death, pick the dominant one, design a variant, and prove it on fixtures, then on the population (the situation suite is a diagnostic aid).
 
 ## Plan
 
-**Order:** R1 (fixes into borg-rs) comes first. Phase 0 can be prepared meanwhile, but its baseline cohort is run only after R1, so that both repositories measure the same Borg. After that, the C phases and the borg-rs track run side by side, as below.
-- **R1 · first.** **Carry the fixes into borg-rs.** Translate better-borg-c's carried fixes (`patches/0001`–`0015` today, plus any carried meanwhile) into Rust, in the same order, one per commit, each linking its better-borg-c adoption issue. Check once, at the end: the existing borg-rs suites against a better-borg-c build of the same carries; on a divergence, bisect over the fix commits. No per-fix native scenarios, because better-borg-c already proved the fixes and borg-rs only has to show a faithful translation. For fixes the suites do not reach (for example the deep-level swap), compare the Rust change with the C patch side by side. Exit: identical key logs on the suites, and a side-by-side review of each unreached fix. Needs the owner's scope change for borg-rs, which today keeps C bugs on purpose.
-- **Phase 0.** **Decide and prepare.** Owner scope change for a strategy track in better-borg-c. Freeze the metric definitions and three seed sets. Parallelise the runner and add the results store. Baseline cohort of about 300 seeds at 400k turns on the current carries build (about 9 core-hours). Exit: baseline survival curve and death-cause table.
-- **Phase 1.** **Existing knobs.** Sweep the formula section and the `borg.txt` switches (approach A) on the training seeds. No C changes. Exit: a first measured profile, or a documented null result.
-- **Phase 2.** **Parameter layer.** Move the first 40–60 constants into the parameter table with pin defaults. Prove the identity test on every frozen seed. Exit: `c-borg-1.0` byte-identical; parameters dumped in every run record.
-- **Phase 3.** **Screen and race.** Morris screening on short caps (around 6,000 runs, about 10 hours on 20 cores), then racing on the top parameters at 400k turns. Confirm on validation seeds. Exit: a Pareto set of profiles that beats `c-borg-1.0` with stated confidence.
-- **Phase 4.** **Module variants.** Build the situation suite from the dossiers. Make the first module replacements where the death analysis points, each behind a switch with its own fixtures. Exit: each kept variant has fixture, situation and population evidence.
-- **Phase 5.** **Generalise and go deeper.** More races and classes, longer caps, and re-tuning of combined profiles. Open the test seed set once. Exit: a milestone review package, in the style of better-borg-c's existing ones.
+**Order:** R0 and R1 come first. Phase 0 can be prepared meanwhile, but its baseline cohort runs on B1 only after R1, so that both repositories measure the same baseline.
 
-### borg-rs track (runs alongside)
+- **R0 · first.** **A C oracle for borg-rs.** Freeze the B1 manifest (ordered patch IDs and applied commits at a named better-borg-c commit; 34 carries at `702f091`). Build a scratch C oracle: the pinned engine with the B1 carries plus the `borgh` harness, wired completely (build registration, input hooks, seed and calendar handling, summaries, build identity). Adopting `borgh` permanently in better-borg-c is separate and later. Exit: the oracle reproduces borg-rs's existing pristine references when built without carries, and records its identity with carries.
+- **R1 · first.** **Carry B1 into borg-rs.** Port the manifest in order, one commit per fix, each linking its better-borg-c adoption issue. For every patch, write a short **applicability and translation audit**. Three patches fix C memory handling that Rust already owns structurally (0026 calculation reload array, 0033 operator-block arrays, 0034 calculation-token arrays): record an applicability decision instead of an artificial change. Check once, at the end: the 80 suite runs against the B1 oracle. A divergence is investigated at its first divergent key; if bisection is needed, compare each Rust prefix with the **matching C prefix**, never with the final carry set. Optionally collect lightweight counters on the changed branches in that same batch. No per-fix native scenarios. Exit: "identical on these 80 runs", plus the audit, plus the list of fixes the runs did not exercise. Expected outside suite coverage on present evidence (review #360): 0001, 0003, 0005, 0007, 0010, 0019, 0023, 0025, 0028, 0029, 0032; the "possible/unconfirmed" rows also rest on the audit until a distinguishing execution is shown.
+- **Phase 0.** **Decide and prepare.** Owner decisions (below). Freeze the objective, progress floor, survival tolerance and three seed sets. Build the coordinator and results store; measure real parallel throughput and the discordant-pair rate in a pilot. Baseline cohort of about 300 seeds at 400k turns on B1 (about 9 core-hours for one profile). Exit: B1 survival curve, death-cause table, measured throughput.
+- **Phase 1.** **Existing knobs.** Sweep the formula section and the `borg.txt` switches (approach A) on the training seeds, remembering which gates formulas cannot reach. Exit: a first measured profile, or a documented null result.
+- **Phase 2a.** **Pilot both implementations.** Implement the same five parameters in C and in Rust, with identity at defaults and differential identity at two non-default profiles. Record engineering time and defects found. Exit: an owner decision on where the full parameter layer and module work live, and whether the C/Rust cross-check continues.
+- **Phase 2.** **Parameter layer.** In the chosen repository (or both, if Phase 2a says so), the first justified parameters with Bn defaults. Exit: `baseline-Bn` identity on every frozen seed; parameters dumped in every run record.
+- **Phase 3.** **Screen and race.** Activation-aware screening on short caps (size and duration from the Phase 0 pilot), then racing at 400k turns, then validation. Exit: profiles that meet the prespecified objective against `baseline-Bn` with stated confidence.
+- **Phase 4.** **Module variants.** Where the death analysis points, each behind a switch with its own fixtures and population evidence. Exit: each kept variant has that evidence.
+- **Phase 5.** **Generalise and go deeper.** More races and classes, longer caps (measured costs), re-tuning of combined profiles. Open the test seed set once. Exit: a milestone review package in the style of better-borg-c's existing ones.
 
-- **R1b.** **Keep the carries in step.** After the first catch-up (above), new better-borg-c carries are ported in batches, with the same single suite comparison per batch, before either repository's next measurement batch.
-- **R2.** **Shared harness and deeper verification.** Adopt the shared seed sets and result schema. Extend identity checks beyond dungeon level 27 with long caps, to cover the code that today rests on reading. Exit: identity on the population seeds Phase 0 freezes.
-- **R3.** **Same parameter table (M5).** Implement Phase 2's parameter table as typed fields on `BorgState`. For several non-default profiles, C and Rust must produce the same keys. Exit: differential identity at default and non-default profiles. Follows Phase 2.
-- **R4.** **Serialisable Borg memory.** Save and restore `BorgState` next to the game save. This makes exact mid-game continuation possible, and turns the situation suite (harness level 3) from "fresh Borg in an old position" into "this Borg in its exact position". Exit: a resumed run's keys equal the uninterrupted run's.
-- **R5.** **Module variants behind traits (M6).** Phase 4's module replacements are developed here first. Variant 0 is the ported original. Measure with the shared harness, and port winners back to C only if C remains the delivery build. Exit: each kept variant has the same evidence Phase 4 requires.
-- **Decide.** **Choose the long-term base** after R5 and Phase 4, from data: per-run speed, how hard it was to add a variant, how much it costs to follow upstream, and whether keeping two codebases in step still pays for itself as a cross-check. Until then, every profile or fix exists in both, or is marked as existing in one only.
+### borg-rs track (after R1)
+
+- **R1b.** **Next baselines, not continuous catch-up.** The carry set is frozen for a measurement campaign. Later carries queue for the next baseline (B2, …), which is ported and checked the same way as R1 before the next campaign starts. A campaign is never invalidated by a carry landing mid-way.
+- **R2.** **Shared run contract and deeper identity.** Adopt the shared seed sets, calendar policy and outcome schema. Extend identity checks beyond dungeon level 27 with long caps. Exit: identity on the population seeds Phase 0 freezes.
+- **R3.** **Same parameter table** (if Phase 2a keeps both). Exit: differential identity at default and non-default profiles.
+- **R4.** **Serialisable Borg memory, for new checkpoints.** Save and restore `BorgState` together with a game save, accounting for native save compaction, engine-side references, both RNG states and pending interaction state. Historical C dossiers cannot be retrofitted; this makes **new** paired game-and-Borg checkpoints. Exit: a resumed run's keys equal the uninterrupted run's.
+- **R5.** **Module variants behind traits,** if Phase 2a places module work in Rust. Experimental variants do not need immediate C duplication; only profiles both repositories claim to implement must match.
+- **Decide.** At Phase 2a, and again after the first module variants: which repository carries new policy work, and whether the C/Rust cross-check still pays for its maintenance, judged by engineering time, defects caught and upstream-tracking cost.
 
 ## Risks
 
-- **Gaming the metric:** survival bought by stalling or idling. Guard with the progress measure and the stall classification.
-- **Overfitting:** to Warrior, to the training seeds, or to the turn cap. Guard with held-out seeds, more classes, and occasional longer caps.
-- **Upstream drift:** the parameter layer touches many files. Keep it mechanical (constant becomes parameter, nothing else), carry it as its own removal unit, and re-run the identity test after each upstream import.
-- **Mixing provenance:** strategy changes must never enter bug carries or upstream proposals. Keep separate labels, patches and issues.
-- **Compute contention:** large cohorts share the workstation with other sessions' validation gates. Schedule batches, or use a separate runner machine. borg-rs reports a 4-core machine, which suits identity suites but is too small for tuning cohorts.
-- **Two codebases drifting apart:** a fix or parameter added to one but not the other. Guard with the differential identity check, and record in both ledgers which items are present in only one.
-- **Upstream changes cost twice:** an upstream Borg change is a normal import in better-borg-c and a manual port in borg-rs. Upstream's Borg changes rarely, but budget for it.
+- **Gaming the metric:** survival bought by stalling, or progress bought by reckless dives. Guard with the prespecified objective, the progress floor and the operational outcomes.
+- **Overfitting:** to Warrior, the training seeds or the turn cap. Guard with held-out seeds, more classes and occasional longer caps.
+- **Moving baselines:** carries landing during a campaign. Guard with frozen manifests and B1/B2 versioning.
+- **Upstream drift:** keep the parameter layer mechanical, carry it as its own removal unit, re-run the identity test after each upstream import.
+- **Mixing provenance:** strategy changes never enter bug carries or upstream proposals. Separate labels, patches and issues.
+- **Compute contention:** one lock-owning coordinator, bounded workers, scheduled batches or a separate runner machine. borg-rs reports a 4-core machine, which suits identity suites but not tuning cohorts.
+- **Two codebases drifting apart:** guard with differential identity at shared profiles, ledgers of what exists in one only, and the Phase 2a decision.
 
 ## Decisions for the owner
 
-1. Approve a strategy track in better-borg-c, which changes RULES 12 and the AGENTS scope.
-2. Approve R1 in borg-rs now: carrying the fixes changes its rule of keeping C bugs on purpose. Later, approve R3–R5 (parameters, state serialisation, module variants), which change its "no new tactics" scope.
-3. Agree the shared contract: one parameter table, one harness frontend, one result schema. Decide which repository owns the shared definitions.
-4. Choose the primary objective: the dive target *D* by turn *T*, and how survival and progress are weighed against each other.
-5. Set the compute budget, and say whether a dedicated runner machine is available.
-6. Decide whether tuned profiles may differ by class, or must be one profile for all classes.
+1. **better-borg-c scope:** a strategy track conflicts with RULES 12 (no new gameplay strategies), RULES 10 (no Rust work), RULES 14 and PLAN (bugs before discretionary batches), and the cross-repository limits in AGENTS and PLAN. Decide whether tuning gets protected capacity alongside the bug queue.
+2. **borg-rs scope:** R0/R1 change its rule of keeping C bugs on purpose; R3–R5 change "faithful port, no new tactics".
+3. **neo-angband-tracker:** its RULES 4, 13 and 15 exclude managed Rust adoption and parked strategy work here. This plan lives here as a document only; say whether that stands.
+4. **Owning sessions:** name the session that owns each track (R0–R1, Phase 0–5, R2–R5) and the shared contract.
+5. **The objective:** D, T, the progress floor and the survival tolerance.
+6. **Compute:** the budget, and whether a dedicated runner machine is available.
+7. **Classes:** whether tuned profiles may differ by class.
 
-Sources: `BORG_SPEC.md` at `684321538` (PR #317); borg-rs `README.md`, `CLAUDE.md`, `docs/REVIEW.md`, `docs/STATUS.md`, `docs/harness.md` and `harness/suites/` at `74fc879` (local checkout, read only); better-borg-c `README.md`, `PLAN.md`, `RULES.md`, `docs/measurement/` (BASELINE-V1, DEEP-IMPACT-V2, IMPACT-MILESTONE2) on `main` at `8a7eba1ad`; `src/borg/borg.txt` and literal counts from `src/borg/*.c` at `e473720`. Sample sizes come from the normal approximation for two proportions.
+Sources: `BORG_SPEC.md` at `684321538` (PR #317); borg-rs at `74fc879` (`README.md`, `CLAUDE.md`, `docs/REVIEW.md`, `docs/STATUS.md`, `docs/harness.md`, `harness/suites/`, `borg-rs/src/state.rs`; local checkout, read only); better-borg-c at `702f091` (`patches/series.json`) and `8a7eba1ad` (`README.md`, `PLAN.md`, `RULES.md`, `docs/measurement/`); `src/borg/borg.txt` and the literal count from `src/borg/*.c` at `e473720`; review [#360](https://github.com/diegoami/neo-angband-tracker/issues/360).

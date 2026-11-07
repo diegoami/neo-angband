@@ -30,6 +30,13 @@ one at a time behind switches; both repositories share one parameter table,
 harness contract and result schema, and must agree key for key at the same
 profile. The long-term base (C or Rust) is decided later from data.
 
+## If this is a re-review
+
+Revision 1 (`7e008cc93`) was reviewed in neo-angband-tracker issue #360. For
+revision 2 and later, first check item by item that each error, omission and
+judgement call in #360 is resolved or explicitly answered in the plan, then do
+the full review below on what changed.
+
 ## Read first
 
 - docs/c-borg/TUNABLE-BORG-PLAN.md (the plan under review)
