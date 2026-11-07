@@ -1,0 +1,108 @@
+{
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "fix": "5b31e13d1023a64bf4f8613352e738757b5f56ec",
+  "fixtures_ref": "e735a4fcedda19cac11f493b8c429893cf19a553",
+  "cases": {
+    "before": {
+      "phantom": {
+        "exit": 0,
+        "passed": false,
+        "geometry": {
+          "raw": "player=(11,11) own_feat=1 nw_feat=6 far_stair=(30,30) track_more=1"
+        },
+        "rating": {
+          "raw": "acted=1 keys=\">\" stair_key=62"
+        },
+        "outcome": {
+          "raw": "acted=1 stair_key=62 own_is_stair=0"
+        }
+      },
+      "on-stair": {
+        "exit": 0,
+        "passed": true,
+        "geometry": {
+          "raw": "player=(11,11) own_feat=6 nw_feat=6 far_stair=(30,30) track_more=2"
+        },
+        "rating": {
+          "raw": "acted=1 keys=\">\" stair_key=62"
+        },
+        "outcome": {
+          "raw": "acted=1 stair_key=62 own_is_stair=1"
+        }
+      }
+    },
+    "after": {
+      "phantom": {
+        "exit": 0,
+        "passed": true,
+        "geometry": {
+          "raw": "player=(11,11) own_feat=1 nw_feat=6 far_stair=(30,30) track_more=1"
+        },
+        "rating": {
+          "raw": "acted=1 keys=\"\" stair_key=0"
+        },
+        "outcome": {
+          "raw": "acted=1 stair_key=0 own_is_stair=0"
+        }
+      },
+      "on-stair": {
+        "exit": 0,
+        "passed": true,
+        "geometry": {
+          "raw": "player=(11,11) own_feat=6 nw_feat=6 far_stair=(30,30) track_more=2"
+        },
+        "rating": {
+          "raw": "acted=1 keys=\">\" stair_key=62"
+        },
+        "outcome": {
+          "raw": "acted=1 stair_key=62 own_is_stair=1"
+        }
+      }
+    }
+  },
+  "identical_controls": [
+    "on-stair"
+  ],
+  "full_tests": {
+    "before": {
+      "units": "965/965",
+      "frontends": "5/5"
+    },
+    "after": {
+      "units": "965/965",
+      "frontends": "5/5"
+    }
+  },
+  "fixed_source_sha256": "34fc4b9b292ccab203ef18382c47d2cfe2574188c579ace7e9539fb238f5a696",
+  "compiler": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+  "cmake": "cmake version 4.2.3",
+  "browser": {
+    "engine": "Google Chrome for Testing 156.0.8078.4 (headless dump-dom)",
+    "verification": "18 checks against the rendered DOM: 2 situations x 2 variants; phantom queues > before and no stair key after with own_is_stair=0; on-stair control 62/1 identical raw logs; no n/a or undefined fields; zero console errors"
+  },
+  "maintenance_base": "f186aa1fce2e590eb9bbcb91dc369f3f8b6af688",
+  "sha256": {
+    "README.md": "16df0eb2a599a6b8dc2c4d728d0583c0d1ab6b49c938defd3575b703d2403cc6",
+    "after-alltests.log": "d2f7d93451d1ec73eb035c5351e541d5d5fcaf85818c8087f6b4e0009bec8906",
+    "after-build.log": "b387607525a77744ce2feca76c558abef3826fb92d3d9c5367899aa3e45381a1",
+    "after-on-stair.log": "0aaba3137597f80d32edde22af9e831bdaad144d23584adb9765ba60e1447bc8",
+    "after-phantom.log": "ca286c72c3dbfdb424840fe353ed9fea5b803b3a03c47b3609b7519f1d989ffc",
+    "after-results.json": "eea65b11dff9946375885b693826ded7e19915503ed50e7bc7bb5a909d1be2b9",
+    "after-scenarios.log": "1347910270c30dee58a73a8770937c04abe39e3eb2cea79bb8049a6c2cc7cea2",
+    "before-alltests.log": "c4ee272c4ded1480b4c8cfb82e39904087c5700eb518e004052a23c35179dbd8",
+    "before-build.log": "bdf871f4f67cae613ad76a4e2fc85f6f32e0d82bc3120ae0587b80f2dcef8d44",
+    "before-on-stair.log": "0aaba3137597f80d32edde22af9e831bdaad144d23584adb9765ba60e1447bc8",
+    "before-phantom.log": "13921cd8f6546331a21d07214c50d6664832a6026c3ec2acc847becc281ceab7",
+    "before-results.json": "b5d2419bde174fa58a5f662fa2f0387317e653ecd8f786b7ca11109793ca4658",
+    "before-scenarios.log": "2ec21939bcbb0ebb233d8f71752aa39bd397ba1c09abd59fab784de75de2b5f5",
+    "borg.txt": "80738da248ed74e343925e0348fc75da993d8c03ffff03c7bce1a9090005be47",
+    "configure.log": "22ee801a987a12a657bc531e11b0fd8d3cac47100185884dab3ef87ecb92a969",
+    "make_replay.py": "3136690e5e3be1da1ae609e20138ce8cdc667618ae172933a3d7539d94ee0002",
+    "replay-data.json": "0ad751c122ecd0bdb7c19f5091d83015e7ad6ef9d8ed75d3221a5cb541d65654",
+    "replay.html": "d58f32fae4a7a27a70569c46e5d0edc89e01b3908328ed51c904d2b6f62fac1f",
+    "reproduce.py": "f015f1d45b218e13ee35677b23d5faef8d86dc6665d0fc9c4a455f06bcd5d70c",
+    "result.json": "2dbf73fdcbdb1dae5eece3f6daa679e33bc1b3f55b8af5eb7e5c32566deb58a7",
+    "run-cases.py": "246b2e7cc7d4622eef964a9b87561b0db920cf26d2be531dbe6f7ae5a698f6dd",
+    "scenario.c": "be21e9922707bc4199c22bae2f316a47cfa3107aaa41e34c52fbe68bdda9f458"
+  }
+}
