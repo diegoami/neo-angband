@@ -1,0 +1,70 @@
+{
+  "arc-bystander": {
+    "label": "A bystander behind the spray",
+    "explanation": "A Mage considers Acid Spray, a sixty-degree arc, at a kobold four grids north. Another kobold stands four grids south - inside the ten-grid range but one hundred eighty degrees off the spray. The original angle test reorients the spray target instead of the grid being scanned, so every grid receives the same angle difference and the spray counts every monster in range and line of sight: the value includes the southern kobold. The correction measures each grid, and the off-arc bystander adds nothing.",
+    "before": {
+      "raw": "native-c/arc-253: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Mage level=26 depth=30 hp=134/134 sp=144/144\n  arc_counts_only_monsters_inside_the_angle  MODE arc-bystander\nGEOMETRY front=(11,7) behind=(11,15) player=(11,11) temp_n=2\nRATING reference=6 value=17\nOUTCOME reference=6 value=17\nFailed\n    native-c/arc-253:217: requirement 'value' == 'ref' failed\n      value:               17\n      ref:                6\nnative-c/arc-253 finished: 0/1 passed\n",
+      "passed": false,
+      "geometry": {
+        "temp_n": 2
+      },
+      "rating": {
+        "reference": 6,
+        "value": 17
+      },
+      "outcome": {
+        "reference": 6,
+        "value": 17
+      }
+    },
+    "after": {
+      "raw": "native-c/arc-253: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Mage level=26 depth=30 hp=134/134 sp=144/144\n  arc_counts_only_monsters_inside_the_angle  MODE arc-bystander\nGEOMETRY front=(11,7) behind=(11,15) player=(11,11) temp_n=2\nRATING reference=6 value=6\nOUTCOME reference=6 value=6\nPassed\nnative-c/arc-253 finished: 1/1 passed\n",
+      "passed": true,
+      "geometry": {
+        "temp_n": 2
+      },
+      "rating": {
+        "reference": 6,
+        "value": 6
+      },
+      "outcome": {
+        "reference": 6,
+        "value": 6
+      }
+    }
+  },
+  "arc-both": {
+    "label": "Control: two monsters inside the spray",
+    "explanation": "Two kobolds stand north, both within the sixty-degree arc. Both versions count both monsters, and the complete log is byte-identical before and after the correction: the fix removes only the off-angle counting.",
+    "before": {
+      "raw": "native-c/arc-253: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Mage level=26 depth=30 hp=134/134 sp=144/144\n  arc_counts_only_monsters_inside_the_angle  MODE arc-both\nGEOMETRY front=(11,7) behind=(11,9) player=(11,11) temp_n=2\nRATING reference=6 value=44\nOUTCOME reference=6 value=44\nPassed\nnative-c/arc-253 finished: 1/1 passed\n",
+      "passed": true,
+      "geometry": {
+        "temp_n": 2
+      },
+      "rating": {
+        "reference": 6,
+        "value": 44
+      },
+      "outcome": {
+        "reference": 6,
+        "value": 44
+      }
+    },
+    "after": {
+      "raw": "native-c/arc-253: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Mage level=26 depth=30 hp=134/134 sp=144/144\n  arc_counts_only_monsters_inside_the_angle  MODE arc-both\nGEOMETRY front=(11,7) behind=(11,9) player=(11,11) temp_n=2\nRATING reference=6 value=44\nOUTCOME reference=6 value=44\nPassed\nnative-c/arc-253 finished: 1/1 passed\n",
+      "passed": true,
+      "geometry": {
+        "temp_n": 2
+      },
+      "rating": {
+        "reference": 6,
+        "value": 44
+      },
+      "outcome": {
+        "reference": 6,
+        "value": 44
+      }
+    }
+  }
+}

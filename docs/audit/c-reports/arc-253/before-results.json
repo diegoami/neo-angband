@@ -1,0 +1,32 @@
+{
+  "arc-bystander": {
+    "exit": 0,
+    "passed": false,
+    "geometry": {
+      "temp_n": 2
+    },
+    "rating": {
+      "reference": 6,
+      "value": 17
+    },
+    "outcome": {
+      "reference": 6,
+      "value": 17
+    }
+  },
+  "arc-both": {
+    "exit": 0,
+    "passed": true,
+    "geometry": {
+      "temp_n": 2
+    },
+    "rating": {
+      "reference": 6,
+      "value": 44
+    },
+    "outcome": {
+      "reference": 6,
+      "value": 44
+    }
+  }
+}
