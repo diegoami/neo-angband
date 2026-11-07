@@ -1,5 +1,7 @@
 # Privacy Policy for Neo Angband
 
+> **Fork notice.** This file is upstream Neo Angband's privacy policy, kept unchanged below for credit and to stay in step with the upstream source. It does not describe this repository: diegoami/neo-angband-tracker is a bug tracker and evidence store for the original Angband C Borg and C game and the Neo Angband engine. It publishes no game builds and runs no service. Questions about this tracker go to [its issue board](https://github.com/diegoami/neo-angband-tracker/issues).
+
 Effective date: 2026-08-23.
 
 ## Summary

@@ -1,5 +1,7 @@
 # AI Use, Disclosure, and Accountability
 
+> **Fork notice.** This file is upstream Neo Angband's AI usage policy, kept unchanged below for credit and to stay in step with the upstream source. It does not describe this repository: diegoami/neo-angband-tracker is a bug tracker and evidence store for the original Angband C Borg and C game and the Neo Angband engine. It publishes no game builds and runs no service. This tracker's own working rules are in [RULES.md](RULES.md).
+
 Generative AI is a substantial part of how Neo Angband is developed.
 
 The main tool has been Claude (Anthropic), mostly through Claude Code. It has helped write and revise TypeScript, draft tests, investigate differences between the port and the upstream C implementation, trace code paths, and draft documentation.
