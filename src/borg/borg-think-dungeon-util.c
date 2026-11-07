@@ -399,8 +399,10 @@ bool borg_think_stair_scum(void)
         /* Check for an existing "up stairs" */
         for (i = 0; i < track_less.num; i++) {
             /* We already knew about this one */
+            /* (break, like the down-stair loop above: continuing past a
+             * match re-adds the known staircase as a duplicate) */
             if ((track_less.x[i] == borg.c.x) && (track_less.y[i] == borg.c.y))
-                continue;
+                break;
         }
 
         /* Track the newly discovered "up stairs" */
