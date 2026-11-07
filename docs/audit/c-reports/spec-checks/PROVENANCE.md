@@ -81,8 +81,10 @@ re-check of the specification and of these programs.
   loop, the message trace and the recall path, verified in a running game.
 * **Not claimed:** the *frequency* of any behaviour, long-run outcomes, the
   Borg's win rate, or that any specific branch is reachable in ordinary
-  play. Every finding that could not be reproduced in a game says so and
-  keeps the label `evidence:source-checked`.
+  play. When these findings were filed, each one that had not been
+  reproduced in a game said so and was labelled `evidence:source-checked`.
+  Labels change on the board; this file does not track them (for example,
+  #311 has since been reproduced natively — see the board).
 
 ## Running the harness without disturbing anything else
 

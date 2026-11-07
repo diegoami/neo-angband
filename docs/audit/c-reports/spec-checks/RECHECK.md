@@ -29,12 +29,44 @@ python3 -I docs/audit/c-reports/spec-checks/recheck/check_transcriptions.py "$PI
 
 | Check | What it does | Result |
 | --- | --- | --- |
-| identifiers (`check_spec.py`) | every identifier-shaped token in backticks and in code blocks (in `pseudocode` blocks, only tokens with `_`, a call or a member access) must occur as a whole word in `$PIN/src` or `$PIN/lib`; file names must exist there or in this repository | 1714 tokens, **0 misses** |
-| citations (`check_spec.py`) | every `file:function:N-M` must name a function defined in that file with `N..M` inside its body (for headers: the named identifier lies in `N..M`) | 114 citations, **0 misses** |
-| transcriptions (`check_transcriptions.py`) | every ```` ```c ```` block introduced by "Transcribed from `…`" must consist of lines that occur, in order, in the cited range after removing comments and whitespace (`...` lines are skips) | 12 blocks, **0 mismatching lines** |
+| identifiers (`check_spec.py`) | every identifier in backticks and in code blocks must occur as a whole word in the pinned **code** (`$PIN/src` with comments removed; string literals kept, because option names live there) or in `$PIN/lib`. Allow-listed English/C words are skipped, **except** when used as a member, call or subscript. In `pseudocode` blocks: tokens with `_`, members, attached calls/subscripts (`name(`), and assignment targets | 1870 tokens, **0 misses** |
+| `borg.` members (`check_spec.py`) | in every `borg.a…`, `a` must be declared in `struct borg_struct` (`borg.h`) | **0 misses** |
+| file names (`check_spec.py`) | a bare `x.c`/`x.h`/`x.txt` must exist in the pinned tree; a repository file must be written with its path (`docs/…/x.c`) | **0 misses** |
+| citations (`check_spec.py`) | every `file:function:N-M` must name a function defined in that file with `N..M` inside its body (for headers: the named identifier lies in `N..M`) | 122 citations, **0 misses** |
+| transcriptions (`check_transcriptions.py`) | **every** ```` ```c ```` block must have a "Transcribed from `file:function:a-b`" line (any indentation) within the three lines above it; its lines must occur in order in the cited range after removing comments and whitespace; source lines skipped **between** two transcribed lines must be marked with `...` | 12 blocks, **0 problems** |
 
-Run against the **previous** draft (`origin/task/borg-spec-audit`,
-`35cd8b929`), `check_spec.py` reports among others: `borg_item_val`,
+**What these checks do not do.** They establish that names exist, that a
+citation points inside the function it names, and that a transcription is
+faithful. They do **not** establish that the prose next to a citation
+describes that code correctly: "`borg_flow_commit()` queues a movement key
+(`borg-flow.c:borg_flow_commit:585-608`)" passes, and is false. Semantic
+accuracy rests on reading and review (§2, §6). They also do not check
+leading or trailing lines a transcription omits from its cited range.
+
+`recheck/adversarial_fixture.txt` holds the second review's six false
+fixtures. Results with the current scripts:
+
+| Fixture | Caught? |
+| --- | --- |
+| W1 plain pseudocode identifier (`fabricatedstrategy = 123`) | yes (assignment target) |
+| W2 allow-listed word as a member (`borg.master`) | yes (`BORG-FIELD`) |
+| W3 repository file presented as pinned source (`teststuff_test.c`) | yes (`FILE`) |
+| W4 real citation next to a false sentence | **no** — semantic, not mechanical |
+| W5 indented "Transcribed from" header | yes (header found; the faked body is an unmarked gap) |
+| W5b ```` ```c ```` block with no header | yes (`NO-HEADER`) |
+| W6 omission without a `...` marker | yes (`UNMARKED-GAP`) |
+
+```sh
+SPEC_REPO=. python3 -I docs/audit/c-reports/spec-checks/recheck/check_spec.py "$PIN" docs/audit/c-reports/spec-checks/recheck/adversarial_fixture.txt
+python3 -I docs/audit/c-reports/spec-checks/recheck/check_transcriptions.py "$PIN" docs/audit/c-reports/spec-checks/recheck/adversarial_fixture.txt
+# both exit 1, listing the caught fixtures
+```
+
+The hardened transcription check found one real unmarked omission in the
+specification (a field skipped in the `borg_kill` excerpt), now marked.
+
+Run against the **original** draft (`35cd8b929`), `check_spec.py` reports
+among others (and 6 `BORG-FIELD` misses such as `borg.kills`): `borg_item_val`,
 `borg_escape_hall`, `borg_need_shift_panel`, `borg_flow_twitchy`,
 `borg_flow_guide`, `borg_flow_destroy`, `borg_flow_ground`, `BF_ATTACK`,
 `BF_THROW`, `BF_WHIRLWIND`, `BF_QUIVER`, `BI_ISHALLU`, `BI_CCURHP`,
@@ -187,8 +219,8 @@ What was wrong in each, and what changed:
 
 | Program | Problem in the previous version | Now |
 | --- | --- | --- |
-| `teststuff_test.c` | case 2 printed that 250100 is "BELOW" 105000; the needs-ID note was an independent input, but it follows from `ident`/`needs_ident` and is true for every ordinary candidate; loop 2's `else if (free_id \|\| borg_item_worth_id())` was modelled as `else if (!art_idx)`; `TV_FOOD` missing; the `needs_ident` filter missing | transcribes `borg_item_note_needs_id()`/`borg_item_worth_id()` and both loop bodies; shows that the artifact/ego bonuses never survive for ordinary candidates, and the cursed-slot exception |
-| `teststuff_test3.c` | built on the same independent-note model | shows loop 1 can change loop 2's choice only through the cursed-slot exception |
+| `teststuff_test.c` | case 2 printed that 250100 is "BELOW" 105000; the needs-ID note was an independent input, but it follows from `ident`/`needs_ident` and is true for every ordinary candidate; loop 2's `else if (free_id \|\| borg_item_worth_id())` was modelled as `else if (!art_idx)`; `TV_FOOD` missing; the `needs_ident` filter missing | transcribes `borg_item_note_needs_id()`/`borg_item_worth_id()` and both loop bodies; shows that the artifact/ego bonuses never survive for ordinary candidates, and the cursed-slot exception; after the second review: artifact+ego marked `SYNTHETIC`, cursed values 0 |
+| `teststuff_test3.c` | built on the same independent-note model | shows loop 1 changes loop 2's choice only through a tie (case C, added after the second review) or the cursed-slot exception |
 | `blows_test.c` | `WARRIOR_MAX_ATTACKS 5` (class.txt has 6); final step `(blows + 100) / 100` instead of `MAX(blows + 100 * extra, 100) / 100`, so every count was one too high; weights labelled in pounds (they are tenths); dex input unlabelled | fixed; the divergent example is now 1 blow (Borg) vs 2 (engine) |
 | `glow_bound_test.c` | sidebar mode 1 labelled "RIGHT" (it is `SIDEBAR_TOP`); "OVERFLOW" stated as a fact | labels fixed; "can overflow (if every grid is BORG_GLOW)"; tile size stated |
 | `glow_overflow_probe.c` | relied on its own compiler's layout (opposite of the cited build); counts reported as the game's; the "first wrong ones" loop started at 1536 and printed correct entries | simulates the named build's layout and code in a byte arena; prints actual wrong entries; result labelled as that build's |
@@ -357,7 +389,7 @@ from borg_item_analyze() needs_ident=1 implies ident=0.
 The +20000 assignment always fires and overwrites the artifact
 and ego assignments above it, in both loops.  (free_id=0, depth 30)
 
-  artifact that is also a random-power ego       loop1   25000   loop2   25000   (note_needs_id=1)
+  SYNTHETIC: artifact + random-power ego         loop1   25000   loop2   25000   (note_needs_id=1)
   plain artifact                                 loop1   25000   loop2   25000   (note_needs_id=1)
   random-power ego, not an artifact              loop1   25000   loop2   25000   (note_needs_id=1)
   plain wieldable item needing ID                loop1   25000   loop2   25000   (note_needs_id=1)
@@ -367,33 +399,41 @@ and ego assignments above it, in both loops.  (free_id=0, depth 30)
 === 3. The exception: a cursed non-artifact in the bow/weapon slot ===
 borg_notice_equipment() sets ident=1 on it, so note_needs_id()=0.
 
-  cursed random-power ego weapon (wielded)       loop1  105000   loop2       0   (note_needs_id=0)
+  cursed random-power ego weapon (wielded)       loop1  100000   loop2       0   (note_needs_id=0)
   cursed plain weapon (wielded)                  loop1       0   loop2       0   (note_needs_id=0)
   with free_id=1 (Identify Rune castable):
-  cursed random-power ego weapon (wielded)       loop1  105000   loop2    5000   (note_needs_id=0)
-  cursed plain weapon (wielded)                  loop1       0   loop2    5000   (note_needs_id=0)
-  -> here the ego bonus does survive loop 1; loop 2 gives the
-     item its plain value only when free_id is set, else 0.
+  cursed random-power ego weapon (wielded)       loop1  100000   loop2       0   (note_needs_id=0)
+  cursed plain weapon (wielded)                  loop1       0   loop2       0   (note_needs_id=0)
+  -> here the ego bonus does survive loop 1 (0+100000); in loop 2
+     the item scores its value, 0, so it is not a loop-2 candidate.
 exit=0
 ##### teststuff_test3.c
 (compiled: 0 warnings)
 === A. ordinary candidates (BI_MAXDEPTH 10, free_id 0) ===
     pack: unaware ring                           loop1       0  loop2   70100
-    worn: artifact + random-power ego            loop1   25000  loop2   25000
-  after loop 1 : b_v   25000  worn: artifact + random-power ego
+    worn: artifact needing ID                    loop1   25000  loop2   25000
+  after loop 1 : b_v   25000  worn: artifact needing ID
   after loop 2 : b_v   70100  pack: unaware ring
   loop 2 alone : b_v   70100  pack: unaware ring
 
 === B. the exception: cursed non-artifact ego in the weapon slot ===
     pack: unaware ring                           loop1       0  loop2   70100
-    worn: CURSED random-power ego weapon         loop1  105000  loop2       0
-  after loop 1 : b_v  105000  worn: CURSED random-power ego weapon
-  after loop 2 : b_v  105000  worn: CURSED random-power ego weapon
+    worn: CURSED random-power ego weapon         loop1  100000  loop2       0
+  after loop 1 : b_v  100000  worn: CURSED random-power ego weapon
+  after loop 2 : b_v  100000  worn: CURSED random-power ego weapon
   loop 2 alone : b_v   70100  pack: unaware ring
 
+=== C. a tie between a pack item and a worn item ===
+    pack: plain wieldable item needing ID        loop1       0  loop2   20100
+    worn: plain item needing ID, same value      loop1   20100  loop2   20100
+  after loop 1 : b_v   20100  worn: plain item needing ID, same value
+  after loop 2 : b_v   20100  worn: plain item needing ID, same value
+  loop 2 alone : b_v   20100  pack: plain wieldable item needing ID
+
 In A loop 1 makes no difference.  In B the cursed weapon's loop-1
-score (value+100000) blocks the unaware ring (value+20000+50000)
-that loop 2 alone would have chosen.
+score (0+100000) blocks the unaware ring (100+20000+50000) that
+loop 2 alone would have chosen.  In C the scores tie at 20100 and
+loop 1 keeps the worn item, where loop 2 alone keeps the pack item.
 exit=0
 ```
 
@@ -409,7 +449,7 @@ $ node tools/check-fork-workflows.mjs
 $ node tools/c-bugs.mjs --check
 c-bugs: 152 individually tracked import records; source coverage valid; issue list owns live state
 $ node tools/private-scan.mjs
-private-scan: clean (2168 tracked files)
+private-scan: clean (2169 tracked files)
 $ node tools/citation-check.mjs
 citation-check: 6595 citation(s) extracted
   OUT OF RANGE     : 2
@@ -437,6 +477,30 @@ The diff against `master` touches only `docs/c-borg/BORG_SPEC.md` and
 `docs/audit/c-reports/spec-checks/`; nothing under `.github/`, no C or
 TypeScript source.
 
+## 6. Second review (at `9a6dcaa41`): what changed
+
+[Review](https://github.com/diegoami/neo-angband-tracker/pull/317#issuecomment-6698919506).
+Every item was re-verified at the pin before changing anything; all were
+confirmed. Spec sections are in `docs/c-borg/BORG_SPEC.md`.
+
+| Item | Verified at the pin | Change |
+| --- | --- | --- |
+| E1 perception: real race/kind reads; `map_info()` objects | `borg-flow-kill.c:borg_guess_race:892-907`, `borg-flow-take.c:borg_guess_kind:72-84`, `borg-flow-take.c:borg_get_top_object:50-64`; chest `pval` in `borg_play_step()`; `src/cave-map.c` loops over `square_object(player->cave, …)` | §1.1 adds an "identities" bullet and remembered objects; §1.1 "does not do" restated (a monster starts from a visible sighting or a message name); §4.4 rewritten; §16.1.3 lists the identity reads |
+| E2 cure-all is a game action | `borg-messages-react.c:borg_react_prompted:105-139`; `do_cmd_wiz_cure_all()` in `src/cmd-wizard.c` | §1.1, §1.2, §16.1.1: keystrokes are the action channel with one explicit cheat-death exception |
+| E3 late unique gate | `borg-prepared.c:borg_prepared:626-685` | §5.5 step 5 rewritten as the two branches, incl. `BI_MAXDEPTH <= 98`, the `>= 98` depth test not gated by `borg_kills_uniques`, `ready_morgoth`, and the Teleport Level exception |
+| E4 caution order; mage guard | `borg-caution.c:borg_caution:799-2034` (restock/danger flags after defend/heal, swap, recall) | §9.1 rewritten as 15 steps in source order with the mage guard |
+| E5 flow builders, `GOAL_BORE`, cache lifetime | `borg_flow_dark_1()`/`_2()` call `borg_flow_direct()`; `borg_flow_stair_less(GOAL_BORE, …)` in `borg_leave_level()`; know/icky wiped only with `borg_danger_wipe` | §6.2 names the direct-path variant and the cache lifetime; §6.3 `GOAL_BORE` row; §6.5 evaluation timing |
+| E6 config/mode dispatch | lunal routine only in `borg-think-dungeon.c:borg_think_dungeon:1438-1456`; self-scum sets `borg_cfg[BORG_MONEY_SCUM_AMOUNT]` (`borg-store-buy.c`); stop needs gold `>` target and `!borg_self_scum` (`borg.c:check_for_deactivate_or_death:190-199`); risky in `borg_heal()` and `borg_escape()`; desperate `< 20` case | §12 money scumming; §13 rows; §13.1 lunal, self-scum, money-scum, desperate rows |
+| E7 practice gate; light prep; junk | `borg-magic-play.c:borg_play_magic:165-170`; `borg_prepared_aux()` light/fuel checks; `borg-junk.c` `p > b_p`, inscribe, drop, later `k` via `borg_destroy_floor()` | §10.6, §10.7, §10.8 |
+| E8 teststuff inputs | `src/obj-make.c` `apply_magic()` returns after `make_artifact()`; `borg-item-analyze.c:borg_item_analyze:620-622` cursed value 0; tie retention | programs relabelled/normalised, tie case C added; §11.3, §11.11; README; owner note below |
+| O twitch state machine | `borg-think-dungeon.c:borg_think_dungeon:2124-2263`; `> 20` at 1501 | §2.8 ladder lines and a paragraph on the counter |
+| O fear overrides | `borg-flow.c:borg_flow_spread:442-474` | §6.5 lists all nine assignments in order |
+| O store dispatch | `borg-think-store.c:borg_choose_shop:86-280` | §12 lists the dispatch before steps 1–7B |
+| O "Read by" completeness | `grep -l 'borg_cfg\[BORG_X\]' src/borg/*.c` for all 35 | §13 column now lists every reader file |
+| J §16 simulation rule; §17.2 grouping | — | §16.2 item 6 states the discipline and its violations; §17.2 splits reachable decision changes from latent/masked ones |
+| PROVENANCE present-tense label statement | — | rephrased as the state when filed |
+| Checker weaknesses | §1 above | scripts hardened; W4 documented as out of reach |
+
 ## Observations for the owner (findings not changed)
 
 The re-check bears on four of the findings that cite these programs. None
@@ -446,10 +510,12 @@ was edited; each needs the owner's decision.
   random-power ego "is scored as a plain ego" and that the second scan
   rescues the artifact. At the pin, for every ordinary candidate the
   `+20000` assignment overwrites both bonuses in both loops
-  (`teststuff_test.c` §2). The overwrite is real and larger than described;
-  the stated consequence and the "masked" reasoning do not hold. Loop 1 can
-  block loop 2 only via a cursed non-artifact in the weapon/bow slot
-  (`teststuff_test3.c`).
+  (`teststuff_test.c` §2), and an item that is both an artifact and an ego
+  does not arise in ordinary generation (`apply_magic()` returns after
+  `make_artifact()`). The overwrite is real and larger than described; the
+  stated scenario and the "masked" reasoning do not hold. Loop 1 changes
+  loop 2's choice only through a tie or a cursed non-artifact in the
+  weapon/bow slot (value 0) (`teststuff_test3.c`).
 * **#313 (blows).** The issue's headline example ("2 where the engine gives
   3") came from the program's off-by-one; the corrected program gives 1
   where the engine gives 2 for the same inputs. The divergence itself

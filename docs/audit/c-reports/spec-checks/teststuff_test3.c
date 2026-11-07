@@ -13,12 +13,14 @@
  * Result shown here:
  *   - for ordinary candidates (needs_ident=1, ident=0) the loop-1 score is
  *     value+20000 and the same item's loop-2 score is at least that, so
- *     loop 1 cannot make loop 2 pick a different item, except by winning a
- *     tie (`v <= b_v` keeps the earlier one);
+ *     loop 1 changes loop 2's choice only by winning a TIE: `v <= b_v`
+ *     keeps the loop-1 (equipment/quiver) item, while loop 2 alone, which
+ *     scans the pack first, would keep an equal-scoring pack item;
  *   - the exception is a cursed non-artifact random-power ego in the
  *     weapon or bow slot (ident forced true by borg_notice_equipment()):
- *     its loop-1 score is value+100000 and its loop-2 score is lower, so
- *     its loop-1 score can block a loop-2 candidate.
+ *     its loop-1 score is value+100000 (value is 0 for a cursed item,
+ *     borg-item-analyze.c:620-622) and its loop-2 score is lower, so its
+ *     loop-1 score can block a loop-2 candidate.
  */
 #include <stdio.h>
 
@@ -112,19 +114,27 @@ int main(void)
 	{
 		struct item it[] = {
 			{ "pack: unaware ring", 0, 100, 0, 0, 0, 1, 1, 0, K_RING },
-			{ "worn: artifact + random-power ego", 1, 5000, 1, 1, 0, 1, 1, 1, K_WEAPON },
+			{ "worn: artifact needing ID", 1, 5000, 1, 0, 0, 1, 1, 1, K_WEAPON },
 		};
 		run("=== A. ordinary candidates (BI_MAXDEPTH 10, free_id 0) ===", it, 2, 0, depth);
 	}
 	{
 		struct item it[] = {
 			{ "pack: unaware ring", 0, 100, 0, 0, 0, 1, 1, 0, K_RING },
-			{ "worn: CURSED random-power ego weapon", 1, 5000, 0, 1, 1, 1, 1, 1, K_WEAPON },
+			{ "worn: CURSED random-power ego weapon", 1, 0, 0, 1, 1, 1, 1, 1, K_WEAPON },
 		};
 		run("=== B. the exception: cursed non-artifact ego in the weapon slot ===", it, 2, 0, depth);
 	}
+	{
+		struct item it[] = {
+			{ "pack: plain wieldable item needing ID", 0, 100, 0, 0, 0, 1, 1, 1, K_WEAPON },
+			{ "worn: plain item needing ID, same value", 1, 100, 0, 0, 0, 1, 1, 1, K_WEAPON },
+		};
+		run("=== C. a tie between a pack item and a worn item ===", it, 2, 0, depth);
+	}
 	printf("In A loop 1 makes no difference.  In B the cursed weapon's loop-1\n");
-	printf("score (value+100000) blocks the unaware ring (value+20000+50000)\n");
-	printf("that loop 2 alone would have chosen.\n");
+	printf("score (0+100000) blocks the unaware ring (100+20000+50000) that\n");
+	printf("loop 2 alone would have chosen.  In C the scores tie at 20100 and\n");
+	printf("loop 1 keeps the worn item, where loop 2 alone keeps the pack item.\n");
 	return 0;
 }

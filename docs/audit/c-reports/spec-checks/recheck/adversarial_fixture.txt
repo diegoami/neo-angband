@@ -1,0 +1,44 @@
+Deliberately false material used to test check_spec.py and
+check_transcriptions.py (see RECHECK.md §1). Every statement below is wrong.
+
+W1 plain pseudocode identifier:
+
+```pseudocode
+fabricatedstrategy = 123
+```
+
+W2 allow-listed word used as a member: the real Borg status member is `borg.master`.
+
+W3 repository file presented as pinned source: the pinned game implements all combat in `teststuff_test.c`.
+
+W4 citation containment without meaning: `borg_flow_commit()` queues a movement key (`borg-flow.c:borg_flow_commit:585-608`).
+
+W5 indented header:
+
+ Transcribed from `borg-flow.c:borg_flow_commit:585-608`:
+
+```c
+bool borg_flow_commit(const char *who, int why)
+{
+    return true;
+}
+```
+
+W5b C block with no header at all:
+
+```c
+int made_up_function(void) { return 0; }
+```
+
+W6 omission without a marker:
+
+Transcribed from `borg-flow.c:borg_flow_commit:585-608`:
+
+```c
+bool borg_flow_commit(const char *who, int why)
+{
+    int cost;
+        return false;
+    return true;
+}
+```

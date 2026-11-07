@@ -39,8 +39,8 @@ All eight compile without warnings at `-O0 -Wall -Wextra`.
 | `surrounded_test.c` | #312 | a grid that satisfies the chain and the separate trap test is counted twice; the ordinary case is a monster on a known trap |
 | `blows_test.c` | #313 | weighing a home stack instead of one weapon lowers the blow count (1 where the engine gives 2, in the table's example) |
 | `recharge_test.c` | #316 | the last item with a timeout wins; the give-up path needs a synthetic input (a pack wand with a timeout) |
-| `teststuff_test.c` | #315 | the `+20000` assignment fires for every ordinary identify candidate, so the artifact and ego bonuses do not survive; the exception is a cursed non-artifact in the weapon or bow slot |
-| `teststuff_test3.c` | #315 | loop 1 can change loop 2's choice only through that exception |
+| `teststuff_test.c` | #315 | the `+20000` assignment fires for every ordinary identify candidate, so the artifact and ego bonuses do not survive; the exception is a cursed non-artifact in the weapon or bow slot (value 0, as `borg_item_analyze()` sets it); an artifact that is also an ego is marked `SYNTHETIC` (ordinary generation never makes one) |
+| `teststuff_test3.c` | #315 | loop 1 changes loop 2's choice only through a tie (the equipment item is kept) or through the cursed-slot exception |
 
 ### `glow_overflow_probe.c` and layouts
 
@@ -69,6 +69,10 @@ the pinned tree:
 * `teststuff_test.c`: `borg_item_note_needs_id()` and `borg_item_worth_id()`
   are transcribed, not taken as inputs, because their results follow from
   `ident`/`needs_ident`.
+
+[`recheck/`](recheck/) holds the scripts that re-check the specification
+(identifiers, citations, transcriptions) and `adversarial_fixture.txt`,
+deliberately false material used to test what those scripts catch.
 
 ## The runtime side
 

@@ -63,7 +63,7 @@ when checked and is not a property of this document; when upstream moves,
 the citations still hold *at the pin*, and re-reading them at a newer head
 is a separate piece of work. The pin is also this session's recorded C
 baseline (the C entry of the baselines in `session.json`) and the
-catalogue's C source pin (`commit` under `sources` → `c` in
+catalogue's C source pin (the commit under sources → c in
 `docs/c-bugs/catalogue.json`), and the local
 `c-borg-reference` branch carries it unmodified:
 
@@ -97,8 +97,10 @@ rungs are scoring functions over the possibilities it can perceive.
 
 ### 1.1 The mechanism: two input channels, one output
 
-The Borg's **output** is a queue of keystrokes (§2.6). It takes no game
-action by any other route. (It does change some game *settings* — §1.2.)
+The Borg's **output** is a queue of keystrokes (§2.6). Every ordinary game
+action goes through it. There is one exception, the cheat-death path, which
+calls a game function directly (§1.2); the Borg also changes game *settings*
+directly (§1.2).
 
 Its **input** comes through two channels, and a rebuild needs both.
 
@@ -133,9 +135,10 @@ cheat bolted on; it is how most perception works. On every call of
   (`borg-magic.c:borg_cheat_spells:677-718`).
 * **the map panel.** `borg_update_map()` calls the game's own `map_info()`
   for every grid of the visible panel. `map_info()` returns what the game
-  would draw there: the feature from the *player's* memory
-  (`player->cave`), whether the grid is in view, and a monster or object
-  only if the player can see it. The Borg also asks `cave` directly
+  would draw there: the feature and the remembered objects from the
+  *player's* memory (`player->cave`, so an object stays listed after it
+  goes out of view), whether the grid is in view, and a monster only if the
+  player can currently see it (`src/cave-map.c`). The Borg also asks `cave` directly
   whether a panel grid holds a visible trap, which shop it is, whether it
   is webbed, and it reads a visible monster's display attribute and
   mimic state through `cave_monster()`
@@ -147,6 +150,16 @@ cheat bolted on; it is how most perception works. On every call of
   the game's monster index. The source says so itself: "this is a cheat.
   Borg does not look at the bar at the bottom"
   (`borg-flow-kill.c:borg_update_kill_old:243-330`).
+* **identities of what it sees.** When a new monster sighting is matched,
+  `borg_guess_race()` returns the real race of the monster on that grid
+  (`square_monster(cave, …)->race->ridx`, with the comment "this is an real
+  cheat"; `borg-flow-kill.c:borg_guess_race:892-907`). For a new floor
+  object, `borg_guess_kind()` returns the real kind of the top unignored
+  object on the grid, from `cave` rather than the player's memory
+  (`borg-flow-take.c:borg_guess_kind:72-84`, through
+  `borg-flow-take.c:borg_get_top_object:50-64`). Opening chests reads the
+  real chest's `pval` (trap level) in `borg_play_step()`. The screen
+  symbol is not how the Borg identifies anything.
 * **race and kind data.** Danger and attack scoring use the full monster
   race record `r_info[]` (blows, spells, flags), not the player's lore,
   and items use `k_info[]`/`e_info[]`.
@@ -156,10 +169,14 @@ cheat bolted on; it is how most perception works. On every call of
   `square_in_bounds_fully()` (flow and neighbour scans), `square_shopnum()`
   (stores), and `cave->width`/`cave->height` (panel arithmetic).
 
-What the Borg does **not** do: it does not read the player's map memory
-outside the current panel (it remembers what earlier panels showed), it
-does not see monsters the player cannot see, and it does not scan the
-level's monster or object lists for things it has not observed.
+What the Borg does **not** do, as far as this reading of the source found:
+it does not read the player's map memory outside the current panel (it
+remembers what earlier panels showed), it does not learn of monsters the
+player cannot see (a tracked monster starts from a grid where `map_info()`
+reported a visible monster, or from a monster named in a message), and it does not scan the level's
+monster or object lists for things it has not observed. The reads above go
+beyond what the screen shows *about* an observed thing — its exact race,
+kind, hit points and timers — but not beyond *which* things are observed.
 
 The upstream comment that explains the design is in
 `borg-think.c:borg_think:179-256` (the comment block above it): the
@@ -184,9 +201,13 @@ inventory off the screen is a different, slower program.
   `borg_cheat_death`) and when it respawns, marks
   the character `NOSCORE_BORG`, and on the "Die?" prompt with
   `borg_cheat_death` set it calls `do_cmd_wiz_cure_all()` directly
-  (`borg-messages-react.c:borg_react_prompted:105-139`). These are
-  setting changes, not game actions, but a rebuild must reproduce the
-  option set or the screen it reads will look different.
+  (`borg-messages-react.c:borg_react_prompted:105-139`). The option and
+  score changes are settings; a rebuild must reproduce the option set or
+  the screen it reads will look different. **The cure-all is not a
+  setting: it is a game action** (it heals hit points and mana, restores
+  stats and experience, removes curses and clears conditions) taken outside
+  the keyboard. It is the one exception to the keystroke-only rule, and it
+  happens only on the cheat-death path.
 * **It does not run on a timer.** It runs when the game asks for a key.
 
 ---
@@ -284,7 +305,7 @@ track BI_MAXCLEVEL / BI_MAXDEPTH
 borg.time.now++ ; overflow check (§2.4)
 borg.antibounce_count++          (§2.5)
 borg.status.cancel?              return true
-return borg_think_dungeon()      the decision ladder (§2.8)
+return borg_think_dungeon()      the decision ladder: §2.8
 ```
 
 `generate_keypress()` calls it as `while (!borg_think());`.
@@ -397,6 +418,7 @@ self-lunal mode: borg_think_dungeon_lunal()         (§13.1)
 munchkin start mode: borg_think_dungeon_munchkin()  (§13.1)
 "get back on correct depth": borg_prepared() fails -> goal.less, take '<'
 borg_think_dungeon_light()                          (§10.7)
+borg.no_retreat countdown; borg.times_twitch > 20 -> borg.goal.fleeing = true
 borg_flow_old(GOAL_DIGGING)                         continue an anti-summon corridor
 borg_caution()                                      caution and escape (§9)
 no light / cut / poisoned / starving: light, wear, borg_recover(), drop, shop
@@ -438,14 +460,28 @@ money scum, else borg_leave_level(true)
 detections, borg_flow_spastic(true), borg_flow_kill_direct(false)
 recalling and safe: rest 'R' '9' KC_ENTER
                                                     --- nothing worked: "bizarre" level ---
-boost bravery (1): avoidance = 2 * BI_CURHP, borg_think_dungeon_brave()
-twitchy phase (while borg.times_twitch < 3): PHASE_DOOR, act_tele_phase, TELEPORT_SELF, PORTAL, borg_shadow_shift()
+borg.no_retreat = 5; boost bravery (1): avoidance = 2 * BI_CURHP, borg_think_dungeon_brave()
+borg.times_twitch++; if < 3 and borg_allow_teleport(): phase -- PHASE_DOOR, act_tele_phase,
+    sv_scroll_phase_door, borg_dimension_door(90), TELEPORT_SELF, PORTAL, borg_shadow_shift(90)
+borg.no_retreat = 10
 boost bravery (2): avoidance = 4 * BI_MAXHP, borg_think_dungeon_brave()
 boost bravery (3): avoidance = 30000, forget stairs/glyphs/tracks/objects, borg_think_dungeon_brave()
-twitchy teleport (while borg.times_twitch < 5), then borg_recall()
+borg.times_twitch++; if < 5 and borg_allow_teleport(): teleport -- borg_dimension_door(90), TELEPORT_SELF,
+    PORTAL, borg_shadow_shift(90), sv_staff_teleportation, sv_scroll_teleport, sv_scroll_teleport_level,
+    act_tele_level
+in the dungeon: borg_recall()
 forget objects and monsters; borg_flow_kill_direct(true); borg_twitchy()
 return false
 ```
+
+`borg.times_twitch` is reset on a level change (`borg-update.c`) and by
+some escapes (`borg-escape.c`). It is incremented twice on every pass that
+reaches the bottom of the ladder — once before the phase rung and once
+before the teleport rung; a pass that falls through both adds two. With
+the thresholds `< 3` and `< 5`, that allows one phase attempt per level (two
+if the first phase succeeded and returned before the second increment) and
+two teleport attempts; at more than 20 the early rung sets
+`borg.goal.fleeing`.
 
 `borg.avoidance` is the danger level the flow treats as impassable (§6.5).
 The three "boosted bravery" passes raise it, re-run a reduced ladder
@@ -567,6 +603,7 @@ struct borg_kill {
     bool         awake; /* Probably awake */
     ...
     struct loc   pos; /* Location */
+    ...
     uint8_t      speed; /* Estimated speed */
     uint8_t      moves; /* Estimates moves */
     ...
@@ -650,8 +687,11 @@ Monsters are *tracked*: a sighting or a message is matched to a slot by
 `borg_locate_kill()` (which uses the remembered race and position), the
 slot is moved when the monster is seen to move, and its condition is
 refreshed from the real monster by `borg_update_kill_old()` (§1.1). The
-race comes from the screen symbol and attribute, from message names, and
-from `r_info[]`. Monster names beginning with "It" are treated as
+race of a new slot comes from the real monster on the grid for a screen
+sighting (`borg_guess_race()`, §1.1), or from the name in the message
+(`borg_guess_race_name()`) for a message; the screen symbol and attribute
+are what `observe_kill_diff()` and `observe_kill_move()` use to match
+sightings to existing slots. Monster names beginning with "It" are treated as
 invisible-monster messages (`my_strnicmp(who, "It", 2) == 0` in
 `borg-flow-kill.c:borg_locate_kill:1286-1292`).
 
@@ -819,10 +859,18 @@ string for no ("Clevel < depth", "1 recall", "resist fire", "Must kill
 3. A king may go anywhere; from town the answer stands.
 4. From depth 82 down it requires a stock of *Healing*/Life potions,
    counting those in the home (`borg_notice_home()`).
-5. With `borg_kills_uniques` set and fewer than 98 levels dived, it refuses
-   to go below the depth of the shallowest living unique once three or
-   more are alive; at 98–99 it refuses depth 100 until only Morgoth is
-   left, and sets `borg.ready_morgoth`.
+5. Two unique gates, by `BI_MAXDEPTH` (`borg-prepared.c:borg_prepared:626-685`):
+   * **`BI_MAXDEPTH <= 98`:** only with `borg_kills_uniques` set, and only
+     while three or more uniques are alive, it refuses depths deeper than
+     `borg_depth_hunted_unique` ("Must kill …").
+   * **`BI_MAXDEPTH >= 99` and requested depth `>= 98`:** regardless of
+     `borg_kills_uniques`, it sets `borg.ready_morgoth = -1` and refuses
+     ("… still alive!") unless no unique is alive or the first living one
+     is Morgoth — in which case it allows the depth and, for depth 99 or
+     more, sets `borg.ready_morgoth = 1`. One exception: with
+     `BI_MAXDEPTH == 99`, depth 98 is allowed if the Borg can cast Teleport
+     Level (fail ≤ 20) or carries a Teleport Level scroll.
+   * Otherwise (`BI_MAXDEPTH >= 99`, depth below 98) the answer is yes.
 
 `borg_prepared_aux()` is cumulative by depth band: each band adds
 requirements (light, food, fuel, hit points and level by class, cures,
@@ -880,12 +928,19 @@ extern bool borg_flow_commit(const char *who, int why);
 extern bool borg_flow_old(int why);
 ```
 
-Every goal builder uses the same five steps:
+The standard goal builder uses five steps. Two exploration builders,
+`borg_flow_dark_1()` and `borg_flow_dark_2()`, replace steps 2–3 with the
+static `borg_flow_direct()`, which writes a straight-line path from the
+Borg to one target into the cost array (checking walls and danger along
+it), then commit and step as usual (`borg-flow-dark.c`).
 
 1. **`borg_flow_clear()`** — copy `borg_data_hard` into `borg_data_cost`
    (every grid unreached), reset the queue, and, if `borg_danger_wipe` is
    set, also wipe the know/icky caches
-   (`borg-flow.c:borg_flow_clear:166-186`).
+   (`borg-flow.c:borg_flow_clear:166-186`). **The caches otherwise survive
+   from flood to flood and from turn to turn**; `borg_danger_wipe` is set
+   when `borg.avoidance` changes (including each bravery pass, §2.8), on a
+   level change, and by some kill and exploration flows.
 2. **`borg_flow_enqueue_grid(y, x)`** for each goal grid. It evaluates the
    grid's danger once (caching in know/icky), refuses a grid whose danger
    exceeds the current fear threshold (unless desperate, lunal, munchkin or
@@ -959,7 +1014,7 @@ step down the committed flow, and only rebuilds a flood when that fails.
 | `GOAL_MISC` | 3 | reach a shop entrance or a glyph spot | `borg_flow_shop_entry()` (`borg-flow-misc.c`), `borg_flow_glyph()` (`borg-flow-glyph.c`) |
 | `GOAL_DARK` | 4 | explore | `borg_flow_dark()` and its five static helpers (`borg-flow-dark.c`) |
 | `GOAL_XTRA` | 5 | wander/search | `borg_flow_spastic()` (`borg-flow-misc.c`) |
-| `GOAL_BORE` | 6 | take a down stair to dive | `borg_flow_stair_more(GOAL_BORE, …)` from the ladder (`borg-flow-stairs.c`) |
+| `GOAL_BORE` | 6 | leave by a stair without fleeing: dive down, or (bored, or as part of leaving) go up | `borg_flow_stair_more(GOAL_BORE, …)` from the ladder and from `borg_leave_level()`; `borg_flow_stair_less(GOAL_BORE, …)` from `borg_leave_level()` (`borg-flow-stairs.c`, `borg-think-dungeon-util.c`) |
 | `GOAL_FLEE` | 7 | leave the level by any route | `borg_flow_stair_less/more/both(GOAL_FLEE, …)` (`borg-flow-stairs.c`) and `borg_flow_light(GOAL_FLEE)` |
 | `GOAL_VAULT` | 8 | reach a diggable vault wall | `borg_flow_vault()` (`borg-flow-misc.c`) |
 | `GOAL_RECOVER` | 9 | reach a safe grid to rest | `borg_flow_recover()` (`borg-flow-misc.c`) |
@@ -986,13 +1041,27 @@ straight after committing, so they step in the same think.
 
 ### 6.5 Danger-aware flowing
 
-Whether a grid may be entered is decided once per flood by comparing
-`borg_danger(y, x, 1, true, false)` with a **fear threshold** derived from
-`borg.avoidance`: 3/10 of it normally, 5/10 at level 50, twice it with a
-scary monster on the level, five times when ignoring monsters, 25 times
-after 5000 Borg turns on the level, 100 times when starving
+Whether a grid may be entered is decided the first time the grid is
+evaluated after the last cache wipe (§6.2 step 1) — not once per flood — by
+comparing `borg_danger(y, x, 1, true, false)` with a **fear threshold**
+derived from `borg.avoidance`. The threshold is a sequence of assignments,
+so a later one overrides an earlier one
 (`borg-flow.c:borg_flow_spread:442-474`, repeated in
-`borg-flow.c:borg_flow_enqueue_grid:523-555`). Raising `borg.avoidance`
+`borg-flow.c:borg_flow_enqueue_grid:523-555`):
+
+```pseudocode
+if BI_MAXCLEVEL == 50:                     fear = avoidance * 5 / 10
+if BI_MAXCLEVEL != 50:                     fear = avoidance * 3 / 10
+if borg.mon.scary:                         fear = avoidance * 2
+if borg.mon.unique and borg.status.vault and BI_MAXCLEVEL == 50:  fear = avoidance * 3
+if borg.mon.scary and BI_CLEVEL <= 5:      fear = avoidance * 3
+if borg.goal.ignoring:                     fear = avoidance * 5
+if borg_timer(borg.time.level) > 5000:     fear = avoidance * 25
+if BI_FOOD == 0:                           fear = avoidance * 100
+if BI_CLEVEL == 0:                         fear = avoidance * 3 / 10
+too dangerous if danger > fear   (not evaluated when desperate, lunal, munchkin or digging)
+```
+ Raising `borg.avoidance`
 (the bravery boosts of §2.8) therefore opens routes the Borg would
 otherwise refuse.
 
@@ -1009,7 +1078,7 @@ From call-site grep at the pin (all callers listed; pseudocode notation):
 
 ```pseudocode
 borg_attack(bool boosted_bravery)          borg-fight-attack.c:borg_attack:5149-5320
-  <- borg_think_dungeon()          borg_attack(false)  routine combat rung (§2.8)
+  <- borg_think_dungeon()          borg_attack(false)  routine combat rung, §2.8
   <- borg_think_dungeon_brave()    borg_attack(true)   bravery-boost passes
   <- borg_think_dungeon_munchkin() borg_attack(false)
 
@@ -1143,34 +1212,58 @@ can reach the grid. Monsters listed in the Teleport Other skip list
 
 `borg_caution()` (`borg-caution.c:borg_caution:799-2034`) runs on the
 ladder after the light and digging rungs and before every routine goal
-(§2.8). It is a long chain of "if the situation is X, do Y" checks. In
-order, broadly:
+(§2.8). It is a long chain of "if the situation is X, do Y" checks; most
+steps either queue keys and return true, or set a goal flag and fall
+through. In source order:
 
-1. **Level-scope decisions.** Not ready for Morgoth at depth 99/100: rise
-   or leave. Too many escapes this level, a scary unique on the level,
-   restock needs (`borg_restock()`), excessive or potential danger,
-   breeders, needing fuel or food: set `borg.goal.leaving` /
-   `borg.goal.fleeing` (and sometimes `fleeing_to_town`).
-2. **Protection notes.** Glyph, Protection from Evil, anti-summon corridor,
-   standing on a stair.
-3. **Defend and heal.** If not already fleeing: `borg_defend(pos_danger)`
-   and the static `borg_heal(pos_danger)` — mages defend first, others heal
-   first (`borg-caution.c:borg_caution:1001-1022`).
-4. **Swap.** With `borg_uses_swaps()` and danger above a third of
+1. **Nasty conditions** are noted for later steps: light about to run out,
+   weak from hunger, blind, confused, hallucinating.
+2. **Depth 100, not ready for Morgoth:** rise by Teleport Level, or set
+   leaving and head for an up stair.
+3. **Local danger.** `borg_surrounded()` is evaluated (used by step 12).
+   More than three escapes on this level (unless a unique is near or the
+   Borg is ready for Morgoth), or a scary monster on the level: set
+   `borg.goal.leaving` / `borg.goal.fleeing` (the scary case can also set
+   `fleeing_to_town`).
+4. **Notes only:** ignoring monsters, ignoring messages, the danger summary,
+   active protections, standing on a glyph or stair.
+5. **Defend and heal**, only if not already fleeing
+   (`borg-caution.c:borg_caution:1001-1022`). A mage that is not in a Morgoth
+   position or an anti-summon corridor and is not blind, cut, poisoned or
+   confused tries `borg_defend(pos_danger)` first and then the static
+   `borg_heal(pos_danger)`; every other case heals first, then defends.
+6. **Swap.** With `borg_uses_swaps()` and danger above a third of
    `borg.avoidance`, `borg_backup_swap(pos_danger)`
    (`borg-caution.c:borg_caution:1025-1031`).
-5. **Waiting for recall**, leaving via stairs, eating, restoring mana.
-6. **Flee on foot.** Desperate dashes to nearby stairs
-   (`borg_flow_stair_less()`/`borg_flow_stair_more()` with `GOAL_FLEE`).
-7. **Strategic retreat.** Step to a less dangerous neighbour when danger
-   exceeds a third of `borg.avoidance` or the Borg may be surrounded
-   (`borg_surrounded()`), unless confused, in a vault, or recently in an
-   anti-summon spot.
-8. **Escape.** `borg_escape(pos_danger)` — teleport or phase; counts
-   `borg.escapes` and clears the goal
-   (`borg-caution.c:borg_caution:1653-1663`).
-9. **Back away** from a single adjacent monster.
-10. **Cures** for confusion, fear, low hit points, bleeding and poison, the
+7. **Waiting for recall:** rest if safe; in town, prepare the spells for the
+   next level.
+8. **Restock and danger flags:** not stocked to stay (`borg_restock()`,
+   unless near a unique or just out of town), excessive danger, or potential
+   danger in town: set leaving and/or fleeing.
+9. **Take a stair now** if leaving, fleeing, a scary monster is on the
+   level, or in lunal/munchkin flight — or if danger is high and the Borg is
+   standing on an up stair; also take the stair named by `borg.stair_less`
+   / `borg.stair_more`.
+10. **Critical needs:** no light (leave), weak from hunger (eat, cure or
+    leave), breeders at a low character level (flee).
+11. **Flee on foot.** Dash for a nearby stair with `borg.status.desperate`
+    set for that one flood (`borg_flow_stair_less()` /
+    `borg_flow_stair_more()` with `GOAL_FLEE`), in this order: an up stair
+    under three steps away when `pos_danger < BI_CURHP`; an up stair at most
+    two steps away regardless; an up stair under twenty steps away when a
+    scary monster is on the level, the character level is below 20, no
+    adjacent monster is faster, and it is not a shallow level (≤ 5) with a
+    unique near; a down stair at most two steps away
+    (`borg-caution.c:borg_caution:1338-1418`).
+12. **Strategic retreat.** Step to a less dangerous neighbour when danger
+    exceeds a third of `borg.avoidance` (unless nasty or `borg.no_retreat`)
+    or the Borg may be surrounded — unless confused, in a vault, at 500 or
+    more hit points, or recently in an anti-summon spot.
+13. **Escape.** `borg_escape(pos_danger)` — teleport or phase; counts
+    `borg.escapes` and clears the goal
+    (`borg-caution.c:borg_caution:1653-1663`).
+14. **Back away** from a single adjacent monster.
+15. **Cures** for confusion, fear, low hit points, bleeding and poison, the
     reserve *Healing*, and `borg_recall()` when fleeing; buying time while
     recall is active; finally trying unknown items.
 
@@ -1312,13 +1405,15 @@ general: a copy of an engine calculation must copy its semantics.
   (`borg-magic.c:borg_spell:596-630`).
 * **Learning and practice.** `borg_play_magic(bored)` studies the
   best-rated learnable spell when the character can study (`'G'`, the
-  book, the spell for choosing classes), and otherwise, in town or
-  munchkin mode or when bored, casts untried spells to learn their
-  effects; some spells are never "played" (`borg_can_play_spell()` in
+  book, the spell for choosing classes). Otherwise it casts untried spells
+  to learn their effects only when **both** hold: it is in town or in
+  munchkin mode, **and** `bored` is true
+  (`borg-magic-play.c:borg_play_magic:165-170`); some spells are never "played" (`borg_can_play_spell()` in
   `borg-magic-play.c`).
 * **Books as kit.** Books are scored in `borg_power_inventory()`, never
   crushed (`borg_drop_junk()` skips browsable kinds), bought by the store
-  logic, and dungeon books justify self-scumming (§13.1).
+  logic, and a missing dungeon book is one of the purchases that can set a
+  money-scum target under `borg_self_scum` (§13.1).
 
 ### 10.7 Light and fuel
 
@@ -1335,20 +1430,30 @@ general: a copy of an engine calculation must copy its semantics.
   timers (§4.5), and `borg_light_beam()` lights a corridor with the Light
   Beam spell.
 * Light is also a precondition elsewhere: no spells without light, no
-  spell practice without `BI_LIGHT`, and `borg_prepared_aux()` requires
-  light and fuel for every depth.
+  spell practice without `BI_LIGHT`. In the depth checks, depth 1 is
+  always allowed by `borg_prepared()`; for deeper levels
+  `borg_prepared_aux()` requires some light (`BI_LIGHT >= 1`), and asks for
+  five fuel only when `BI_LIGHT` is 0 — a condition the light check before
+  it has already excluded.
 
 ### 10.8 Junk and crushing
 
 * `borg_drop_junk()` (`borg-junk.c`) runs only when
   `borg_do_crush_junk` was set by a new pack read, not while recalling, and
   only when danger is at most a tenth of `BI_CURHP`. For each pack item
-  that is not a swap item, a spellbook, an unaware scroll and so on, it
-  compares `borg_power()` with and without the item, and its value; an
-  item whose loss does not reduce power and that is not worth selling is
-  marked by inscribing `"borg ignore"` and ignored (`'k'`), which destroys
-  it.
-* `borg_destroy_floor()` ignores an ignorable item under the Borg.
+  that survives the exclusions (swap items, spellbooks, unaware scrolls,
+  items whose value is above a per-depth limit, items still needing ID, and
+  others), it removes one of the item (`iqty -= 1`), re-notices and scores
+  `borg_power()`, and restores. The candidate whose removal gives the
+  highest power **strictly above** the current power (`p > b_p`) is junk. It
+  is inscribed `"borg ignore"` (`'{'`, item, text, Enter) and one of it is
+  dropped (`'d'`, item, a count of 1 for a stack).
+* `borg_destroy_floor()`, at the top of the ladder, then acts on a floor
+  object the take list marks as junk (`value == -10`: inscribed
+  `"borg ignore"`, or fully known with a negative bonus) by queuing the
+  game's ignore command (`'k'`, `'-'`, `'a'`, `'a'`). Ignoring hides the
+  object through the game's ignore settings; it is not an immediate
+  deletion.
 * `borg_drop_hole()` frees a slot when the pack is full (two passes, the
   second allowing unidentified items).
 * `borg_drop_slow()` drops weight when slowed by it, valuing a tenth of a
@@ -1430,7 +1535,9 @@ A branch that cannot be taken is harmful when it is the one that was
   forced true by `borg_notice_equipment()` (§11.6). So for ordinary
   candidates the last assignment always wins and the artifact and ego
   bonuses never survive; the same holds for the artifact bonus in the
-  second loop.
+  second loop. (An item that is both an artifact and an ego does not arise
+  in ordinary generation: `apply_magic()` in `src/obj-make.c` returns once
+  `make_artifact()` succeeds, before any ego is rolled.)
 * `borg_spell_stat()` tests `spell != NULL` where `spell` is the address
   of an array element (`borg-magic.c:borg_spell_stat:239-249`).
 * `if (randint1(100) < 1)` in `borg-flow-kill.c` is never true.
@@ -1559,8 +1666,8 @@ build the overflowing `borg_glow_y[]` writes land in the head of
 loop enqueues grids with correct `y` and wrong `x` near the start of the
 list. Other builds will differ. The exact `nm` output, the disassembly
 evidence and a simulation of that layout are in
-`docs/audit/c-reports/spec-checks/` (`glow_overflow_probe.c`,
-`RECHECK.md`); this specification relies only on the overflow.
+`docs/audit/c-reports/spec-checks/glow_overflow_probe.c` and
+`docs/audit/c-reports/spec-checks/RECHECK.md`; this specification relies only on the overflow.
 
 **What to do differently:** size an array that holds per-screen data from
 the screen, or bound the write.
@@ -1621,7 +1728,13 @@ A score left by the first loop is a floor for the second: the second loop's
 "unaware item" bonus (by item type and `BI_MAXDEPTH`) is in competition
 with first-loop scores computed by different rules. Combined with §11.3,
 the first loop's scores at the pin are `value + 20000` for ordinary
-candidates.
+candidates, and each of them is scored again by the second loop at least as
+high, so the shared floor changes the second loop's choice only in two
+cases: a **tie** (`v <= b_v` keeps the equipment or quiver item from the
+first loop, where the second loop alone, scanning the pack first, would
+keep an equal pack item), and the cursed-slot exception of §11.3, whose
+first-loop score (`0 + 100000`, since a cursed item's value is 0) can
+exceed a pack candidate the second loop would have chosen.
 
 **What to do differently:** a scan that keeps a best candidate should own
 its running best, or both scans should use one scoring rule.
@@ -1660,17 +1773,44 @@ explicitly, and reject an unusable candidate when it is found.
   out, then — if `borg_choose_shop()` still wants something — sells
   (`borg_think_shop_sell()`) or buys (`borg_think_shop_buy()`) one thing,
   and otherwise leaves with four `ESCAPE`s. One transaction per think.
-* **Choosing a transaction.** `borg_choose_shop()` walks a fixed list of
-  steps: sell to the home what is useful later, sell useless items to the
-  shops, buy useful items, take useful items from the home, take items
-  from the home to sell, buy interesting items for the home, and buy
-  backup weapons/armour from the home when swaps are enabled. Each step
-  simulates the transaction and compares `borg_power()` (for the Borg) or
-  the home's own power (`borg_power_home()`, from `borg-home-power.c`).
-* **Money scumming.** With `borg_money_scum_amount` set and below the
-  target, the town ladder rung `borg_money_scum()` and the store logic buy
-  and sell for gold, and `check_for_deactivate_or_death()` stops the Borg
-  once the target is reached (unless `borg_self_scum`).
+* **Choosing a transaction.** `borg_choose_shop()`
+  (`borg-think-store.c:borg_choose_shop:86-280`) decides in this order:
+  1. Only in town, not after 2000 Borg turns on the level, not with the
+     anti-bounce counter above 1350.
+  2. An existing transaction goal (`borg.goal.shop` and `borg.goal.ware`
+     both set) stands.
+  3. **Emergencies** set the shop: cut or poisoned → the temple (shop 3);
+     no food, or no light at level 2+ → the general store (0); only a
+     torch-level light and 100 gold → the general store. With no light, no
+     food, a cut or poison (or the torch case below level 10) it buys at
+     once, without visiting the other shops: `borg_think_shop_buy_useful()`,
+     then `borg_think_home_buy_useful()`.
+  4. Otherwise the goals are cleared; if `borg.goal.do_best` is set and
+     neither the home nor the pack is full, go home (the best-kit search,
+     §10.4).
+  5. **Step 0**, money scumming for the player (target set, below it, in
+     town, with light, and **not** `borg_self_scum`): only buy useful items
+     from the shops, and nothing else.
+  6. **Steps 1–5:** sell to the home what is useful later; sell useless
+     items to the shops; buy useful items from the shops; buy useful items
+     from the home; take items from the home to sell.
+  7. If any money-scum target is set, stop here.
+  8. **Steps 6–7B:** buy interesting items for the home; buy backup
+     weapons, then armour, from the home when swaps are enabled.
+
+  Each step simulates the transaction and compares `borg_power()` (for the
+  Borg) or the home's own power (`borg_power_home()`, from
+  `borg-home-power.c`).
+* **Money scumming.** While a target (`borg_money_scum_amount`) is set and
+  the Borg is in town with light and below it, the ladder calls
+  `borg_money_scum()` instead of leaving the level: it rests in town,
+  "waiting for towns people to breed", and the ordinary combat rungs kill
+  them for their gold, and the store logic
+  restricts itself as in steps 5 and 7. The target is either configured, or
+  set by the buy logic under `borg_self_scum` (§13.1) and cleared to 0 when
+  the wanted item is bought. `check_for_deactivate_or_death()` stops the
+  Borg when gold is **greater than** the target at depth 0 and
+  `borg_self_scum` is **off** (`borg.c:check_for_deactivate_or_death:190-199`).
 
 ---
 
@@ -1679,40 +1819,43 @@ explicitly, and reject an unusable candidate when it is found.
 `borg_init_txt_file()` (`borg-init.c`) reads `borg.txt`. The 35 settings
 are the `BORG_*` enum in `borg.h` (before `BORG_MAX_SETTINGS`), in the same
 order as the `borg_settings[]` table in `borg-init.c`, whose defaults are
-below. The "Read by" column lists where the value is used at the pin.
+below. The "Read by" column lists **every** file that reads the setting
+(`grep -l 'borg_cfg\[BORG_…\]' src/borg/*.c` at the pin), including
+logging (`borg-log.c`) and start-up checks and clamps (`borg-init.c`); the
+"Effect" column describes the decision readers.
 
 | Setting | Type | Default | Effect | Read by |
 | --- | --- | --- | --- | --- |
-| `borg_verbose` | bool | false | verbose notes | many |
-| `borg_munchkin_start` | bool | false | munchkin mode while `BI_MAXCLEVEL < 12` (§13.1); munchkin power weights | `borg-think-dungeon.c`, `borg-power.c`, `borg-trait.c`, `borg-flow-take.c` |
-| `borg_munchkin_level` | int | 12 | level used by the munchkin power weights (clamped 1–50) | `borg-power.c`, `borg-trait.c` |
-| `borg_munchkin_depth` | int | 16 | depth limit in munchkin mode | `borg-think-dungeon.c` |
-| `borg_worships_damage` | bool | false | §5.2 | `borg-power.c` |
-| `borg_worships_speed` | bool | false | §5.2 | `borg-power.c` |
-| `borg_worships_hp` | bool | false | §5.2 | `borg-power.c` |
-| `borg_worships_mana` | bool | false | §5.2 | `borg-power.c` |
-| `borg_worships_ac` | bool | false | §5.2 | `borg-power.c` |
-| `borg_worships_gold` | bool | false | keep sellable items, dive later | `borg-junk.c`, `borg-think-dungeon-util.c` |
-| `borg_plays_risky` | bool | false | looser depth requirements; no self-lunal; no money scumming | `borg-prepared.c`, `borg-think-dungeon.c`, `borg-caution.c`, `borg-escape.c`, `borg-think-dungeon-util.c` |
+| `borg_verbose` | bool | false | verbose notes | `borg-flow-kill.c`, `borg-flow-take.c`, `borg-io.c`, `borg-item-wear.c`, `borg-messages-react.c`, `borg-messages.c`, `borg-store-buy.c` |
+| `borg_munchkin_start` | bool | false | munchkin mode while `BI_MAXCLEVEL < 12` (§13.1); munchkin power weights | `borg-flow-take.c`, `borg-power.c`, `borg-think-dungeon.c`, `borg-trait.c` |
+| `borg_munchkin_level` | int | 12 | level used by the munchkin power weights (clamped 1–50) | `borg-init.c`, `borg-power.c`, `borg-trait.c` |
+| `borg_munchkin_depth` | int | 16 | depth limit in munchkin mode | `borg-init.c`, `borg-think-dungeon.c` |
+| `borg_worships_damage` | bool | false | §5.2 | `borg-log.c`, `borg-power.c` |
+| `borg_worships_speed` | bool | false | §5.2 | `borg-log.c`, `borg-power.c` |
+| `borg_worships_hp` | bool | false | §5.2 | `borg-log.c`, `borg-power.c` |
+| `borg_worships_mana` | bool | false | §5.2 | `borg-log.c`, `borg-power.c` |
+| `borg_worships_ac` | bool | false | §5.2 | `borg-log.c`, `borg-power.c` |
+| `borg_worships_gold` | bool | false | keep and sell more items for gold (junk and shop-sell rules), dive later | `borg-junk.c`, `borg-log.c`, `borg-store-sell.c`, `borg-think-dungeon-util.c` |
+| `borg_plays_risky` | bool | false | looser depth requirements; no self-lunal; no money-scum rest; less likely to heal mid-fight (`borg_heal()` chance +5) and more likely to stay in a fight (`borg_escape()` risk boost 3) | `borg-caution.c`, `borg-escape.c`, `borg-log.c`, `borg-prepared.c`, `borg-think-dungeon-util.c`, `borg-think-dungeon.c` |
 | `borg_kills_uniques` | bool | false | do not dive past living uniques (§5.5) | `borg-prepared.c` |
-| `borg_uses_swaps` | bool | **true** | backup weapon/armour swaps | `borg-trait.c` (`borg_uses_swaps()`) |
-| `borg_uses_dynamic_calcs` | bool | false | formula sections (§5.3) | `borg-power.c`, `borg-prepared.c`, `borg-formulas.c` |
+| `borg_uses_swaps` | bool | **true** | backup weapon/armour swaps | `borg-log.c`, `borg-trait.c` |
+| `borg_uses_dynamic_calcs` | bool | false | formula sections (§5.3) | `borg-formulas.c`, `borg-init.c`, `borg-power.c`, `borg-prepared.c` |
 | `borg_stop_dlevel` | int | 128 | stop on reaching this depth | `borg.c` |
 | `borg_stop_clevel` | int | 51 | stop on reaching this level | `borg.c` |
 | `borg_no_deeper` | int | 127 | never prepared for this depth or deeper | `borg-prepared.c`, `borg-think-dungeon-util.c` |
-| `borg_stop_king` | bool | **true** | stop after winning | `borg.c` |
+| `borg_stop_king` | bool | **true** | stop after winning | `borg-init.c`, `borg.c` |
 | `borg_cheat_death` | bool | false | turn on the game's `cheat_live` at start; on "Die?", cure and continue instead of respawning | `borg-init.c`, `borg-messages-react.c` |
-| `borg_respawn_winners` | bool | false | respawn after winning | `borg.c` |
-| `borg_respawn_class` | int | -1 | class of a respawned character; −1 = random | `borg-reincarnate.c` |
-| `borg_respawn_race` | int | -1 | race of a respawned character; −1 = random | `borg-reincarnate.c` |
+| `borg_respawn_winners` | bool | false | respawn after winning | `borg-init.c`, `borg.c` |
+| `borg_respawn_class` | int | -1 | class of a respawned character; −1 = random | `borg-init.c`, `borg-reincarnate.c` |
+| `borg_respawn_race` | int | -1 | race of a respawned character; −1 = random | `borg-init.c`, `borg-reincarnate.c` |
 | `borg_chest_fail_tolerance` | int | 7 | chest disarm failure tolerance | `borg-flow.c` |
 | `borg_delay_factor` | int | 0 | extra delay per action | `borg-think-dungeon.c` |
-| `borg_money_scum_amount` | int | 0 | money-scum target; 0 = off | many |
-| `borg_self_scum` | bool | **true** | let the Borg stair-scum for items it wants to buy, and keep scumming for itself | `borg-store-buy.c`, `borg-think-store.c`, `borg.c` |
-| `borg_lunal_mode` | bool | false | initial value of `borg.lunal_mode` | `borg-init.c` only |
+| `borg_money_scum_amount` | int | 0 | money-scum target; 0 = off | `borg-fight-defend.c`, `borg-flow-kill.c`, `borg-flow-take.c`, `borg-junk.c`, `borg-log.c`, `borg-store-buy.c`, `borg-store-sell.c`, `borg-think-dungeon-util.c`, `borg-think-dungeon.c`, `borg-think-store.c`, `borg.c` |
+| `borg_self_scum` | bool | **true** | let the buy logic set a money-scum target for a wanted item it cannot afford; do not stop when a target is reached; skips step 0 of the shop choice (§12, §13.1) | `borg-store-buy.c`, `borg-think-store.c`, `borg.c` |
+| `borg_lunal_mode` | bool | false | initial value of the `borg.lunal_mode` flag only; it does not run the lunal routine (§13.1) | `borg-init.c` |
 | `borg_self_lunal` | bool | false | enter lunal mode by itself (§13.1) | `borg-think-dungeon.c` |
-| `borg_enchant_limit` | int | 12 | how far to enchant | `borg-trait.c`, `borg-item-enchant.c` |
-| `borg_dump_level` | int | 1 | write the map on death from this level | `borg.c`, `borg-think.c`, `borg-messages-react.c` |
+| `borg_enchant_limit` | int | 12 | how far to enchant | `borg-init.c`, `borg-item-enchant.c`, `borg-trait.c` |
+| `borg_dump_level` | int | 1 | write the map on death from this level | `borg-messages-react.c`, `borg-think.c`, `borg.c` |
 | `borg_save_death` | int | 1 | write the death logs | `borg-log.c` |
 | `borg_stop_on_bell` | bool | false | stop on the terminal bell | `borg-io.c` |
 | `borg_allow_strange_opts` | bool | false | start even with scaled tiles or `birth_force_descend` (otherwise start-up fails) | `borg-init.c` |
@@ -1729,15 +1872,15 @@ for a while, or change what the flow will accept.
 
 | Mode | Entered when | What changes | Left when |
 | --- | --- | --- | --- |
-| **Lunal** (`borg.lunal_mode`) | `borg_self_lunal`, not `borg_plays_risky`, prepared for `BI_CDEPTH + 15` and has been that deep, and `BI_CDEPTH > BI_CLEVEL / 3` (`borg-think-dungeon.c:borg_think_dungeon:1438-1456`); or `borg_lunal_mode` at start | `borg_think_dungeon_lunal()` takes over: stair-dive and stair-climb without fighting, pick up only what is on the way, `borg.goal.fleeing_lunal`; the flow avoids monster grids and skips danger evaluation | in town, weak, no stairs known, close to the zone it is prepared for, depth 50 |
+| **Lunal** (`borg.lunal_mode`, and the `borg_think_dungeon_lunal()` routine) | The **routine** runs only inside the self-lunal block: `borg_self_lunal`, not `borg_plays_risky`, prepared for `BI_CDEPTH + 15` and has been that deep, `BI_CDEPTH >= 1` and `BI_CDEPTH > BI_CLEVEL / 3`; the block sets the flag and calls the routine (`borg-think-dungeon.c:borg_think_dungeon:1438-1456`). The **flag** alone can also be true from start-up (`borg_lunal_mode`), without the routine | routine: stair-dive and stair-climb without fighting, pick up what is on the way, `borg.goal.fleeing_lunal`. Flag (with or without the routine): the flow avoids monster grids and skips danger evaluation (§6.2, §6.5) | routine exits clear the flag: town, weak, no stairs known, close to the depth it is prepared for, depth 50; also certain monster spells that move the Borg (`borg-messages.c`) and the stair-scum exit (§11.10) |
 | **Munchkin** (`borg.munchkin_mode`) | `borg_munchkin_start` and `BI_MAXCLEVEL < 12`, in the dungeon (`borg-think-dungeon.c:borg_think_dungeon:1460-1471`) | `borg_think_dungeon_munchkin()` takes over: low-level stair diving to `borg_munchkin_depth`, munchkin attackers, munchkin item pickup; flow as for lunal | level 12, town, weak, no stairs |
 | **Stair scum** | depth 1 and `borg.goal.fleeing_to_town` | `borg_think_stair_scum()`: take objects, then leave by any stair (§11.10) | weak or full pack |
-| **Self scum** | `borg_self_scum` and a wanted shop item (e.g. a dungeon book, teleport scrolls) | the buy logic marks the item as worth scumming for | the item is bought |
-| **Money scum** | `borg_money_scum_amount > 0`, in town, gold below target | `borg_money_scum()` replaces leaving the level; the store logic buys/sells for gold | target reached: the Borg stops |
+| **Self scum** (`borg_self_scum`) | a wanted shop item the Borg cannot afford (e.g. a missing dungeon book, Teleport or Teleport Level scrolls), character level 10+, light, 100+ food, cost at most 85,000 and a good chance to avoid theft (`borg-store-buy.c`) | sets the **money-scum target** to the item's cost, which turns on money scumming (next row); with `borg_self_scum` set, reaching the target does not stop the Borg. It does not enable the depth-1 stair-scum routine | the target is cleared when the item is bought |
+| **Money scum** | a target is set (configured or by self scum), in town, with light, gold below it | `borg_money_scum()` (rest in town) replaces leaving the level; store steps restricted (§12) | gold above the target: the Borg stops unless `borg_self_scum` |
 | **Digging** (`borg.status.digging`) | anti-summon corridor builders (`GOAL_DIGGING`) | flow tunnels; danger is not evaluated | corridor finished |
 | **Vault** (`borg.status.vault`) | a vault is guessed on the level | an extra block of rungs: kill, take, excavate, `borg_flow_vault()` | level change |
 | **Boosted bravery** | the ladder ran out (§2.8) | `borg.avoidance` raised; `borg_think_dungeon_brave()` | the pass ends |
-| **Desperate** (`borg.status.desperate`) | `borg_caution()` dashes for a stair within three steps (§9.1, step 6) | that flood avoids unknown and monster grids and skips danger evaluation | cleared straight after the dash |
+| **Desperate** (`borg.status.desperate`) | `borg_caution()` dashes for a nearby stair (§9.1, step 11) | that flood avoids unknown and monster grids and skips danger evaluation | cleared straight after the dash |
 
 ---
 
@@ -1787,19 +1930,23 @@ kind, because they are not equally fundamental.
 
 ### 16.1 Observable behaviour (the contract)
 
-1. **Keystrokes are the only action channel, and the queue discipline
-   holds:** each think queues a complete key sequence; the Borg thinks only
+1. **Keystrokes are the action channel, and the queue discipline holds.**
+   The one exception is the cheat-death cure-all (§1.2), which a rebuild
+   reproduces as an explicit exception, not as a precedent: each think queues a complete key sequence; the Borg thinks only
    when the queue is empty; a think that queues nothing stops the Borg; an
    action closes with `ESCAPE` where the C Borg does (§2.2, §2.6).
 2. **Rest and repeat are passed through** as `EVT_NONE`, not interrupted
    (§2.7).
 3. **Perception is the two channels of §1.1** — the message line and store
    header from the screen, plus direct reads of the player's own state and
-   gear, `map_info()` for the current panel, the named cave predicates, the
-   tracked monsters' real condition (`borg_update_kill_old()`), and full
-   race/kind data. Nothing more: no reading of the map outside the panel
-   beyond what the Borg remembers, no monsters the player cannot see, no
-   scanning of the level's monster or object lists. A rebuild that uses
+   gear, `map_info()` for the current panel (remembered features and
+   objects, currently visible monsters), the named cave predicates, the
+   **real identity** of each newly sighted monster and floor object
+   (`borg_guess_race()`, `borg_guess_kind()`), the tracked monsters' real
+   condition (`borg_update_kill_old()`), and full race/kind data. Nothing
+   more was found: no reading of the map outside the panel beyond what the
+   Borg remembers, no monsters the player cannot see, no scanning of the
+   level's monster or object lists. A rebuild that uses
    less plays worse; one that uses more plays better; neither is this Borg.
 4. **The Borg thinks with its own RNG** (§1.2), so its choices do not move
    the game's RNG during thinking.
@@ -1828,8 +1975,11 @@ different decisions.
    reset at `BORG_TIME_MAX - 100` is unreachable (§2.4). Neither is
    behaviour a rebuild needs; the abort at `BORG_TIME_MAX - 3000` and the
    two fixed clock windows are.
-6. **Simulations are undone** (§5.4): every "try this on" pass restores
-   `borg_items[]` from `safe_items[]` and re-notices.
+6. **Simulations are meant to be undone** (§5.4): the discipline is that a
+   "try this on" pass restores `borg_items[]` from `safe_items[]` and
+   re-notices. The C Borg does not always keep it (§11.1, §11.6); where it
+   does not, that is a §11 defect and falls under §17.2, not under this
+   rule.
 7. **The memory model:** the map and the monster/object lists are patched
    across turns and cleared on a level change; the trait vector and
    `borg_items[]` are rebuilt every think (§3).
@@ -1891,13 +2041,22 @@ The rule this document adopts:
   is not a departure.
 * **Every other §17 fix is a declared departure.** A rebuild may make it,
   but must name it, say which decisions it changes, and not claim parity
-  for those decisions. Of the §11 examples, these change decisions when
-  fixed: the stale `borg_simulate` (§11.1), `borg.has[BI_CURHP]` and the
-  two reaction flags (§11.2), the identify scoring (§11.3, §11.11), the
-  danger comparisons (§11.4), the wand name lookups and the light-beam
-  range (§11.5), the cursed-item zeroing (§11.6), the lantern and Teleport
-  Other indexing (§11.7), the surrounded count (§11.9), the scum/lunal flag
-  (§11.10), the recharge preference (§11.12), and the recall-depth answer.
+  for those decisions. The §11 examples fall into two groups:
+  * **Fixing them changes decisions in reachable states** (shown at source
+    level): the identify scoring (§11.3, §11.11), the wand name lookups and
+    the light-beam range (§11.5), the cursed-item zeroing (§11.6), the
+    lantern scan start (§11.7), the surrounded count (§11.9), the
+    `borg.has[BI_CURHP]` test and the two reaction flags (§11.2), and the
+    recall-depth answer (§9.3).
+  * **Latent, masked or not shown to change a decision**: the partial-damage
+    hit chance and the HURT stun test (§11.4) — `borg_danger()` forces
+    `full_damage = true`, so the first is bypassed from that entry point;
+    the stale `borg_simulate` (§11.1), whose effect depends on what the next
+    caller does; the Teleport Other `<=` read (§11.7); the scum/lunal flag
+    (§11.10), whose "Town" half is unreachable; and the recharge give-up
+    path (§11.12), which needs an item state ordinary play does not
+    produce. Fixing these is still a departure in principle; whether it
+    changes play is unmeasured.
 
 Where comment and code disagree (§17.1, rule 1), the code is the default
 reading: the comment is evidence of intent, not the behaviour.
@@ -1908,7 +2067,7 @@ reading: the comment is evidence of intent, not the behaviour.
 
 | Document | What it holds |
 | --- | --- |
-| [the issue board](https://github.com/diegoami/neo-angband-tracker/issues?q=label%3Aupstream-c) (`upstream-c` + `finding` labels) | the canonical, live state of every C Borg finding — the only place a finding's state is recorded |
+| [the issue board](https://github.com/diegoami/neo-angband-tracker/issues?q=label%3Aupstream-c) (labels upstream-c and finding) | the canonical, live state of every C Borg finding — the only place a finding's state is recorded |
 | `docs/c-bugs/catalogue.json`, `docs/c-bugs/findings/CBUG-NNNN.json` | the machine-readable finding catalogue |
 | `docs/c-bugs/watch-index.json` | the data-only watch index |
 | `patches/upstream-c/` | stored proposal patches |

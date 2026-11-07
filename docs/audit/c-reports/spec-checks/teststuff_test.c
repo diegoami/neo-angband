@@ -45,6 +45,15 @@
  * and weapon slots, when the item is a cursed non-artifact (and not
  * uncursable), the Borg sets ident = true in borg_items[].
  *
+ * Two input facts from the pinned tree that limit which items exist:
+ *   - src/obj-make.c:apply_magic() returns as soon as make_artifact()
+ *     succeeds, before make_ego_item(), so ordinary generation never makes
+ *     an item that is both an artifact and an ego.  Such inputs below are
+ *     marked SYNTHETIC.
+ *   - borg-item-analyze.c:borg_item_analyze:620-622 sets the value of a
+ *     cursed item (other than the One Ring) to 0, so cursed inputs below
+ *     use value 0.
+ *
  * No game state is involved.  The items are synthetic.
  */
 #include <stdio.h>
@@ -162,7 +171,7 @@ int main(void)
 	printf("The +20000 assignment always fires and overwrites the artifact\n");
 	printf("and ego assignments above it, in both loops.  (free_id=0, depth 30)\n\n");
 	{
-		struct item a = { "artifact that is also a random-power ego", 5000, 1, 1, 0, 1, 0, 1, 1, K_WEAPON };
+		struct item a = { "SYNTHETIC: artifact + random-power ego", 5000, 1, 1, 0, 1, 0, 1, 1, K_WEAPON };
 		struct item b = { "plain artifact", 5000, 1, 0, 0, 1, 0, 1, 1, K_WEAPON };
 		struct item c = { "random-power ego, not an artifact", 5000, 0, 1, 0, 1, 0, 1, 1, K_WEAPON };
 		struct item d = { "plain wieldable item needing ID", 5000, 0, 0, 0, 1, 0, 1, 1, K_WEAPON };
@@ -174,13 +183,13 @@ int main(void)
 	printf("\n=== 3. The exception: a cursed non-artifact in the bow/weapon slot ===\n");
 	printf("borg_notice_equipment() sets ident=1 on it, so note_needs_id()=0.\n\n");
 	{
-		struct item e = { "cursed random-power ego weapon (wielded)", 5000, 0, 1, 1, 1, 0, 1, 1, K_WEAPON };
-		struct item f = { "cursed plain weapon (wielded)", 5000, 0, 0, 1, 1, 0, 1, 1, K_WEAPON };
+		struct item e = { "cursed random-power ego weapon (wielded)", 0, 0, 1, 1, 1, 0, 1, 1, K_WEAPON };
+		struct item f = { "cursed plain weapon (wielded)", 0, 0, 0, 1, 1, 0, 1, 1, K_WEAPON };
 		show(&e, 0, 30); show(&f, 0, 30);
 		printf("  with free_id=1 (Identify Rune castable):\n");
 		show(&e, 1, 30); show(&f, 1, 30);
-		printf("  -> here the ego bonus does survive loop 1; loop 2 gives the\n");
-		printf("     item its plain value only when free_id is set, else 0.\n");
+		printf("  -> here the ego bonus does survive loop 1 (0+100000); in loop 2\n");
+		printf("     the item scores its value, 0, so it is not a loop-2 candidate.\n");
 	}
 	return 0;
 }
