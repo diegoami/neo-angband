@@ -1,0 +1,44 @@
+{
+  "no-target": {
+    "exit": 0,
+    "passed": true,
+    "asan": false,
+    "oob_read": false,
+    "decision": {
+      "return": 0,
+      "keys": 0
+    },
+    "outcome": {
+      "return": 0,
+      "keys": 0
+    }
+  },
+  "live-shot": {
+    "exit": 0,
+    "passed": true,
+    "asan": false,
+    "oob_read": false,
+    "decision": {
+      "return": 4,
+      "keys": 11
+    },
+    "outcome": {
+      "return": 4,
+      "keys": 11
+    }
+  },
+  "simulated": {
+    "exit": 0,
+    "passed": true,
+    "asan": false,
+    "oob_read": false,
+    "decision": {
+      "return": 4,
+      "keys": 0
+    },
+    "outcome": {
+      "return": 4,
+      "keys": 0
+    }
+  }
+}

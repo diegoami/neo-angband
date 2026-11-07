@@ -1,0 +1,92 @@
+{
+  "no-target": {
+    "label": "Shot-lining flow asks about firing with no target",
+    "explanation": "The Borg carries a bow and arrows and knows a kobold it cannot shoot from here. A movement-flow probe asks whether a distance attack exists while the target list is empty and the simulation flag is off \u2014 the state the Teleport Other defense and any acted attack leave behind. The original still enters the firing path: it reads the description of missile slot -1 and queues a fire key, a quiver character computed from index -1, and the target key. The correction returns \"nothing to fire\" without queueing anything.",
+    "before": {
+      "raw": "native-c/missile-254: starting...\nSETUPSTEP profile\nQUIVER slot=35 letter_index=0 tval=3 sval=1 n=20\nSETUP seed=1000 class=Warrior level=11 depth=10 hp=91/91 ammo_tval=3 bow_iqty=1\n  launch_without_target_does_not_fire  MODE no-target\nDECISION no-target return=0 keys=3 sequence=f\f5\nOUTCOME return=0 keys=3\nFailed\n    native-c/missile-254:188: requirement 'len' == '0' failed\n      len:                3\n      0:                0\nnative-c/missile-254 finished: 0/1 passed\n",
+      "decision": {
+        "return": 0,
+        "keys": 3
+      },
+      "outcome": {
+        "return": 0,
+        "keys": 3
+      },
+      "passed": false,
+      "crash": false
+    },
+    "after": {
+      "raw": "native-c/missile-254: starting...\nSETUPSTEP profile\nQUIVER slot=35 letter_index=0 tval=3 sval=1 n=20\nSETUP seed=1000 class=Warrior level=11 depth=10 hp=91/91 ammo_tval=3 bow_iqty=1\n  launch_without_target_does_not_fire  MODE no-target\nDECISION no-target return=0 keys=0 sequence=\nOUTCOME return=0 keys=0\nPassed\nnative-c/missile-254 finished: 1/1 passed\n",
+      "decision": {
+        "return": 0,
+        "keys": 0
+      },
+      "outcome": {
+        "return": 0,
+        "keys": 0
+      },
+      "passed": true,
+      "crash": false
+    }
+  },
+  "live-shot": {
+    "label": "Control: a real target fires normally",
+    "explanation": "With the target list filled the way the attack chooser fills it, both versions queue the real firing keys and value the shot above zero. The logs are identical before and after the fix.",
+    "before": {
+      "raw": "native-c/missile-254: starting...\nSETUPSTEP profile\nQUIVER slot=35 letter_index=0 tval=3 sval=1 n=20\nSETUP seed=1000 class=Warrior level=11 depth=10 hp=91/91 ammo_tval=3 bow_iqty=1\n  launch_without_target_does_not_fire  MODE live-shot\nDECISION live-shot return=4 keys=11 sequence=*p222225f05\nOUTCOME return=4 keys=11\nPassed\nnative-c/missile-254 finished: 1/1 passed\n",
+      "decision": {
+        "return": 4,
+        "keys": 11
+      },
+      "outcome": {
+        "return": 4,
+        "keys": 11
+      },
+      "passed": true,
+      "crash": false
+    },
+    "after": {
+      "raw": "native-c/missile-254: starting...\nSETUPSTEP profile\nQUIVER slot=35 letter_index=0 tval=3 sval=1 n=20\nSETUP seed=1000 class=Warrior level=11 depth=10 hp=91/91 ammo_tval=3 bow_iqty=1\n  launch_without_target_does_not_fire  MODE live-shot\nDECISION live-shot return=4 keys=11 sequence=*p222225f05\nOUTCOME return=4 keys=11\nPassed\nnative-c/missile-254 finished: 1/1 passed\n",
+      "decision": {
+        "return": 4,
+        "keys": 11
+      },
+      "outcome": {
+        "return": 4,
+        "keys": 11
+      },
+      "passed": true,
+      "crash": false
+    }
+  },
+  "simulated": {
+    "label": "Control: the same probe in simulation",
+    "explanation": "With the simulation flag on and a filled target list both versions return the value of the best shot and queue nothing. The logs are identical before and after the fix.",
+    "before": {
+      "raw": "native-c/missile-254: starting...\nSETUPSTEP profile\nQUIVER slot=35 letter_index=0 tval=3 sval=1 n=20\nSETUP seed=1000 class=Warrior level=11 depth=10 hp=91/91 ammo_tval=3 bow_iqty=1\n  launch_without_target_does_not_fire  MODE simulated\nDECISION simulated return=4 keys=0\nOUTCOME return=4 keys=0\nPassed\nnative-c/missile-254 finished: 1/1 passed\n",
+      "decision": {
+        "return": 4,
+        "keys": 0
+      },
+      "outcome": {
+        "return": 4,
+        "keys": 0
+      },
+      "passed": true,
+      "crash": false
+    },
+    "after": {
+      "raw": "native-c/missile-254: starting...\nSETUPSTEP profile\nQUIVER slot=35 letter_index=0 tval=3 sval=1 n=20\nSETUP seed=1000 class=Warrior level=11 depth=10 hp=91/91 ammo_tval=3 bow_iqty=1\n  launch_without_target_does_not_fire  MODE simulated\nDECISION simulated return=4 keys=0\nOUTCOME return=4 keys=0\nPassed\nnative-c/missile-254 finished: 1/1 passed\n",
+      "decision": {
+        "return": 4,
+        "keys": 0
+      },
+      "outcome": {
+        "return": 4,
+        "keys": 0
+      },
+      "passed": true,
+      "crash": false
+    }
+  }
+}
