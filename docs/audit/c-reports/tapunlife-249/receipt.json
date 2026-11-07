@@ -182,6 +182,5 @@
     "result.json": "1578791f7f46892bb2b3d1c91f3f4a63f089ac7063d2d4d295028917680a3ace",
     "run-cases.py": "aaab791d1abfa00840f1cb71036cf4f80d69f81ba109567d372379238a69060d",
     "scenario.c": "26a0b44b5efc25623c57f5384da6080bfc223d9532b1bc2f2c4e184edc8edb3f"
-  },
-  "evidence_head_after_receipt_fix": null
+  }
 }
