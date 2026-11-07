@@ -1,0 +1,16 @@
+{
+  "known": {
+    "exit": 0,
+    "passed": true,
+    "geometry": "before=1 after=1",
+    "rating": "before=1 after=1",
+    "outcome": "before=1 after=1"
+  },
+  "fresh": {
+    "exit": 0,
+    "passed": true,
+    "geometry": "before=0 after=1",
+    "rating": "before=0 after=1",
+    "outcome": "before=0 after=1"
+  }
+}
