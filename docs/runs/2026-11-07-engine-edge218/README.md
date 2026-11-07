@@ -62,3 +62,92 @@ never active manifests. Exact-source transitive SDK must match the direct SDK.
 No private lab/profile/save/data, backup/OAuth, Rust polling/dispatch, native C
 implementation or official Angband submission occurs here. Parent owns merges,
 actual-main results, consumer final readiness and workspace recovery pins.
+
+## Verified update: focused source and actual artifact identity
+
+The normal exact-source merge is61139db61. Build passed. [Focused controls](focused.log)
+passed598 tests/21 files/zero skips in82.90s; [exit0](focused.exit). Existing CI
+routing controls8, publishing guards11, session and all14 version sites pass.
+Only the extra existing set-feat-memory.test.ts differs from official06a inside
+Core/SDK/content source, and package rules exclude tests. The gameplay/SDK/data
+implementation is unpatched official source. Required hosted full is still a
+separate merge gate, not inferred from these focused results.
+
+The official Linux archive was actually downloaded and its143757198 bytes and
+SHA256564ebc53b46d77c66a0fbcb764ebf33ba38564aca6596ccc21aad8e43f69041b
+verified. It is safely unpacked in disposable storage. No GUI was launched and
+no stock interactive compatibility is claimed by that download.
+
+[pins.json](pins.json) freezes two reproducible artifact profiles, neither
+published to npm:
+
+1. **official06a-source-beta3**: pristine official source, unmodified source
+   version1.23.0-beta.3. Core/SDK/content package versions remain beta.3 but the
+   actual new source and hashes identify them independently of registry beta.3.
+2. **official06a-stamped-edge218**: another pristine official source export,
+   stamped with the exact official edge workflow's `node tools/version.mjs edge 218`
+   before building. Package versions and Core.ENGINE_VERSION are edge.218,
+   matching the official desktop version. All13 changed tracked files are the
+   expected14 version sites (RELEASING has two sites); there are no extra gameplay
+   source changes. This is a locally reproduced official-source build, not a
+   downloaded official npm package or a product publication.
+
+Both profiles build Core, SDK and content and then pack them only in disposable
+exports. The artifact manifest includes every actual filename, size, SHA256 and
+SHA512 integrity. The stamp's exact changed paths are recorded, not assumed.
+
+## Reproduce the package tuple
+
+From this repository, choose fresh empty directories and archive official06a;
+never rewrite an active checkout's versions or workspace ranges:
+
+```sh
+mkdir /tmp/neo-edge-repro-source /tmp/neo-edge-repro-packages
+git archive 06a2321ce30a414df20d1b20d486446e7688171c | tar -xf - -C /tmp/neo-edge-repro-source
+cd /tmp/neo-edge-repro-source
+ELECTRON_SKIP_BINARY_DOWNLOAD=1 pnpm install --frozen-lockfile
+# Only for the release-style edge.218 profile:
+# node tools/version.mjs edge 218
+pnpm --filter @rpgm-tools/neo-angband-mod-sdk build
+pnpm --filter @rpgm-tools/neo-angband-core build
+pnpm --filter @rpgm-tools/neo-angband-content build
+node tools/pin-workspace-ranges.mjs --write
+pnpm --dir packages/core pack --pack-destination /tmp/neo-edge-repro-packages
+pnpm --dir packages/mod-sdk pack --pack-destination /tmp/neo-edge-repro-packages
+pnpm --dir packages/content pack --pack-destination /tmp/neo-edge-repro-packages
+```
+
+The same steps were executed for both frozen tuples, under the shared validation
+lock. Actual Node26.13.0/pnpm12.3.4 identities are in the receipt. Packing uses
+pnpm pack, not npm publication. A different packer may produce a different
+archive even when source/data are equivalent; consumers record their actual
+source/artifact profile rather than assuming version labels imply equality.
+
+## Required consumer SDK graph
+
+Pin all three direct dependencies to the matching local tarballs. In pnpm12,
+the transitive SDK override belongs in **pnpm-workspace.yaml**, not the ignored
+`pnpm.overrides` package.json field:
+
+```yaml
+overrides:
+  '@rpgm-tools/neo-angband-mod-sdk': 'file:/tmp/neo-edge-repro-packages/rpgm-tools-neo-angband-mod-sdk-1.23.0-edge.218.tgz'
+```
+
+Use the beta.3 filename for the raw-source profile. Preserve the consumer's
+existing workspace settings; this snippet is not permission to replace them.
+Both a direct Core dependency and the Core's transitive SDK must resolve the
+same **actual** file package. The first probe used the unsupported package.json
+location: pnpm explicitly ignored it, installed the old registry SDK for Core,
+and the realpath guard failed. That failed setup is preserved in local raw
+artifacts and is not counted as compatibility success. No engine patch was
+needed; the corrected supported override fixes the installation contract.
+
+The corrected isolated consumer probes import actual packed Core/SDK through
+bare package specifiers, resolve content, require the public startGame,
+describeObject and simulateLoadout exports, and compare direct/transitive SDK
+realpaths. [Raw-source probe](source-probe-coherent.log) and
+[edge-stamped probe](stamped-probe.log) pass. Each reports one SDK and the correct
+actual ENGINE_VERSION. These package/graph checks are producer readiness, not
+Mandos plugin/full-suite or desktop-play acceptance. Consumers independently
+rebuild and run their own relevant/default gates.

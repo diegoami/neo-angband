@@ -1,0 +1,160 @@
+{
+  "schema": "neo/edge218-artifact-profiles@1",
+  "officialSource": "06a2321ce30a414df20d1b20d486446e7688171c",
+  "officialDesktop": {
+    "tag": "v1.23.0-edge.218",
+    "filename": "Neo.Angband-1.23.0-edge.218-x64.tar.gz",
+    "bytes": 143757198,
+    "sha256": "564ebc53b46d77c66a0fbcb764ebf33ba38564aca6596ccc21aad8e43f69041b",
+    "downloadVerified": true,
+    "GUIStarted": false
+  },
+  "registry": {
+    "latest": "1.22.0",
+    "next": "1.23.0-beta.3",
+    "edgeNpmVersionPresent": false
+  },
+  "toolchain": {
+    "node": "v26.13.0",
+    "pnpm": "12.3.4"
+  },
+  "profiles": [
+    {
+      "profile": "official06a-source-beta3",
+      "sourceCommit": "06a2321ce30a414df20d1b20d486446e7688171c",
+      "version": "1.23.0-beta.3",
+      "artifacts": [
+        {
+          "name": "@rpgm-tools/neo-angband-content",
+          "version": "1.23.0-beta.3",
+          "filename": "rpgm-tools-neo-angband-content-1.23.0-beta.3.tgz",
+          "bytes": 316761,
+          "sha256": "eeec7c55a996fc5cc452b89eab99ae2342dada8450274a68c582f1cf308c6cfb",
+          "integrity": "sha512-u5wDfrsgB11mcIsV3EfUoSVcf1ZzmPIeETWmiyFuBGNTywuHdQdhoCyoAshB4A1coeiX/1ZnqXk/0frp4dW/Ag==",
+          "dependencies": {}
+        },
+        {
+          "name": "@rpgm-tools/neo-angband-core",
+          "version": "1.23.0-beta.3",
+          "filename": "rpgm-tools-neo-angband-core-1.23.0-beta.3.tgz",
+          "bytes": 5356982,
+          "sha256": "ab7a0adf00d05b5e4ce07ba34b6f2b8f22989a5da0ea45068c3bbc8444a7acdc",
+          "integrity": "sha512-Fv8Y7Zik5rt9gxOJ7P0s+lmXgbgIp1wmVufeeuINc2kqrb8bfElWPpgys6IKyAnxc4QYeqie0hvdWZT2RtZJYQ==",
+          "dependencies": {
+            "@rpgm-tools/neo-angband-mod-sdk": "1.23.0-beta.3"
+          }
+        },
+        {
+          "name": "@rpgm-tools/neo-angband-mod-sdk",
+          "version": "1.23.0-beta.3",
+          "filename": "rpgm-tools-neo-angband-mod-sdk-1.23.0-beta.3.tgz",
+          "bytes": 1115155,
+          "sha256": "6f70f63c4ac9376101b8a2158100d66f0e041795b38d0bdb204b923cdede6917",
+          "integrity": "sha512-iiKKep6b1d69RirtESkqNagClyCKDqJOWY4i8p+a2ajw2v6Nl9Dp64d7iPt+sgFBYivVHmimlT3RsKKWlSj0Jg==",
+          "dependencies": {
+            "acorn": "^8.18.0"
+          }
+        }
+      ]
+    },
+    {
+      "profile": "official06a-stamped-edge218",
+      "sourceCommit": "06a2321ce30a414df20d1b20d486446e7688171c",
+      "version": "1.23.0-edge.218",
+      "artifacts": [
+        {
+          "name": "@rpgm-tools/neo-angband-content",
+          "version": "1.23.0-edge.218",
+          "filename": "rpgm-tools-neo-angband-content-1.23.0-edge.218.tgz",
+          "bytes": 316766,
+          "sha256": "6dc1950d40e2d7a00e114d062d3cf6c35eb16e9450f0f2c03f253132678bc06b",
+          "integrity": "sha512-pWhVuleR9VF7zBeQ6ALAsDaF3Q15PQ9tYDHjXPhQSDsXlqey2Jfxc19s7Yzqiygj24IIC7ObF9FoXpgAsMX3Mw==",
+          "dependencies": {}
+        },
+        {
+          "name": "@rpgm-tools/neo-angband-core",
+          "version": "1.23.0-edge.218",
+          "filename": "rpgm-tools-neo-angband-core-1.23.0-edge.218.tgz",
+          "bytes": 5356994,
+          "sha256": "4e4fe375624c6ce45b1b5999e89912d6e0b0f8bf5a7663bb3654a0d65249a2e3",
+          "integrity": "sha512-P+zpdUNWFCDeTWwtU92nA1lgE/Wq30O4KI3suI0t652t15QzFP78Z/nQtFrgQ+tPzm3r/Oy+dRHSGy8YLmEaYw==",
+          "dependencies": {
+            "@rpgm-tools/neo-angband-mod-sdk": "1.23.0-edge.218"
+          }
+        },
+        {
+          "name": "@rpgm-tools/neo-angband-mod-sdk",
+          "version": "1.23.0-edge.218",
+          "filename": "rpgm-tools-neo-angband-mod-sdk-1.23.0-edge.218.tgz",
+          "bytes": 1115157,
+          "sha256": "8e3447974ee0cb883131fb728d63401573ec306bc11c93222a4642f77e73dd16",
+          "integrity": "sha512-SRAQvk4izP2oWkXah9B1l1NmeKgoxWKuZYzq4xrrub4tJIs7GPGwRT4naYo6vSfl7LeoVr5YOH0NlbZmOixAvg==",
+          "dependencies": {
+            "acorn": "^8.18.0"
+          }
+        }
+      ]
+    }
+  ],
+  "stamp": {
+    "command": "node tools/version.mjs edge 218",
+    "sites": 14,
+    "changedTrackedFiles": [
+      "docs/RELEASING.md",
+      "package.json",
+      "packages/cli/package.json",
+      "packages/content/package.json",
+      "packages/core/README.md",
+      "packages/core/package.json",
+      "packages/core/src/version.ts",
+      "packages/desktop/package.json",
+      "packages/linoleum/package.json",
+      "packages/linoleum/src/version.ts",
+      "packages/mcp/package.json",
+      "packages/mod-sdk/package.json",
+      "packages/web/package.json"
+    ],
+    "extraGameplaySourceChanges": []
+  },
+  "SDKGraph": {
+    "pnpmWorkspaceYamlOverrideRequired": true,
+    "packageJsonPnpmOverrideIgnored": true,
+    "sourceProbe": {
+      "Core": {
+        "name": "@rpgm-tools/neo-angband-core",
+        "version": "1.23.0-beta.3"
+      },
+      "SDK": {
+        "name": "@rpgm-tools/neo-angband-mod-sdk",
+        "version": "1.23.0-beta.3"
+      },
+      "ENGINE_VERSION": "1.23.0-beta.3",
+      "sameSDK": true,
+      "SDKExports": 250,
+      "contentResolvable": true
+    },
+    "stampedProbe": {
+      "Core": {
+        "name": "@rpgm-tools/neo-angband-core",
+        "version": "1.23.0-edge.218"
+      },
+      "SDK": {
+        "name": "@rpgm-tools/neo-angband-mod-sdk",
+        "version": "1.23.0-edge.218"
+      },
+      "ENGINE_VERSION": "1.23.0-edge.218",
+      "sameSDK": true,
+      "SDKExports": 250,
+      "contentResolvable": true
+    }
+  },
+  "verification": {
+    "focusedTests": 598,
+    "focusedFiles": 21,
+    "focusedSkips": 0,
+    "CIRoutingControls": 8,
+    "forkGuards": 11,
+    "versionSites": 14,
+    "requiredHostedFull": "pending"
+  }
+}

@@ -1,0 +1,16 @@
+✔ only reviewed inert regular records take the small lane (4.67164ms)
+✔ README, CONTRIBUTING and installation prose select real doc contracts (2.383277ms)
+✔ runtime, tests, dependencies, workflows, config, unknown docs and runnable evidence stay full (1.10471ms)
+✔ empty, removed, renamed, executable, symlink and malformed paths stay full (0.727313ms)
+✔ event ranges use exact PR merge base/head and push before/after; manual/initial/unsupported fail full (1.687755ms)
+✔ raw parser retains filenames and rejects truncation or unsupported records (0.995077ms)
+✔ real git PR merge and push changes classify correctly, with uncertainty controls (171.776168ms)
+✔ workflows keep full gates, no branch-push duplicate or issue events, and scoped metadata coverage (2.371814ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 297.633575
