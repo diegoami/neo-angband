@@ -1,0 +1,104 @@
+{
+  "living": {
+    "label": "A living giant the spell really hurts",
+    "explanation": "A Necromancer considers Dispel Life against a hill giant five grids away. The game's drain hits living monsters: a native cast removes 66 HP. The original rating keeps damage only for monsters flagged both nonliving and undead \u2014 no monster in the game data has the nonliving flag \u2014 so the spell is valued below doing nothing. The correction rates it like the game: the launch value minus the mana cost of the spell.",
+    "before": {
+      "raw": "native-c/dispel-248: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Necromancer level=26 depth=30 hp=158/158 sp=144/144 target=hill giant hp=225 undead=0\n  dispel_life_rates_living_monsters  MODE living\nGATE spell_okay=1 legal=1 temp_n=1\nLAUNCH direct=-1\nRATING value=-21 expected_average=39 clevel=26\nOUTCOME hp_before=225 hp_after=159 hp_lost=66 undead=0\nFailed\n    native-c/dispel-248:235: requirement 'value' == 'expected' failed\n      value:              -21\n      expected:               19\nnative-c/dispel-248 finished: 0/1 passed\n",
+      "passed": false,
+      "rating": {
+        "value": -21,
+        "expected_average": 39,
+        "clevel": 26
+      },
+      "outcome": {
+        "hp_before": 225,
+        "hp_after": 159,
+        "hp_lost": 66,
+        "undead": 0
+      },
+      "launch": {
+        "direct": -1
+      }
+    },
+    "after": {
+      "raw": "native-c/dispel-248: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Necromancer level=26 depth=30 hp=158/158 sp=144/144 target=hill giant hp=225 undead=0\n  dispel_life_rates_living_monsters  MODE living\nGATE spell_okay=1 legal=1 temp_n=1\nLAUNCH direct=39\nRATING value=19 expected_average=39 clevel=26\nOUTCOME hp_before=225 hp_after=159 hp_lost=66 undead=0\nPassed\nnative-c/dispel-248 finished: 1/1 passed\n",
+      "passed": true,
+      "rating": {
+        "value": 19,
+        "expected_average": 39,
+        "clevel": 26
+      },
+      "outcome": {
+        "hp_before": 225,
+        "hp_after": 159,
+        "hp_lost": 66,
+        "undead": 0
+      },
+      "launch": {
+        "direct": 39
+      }
+    }
+  },
+  "undead": {
+    "label": "Control: an undead bat the spell cannot hurt",
+    "explanation": "A vampire bat is explicitly undead, and the game's drain leaves it untouched (native cast removes nothing). Both versions refuse the cast; only the raw number of the refusal differs. The corrected rating applies the chooser's standing mana penalty to a zero-damage launch instead of a dead filter.",
+    "before": {
+      "raw": "native-c/dispel-248: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Necromancer level=26 depth=30 hp=158/158 sp=144/144 target=vampire bat hp=47 undead=1\n  dispel_life_rates_living_monsters  MODE undead\nGATE spell_okay=1 legal=1 temp_n=1\nLAUNCH direct=-1\nRATING value=-21 expected_average=39 clevel=26\nOUTCOME hp_before=47 hp_after=47 hp_lost=0 undead=1\nPassed\nnative-c/dispel-248 finished: 1/1 passed\n",
+      "passed": true,
+      "rating": {
+        "value": -21,
+        "expected_average": 39,
+        "clevel": 26
+      },
+      "outcome": {
+        "hp_before": 47,
+        "hp_after": 47,
+        "hp_lost": 0,
+        "undead": 1
+      },
+      "launch": {
+        "direct": -1
+      }
+    },
+    "after": {
+      "raw": "native-c/dispel-248: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Necromancer level=26 depth=30 hp=158/158 sp=144/144 target=vampire bat hp=47 undead=1\n  dispel_life_rates_living_monsters  MODE undead\nGATE spell_okay=1 legal=1 temp_n=1\nLAUNCH direct=-1\nRATING value=-21 expected_average=39 clevel=26\nOUTCOME hp_before=47 hp_after=47 hp_lost=0 undead=1\nPassed\nnative-c/dispel-248 finished: 1/1 passed\n",
+      "passed": true,
+      "rating": {
+        "value": -21,
+        "expected_average": 39,
+        "clevel": 26
+      },
+      "outcome": {
+        "hp_before": 47,
+        "hp_after": 47,
+        "hp_lost": 0,
+        "undead": 1
+      },
+      "launch": {
+        "direct": -1
+      }
+    }
+  },
+  "bolt": {
+    "label": "Control: the primary bolt is untouched",
+    "explanation": "Only the class's primary nether bolt is valued against the same living giant. The Dispel Life filter plays no part, and the complete log is byte-identical before and after the correction.",
+    "before": {
+      "raw": "native-c/dispel-248: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Necromancer level=26 depth=30 hp=158/158 sp=144/144 target=hill giant hp=225 undead=0\n  dispel_life_rates_living_monsters  MODE bolt\nRATING bolt_control=11\nPassed\nnative-c/dispel-248 finished: 1/1 passed\n",
+      "passed": true,
+      "rating": {
+        "bolt_control": 11
+      },
+      "outcome": null,
+      "launch": null
+    },
+    "after": {
+      "raw": "native-c/dispel-248: starting...\nSETUPSTEP profile\nSETUP seed=1000 class=Necromancer level=26 depth=30 hp=158/158 sp=144/144 target=hill giant hp=225 undead=0\n  dispel_life_rates_living_monsters  MODE bolt\nRATING bolt_control=11\nPassed\nnative-c/dispel-248 finished: 1/1 passed\n",
+      "passed": true,
+      "rating": {
+        "bolt_control": 11
+      },
+      "outcome": null,
+      "launch": null
+    }
+  }
+}
