@@ -1,0 +1,56 @@
+{
+  "near-far": {
+    "exit": 0,
+    "passed": false,
+    "geometry": {
+      "near": 5,
+      "far": 20,
+      "max_range": 20
+    },
+    "decision": {
+      "acted": 0,
+      "keys": 0
+    },
+    "outcome": {
+      "acted": 0,
+      "keys": 0,
+      "cast_spell": 0
+    }
+  },
+  "near-near": {
+    "exit": 0,
+    "passed": true,
+    "geometry": {
+      "near": 2,
+      "far": 0,
+      "max_range": 20
+    },
+    "decision": {
+      "acted": 1,
+      "keys": 3
+    },
+    "outcome": {
+      "acted": 1,
+      "keys": 3,
+      "cast_spell": 1
+    }
+  },
+  "far": {
+    "exit": 0,
+    "passed": true,
+    "geometry": {
+      "near": 20,
+      "far": 20,
+      "max_range": 20
+    },
+    "decision": {
+      "acted": 0,
+      "keys": 0
+    },
+    "outcome": {
+      "acted": 0,
+      "keys": 0,
+      "cast_spell": 0
+    }
+  }
+}
