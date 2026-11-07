@@ -33,8 +33,8 @@ From a clone of `diegoami/neo-angband-tracker`, copy these three commands:
 
 ```sh
 git fetch https://github.com/diegoami/neo-angband-tracker.git task/stairtrack-232-evidence
-git show PINSHA:docs/audit/c-reports/stairtrack-232/reproduce.py > /tmp/reproduce-stairtrack-232.py
-python3 /tmp/reproduce-stairtrack-232.py --fixtures-ref PINSHA --full-tests
+git show 6a28f95e98d046ddaa0ba29b265df2ba42291090:docs/audit/c-reports/stairtrack-232/reproduce.py > /tmp/reproduce-stairtrack-232.py
+python3 /tmp/reproduce-stairtrack-232.py --fixtures-ref 6a28f95e98d046ddaa0ba29b265df2ba42291090 --full-tests
 ```
 
 The runner builds original and corrected variants from pristine C
