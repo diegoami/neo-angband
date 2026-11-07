@@ -1,0 +1,185 @@
+{
+  "cbug": "recalldepth-310",
+  "issue": 310,
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "fix": "9609e2c8682c7f55fe1ae4bf9701ae74e2718ce0",
+  "fixtures_ref": "9ccd191c2601d30285d2e9983f5eabdfd1cbf165",
+  "cases": {
+    "before": {
+      "endgame": {
+        "exit": 0,
+        "passed": false,
+        "setup": {
+          "curdepth": 65,
+          "hunted": 65,
+          "live_uniques": 2
+        },
+        "decision": {
+          "acted": 1,
+          "keys": 6
+        },
+        "outcome": {
+          "acted": 1,
+          "keys": 6,
+          "reset_y": 0,
+          "keep_n": 1
+        },
+        "sequence": "<Escape> <Escape> r d n <Escape>"
+      },
+      "generic": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "curdepth": 30,
+          "hunted": 30,
+          "live_uniques": 2
+        },
+        "decision": {
+          "acted": 1,
+          "keys": 6
+        },
+        "outcome": {
+          "acted": 1,
+          "keys": 6,
+          "reset_y": 1,
+          "keep_n": 0
+        },
+        "sequence": "<Escape> <Escape> r d y <Escape>"
+      },
+      "mismatch": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "curdepth": 65,
+          "hunted": 30,
+          "live_uniques": 2
+        },
+        "decision": {
+          "acted": 1,
+          "keys": 6
+        },
+        "outcome": {
+          "acted": 1,
+          "keys": 6,
+          "reset_y": 0,
+          "keep_n": 1
+        },
+        "sequence": "<Escape> <Escape> r d n <Escape>"
+      }
+    },
+    "after": {
+      "endgame": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "curdepth": 65,
+          "hunted": 65,
+          "live_uniques": 2
+        },
+        "decision": {
+          "acted": 1,
+          "keys": 6
+        },
+        "outcome": {
+          "acted": 1,
+          "keys": 6,
+          "reset_y": 1,
+          "keep_n": 0
+        },
+        "sequence": "<Escape> <Escape> r d y <Escape>"
+      },
+      "generic": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "curdepth": 30,
+          "hunted": 30,
+          "live_uniques": 2
+        },
+        "decision": {
+          "acted": 1,
+          "keys": 6
+        },
+        "outcome": {
+          "acted": 1,
+          "keys": 6,
+          "reset_y": 1,
+          "keep_n": 0
+        },
+        "sequence": "<Escape> <Escape> r d y <Escape>"
+      },
+      "mismatch": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "curdepth": 65,
+          "hunted": 30,
+          "live_uniques": 2
+        },
+        "decision": {
+          "acted": 1,
+          "keys": 6
+        },
+        "outcome": {
+          "acted": 1,
+          "keys": 6,
+          "reset_y": 0,
+          "keep_n": 1
+        },
+        "sequence": "<Escape> <Escape> r d n <Escape>"
+      }
+    }
+  },
+  "identical_full_logs": [
+    "generic",
+    "mismatch"
+  ],
+  "full_tests": {
+    "before": {
+      "units": "965/965",
+      "frontends": "5/5"
+    },
+    "after": {
+      "units": "965/965",
+      "frontends": "5/5"
+    }
+  },
+  "fail_before": {
+    "endgame": "scenario asserts the corrected 'y' answer; the original answers 'n' (acted=1 keep_n=1) and fails the suite"
+  },
+  "controls": "generic and mismatch full logs byte-identical before/after",
+  "render_check": {
+    "tool": "Chrome for Testing headless (--headless=new --dump-dom --virtual-time-budget)",
+    "checks": 18,
+    "asserted_against": "rendered DOM per scenario: explanation, both queued sequences (HTML-escaped), answer label, raw logs; plus node --check on the generated replay script"
+  },
+  "compiler": "gcc 15.2.0",
+  "cmake": "4.2.3",
+  "browser": "Chrome for Testing chromium-1248",
+  "sha256": {
+    "README.md": "eb0f9b1a7bfe192e294f2094b2b5d156ca6e8cac422cf3e4d4444ff63492db34",
+    "after-alltests.log": "5e6bad2c217e0d02f4899de45d9167a1a148786b83068608ad677bc55bf5bde4",
+    "after-build.log": "41c030019d48330892d21f127a50f2cd4840d59988ecfbdd1a694599a72f3b7d",
+    "after-endgame.log": "339c02e5d0053891d08fea28d2d7020de284c5fe0ce711208415677113efb03a",
+    "after-generic.log": "5c188cd1a653cb6596a17b82a5875a598f78aad90085d43a118bb1fe61901f1a",
+    "after-mismatch.log": "855bcdbccfd859466d8e24b9e333a6b98d2d7a6f43f3a3f168b7d19ba57c331f",
+    "after-results.json": "ff021364673b059553d90a8ae87aeda31487326f0f8295144cf5cc4a2d113340",
+    "after-scenarios.log": "adc73ca60e281a2d885345ef977a2f89a130c6b38516ec3d78f78b9ac13887fe",
+    "before-alltests.log": "62a252afe488595c393f225c6a986255ac98e45b0a9c35e0ef95a9db3d0dbe26",
+    "before-build.log": "494371d46b0ea08854b46e7fd3982d25c45a8cb96c95ea947faf0cbd7e9303fe",
+    "before-endgame.log": "10885d849b0af9f388e89f114bba0e00319ec963a1525652f9b8124527938f9a",
+    "before-generic.log": "5c188cd1a653cb6596a17b82a5875a598f78aad90085d43a118bb1fe61901f1a",
+    "before-mismatch.log": "855bcdbccfd859466d8e24b9e333a6b98d2d7a6f43f3a3f168b7d19ba57c331f",
+    "before-results.json": "91bb223ab86fcd591c72b433c4add46425fdbced46249fb8c3b488f8bd578635",
+    "before-scenarios.log": "bb0ced25fe49fe8fe2684b2ef63ab0793697bf5ed80e7d54518d50a7a08fca78",
+    "borg.txt": "80738da248ed74e343925e0348fc75da993d8c03ffff03c7bce1a9090005be47",
+    "configure.log": "509601d0ccad99b3f8825a8d1afdb1bdc0065e2b654c75f4991c5ca8ea9baa09",
+    "make_replay.py": "f92f72092b6fef7519abad0bbe6cd16292107578a3f11c3d6bb497fe93e9cbfc",
+    "replay-data.json": "a7440c6b7b69434d28731e398d75b09e51d68cdd4e16c4db4b77a09e31123091",
+    "replay.html": "2b4d89f2d33e9f5404786695e7cdc652bc3d096568b160cc0de9d17d9669db3b",
+    "reproduce.py": "57d4013b12c71aad87e1adbe0cf9eb4e8e924d9b540e006bd8ebc702da29b5e7",
+    "result.json": "4fd16c04195be530533f563708e7c8480dd60f3b29179709407fc853a4b58620",
+    "run-cases.py": "07ad4e9c45b1bb8d59f9b94d94873e02158a5813dec2db5564c2830810f97c6b",
+    "scenario.c": "96b35130628ac376b69e5b8a62d1269eca761b7511ed1966d10d8c1c0b17be60"
+  }
+}
