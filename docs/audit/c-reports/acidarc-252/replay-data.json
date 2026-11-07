@@ -1,0 +1,134 @@
+{
+  "edge": {
+    "label": "The giant stands exactly ten grids south",
+    "explanation": "A level-50 Mage with Acid Spray faces an awake hill giant exactly max_range grids south \u2014 on the blast loop's excluded south edge. Acid Spray is the only live attack (20 mana blocks Frost Bolt). The original never counts the giant and finds nothing worth casting; the correction counts it at radius-scaled damage and sprays.",
+    "before": {
+      "raw": "native-c/acidarc-252: starting...\nSETUPSTEP profile\nSETUP maxsp=20 csp=20 failacid=2 poweracid=5 dist=10\nSETUP giant kill=1 power=257\nSETUP seed=1000 class=Mage level=50 depth=30 hp=258/258 sp=276/276\n  arc_counts_radius_edge  MODE edge\nDECISION acted=0 keys=0 sequence=\nOUTCOME acted=0 keys=0 cast=0\nFailed\n    native-c/acidarc-252:191: requirement 'acted ? 1 : 0' == '1' failed\n      acted ? 1 : 0:                0\n      1:                1\nnative-c/acidarc-252 finished: 0/1 passed\n",
+      "passed": false,
+      "setup": {
+        "csp": 20,
+        "failacid": 2,
+        "poweracid": 5,
+        "dist": 10
+      },
+      "decision": {
+        "acted": 0,
+        "keys": 0
+      },
+      "outcome": {
+        "acted": 0,
+        "keys": 0,
+        "cast": 0
+      },
+      "sequence": ""
+    },
+    "after": {
+      "raw": "native-c/acidarc-252: starting...\nSETUPSTEP profile\nSETUP maxsp=20 csp=20 failacid=2 poweracid=5 dist=10\nSETUP giant kill=1 power=257\nSETUP seed=1000 class=Mage level=50 depth=30 hp=258/258 sp=276/276\n  arc_counts_radius_edge  MODE edge\nDECISION acted=1 keys=17 sequence=* p 2 2 2 2 2 2 2 2 2 2 5 m b f 5\nOUTCOME acted=1 keys=17 cast=1\nPassed\nnative-c/acidarc-252 finished: 1/1 passed\n",
+      "passed": true,
+      "setup": {
+        "csp": 20,
+        "failacid": 2,
+        "poweracid": 5,
+        "dist": 10
+      },
+      "decision": {
+        "acted": 1,
+        "keys": 17
+      },
+      "outcome": {
+        "acted": 1,
+        "keys": 17,
+        "cast": 1
+      },
+      "sequence": "* p 2 2 2 2 2 2 2 2 2 2 5 m b f 5"
+    }
+  },
+  "near": {
+    "label": "Control: the giant eight grids south",
+    "explanation": "With the giant inside the blast loop in both versions, both cast Acid Spray with identical targeting. The complete logs are byte-identical.",
+    "before": {
+      "raw": "native-c/acidarc-252: starting...\nSETUPSTEP profile\nSETUP maxsp=20 csp=20 failacid=2 poweracid=5 dist=8\nSETUP giant kill=1 power=257\nSETUP seed=1000 class=Mage level=50 depth=30 hp=258/258 sp=276/276\n  arc_counts_radius_edge  MODE near\nDECISION acted=1 keys=15 sequence=* p 2 2 2 2 2 2 2 2 5 m b f 5\nOUTCOME acted=1 keys=15 cast=1\nPassed\nnative-c/acidarc-252 finished: 1/1 passed\n",
+      "passed": true,
+      "setup": {
+        "csp": 20,
+        "failacid": 2,
+        "poweracid": 5,
+        "dist": 8
+      },
+      "decision": {
+        "acted": 1,
+        "keys": 15
+      },
+      "outcome": {
+        "acted": 1,
+        "keys": 15,
+        "cast": 1
+      },
+      "sequence": "* p 2 2 2 2 2 2 2 2 5 m b f 5"
+    },
+    "after": {
+      "raw": "native-c/acidarc-252: starting...\nSETUPSTEP profile\nSETUP maxsp=20 csp=20 failacid=2 poweracid=5 dist=8\nSETUP giant kill=1 power=257\nSETUP seed=1000 class=Mage level=50 depth=30 hp=258/258 sp=276/276\n  arc_counts_radius_edge  MODE near\nDECISION acted=1 keys=15 sequence=* p 2 2 2 2 2 2 2 2 5 m b f 5\nOUTCOME acted=1 keys=15 cast=1\nPassed\nnative-c/acidarc-252 finished: 1/1 passed\n",
+      "passed": true,
+      "setup": {
+        "csp": 20,
+        "failacid": 2,
+        "poweracid": 5,
+        "dist": 8
+      },
+      "decision": {
+        "acted": 1,
+        "keys": 15
+      },
+      "outcome": {
+        "acted": 1,
+        "keys": 15,
+        "cast": 1
+      },
+      "sequence": "* p 2 2 2 2 2 2 2 2 5 m b f 5"
+    }
+  },
+  "empty": {
+    "label": "Control: nothing in sight",
+    "explanation": "With no monster at all, both versions find nothing to do. The complete logs are byte-identical.",
+    "before": {
+      "raw": "native-c/acidarc-252: starting...\nSETUPSTEP profile\nSETUP maxsp=20 csp=20 failacid=2 poweracid=5 dist=10\nSETUP seed=1000 class=Mage level=50 depth=30 hp=258/258 sp=276/276\n  arc_counts_radius_edge  MODE empty\nDECISION acted=0 keys=0 sequence=\nOUTCOME acted=0 keys=0 cast=0\nPassed\nnative-c/acidarc-252 finished: 1/1 passed\n",
+      "passed": true,
+      "setup": {
+        "csp": 20,
+        "failacid": 2,
+        "poweracid": 5,
+        "dist": 10
+      },
+      "decision": {
+        "acted": 0,
+        "keys": 0
+      },
+      "outcome": {
+        "acted": 0,
+        "keys": 0,
+        "cast": 0
+      },
+      "sequence": ""
+    },
+    "after": {
+      "raw": "native-c/acidarc-252: starting...\nSETUPSTEP profile\nSETUP maxsp=20 csp=20 failacid=2 poweracid=5 dist=10\nSETUP seed=1000 class=Mage level=50 depth=30 hp=258/258 sp=276/276\n  arc_counts_radius_edge  MODE empty\nDECISION acted=0 keys=0 sequence=\nOUTCOME acted=0 keys=0 cast=0\nPassed\nnative-c/acidarc-252 finished: 1/1 passed\n",
+      "passed": true,
+      "setup": {
+        "csp": 20,
+        "failacid": 2,
+        "poweracid": 5,
+        "dist": 10
+      },
+      "decision": {
+        "acted": 0,
+        "keys": 0
+      },
+      "outcome": {
+        "acted": 0,
+        "keys": 0,
+        "cast": 0
+      },
+      "sequence": ""
+    }
+  }
+}

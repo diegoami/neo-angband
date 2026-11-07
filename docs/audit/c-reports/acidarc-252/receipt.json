@@ -1,0 +1,186 @@
+{
+  "cbug": "acidarc-252",
+  "issue": 252,
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "fix": "2a4125e44f8bcb30e7170416c68f8713cc271994",
+  "fixtures_ref": "e40c642a0a7906d8d9caadb803ed6a5adb70bbc5",
+  "cases": {
+    "before": {
+      "edge": {
+        "exit": 0,
+        "passed": false,
+        "setup": {
+          "csp": 20,
+          "failacid": 2,
+          "poweracid": 5,
+          "dist": 10
+        },
+        "decision": {
+          "acted": 0,
+          "keys": 0
+        },
+        "outcome": {
+          "acted": 0,
+          "keys": 0,
+          "cast": 0
+        },
+        "sequence": ""
+      },
+      "near": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "csp": 20,
+          "failacid": 2,
+          "poweracid": 5,
+          "dist": 8
+        },
+        "decision": {
+          "acted": 1,
+          "keys": 15
+        },
+        "outcome": {
+          "acted": 1,
+          "keys": 15,
+          "cast": 1
+        },
+        "sequence": "* p 2 2 2 2 2 2 2 2 5 m b f 5"
+      },
+      "empty": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "csp": 20,
+          "failacid": 2,
+          "poweracid": 5,
+          "dist": 10
+        },
+        "decision": {
+          "acted": 0,
+          "keys": 0
+        },
+        "outcome": {
+          "acted": 0,
+          "keys": 0,
+          "cast": 0
+        },
+        "sequence": ""
+      }
+    },
+    "after": {
+      "edge": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "csp": 20,
+          "failacid": 2,
+          "poweracid": 5,
+          "dist": 10
+        },
+        "decision": {
+          "acted": 1,
+          "keys": 17
+        },
+        "outcome": {
+          "acted": 1,
+          "keys": 17,
+          "cast": 1
+        },
+        "sequence": "* p 2 2 2 2 2 2 2 2 2 2 5 m b f 5"
+      },
+      "near": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "csp": 20,
+          "failacid": 2,
+          "poweracid": 5,
+          "dist": 8
+        },
+        "decision": {
+          "acted": 1,
+          "keys": 15
+        },
+        "outcome": {
+          "acted": 1,
+          "keys": 15,
+          "cast": 1
+        },
+        "sequence": "* p 2 2 2 2 2 2 2 2 5 m b f 5"
+      },
+      "empty": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "csp": 20,
+          "failacid": 2,
+          "poweracid": 5,
+          "dist": 10
+        },
+        "decision": {
+          "acted": 0,
+          "keys": 0
+        },
+        "outcome": {
+          "acted": 0,
+          "keys": 0,
+          "cast": 0
+        },
+        "sequence": ""
+      }
+    }
+  },
+  "identical_full_logs": [
+    "near",
+    "empty"
+  ],
+  "full_tests": {
+    "before": {
+      "units": "965/965",
+      "frontends": "5/5"
+    },
+    "after": {
+      "units": "965/965",
+      "frontends": "5/5"
+    }
+  },
+  "fail_before": {
+    "edge": "scenario asserts the corrected cast; the original finds nothing worth casting (acted=0) and fails the suite"
+  },
+  "controls": "near and empty full logs byte-identical before/after",
+  "render_check": {
+    "tool": "Chrome for Testing headless (--headless=new --dump-dom --virtual-time-budget)",
+    "checks": 15,
+    "asserted_against": "rendered DOM per scenario: explanation, both decisions, decision label, raw logs; plus node --check on the generated replay script"
+  },
+  "compiler": "gcc 15.2.0",
+  "cmake": "4.2.3",
+  "browser": "Chrome for Testing chromium-1248",
+  "seed_note": "chooser 2% simulation paranoia checked across 15 seeds at this call position; none hits",
+  "sha256": {
+    "README.md": "39d8d410afffb972185d8792a155605a9ceefd635bf82183a70444a8bd735b6f",
+    "after-alltests.log": "9728a68b859549cb3b7f9bfc15b957a1e51666a42a058e5804edb7b278899dad",
+    "after-build.log": "2b67dda146bef68d9b72bf4d7ffd9d1422f06380fdcc218d1d78fb2248897c7a",
+    "after-edge.log": "d4a00b98dba31e73221527c4e52f2ffefcd134729b7913cd573a16ce5460d079",
+    "after-empty.log": "25656ae8a753346fcab686808e401738ad62903542f283e1709a0fcc184dfa1c",
+    "after-near.log": "317a0a2c1733ed2f859d76db2f4b6133db4ed8cc25eb078a6cd88ca2239f1999",
+    "after-results.json": "b0aaca2ce6428239e1af9652bca191bf39f3c58f5f3b9670b0d673c6c959a68a",
+    "after-scenarios.log": "d8d2b378425224ff22c4aa917a9443a1b4045fed448e5d3b9d4adedca2a706c1",
+    "before-alltests.log": "688a105b3e176d0d5c828f9f08903369eb65e1ff0d9907a5cde339a421cf53bd",
+    "before-build.log": "31852f631ca66f8d2e65c8bc87efaab8c76ad23ccae9422c9af85c483817803e",
+    "before-edge.log": "45e925dfc9a4083d46930dd9758ba9b31bdd0bd92ea582575d6c55ede5a7245f",
+    "before-empty.log": "25656ae8a753346fcab686808e401738ad62903542f283e1709a0fcc184dfa1c",
+    "before-near.log": "317a0a2c1733ed2f859d76db2f4b6133db4ed8cc25eb078a6cd88ca2239f1999",
+    "before-results.json": "4270b6a4e1b33ae7b4115969dca9b114c39ea18e7571ec42e6c66b4aa270d5f0",
+    "before-scenarios.log": "5d7af2e44d2db123b45057926883ed51a7b1543ddde78643e7e4aaea84b5e07a",
+    "borg.txt": "80738da248ed74e343925e0348fc75da993d8c03ffff03c7bce1a9090005be47",
+    "configure.log": "2dbaf9e0f28d6e39ecda46da19eaefd279a13ff8fdbec2dde1e20187d806304b",
+    "make_replay.py": "9513a8ec786ed859029053ede806804f1285a4290138de5880ede5a986e4998d",
+    "replay-data.json": "521f5a4e7119accf8994955c1172adffeca24b4879d98f25dd77540fcdf8fda5",
+    "replay.html": "a81bb95ff578c99ea2e75d42b5922e207bbff6fb0dcf7ca7c9c330d3c2eb5092",
+    "reproduce.py": "a0942c9fbd718054b40d133a1e4bd0c784d368217c25c0caca8fc4deec6d0795",
+    "result.json": "f203dab7c7e0d8df940c31d3fe000bcfbc70f9e423174b8b4bb56e8a48b14aed",
+    "run-cases.py": "deeb94f02ee212661fccc49b76fa30250becc33f16f4fb7550e61d7344db56bd",
+    "scenario.c": "7520ce3da98aea7f9b3de83209e9e7e8947766009dde76d128830a3fbf9a6762"
+  }
+}
