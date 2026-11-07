@@ -1,0 +1,62 @@
+{
+  "edge": {
+    "exit": 0,
+    "passed": false,
+    "setup": {
+      "csp": 20,
+      "failacid": 2,
+      "poweracid": 5,
+      "dist": 10
+    },
+    "decision": {
+      "acted": 0,
+      "keys": 0
+    },
+    "outcome": {
+      "acted": 0,
+      "keys": 0,
+      "cast": 0
+    },
+    "sequence": ""
+  },
+  "near": {
+    "exit": 0,
+    "passed": true,
+    "setup": {
+      "csp": 20,
+      "failacid": 2,
+      "poweracid": 5,
+      "dist": 8
+    },
+    "decision": {
+      "acted": 1,
+      "keys": 15
+    },
+    "outcome": {
+      "acted": 1,
+      "keys": 15,
+      "cast": 1
+    },
+    "sequence": "* p 2 2 2 2 2 2 2 2 5 m b f 5"
+  },
+  "empty": {
+    "exit": 0,
+    "passed": true,
+    "setup": {
+      "csp": 20,
+      "failacid": 2,
+      "poweracid": 5,
+      "dist": 10
+    },
+    "decision": {
+      "acted": 0,
+      "keys": 0
+    },
+    "outcome": {
+      "acted": 0,
+      "keys": 0,
+      "cast": 0
+    },
+    "sequence": ""
+  }
+}
