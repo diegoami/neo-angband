@@ -1,0 +1,186 @@
+{
+  "cbug": "tapunlife-249",
+  "issue": 249,
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "fix": "21a1b9079e612adaf8108390e5ec2379ffce33b7",
+  "fixtures_ref": "91eedca363182fe4aa4dfdea5cc16860cd106ca5",
+  "evidence_head_after_artifacts": "3f3cebf764232fc0258caa06577053abf37bdf15",
+  "cases": {
+    "before": {
+      "undead": {
+        "exit": 0,
+        "passed": false,
+        "setup": {
+          "maxsp": 78,
+          "failtap": 2,
+          "failbolt": 2,
+          "maxrange": 20
+        },
+        "decision": {
+          "acted": 1,
+          "keys": 12
+        },
+        "outcome": {
+          "acted": 1,
+          "keys": 12,
+          "tap_cast": 1
+        },
+        "sequence": "* p 2 2 2 2 2 2 5 m c a"
+      },
+      "non-undead": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "maxsp": 78,
+          "failtap": 2,
+          "failbolt": 2,
+          "maxrange": 20
+        },
+        "decision": {
+          "acted": 1,
+          "keys": 12
+        },
+        "outcome": {
+          "acted": 1,
+          "keys": 12,
+          "tap_cast": 0
+        },
+        "sequence": "* p 2 2 2 2 2 5 m b a 5"
+      },
+      "bat": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "maxsp": 78,
+          "failtap": 2,
+          "failbolt": 2,
+          "maxrange": 20
+        },
+        "decision": {
+          "acted": 1,
+          "keys": 10
+        },
+        "outcome": {
+          "acted": 1,
+          "keys": 10,
+          "tap_cast": 1
+        },
+        "sequence": "* p 6 6 6 6 5 m c a"
+      }
+    },
+    "after": {
+      "undead": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "maxsp": 78,
+          "failtap": 2,
+          "failbolt": 2,
+          "maxrange": 20
+        },
+        "decision": {
+          "acted": 1,
+          "keys": 10
+        },
+        "outcome": {
+          "acted": 1,
+          "keys": 10,
+          "tap_cast": 1
+        },
+        "sequence": "* p 6 6 6 6 5 m c a"
+      },
+      "non-undead": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "maxsp": 78,
+          "failtap": 2,
+          "failbolt": 2,
+          "maxrange": 20
+        },
+        "decision": {
+          "acted": 1,
+          "keys": 12
+        },
+        "outcome": {
+          "acted": 1,
+          "keys": 12,
+          "tap_cast": 0
+        },
+        "sequence": "* p 2 2 2 2 2 5 m b a 5"
+      },
+      "bat": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "maxsp": 78,
+          "failtap": 2,
+          "failbolt": 2,
+          "maxrange": 20
+        },
+        "decision": {
+          "acted": 1,
+          "keys": 10
+        },
+        "outcome": {
+          "acted": 1,
+          "keys": 10,
+          "tap_cast": 1
+        },
+        "sequence": "* p 6 6 6 6 5 m c a"
+      }
+    }
+  },
+  "identical_full_logs": [
+    "non-undead",
+    "bat"
+  ],
+  "full_tests": {
+    "before": {
+      "units": "965/965",
+      "frontends": "5/5"
+    },
+    "after": {
+      "units": "965/965",
+      "frontends": "5/5"
+    }
+  },
+  "fail_before": {
+    "undead": "scenario asserts corrected targeting; original fails it while still casting Tap Unlife (acted=1 tap_cast=1) toward the healthy bat's ray"
+  },
+  "controls": "non-undead and bat full logs byte-identical before/after",
+  "render_check": {
+    "tool": "Chrome for Testing headless (--headless=new --dump-dom --virtual-time-budget)",
+    "checks": 21,
+    "asserted_against": "rendered DOM per scenario: explanation, both queued sequences, cast label, raw logs; plus node --check on the generated replay script"
+  },
+  "compiler": "gcc 15.2.0",
+  "cmake": "4.2.3",
+  "browser": "Chrome for Testing chromium-1248",
+  "sha256": {
+    "README.md": "1603240646e54a2b092e1b5b540ce7ecbcc0544c9929b4dda2bccd4bb37c70ac",
+    "after-alltests.log": "4eb7170e1f7f55082806ed6f1f828e06376f8955cbb19f3dc0759281399ffdee",
+    "after-bat.log": "073b694fd555089de8b57e2f1d92f744600fcd8dc3a66b9e6e3c084af8a092b0",
+    "after-build.log": "ccb069838e671d5aa1166f2c25f0f65d45c93c212b109bf15a7b2bfaa51fd1bc",
+    "after-non-undead.log": "33bc1848bc5f57aa5a62a379a95d5f488e04d51bc50634ac278a3befc4fe8d43",
+    "after-results.json": "0e022f4b3cf085e975409dc67f4664b8928fe4062f60717e56eb7e9866e0a88a",
+    "after-scenarios.log": "d60df65e876d49007b58127e6a403cc36427d8531a16b5b9891cc196e1a7a7ff",
+    "after-undead.log": "db4faed2ffa83172c996c9c655fa8a8b9239b26f6fd043f56720b188c6e13c02",
+    "before-alltests.log": "6674dcfd2f66ccf3b64062eefbde028ed171252b8ffa13f225893f39c97dfd33",
+    "before-bat.log": "073b694fd555089de8b57e2f1d92f744600fcd8dc3a66b9e6e3c084af8a092b0",
+    "before-build.log": "790cd03167efd6430807b0684c1070073baa98e04996f56bb08082d619ffcd46",
+    "before-non-undead.log": "33bc1848bc5f57aa5a62a379a95d5f488e04d51bc50634ac278a3befc4fe8d43",
+    "before-results.json": "57ca3c03733ea9d219cbe0ca24ecf6b7f95fca4a17c10b457e7a6c42ee597cfa",
+    "before-scenarios.log": "f354ff709edcbd36f937368c4d28c3fadc550e8bd2cf47e45333f479c3fc0712",
+    "before-undead.log": "1c3821673f9f253173ead7d49f2984911139134693443b0834753e8182fce07b",
+    "borg.txt": "80738da248ed74e343925e0348fc75da993d8c03ffff03c7bce1a9090005be47",
+    "configure.log": "6418db24bfb7a8de7ecd42900f58aedd0638cbd90f8316ad9941b5ecd945d6c5",
+    "make_replay.py": "d0302a01eea529ee25945ec94fb16ab6af3ef6f4cc6caa8bb9c9ddb63d21f925",
+    "replay-data.json": "4f8d49a1c724863f9f7a6bb03865dd9c2d4218b04cf5cfbe671ee8b70c13e310",
+    "replay.html": "b21c162c09b01532decf4042b216ccdea4468090caad63e5ed7c3394fb72ee8a",
+    "reproduce.py": "85f48ba7e619d2e3ef71c43ec75d1c02194f037b70ffceaf294fc1d1f581eddc",
+    "result.json": "1578791f7f46892bb2b3d1c91f3f4a63f089ac7063d2d4d295028917680a3ace",
+    "run-cases.py": "aaab791d1abfa00840f1cb71036cf4f80d69f81ba109567d372379238a69060d",
+    "scenario.c": "26a0b44b5efc25623c57f5384da6080bfc223d9532b1bc2f2c4e184edc8edb3f"
+  }
+}

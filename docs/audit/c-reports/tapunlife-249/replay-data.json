@@ -1,0 +1,134 @@
+{
+  "undead": {
+    "label": "A healthy bat and a nearly-dead one",
+    "explanation": "A level-14 Necromancer with both books faces a healthy vampire bat five grids away and a vampire bat hurt to a fifth of its hp three grids away; a wall sits just beyond each. The original rates the tap at each target's full hp, so it taps toward the healthy bat; the correction rates both taps at real damage, where the nearly-dead bat rates higher, and taps toward it.",
+    "before": {
+      "raw": "native-c/tapunlife-249: starting...\nSETUPSTEP profile\nSETUP level=14 maxsp=78 failtap=2 failbolt=2 maxrange=20\nSETUP healthy kill=1 power=47 level=24 injury=0 undead=1\nSETUP injured kill=2 power=10 level=24 injury=82 undead=1\nSETUP seed=1000 class=Necromancer level=14 depth=30 hp=74/74 sp=78/78\n  tap_unlife_rated_at_real_damage  MODE undead\nDECISION acted=1 keys=12 sequence=* p 2 2 2 2 2 2 5 m c a\nSEQSTRING * p 2 2 2 2 2 2 5 m c a\nOUTCOME acted=1 keys=12 tap_cast=1\nFailed\n    native-c/tapunlife-249:240: requirement 'streq(seq, TAP249_AFTER_SEQ)' failed\nnative-c/tapunlife-249 finished: 0/1 passed\n",
+      "passed": false,
+      "setup": {
+        "maxsp": 78,
+        "failtap": 2,
+        "failbolt": 2,
+        "maxrange": 20
+      },
+      "decision": {
+        "acted": 1,
+        "keys": 12
+      },
+      "outcome": {
+        "acted": 1,
+        "keys": 12,
+        "tap_cast": 1
+      },
+      "sequence": "* p 2 2 2 2 2 2 5 m c a"
+    },
+    "after": {
+      "raw": "native-c/tapunlife-249: starting...\nSETUPSTEP profile\nSETUP level=14 maxsp=78 failtap=2 failbolt=2 maxrange=20\nSETUP healthy kill=1 power=47 level=24 injury=0 undead=1\nSETUP injured kill=2 power=10 level=24 injury=82 undead=1\nSETUP seed=1000 class=Necromancer level=14 depth=30 hp=74/74 sp=78/78\n  tap_unlife_rated_at_real_damage  MODE undead\nDECISION acted=1 keys=10 sequence=* p 6 6 6 6 5 m c a\nSEQSTRING * p 6 6 6 6 5 m c a\nOUTCOME acted=1 keys=10 tap_cast=1\nPassed\nnative-c/tapunlife-249 finished: 1/1 passed\n",
+      "passed": true,
+      "setup": {
+        "maxsp": 78,
+        "failtap": 2,
+        "failbolt": 2,
+        "maxrange": 20
+      },
+      "decision": {
+        "acted": 1,
+        "keys": 10
+      },
+      "outcome": {
+        "acted": 1,
+        "keys": 10,
+        "tap_cast": 1
+      },
+      "sequence": "* p 6 6 6 6 5 m c a"
+    }
+  },
+  "non-undead": {
+    "label": "Control: only a plain giant",
+    "explanation": "With only a hill giant in sight the tap rates zero in both versions and the Nether Bolt is cast. The complete logs are byte-identical.",
+    "before": {
+      "raw": "native-c/tapunlife-249: starting...\nSETUPSTEP profile\nSETUP level=14 maxsp=78 failtap=2 failbolt=2 maxrange=20\nSETUP giant kill=1 power=225 level=25 injury=0 undead=0\nSETUP seed=1000 class=Necromancer level=14 depth=30 hp=74/74 sp=78/78\n  tap_unlife_rated_at_real_damage  MODE non-undead\nDECISION acted=1 keys=12 sequence=* p 2 2 2 2 2 5 m b a 5\nSEQSTRING * p 2 2 2 2 2 5 m b a 5\nOUTCOME acted=1 keys=12 tap_cast=0\nPassed\nnative-c/tapunlife-249 finished: 1/1 passed\n",
+      "passed": true,
+      "setup": {
+        "maxsp": 78,
+        "failtap": 2,
+        "failbolt": 2,
+        "maxrange": 20
+      },
+      "decision": {
+        "acted": 1,
+        "keys": 12
+      },
+      "outcome": {
+        "acted": 1,
+        "keys": 12,
+        "tap_cast": 0
+      },
+      "sequence": "* p 2 2 2 2 2 5 m b a 5"
+    },
+    "after": {
+      "raw": "native-c/tapunlife-249: starting...\nSETUPSTEP profile\nSETUP level=14 maxsp=78 failtap=2 failbolt=2 maxrange=20\nSETUP giant kill=1 power=225 level=25 injury=0 undead=0\nSETUP seed=1000 class=Necromancer level=14 depth=30 hp=74/74 sp=78/78\n  tap_unlife_rated_at_real_damage  MODE non-undead\nDECISION acted=1 keys=12 sequence=* p 2 2 2 2 2 5 m b a 5\nSEQSTRING * p 2 2 2 2 2 5 m b a 5\nOUTCOME acted=1 keys=12 tap_cast=0\nPassed\nnative-c/tapunlife-249 finished: 1/1 passed\n",
+      "passed": true,
+      "setup": {
+        "maxsp": 78,
+        "failtap": 2,
+        "failbolt": 2,
+        "maxrange": 20
+      },
+      "decision": {
+        "acted": 1,
+        "keys": 12
+      },
+      "outcome": {
+        "acted": 1,
+        "keys": 12,
+        "tap_cast": 0
+      },
+      "sequence": "* p 2 2 2 2 2 5 m b a 5"
+    }
+  },
+  "bat": {
+    "label": "Control: only one healthy bat",
+    "explanation": "With only one bat in sight the tap wins in both versions \u2014 after the correction on real damage alone, before on the inflated rating. The decision and the complete logs are byte-identical.",
+    "before": {
+      "raw": "native-c/tapunlife-249: starting...\nSETUPSTEP profile\nSETUP level=14 maxsp=78 failtap=2 failbolt=2 maxrange=20\nSETUP bat kill=1 power=47 level=24 injury=0 undead=1\nSETUP seed=1000 class=Necromancer level=14 depth=30 hp=74/74 sp=78/78\n  tap_unlife_rated_at_real_damage  MODE bat\nDECISION acted=1 keys=10 sequence=* p 6 6 6 6 5 m c a\nSEQSTRING * p 6 6 6 6 5 m c a\nOUTCOME acted=1 keys=10 tap_cast=1\nPassed\nnative-c/tapunlife-249 finished: 1/1 passed\n",
+      "passed": true,
+      "setup": {
+        "maxsp": 78,
+        "failtap": 2,
+        "failbolt": 2,
+        "maxrange": 20
+      },
+      "decision": {
+        "acted": 1,
+        "keys": 10
+      },
+      "outcome": {
+        "acted": 1,
+        "keys": 10,
+        "tap_cast": 1
+      },
+      "sequence": "* p 6 6 6 6 5 m c a"
+    },
+    "after": {
+      "raw": "native-c/tapunlife-249: starting...\nSETUPSTEP profile\nSETUP level=14 maxsp=78 failtap=2 failbolt=2 maxrange=20\nSETUP bat kill=1 power=47 level=24 injury=0 undead=1\nSETUP seed=1000 class=Necromancer level=14 depth=30 hp=74/74 sp=78/78\n  tap_unlife_rated_at_real_damage  MODE bat\nDECISION acted=1 keys=10 sequence=* p 6 6 6 6 5 m c a\nSEQSTRING * p 6 6 6 6 5 m c a\nOUTCOME acted=1 keys=10 tap_cast=1\nPassed\nnative-c/tapunlife-249 finished: 1/1 passed\n",
+      "passed": true,
+      "setup": {
+        "maxsp": 78,
+        "failtap": 2,
+        "failbolt": 2,
+        "maxrange": 20
+      },
+      "decision": {
+        "acted": 1,
+        "keys": 10
+      },
+      "outcome": {
+        "acted": 1,
+        "keys": 10,
+        "tap_cast": 1
+      },
+      "sequence": "* p 6 6 6 6 5 m c a"
+    }
+  }
+}
