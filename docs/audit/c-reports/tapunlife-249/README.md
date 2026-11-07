@@ -67,8 +67,8 @@ The native run recorded in this directory's logs executed at fixtures
 pin `91eedca363182fe4aa4dfdea5cc16860cd106ca5`. The captured replay,
 its data and this guide were then added on top; no generator change of
 any kind followed the run, and no native log, source variant or gate
-differs between the pin and this head (commit list: pin, then one
-artifact commit).
+differs between the pin and this head (commit list: pin, artifact
+commit, receipt-head fix).
 
 Open [replay.html](replay.html) (download raw and open locally). Choose
 **A healthy bat and a nearly-dead one**, then **The target list** and

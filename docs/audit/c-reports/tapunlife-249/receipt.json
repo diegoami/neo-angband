@@ -4,7 +4,7 @@
   "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
   "fix": "21a1b9079e612adaf8108390e5ec2379ffce33b7",
   "fixtures_ref": "91eedca363182fe4aa4dfdea5cc16860cd106ca5",
-  "evidence_head_after_artifacts": null,
+  "evidence_head_after_artifacts": "3f3cebf764232fc0258caa06577053abf37bdf15",
   "cases": {
     "before": {
       "undead": {
@@ -182,5 +182,6 @@
     "result.json": "1578791f7f46892bb2b3d1c91f3f4a63f089ac7063d2d4d295028917680a3ace",
     "run-cases.py": "aaab791d1abfa00840f1cb71036cf4f80d69f81ba109567d372379238a69060d",
     "scenario.c": "26a0b44b5efc25623c57f5384da6080bfc223d9532b1bc2f2c4e184edc8edb3f"
-  }
+  },
+  "evidence_head_after_receipt_fix": null
 }
