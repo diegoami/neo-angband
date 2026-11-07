@@ -1,0 +1,74 @@
+{
+  "dying": {
+    "exit": 0,
+    "passed": true,
+    "setup": {
+      "timeout": 3,
+      "nofuel": 0,
+      "flasks": 1
+    },
+    "decision": {
+      "acted": 1,
+      "keys": 2
+    },
+    "outcome": {
+      "acted": 1,
+      "keys": 2
+    },
+    "sequence": "w e"
+  },
+  "lit": {
+    "exit": 0,
+    "passed": true,
+    "setup": {
+      "timeout": 1500,
+      "nofuel": 0,
+      "flasks": 1
+    },
+    "decision": {
+      "acted": 0,
+      "keys": 0
+    },
+    "outcome": {
+      "acted": 0,
+      "keys": 0
+    },
+    "sequence": ""
+  },
+  "everburn": {
+    "exit": 0,
+    "passed": true,
+    "setup": {
+      "timeout": 0,
+      "nofuel": 1,
+      "flasks": 1
+    },
+    "decision": {
+      "acted": 0,
+      "keys": 0
+    },
+    "outcome": {
+      "acted": 0,
+      "keys": 0
+    },
+    "sequence": ""
+  },
+  "dead": {
+    "exit": 0,
+    "passed": true,
+    "setup": {
+      "timeout": 0,
+      "nofuel": 0,
+      "flasks": 1
+    },
+    "decision": {
+      "acted": 1,
+      "keys": 2
+    },
+    "outcome": {
+      "acted": 1,
+      "keys": 2
+    },
+    "sequence": "w e"
+  }
+}
