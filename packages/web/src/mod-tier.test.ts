@@ -23,6 +23,7 @@ import {
   tierRefusal,
   type ModTierFacts,
 } from "./mod-tier";
+import { setConsentBindings } from "./mod-consent-binding";
 import { loadModCode, measureModTiers, settledGrants, PLUGIN_FILE } from "./mod-code";
 import type { CodeUrlResolver, DiskPack } from "./disk-packs";
 import { MOD_API_VERSION } from "./mod-plugin";
@@ -48,7 +49,8 @@ describe("engine consent", () => {
     for (const trust of ["sideloaded", "reviewed"] as const) {
       const tier = { ...assignTier({ id: "probe", source: "folder", execution: "in-process" }), trust };
       expect(effectiveGrants(["engine:access"], tier, { granted: [], refused: [] }).granted).toEqual([]);
-      expect(effectiveGrants(["engine:access"], tier, { granted: ["engine:access"], refused: [] }).granted).toEqual(["engine:access"]);
+      expect(effectiveGrants(["engine:access"], tier, { granted: ["engine:access"], refused: [] }).granted).toEqual([]);
+      expect(effectiveGrants(["engine:access"], { ...tier, developerInProcess: true }, { granted: ["engine:access"], refused: [] }).granted).toEqual(["engine:access"]);
     }
     expect(tierRefusal("engine:access", assignTier(installed({ execution: "worker" })))).toContain("Worker");
   });
@@ -294,6 +296,9 @@ describe("the seam policy", () => {
 });
 
 describe("per-permission consent", () => {
+  /* Public code in the game page is always measured before it loads. */
+  const measured = (id: string): void => setConsentBindings(new Map([[id, "bound"]]));
+  afterEach(() => setConsentBindings(new Map()));
   const tier = assignTier({ id: "p", source: "folder", execution: "in-process" });
 
   it.each([false, true])("asks session permissions with the real map off by default (individual: %s)", async (individual) => {
@@ -326,6 +331,7 @@ describe("per-permission consent", () => {
   it("blocks an enabled unreviewed mod before resolving or importing its code", async () => {
     const importer = vi.fn(() => Promise.resolve(plugin));
     const resolve = vi.fn(codeUrl);
+    measured("p");
     const report = await loadModCode({ packs: [codePack("p", [])], codeUrl: resolve, enabled: () => true, consented: () => [], importer });
     expect(importer).not.toHaveBeenCalled();
     expect(resolve).not.toHaveBeenCalled();
@@ -336,8 +342,10 @@ describe("per-permission consent", () => {
     const pack = codePack("anybandui", []);
     const importer = vi.fn(() => Promise.resolve(plugin));
     const opts = { packs: [pack], codeUrl, enabled: () => true, consented: () => [], importer };
+    measured("p");
     expect((await loadModCode({ ...opts, tier: () => assignTier(installed()) })).plugins).toHaveLength(1);
     importer.mockClear();
+    measured("p");
     expect((await loadModCode({ ...opts, tier: () => assignTier(installed({ digestsMatch: false })) })).plugins).toHaveLength(0);
     expect(importer).not.toHaveBeenCalled();
   });
@@ -353,19 +361,20 @@ describe("per-permission consent", () => {
 
   it("hands over exactly what was allowed, and a refused permission answers not-granted", async () => {
     setModTiers(new Map([["p", tier]]));
+    measured("p");
     const report = await loadModCode({
       acknowledged: () => true,
-      packs: [codePack("p", ["state:monsters.read", "command:add"])],
+      packs: [codePack("p", ["state:monsters.read", "command:add", "engine:access"])],
       codeUrl,
       enabled: () => true,
-      consented: () => ["command:add"],
+      consented: () => ["command:add", "engine:access"],
       refused: () => ["state:monsters.read"],
-      tier: () => tier,
+      tier: () => ({ ...tier, developerInProcess: true }),
       importer: () => Promise.resolve(plugin),
     });
     const loaded = report.plugins[0];
-    expect(loaded?.declared).toEqual(["state:monsters.read", "command:add"]);
-    expect(loaded?.manifest.capabilities).toEqual(["command:add"]);
+    expect(loaded?.declared).toEqual(["state:monsters.read", "command:add", "engine:access"]);
+    expect(loaded?.manifest.capabilities).toEqual(["command:add", "engine:access"]);
     const caps = CapabilitySet.fromManifest(loaded!.manifest);
     expect(caps.has("state:monsters.read")).toBe(false);
     const host = createApi2Host({ state: {} } as unknown as ModPluginContext, { grants: caps });
@@ -376,6 +385,7 @@ describe("per-permission consent", () => {
 
   it("skips a mod with an undecided permission, and one that cannot start without a refused one", async () => {
     const importer = vi.fn(() => Promise.resolve(plugin));
+    setConsentBindings(new Map([["undecided", "bound"], ["needs", "bound"]]));
     const report = await loadModCode({
       acknowledged: () => true,
       packs: [codePack("undecided", ["command:add"]), codePack("needs", ["registry:effect"])],
@@ -393,7 +403,8 @@ describe("per-permission consent", () => {
     ]);
   });
 
-  it("reports a permission the tier withholds and loads the mod without it", async () => {
+  it("reports a reserved permission and refuses API 1 page execution", async () => {
+    measured("p");
     const report = await loadModCode({
       acknowledged: () => true,
       packs: [codePack("p", ["profiles:manage", "command:add"])],
@@ -403,7 +414,8 @@ describe("per-permission consent", () => {
       tier: () => tier,
       importer: () => Promise.resolve(plugin),
     });
-    expect(report.plugins[0]?.manifest.capabilities).toEqual(["command:add"]);
+    expect(report.plugins).toEqual([]);
+    expect(report.skipped).toHaveLength(1);
     expect(report.problems.map((p) => p.why)).toContain(
       "runs without profiles:manage: only the game's own mods can have it",
     );
@@ -464,7 +476,7 @@ describe("the unreviewed notice and badge", () => {
   it("badges unreviewed mods wherever the manager lists them", () => {
     expect(isUnreviewed(sideloaded)).toBe(true);
     expect(isUnreviewed(assignTier({ id: "l", source: "installed", execution: "in-process", listing: "community" }))).toBe(true);
-    expect(isUnreviewed(assignTier({ id: "l", source: "installed", execution: "worker", listing: "community" }))).toBe(false);
+    expect(isUnreviewed(assignTier({ id: "l", source: "installed", execution: "worker", listing: "community" }))).toBe(true);
     expect(isUnreviewed(firstParty)).toBe(false);
     expect(catalogRow(sideloaded).unreviewed).toBe(true);
     expect(rowLabel(catalogRow(sideloaded)).label).toContain("unreviewed");

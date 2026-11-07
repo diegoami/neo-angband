@@ -21,6 +21,7 @@ import { ContentIdResolver } from "../mod/ids.js";
 import { historyAdd } from "../player/history.js";
 import { serializeGame, serializeMessages, deserializeMessages } from "./save.js";
 import { MessageLog } from "../msg.js";
+import { Rng } from "../rng.js";
 import type { ObjectKind } from "../obj/types.js";
 import { describeObject } from "../game/describe.js";
 import { NOSCORE } from "../game/wizard.js";
@@ -1234,6 +1235,69 @@ describe("string-id serialization (P7.1) decouples saves from registry order", (
     // anti-save-scum guarantee is independent of content ordering.
     expect(restored.state.rng.getState()).toEqual(rngBefore);
     expect(restored.state.turn).toBe(game.state.turn);
+  });
+});
+
+describe("master-seed provenance", () => {
+  it("preserves the accepted birth RNG position through encoded save/load", () => {
+    const rng = new Rng(4242);
+    for (let i = 0; i < 19; i++) rng.randint0(1000);
+    const accepted = rng.getState();
+    const game = startGame(pack, { seed: 4242, rngState: accepted, depth: 2 });
+    expect((game.state as typeof game.state & { birthRngState?: unknown }).birthRngState).toEqual(accepted);
+    expect(game.state.rng.getState()).not.toEqual(accepted);
+    const decoded = decodeSavedGame(encodeSavedGame(saveGame(game)));
+    const restored = loadGame(pack, decoded.save!);
+    expect((restored.state as typeof restored.state & { birthRngState?: unknown }).birthRngState).toEqual(accepted);
+    expect(restored.state.rng.getState()).toEqual(game.state.rng.getState());
+  });
+
+  it("does not invent accepted-birth provenance for a legacy save", () => {
+    const save = saveGame(startGame(pack, { seed: 4242, depth: 2 })) as SavedGame & { birthRngState?: unknown };
+    delete save.birthRngState;
+    const restored = loadGame(pack, save);
+    expect(restored.state).not.toHaveProperty("birthRngState");
+    expect(saveGame(restored)).not.toHaveProperty("birthRngState");
+  });
+
+  it("does not label a reincarnated character with the previous birth input", () => {
+    const game = startGame(pack, { seed: 4242, depth: 2 });
+    expect(game.state.birthRngState).toBeDefined();
+    game.reincarnate({ raceName: "Human", className: "Warrior" });
+    expect(game.state).not.toHaveProperty("birthRngState");
+  });
+
+  it("ignores malformed optional birth metadata without corrupting the live stream", () => {
+    const game = startGame(pack, { seed: 4242, depth: 2 });
+    const save = saveGame(game);
+    save.birthRngState = { ...game.state.rng.getState(), state: [1] };
+    const restored = loadGame(pack, save);
+    expect(restored.state).not.toHaveProperty("birthRngState");
+    expect(restored.state.rng.getState()).toEqual(game.state.rng.getState());
+  });
+
+  it.each([0, 1, 4242, 0xffffffff])("preserves original seed %s through encoded save/load", (seed) => {
+    const game = startGame(pack, { seed, depth: 2 });
+    const decoded = decodeSavedGame(encodeSavedGame(saveGame(game)));
+    expect(decoded.save).toBeDefined();
+    const restored = loadGame(pack, decoded.save!);
+    expect(restored.state.masterSeed).toBe(seed);
+    expect(restored.state.rng.getState()).toEqual(game.state.rng.getState());
+  });
+
+  it("retains a known continuation's seed without changing unknown or legacy streams", () => {
+    const rng = new Rng(4242);
+    rng.randint0(1000);
+    const state = rng.getState();
+    const known = startGame(pack, { seed: 4242, rngState: state, depth: 2 });
+    const unknown = startGame(pack, { rngState: state, depth: 2 });
+    expect(known.state.masterSeed).toBe(4242);
+    expect(unknown.state).not.toHaveProperty("masterSeed");
+    const { masterSeed: _knownSeed, ...withoutSeed } = saveGame(known);
+    expect(saveGame(unknown)).toEqual(withoutSeed);
+    const restored = loadGame(pack, withoutSeed);
+    expect(restored.state).not.toHaveProperty("masterSeed");
+    expect(restored.state.rng.getState()).toEqual(unknown.state.rng.getState());
   });
 });
 

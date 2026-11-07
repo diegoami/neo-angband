@@ -15,7 +15,7 @@
     "c": "angband/angband"
   },
   "baselines": {
-    "engine": "97ceec2925e6715ba725624a61866ab93a196a12",
+    "engine": "06a2321ce30a414df20d1b20d486446e7688171c",
     "port": "74a017d2f695939eb2f046b7c9ff286ef1e82568",
     "c": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3"
   }

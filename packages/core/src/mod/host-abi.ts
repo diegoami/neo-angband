@@ -7,6 +7,7 @@ import type {
 } from "../agent/index.js";
 import type { KnownLevelView } from "../agent/known-level.js";
 import type { GameState } from "../game/context.js";
+import type { RngState } from "../rng.js";
 import type { CoreRegistries } from "../session/boot.js";
 import type { ModRegistryHost } from "./registry-host.js";
 import type {
@@ -1510,7 +1511,16 @@ export interface ModSaves {
     key: string;
   }>) => void): () => void;
   list(): Promise<SaveListResult>;
-  load(id: string): Promise<SaveResult>;
+  /**
+   * Load a stored character. With `resumeAutoplayer`, the loaded character's
+   * first boot hands it straight back to this mod's autoplayer without asking
+   * the player again - the load-side twin of `create`'s option, with the same
+   * discipline: accepted only from the mod whose controller holds the keyboard
+   * when `load` is called (any other caller gets a refusal and nothing loads),
+   * and only for the character loaded. Ask the player in your own settings
+   * first: it is how they agree to it.
+   */
+  load(id: string, options?: { readonly resumeAutoplayer?: boolean }): Promise<SaveResult>;
   rename(id: string, name: string): Promise<SaveResult>;
   delete(id: string): Promise<SaveResult>;
   /**
@@ -2663,6 +2673,7 @@ export interface RunBelonging {
 }
 
 export interface RunReport {
+  readonly autoplayers?: readonly { readonly id: string; readonly name: string; readonly version: string; readonly digest: string | null; readonly firstParty: boolean }[];
   readonly outcome: RunOutcome;
   /** The killer's name, "Ripe Old Age" for a winner, or "Retiring". */
   readonly cause: string;
@@ -2680,6 +2691,14 @@ export interface RunReport {
   readonly gold: number;
   /** The game turn the run ended on. */
   readonly turn: number;
+  /** Original master seed when retained. Omitted for legacy saves or unknown
+   * continuations; a page's fresh random draw is not the restored game's seed.
+   * Replay also requires the same birth path, code and controller policy. */
+  readonly seed?: number;
+  /** Accepted-birth RNG input for exact reproduction; absent for legacy saves. */
+  readonly birthRngState?: Readonly<Omit<RngState, "state">> & { readonly state: readonly number[] };
+  /** Immutable birth options selected for this character, when available. */
+  readonly birthOptions?: Readonly<Record<string, boolean>>;
   /** total_points: maximum experience plus 100 per level of maximum depth. */
   readonly score: number;
   /** Whether the score table accepted the entry. */

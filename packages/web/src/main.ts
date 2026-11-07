@@ -246,7 +246,7 @@ import {
 import { installCrashScreen } from "./crash-screen.js";
 import { offerSafeLaunch, showSafeLaunchNotice, showSafeModeScreen } from "./safe-mode.js";
 import { addressWithoutSafeLaunch, bootCompleted, decideSafeLaunch, enterSafeLaunch, safeLaunch, watchSafeKey } from "./safe-launch";
-import { labBuild, labTrust } from "./lab-trust";
+import { labBuild, labTrust, labInProcess } from "./lab-trust";
 import { installController, ContentIdResolver, subscribeEvents, createModRegistryHost, effectInfoRegistry, randartRegistry, runeRegistry, tvalRegistry, VocabularyRegistry } from "@rpgm-tools/neo-angband-core";
 import type { AgentController, AgentSession } from "@rpgm-tools/neo-angband-core";
 import {
@@ -308,6 +308,7 @@ import type { WorldFrame, WorldLayer } from "./world-view";
 import { detectDesktopBridge, makeDesktopHost } from "./host-electron";
 import { argForceName, argName, initLaunchArgsFromHost } from "./launch";
 import { createBirthSession } from "./birth-session";
+import { birthStartOptions, decodeBirthContinuation, encodeBirthContinuation } from "./birth-continuation";
 import { installBirth, offerBirth, setBirthPresenter } from "./birth-runtime";
 import {
   combineDiskReports,
@@ -361,6 +362,13 @@ import {
   setModGrants,
   setModTiers,
 } from "./mod-tier";
+import { MOD_PERMISSION_TEXT } from "@rpgm-tools/neo-angband-mod-sdk";
+import { consentBinding, onModConsentChange } from "./mod-consent-binding";
+import { modPayloadBytes, modPayloadDigest, modPayloadUrl, prepareModPayloads } from "./mod-code-snapshot";
+import { api2MayObserveKeys } from "./mod-api2-host";
+import { drawModControllerConsent } from "./mod-consent-dialog";
+import { recordControllerUse } from "./mod-controller-record";
+import { gameplayIntents } from "./mod-gameplay-intents";
 import { hideAutoplayerBanner, showAutoplayerBanner } from "./autoplayer-banner";
 import { decideAutoplayerKey, keyPressOf } from "./autoplayer-keys";
 import {
@@ -444,7 +452,7 @@ import { runProfileScreen } from "./profile-ui";
 import { setPrefsStorage } from "./mod-prefs";
 import { startModWorker, type ModWorkerLike, type StartedModWorker } from "./mod-worker/host";
 import { settleWorkerHooks } from "./mod-worker/hooks";
-import { api2DisplayOption, api2PluginRegistrations, installApi2PolicyRegistrations, removeApi2PrefErrors, setApi2PolicyLoadOrder } from "./mod-api2-shim";
+import { api2Plugin, api2DisplayOption, api2PluginRegistrations, installApi2PolicyRegistrations, removeApi2PrefErrors, setApi2PolicyLoadOrder } from "./mod-api2-shim";
 import { createIsolatedModWorker } from "./mod-worker/isolation";
 import { stageModuleGraph } from "./mod-worker/staging";
 import { createModWorkerPanelRenderer } from "./mod-worker/panels";
@@ -1087,7 +1095,7 @@ initLaunchArgsFromHost();
  * take effect: content composes and plugin code imports at boot, so a reload is
  * still what applies it, and the manager still says so.
  */
-async function rediscoverModSources(): Promise<void> {
+async function rediscoverModSources(forManagement = false): Promise<void> {
   /* The session tier first, and through its OWN latch rather than into the report
    * below (mod-session.ts). A mod staged for this session has to survive this
    * function running again - the manager calls it after every download - and
@@ -1116,6 +1124,7 @@ async function rediscoverModSources(): Promise<void> {
         return subtle !== undefined ? await installed.verifyDigests(id, subtle) : false;
       },
       labTrust(),
+      labInProcess(),
     ),
   );
 
@@ -1125,11 +1134,13 @@ async function rediscoverModSources(): Promise<void> {
    * one that can actually compose. A folder or session copy may shadow the
    * installed id, and bundled packs always win too; caching one of those hashes
    * would falsely describe bytes the game is not using. */
+  const enabled = new Set(enabledModIds());
+  await prepareModPayloads(diskPacks(), modTier, undefined, undefined, forManagement ? undefined : (id) => enabled.has(id));
+
   const shadowed = new Set([
     ...folder.packs.map((pack) => pack.manifest.id),
     ...sessionPacks().packs.map((pack) => pack.manifest.id),
   ]);
-  const enabled = new Set(enabledModIds());
   const installedContentIds = new Set(
     installed.packs
       .filter(
@@ -1178,11 +1189,13 @@ let modTransactionNotice: string | null = null;
   const store = defaultModStore();
   const code = await loadModCode({
     packs: disk.packs,
-    codeUrl: disk.codeUrl,
+    codeUrl: (id, file) => modTier(id).trust === "first-party"
+      ? disk.codeUrl?.(id, file) ?? Promise.resolve(null) : modPayloadUrl(id, file, true),
     enabled: (id) => enabledModIds().includes(id),
     consented: (id) => store.getConsent(id),
     refused: (id) => store.getRefusal(id),
-    acknowledged: (id) => store.sawUnreviewedNotice(id),
+    payloadDigest: modPayloadDigest,
+    acknowledged: (id) => store.sawUnreviewedNotice(id) && (modTier(id).trust === "first-party" || modPayloadDigest(id) !== null),
     tier: (pack) => modTier(pack.manifest.id),
   });
   /* What each mod holds, for the Worker runtime's modStartGrants and the save mark. */
@@ -1575,12 +1588,21 @@ const SHOW_GRAPHICS_KEY = "neo-angband-show-graphics";
 // activateAutoplayerCmd right before its reload; consumed (read once, cleared
 // unconditionally) by the controller-install loop below.
 const AUTOPLAYER_JUST_CONFIRMED_KEY = "neo-angband-autoplayer-just-confirmed";
+function autoplayerConfirmationKey(id: string): string {
+  return modTier(id).trust === "first-party" ? id : id + ":" + consentBinding(id);
+}
 // One-shot across the two reloads of a new character (#300): "the autoplayer
 // that held the keyboard asked, through ctx.saves.create({ resumeAutoplayer }),
 // to carry on with the character about to be born". Written by newGame only
 // when rollOnRequest is set, removed by every other newGame, and consumed by the
 // boot after birth. The birth screen's own boot leaves it in place.
 const AUTOPLAYER_ROLL_ON_KEY = "neo-angband-autoplayer-roll-on";
+// The load-side twin (#430): "the autoplayer that held the keyboard asked,
+// through ctx.saves.load(id, { resumeAutoplayer }), to carry on with the stored
+// character it is loading". Written by the roster's load as { mod, slot } just
+// before resumeSelected reloads, and consumed (read once, removed always) by the
+// next boot, which honours it only when that boot is the named slot's.
+const AUTOPLAYER_LOAD_ON_KEY = "neo-angband-autoplayer-load-on";
 interface StoredBirth {
   raceName: string;
   className: string;
@@ -1775,6 +1797,19 @@ try {
   requestedControllerId = reloadStorage.getItem(AUTOPLAYER_ROLL_ON_KEY);
 } catch {
   requestedControllerId = null;
+}
+/* #430: the mod a load asked to carry on, honoured only for the character it
+ * loaded - any other boot reads the key, discards it, and asks as before. */
+let loadRolledOnId: string | null = null;
+try {
+  const raw = reloadStorage.getItem(AUTOPLAYER_LOAD_ON_KEY);
+  reloadStorage.removeItem(AUTOPLAYER_LOAD_ON_KEY);
+  const parsed = raw ? (JSON.parse(raw) as { readonly mod?: unknown; readonly slot?: unknown }) : null;
+  if (parsed && typeof parsed.mod === "string" && typeof parsed.slot === "string" && parsed.slot === getActiveId()) {
+    loadRolledOnId = parsed.mod;
+  }
+} catch {
+  loadRolledOnId = null;
 }
 
 /**
@@ -1979,11 +2014,11 @@ function bootGame(): ReturnType<typeof startGame> {
   }
   // Resume the main stream after the birth UI advanced it (ui-birth.c draws
   // before level gen). Absent, start from seed as a normal new game.
-  let birthRngState: ReturnType<Rng["getState"]> | undefined;
+  let birthContinuation: ReturnType<typeof decodeBirthContinuation> | undefined;
   try {
     const raw = reloadStorage.getItem(BIRTH_RNG_KEY);
     if (raw) {
-      birthRngState = JSON.parse(raw) as ReturnType<Rng["getState"]>;
+      birthContinuation = decodeBirthContinuation(raw);
       reloadStorage.removeItem(BIRTH_RNG_KEY);
     }
   } catch {
@@ -1991,9 +2026,8 @@ function bootGame(): ReturnType<typeof startGame> {
   }
   const startHooks = activeModHooks();
   const game = startGame(pack, {
-    seed,
+    ...birthStartOptions(seed, birthContinuation),
     depth,
-    ...(birthRngState ? { rngState: birthRngState } : {}),
     // The effective mod-rule flags (qol / bug-fixes tweaks) for this session:
     // enabled mods' declared rules resolved against the player's saved choices.
     // Empty => faithful core. Upstream OPTIONS are NOT set here - they ship in
@@ -7398,7 +7432,7 @@ setModProfilesControl((id, caps) => createModProfiles(id, caps, {
     ? { ok: false, reason: "Profiles can be switched before play begins." }
     : { ok: true },
   reload: () => {
-    for (const key of [FORCE_NEW_KEY, SKIP_TITLE_KEY, BIRTH_DONE_KEY, BIRTH_RNG_KEY, AUTOPLAYER_ROLL_ON_KEY]) reloadStorage.removeItem(key);
+    for (const key of [FORCE_NEW_KEY, SKIP_TITLE_KEY, BIRTH_DONE_KEY, BIRTH_RNG_KEY, AUTOPLAYER_ROLL_ON_KEY, AUTOPLAYER_LOAD_ON_KEY]) reloadStorage.removeItem(key);
     const url = new URL(location.href);
     url.searchParams.delete("new");
     url.searchParams.delete("seed");
@@ -7460,7 +7494,24 @@ setModSavesControl(createModSaves({
       return { ok: false, reason: "The current character could not be saved." };
     }
     detachSlot();
-    if (!(await resumeSelected(id))) return { ok: false, reason: "The character load was canceled." };
+    /* #430: a load armed by its autoplayer (savesFor's arm, which sets
+     * rollOnRequest) is carried across the reload to this character's boot. */
+    const loadOn = rollOnRequest;
+    rollOnRequest = null;
+    try {
+      if (loadOn) reloadStorage.setItem(AUTOPLAYER_LOAD_ON_KEY, JSON.stringify({ mod: loadOn, slot: id }));
+      else reloadStorage.removeItem(AUTOPLAYER_LOAD_ON_KEY);
+    } catch {
+      /* storage disabled: the load boot asks, which is the safe direction */
+    }
+    if (!(await resumeSelected(id))) {
+      try {
+        reloadStorage.removeItem(AUTOPLAYER_LOAD_ON_KEY);
+      } catch {
+        /* nothing to release without storage */
+      }
+      return { ok: false, reason: "The character load was canceled." };
+    }
     return { ok: true };
   },
 }));
@@ -7882,6 +7933,7 @@ let managementSubscribed = false;
 let managementDrawing = false;
 
 async function buildModManagerDeps(): Promise<ModManagerDeps> {
+  await prepareModPayloads(diskPacks(), modTier);
   const store = defaultModStore();
   /* Fetched once for the life of this screen, the same way `store` above is: an
    * install through ctx.installMod only happens while a mod's plugin is running
@@ -7930,7 +7982,7 @@ async function buildModManagerDeps(): Promise<ModManagerDeps> {
       }),
     /* So a mod downloaded in this session is in the list on the way back out,
      * instead of after a reload the player has not been told to do yet. */
-    rediscover: rediscoverModSources,
+    rediscover: () => rediscoverModSources(true),
     conflictLines: () => liveConflictLines(),
     profiler: () => modHealth().stats(),
     // The mods DIRECTORY, so the manager can name a real path instead of
@@ -11804,6 +11856,7 @@ function continueAdvance(
         sheet: modSnapshotSource.characterSheet?.() ?? null,
         scored: outcome.entered,
         endedAt: Date.now(),
+        autoplayers: game.manifest.autoplayers,
       }));
     } catch (error) {
       log.error("report", "run report failed", error);
@@ -13240,7 +13293,7 @@ async function maybeBirth(): Promise<BootStep> {
       reloadStorage.setItem(FORCE_NEW_KEY, "1");
       // Persist the advanced stream so the post-birth reload's startGame
       // continues from this position (store_reset / seeds / level gen).
-      reloadStorage.setItem(BIRTH_RNG_KEY, JSON.stringify(state.rng.getState()));
+      reloadStorage.setItem(BIRTH_RNG_KEY, encodeBirthContinuation(seed, state.rng.getState()));
     } catch {
       /* storage disabled: the reload still starts a fresh game via ?new */
     }
@@ -13657,8 +13710,15 @@ async function confirmBorgActivation(): Promise<boolean> {
  * found the activation through this key or through a mod whose rule was
  * already on at boot.
  */
+async function confirmControllerActivation(id: string): Promise<boolean> {
+  const loaded = controllerCandidates().find((candidate) => candidate.id === id);
+  if (!loaded) return false;
+  if (loaded.tier.trust === "first-party") return confirmBorgActivation();
+  return await drawModControllerConsent(id, loaded.manifest.name) && controllerCandidates().some((candidate) => candidate.id === id);
+}
+
 async function activateAutoplayerCmd(modId: string): Promise<void> {
-  if (!(await confirmBorgActivation())) return;
+  if (!(await confirmControllerActivation(modId))) return;
   /* Marked HERE, before the reload, not left for the boot loop that runs after
    * it (#125): NOSCORE.BORG is the permanent, one-way, score-invalidating
    * mark (upstream's own player->noscore |= NOSCORE_BORG), and it stays that
@@ -13674,7 +13734,7 @@ async function activateAutoplayerCmd(modId: string): Promise<void> {
    * reload where consent was JUST given, would be a pointless double prompt.
    * Every other boot still asks; see the install loop below. */
   try {
-    reloadStorage.setItem(AUTOPLAYER_JUST_CONFIRMED_KEY, modId);
+    reloadStorage.setItem(AUTOPLAYER_JUST_CONFIRMED_KEY, autoplayerConfirmationKey(modId));
   } catch {
     /* best-effort; worst case this one reload asks again, which is safe */
   }
@@ -13700,7 +13760,7 @@ function tryBorgCommand(): void {
     stopInstalledController?.("the autoplayer command");
     return;
   }
-  const candidate = activeModCode().plugins.find(
+  const candidate = controllerCandidates().find(
     (loaded) => typeof loaded.plugin.controller === "function",
   );
   if (!candidate) {
@@ -13730,12 +13790,12 @@ async function confirmPendingAutoplayerInstall(): Promise<void> {
   if (!pending) return;
   pendingAutoplayerInstall = null;
   await openModal(async () => {
-    if (!(await confirmBorgActivation())) {
+    if (!(await confirmControllerActivation(pending.loaded.id))) {
       say(
         t(
           "main.autoplayer.declined",
           "{id} will not take the keyboard this session. You will be asked again the next time it tries to activate.",
-          { id: pending.loaded.id },
+          { id: pending.loaded.manifest.name },
         ),
       );
       render();
@@ -16081,10 +16141,18 @@ const folderRuleFlags = resolveModRuleFlagsByMod();
  * seeding one that is about to be discarded, and the reload after birth would
  * ask it again anyway. */
 const sessionFacts: ModSessionFacts = { newCharacter: bootedNew && !birthPending };
-setModControllerArmedControl((id) => requestedControllerId === id && (birthPending || sessionFacts.newCharacter === true));
+setModControllerArmedControl((id) =>
+  (requestedControllerId === id && (birthPending || sessionFacts.newCharacter === true)) ||
+  /* #430: the boot of the character a load asked its autoplayer to carry on with. */
+  (loadRolledOnId === id && !birthPending));
 
 /* The Worker mods' brokers, by mod id (mod-worker/host.ts). */
 const workerPlugins = new Map<string, StartedModWorker>();
+const workerControllers = new Map<string, LoadedModPlugin>();
+function controllerCandidates(): readonly LoadedModPlugin[] {
+  return [...activeModCode().plugins, ...workerControllers.values()].filter((loaded) => loaded.tier.trust === "first-party" ||
+    (loaded.permissionBinding === consentBinding(loaded.id) && ["input:controller", "input:intent"].every((capability) => defaultModStore().getConsent(loaded.id).includes(capability))));
+}
 /* What each Worker mod's policy tables install beside hooks, once it settles. */
 const workerRegistrations = new Map<string, Api2PolicyRegistrations>();
 const workerPanelRenderer = createModWorkerPanelRenderer();
@@ -16198,9 +16266,11 @@ const workerGrants = (loaded: LoadedModWorker): readonly string[] => unifiedCapa
         flags,
         engine: ENGINE_VERSION,
         newCharacter: sessionFacts.newCharacter ?? false,
+        controllerArmed: reloadStorage.getItem(AUTOPLAYER_JUST_CONFIRMED_KEY) === autoplayerConfirmationKey(loaded.id),
         net: context.net !== undefined,
         api: (options) => createApi2Host(context, { grants: capabilities, panels: workerPanelRenderer, ...options, execution: "worker" }),
         readAsset: async (path) => {
+          if (modTier(loaded.id).trust !== "first-party") return modPayloadBytes(loaded.id, path);
           const url = await disk.assetUrl?.(loaded.id, path);
           if (!url) return null;
           const response = await fetch(url);
@@ -16217,6 +16287,8 @@ const workerGrants = (loaded: LoadedModWorker): readonly string[] => unifiedCapa
           settleWorkerHooks(loaded.id, null);
           workerPanelRenderer.teardown(loaded.id);
           workerPlugins.delete(loaded.id);
+          workerControllers.delete(loaded.id);
+          if (installedController?.id === loaded.id) stopInstalledController?.(MOD_PERMISSION_TEXT.revoked);
         },
       });
       session = started;
@@ -16225,6 +16297,23 @@ const workerGrants = (loaded: LoadedModWorker): readonly string[] => unifiedCapa
         new Promise<void>((_, reject) => setTimeout(() => reject(new Error("its Worker did not become ready")), 3000)),
       ]);
       workerPlugins.set(loaded.id, session);
+      if (session.hasController()) {
+        workerControllers.set(loaded.id, { ...loaded, url: loaded.entryUrl, plugin: api2Plugin({
+          api: ">=2.0.0 <3.0.0", onDeath: "end", armed: () => started.controllerArmed(),
+          controller: (mod, input) => started.decide(input, mod),
+          ...(started.hasKeyHandler() ? { onKey: (press: import("@rpgm-tools/neo-angband-mod-sdk").Api2ControllerKey) => {
+            if (!api2MayObserveKeys(context)) return { kind: "release" as const };
+            void started.key(press).then((answer) => {
+              if (installedController?.id !== loaded.id) return;
+              if (answer.kind === "release") stopInstalledController?.(MOD_PERMISSION_TEXT.keySource, answer.reason);
+              else if (answer.message) { say(answer.message); render(); }
+            }).catch(() => {
+              if (installedController?.id === loaded.id) stopInstalledController?.(MOD_PERMISSION_TEXT.keySource, MOD_PERMISSION_TEXT.keyFailed);
+            });
+            return { kind: "keep" as const };
+          } } : {}),
+        }, () => ({ grants: capabilities, tier: "public", execution: "worker" })) });
+      }
     } catch (err) {
       session?.teardown();
       if (!session) worker?.terminate();
@@ -16605,6 +16694,11 @@ function controllerInstallOf(answer: AgentController | ModControllerInstall): Mo
 }
 
 function finishAutoplayerInstall(loaded: LoadedModPlugin, install: ModControllerInstall): void {
+  if (installedController !== null) return;
+  if (loaded.tier.trust !== "first-party" && (loaded.permissionBinding !== consentBinding(loaded.id) ||
+    !defaultModStore().sawUnreviewedNotice(loaded.id) ||
+    !["input:controller", "input:intent"].every((capability) => defaultModStore().getConsent(loaded.id).includes(capability)) ||
+    (loaded.tier.execution === "worker" && !workerPlugins.has(loaded.id)))) return;
   const controller = install.controller;
   /* Player text names the mod as its manifest does; the id stays in the log. */
   const modName = loaded.manifest.name.trim();
@@ -16624,10 +16718,22 @@ function finishAutoplayerInstall(loaded: LoadedModPlugin, install: ModController
     /* A switched-off autoplayer answers nothing until the keyboard is handed
      * back (modSwitchedOff). */
     if (modHealth().isOff(loaded.id)) return null;
-    return modHealth().run(loaded.id, "controller", () => controller(view, act));
+    try {
+      return modHealth().run(loaded.id, "controller", () => {
+        const command = controller(view, act);
+        if (!command || loaded.tier.trust === "first-party") return command;
+        const copy = structuredClone(command);
+        let accepted: PlayerCommand | null = null;
+        const gate = createIntentGate({ state, registry, snapshotSource: modSnapshotSource,
+          push: (value) => { accepted = value; }, storeCommand: (value) => { accepted = value; return true; }, advance: () => undefined });
+        const result = gameplayIntents(gate).submit(inputToken(state), { kind: "command", command: copy });
+        return result.accepted ? accepted : null;
+      });
+    } catch { return null; }
   };
   const session = installController(state, modLatched, {
-    capabilities: CapabilitySet.fromManifest(loaded.manifest),
+    capabilities: loaded.api === 2 ? { has: (capability) => capability === "command:add" || CapabilitySet.fromManifest(loaded.manifest).has(capability) }
+      : CapabilitySet.fromManifest(loaded.manifest),
     /* The same deps the mod's input snapshot uses, so an autoplayer reads the
      * names the inventory shows and store prices, as the player does. Without
      * them an item view carries only its kind's raw label. */
@@ -16652,7 +16758,11 @@ function finishAutoplayerInstall(loaded: LoadedModPlugin, install: ModController
    * one-way (markNoscore only ORs) and there is no path that clears it, so a save
    * that has run an autoplayer stays marked for the rest of its life. */
   const takenOver = state.actor.player;
-  takenOver.noscore = markNoscore(takenOver.noscore, NOSCORE.BORG);
+  const identity = { id: loaded.id, name: loaded.manifest.name, version: loaded.manifest.version,
+    digest: loaded.contentDigest ?? null, firstParty: loaded.tier.trust === "first-party" };
+  recordControllerUse(game.manifest, takenOver, identity);
+  try { autosave(true); }
+  catch (err) { modHealth().recordFault(loaded.id, "autosave", err); }
   log.info(`mod:${loaded.id}`, `installed an autoplayer`);
   /* The other half of #125: a save can no longer be quietly handed to an
    * autoplayer, so a player who IS running one must be able to see that from
@@ -16788,6 +16898,7 @@ try {
  * clears it, so a player who backs out of birth and loads someone else is asked. */
 let rollOnAutoplayerId: string | null = null;
 let rollOnHeldForBirth: string | null = null;
+let rollOnLoaded = false;
 try {
   const armed = reloadStorage.getItem(AUTOPLAYER_ROLL_ON_KEY);
   if (birthPending) {
@@ -16795,11 +16906,23 @@ try {
   } else {
     reloadStorage.removeItem(AUTOPLAYER_ROLL_ON_KEY);
     if (sessionFacts.newCharacter) rollOnAutoplayerId = armed;
+    /* #430: the loaded character's own boot, armed by its load. */
+    else if (loadRolledOnId) {
+      rollOnAutoplayerId = loadRolledOnId;
+      rollOnLoaded = true;
+    }
   }
 } catch {
   /* best-effort; worst case this boot asks, which is the safe direction */
 }
-for (const loaded of activeModCode().plugins) {
+onModConsentChange((id) => {
+  workerPlugins.get(id)?.teardown();
+  if (installedController?.id === id) stopInstalledController?.(MOD_PERMISSION_TEXT.revoked);
+  if (pendingAutoplayerInstall?.loaded.id === id) pendingAutoplayerInstall = null;
+  activeModCode().plugins.find((loaded) => loaded.id === id)?.plugin.uninstall?.();
+});
+
+for (const loaded of controllerCandidates()) {
   const makeController = loaded.plugin.controller;
   if (!makeController) continue;
   const holderId = currentOrPendingAutoplayerId();
@@ -16845,11 +16968,13 @@ for (const loaded of activeModCode().plugins) {
      * candidate and asks via confirmPendingAutoplayerInstall once the game
      * screen is live - the same warn-and-confirm a first-time activation
      * gets, every single boot. */
-    if (justConfirmedAutoplayerId === loaded.id) {
+    if (justConfirmedAutoplayerId === autoplayerConfirmationKey(loaded.id)) {
       finishAutoplayerInstall(loaded, install);
-    } else if (rollOnAutoplayerId === loaded.id) {
+    } else if (loaded.tier.trust === "first-party" && rollOnAutoplayerId === loaded.id) {
       finishAutoplayerInstall(loaded, install);
-      say(t("main.autoplayer.roll-on", "{name} carries on with the new character.", { name: loaded.manifest.name }));
+      say(rollOnLoaded
+        ? t("main.autoplayer.load-on", "{name} carries on with the loaded character.", { name: loaded.manifest.name })
+        : t("main.autoplayer.roll-on", "{name} carries on with the new character.", { name: loaded.manifest.name }));
     } else {
       pendingAutoplayerInstall = { loaded, install };
     }
@@ -16896,7 +17021,7 @@ setAutoplayerInterruptOwner({
  * read-only except for `wizard`, and compiled in only for `NEO_ANGBAND_LAB_BUILD=1`,
  * so a release build never carries it (lab-trust.ts, lab-hook.ts). `view()` is the
  * input snapshot with every domain granted, `messages(n)` the log tail, `seed()`
- * the master seed this page started from (set one with the shell's `--lab-seed`),
+ * the game's retained original seed (unknown for legacy saves),
  * and `wizard` the typed debug facade, which refuses until `sandbox()` is called. */
 if (labBuild()) {
   (window as unknown as { __neoLab?: unknown }).__neoLab = createLabHook({
@@ -16904,7 +17029,7 @@ if (labBuild()) {
     size: () => term.size(),
     modal: () => modalDepth > 0,
     turn: () => state.turn,
-    seed: () => seed,
+    seed: () => state.masterSeed,
     snapshot: () => buildInputSnapshot(modSnapshotSource, undefined),
     log: msglog,
     wizard: createModWizard("lab", { wizard: wizardCtx }),

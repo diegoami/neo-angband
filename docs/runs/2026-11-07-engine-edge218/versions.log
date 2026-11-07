@@ -1,0 +1,16 @@
+   1.23.0-beta.3 packages/core/src/version.ts - ENGINE_VERSION
+   1.23.0-beta.3 package.json - the workspace root manifest
+   1.23.0-beta.3 packages/cli/package.json - the cli manifest
+   1.23.0-beta.3 packages/content/package.json - the content manifest
+   1.23.0-beta.3 packages/core/package.json - the core manifest
+   1.23.0-beta.3 packages/desktop/package.json - the desktop manifest
+   1.23.0-beta.3 packages/linoleum/package.json - the linoleum manifest
+   1.23.0-beta.3 packages/mcp/package.json - the mcp manifest
+   1.23.0-beta.3 packages/mod-sdk/package.json - the mod-sdk manifest
+   1.23.0-beta.3 packages/web/package.json - the web manifest
+   1.23.0-beta.3 packages/linoleum/src/version.ts - LINOLEUM_TOOLS_VERSION
+   1.23.0-beta.3 packages/core/README.md - the ENGINE_VERSION example output
+   1.23.0-beta.3 docs/RELEASING.md - every example tag in the runbook
+   1.23.0-beta.3 docs/RELEASING.md - every example tag push in the runbook
+
+[version] 14 sites agree on 1.23.0-beta.3
