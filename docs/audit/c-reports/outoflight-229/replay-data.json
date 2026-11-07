@@ -1,0 +1,162 @@
+{
+  "dying": {
+    "label": "The lantern is lit but three turns from dying",
+    "explanation": "A Warrior at depth 30 wears a lantern with three turns of fuel left and carries a fresh torch in the pack. The entry test's first clause already covers \"no light\", so its about-to-burn-out clause (timeout <= 3) never fired on its own: the original does nothing and lets the light go out. The corrected test starts the out-of-light maneuvers and swaps to the fresh torch.",
+    "before": {
+      "raw": "native-c/outoflight-229: starting...\nSETUPSTEP profile\nSETUP light=3 timeout=3 nofuel=0 flasks=1\nSETUP seed=1000 class=Warrior level=1 depth=30 hp=20/20\n  dying_light_starts_maneuvers  MODE dying\nDECISION acted=0 keys=0 sequence=\nOUTCOME acted=0 keys=0\nFailed\n    native-c/outoflight-229:161: requirement 'acted ? 1 : 0' == '1' failed\n      acted ? 1 : 0:                0\n      1:                1\nnative-c/outoflight-229 finished: 0/1 passed\n",
+      "passed": false,
+      "setup": {
+        "timeout": 3,
+        "nofuel": 0,
+        "flasks": 1
+      },
+      "decision": {
+        "acted": 0,
+        "keys": 0
+      },
+      "outcome": {
+        "acted": 0,
+        "keys": 0
+      },
+      "sequence": ""
+    },
+    "after": {
+      "raw": "native-c/outoflight-229: starting...\nSETUPSTEP profile\nSETUP light=3 timeout=3 nofuel=0 flasks=1\nSETUP seed=1000 class=Warrior level=1 depth=30 hp=20/20\n  dying_light_starts_maneuvers  MODE dying\nDECISION acted=1 keys=2 sequence=w e\nOUTCOME acted=1 keys=2\nPassed\nnative-c/outoflight-229 finished: 1/1 passed\n",
+      "passed": true,
+      "setup": {
+        "timeout": 3,
+        "nofuel": 0,
+        "flasks": 1
+      },
+      "decision": {
+        "acted": 1,
+        "keys": 2
+      },
+      "outcome": {
+        "acted": 1,
+        "keys": 2
+      },
+      "sequence": "w e"
+    }
+  },
+  "lit": {
+    "label": "Control: plenty of fuel",
+    "explanation": "With the lantern at 1500 turns both versions leave it alone. The complete logs are byte-identical.",
+    "before": {
+      "raw": "native-c/outoflight-229: starting...\nSETUPSTEP profile\nSETUP light=3 timeout=1500 nofuel=0 flasks=1\nSETUP seed=1000 class=Warrior level=1 depth=30 hp=20/20\n  dying_light_starts_maneuvers  MODE lit\nDECISION acted=0 keys=0 sequence=\nOUTCOME acted=0 keys=0\nPassed\nnative-c/outoflight-229 finished: 1/1 passed\n",
+      "passed": true,
+      "setup": {
+        "timeout": 1500,
+        "nofuel": 0,
+        "flasks": 1
+      },
+      "decision": {
+        "acted": 0,
+        "keys": 0
+      },
+      "outcome": {
+        "acted": 0,
+        "keys": 0
+      },
+      "sequence": ""
+    },
+    "after": {
+      "raw": "native-c/outoflight-229: starting...\nSETUPSTEP profile\nSETUP light=3 timeout=1500 nofuel=0 flasks=1\nSETUP seed=1000 class=Warrior level=1 depth=30 hp=20/20\n  dying_light_starts_maneuvers  MODE lit\nDECISION acted=0 keys=0 sequence=\nOUTCOME acted=0 keys=0\nPassed\nnative-c/outoflight-229 finished: 1/1 passed\n",
+      "passed": true,
+      "setup": {
+        "timeout": 1500,
+        "nofuel": 0,
+        "flasks": 1
+      },
+      "decision": {
+        "acted": 0,
+        "keys": 0
+      },
+      "outcome": {
+        "acted": 0,
+        "keys": 0
+      },
+      "sequence": ""
+    }
+  },
+  "everburn": {
+    "label": "Control: a fuel-less (everburning) light",
+    "explanation": "A fuel-less light keeps its timeout permanently at zero; the correction's timeout arm only applies to fueled lights, so both versions leave it alone. The complete logs are byte-identical.",
+    "before": {
+      "raw": "native-c/outoflight-229: starting...\nSETUPSTEP profile\nSETUP light=3 timeout=0 nofuel=1 flasks=1\nSETUP seed=1000 class=Warrior level=1 depth=30 hp=20/20\n  dying_light_starts_maneuvers  MODE everburn\nDECISION acted=0 keys=0 sequence=\nOUTCOME acted=0 keys=0\nPassed\nnative-c/outoflight-229 finished: 1/1 passed\n",
+      "passed": true,
+      "setup": {
+        "timeout": 0,
+        "nofuel": 1,
+        "flasks": 1
+      },
+      "decision": {
+        "acted": 0,
+        "keys": 0
+      },
+      "outcome": {
+        "acted": 0,
+        "keys": 0
+      },
+      "sequence": ""
+    },
+    "after": {
+      "raw": "native-c/outoflight-229: starting...\nSETUPSTEP profile\nSETUP light=3 timeout=0 nofuel=1 flasks=1\nSETUP seed=1000 class=Warrior level=1 depth=30 hp=20/20\n  dying_light_starts_maneuvers  MODE everburn\nDECISION acted=0 keys=0 sequence=\nOUTCOME acted=0 keys=0\nPassed\nnative-c/outoflight-229 finished: 1/1 passed\n",
+      "passed": true,
+      "setup": {
+        "timeout": 0,
+        "nofuel": 1,
+        "flasks": 1
+      },
+      "decision": {
+        "acted": 0,
+        "keys": 0
+      },
+      "outcome": {
+        "acted": 0,
+        "keys": 0
+      },
+      "sequence": ""
+    }
+  },
+  "dead": {
+    "label": "Control: the lantern is fully burned out",
+    "explanation": "With no light at all both versions run the same maneuvers (swap to the torch). The complete logs are byte-identical.",
+    "before": {
+      "raw": "native-c/outoflight-229: starting...\nSETUPSTEP profile\nSETUP light=0 timeout=0 nofuel=0 flasks=1\nSETUP seed=1000 class=Warrior level=1 depth=30 hp=20/20\n  dying_light_starts_maneuvers  MODE dead\nDECISION acted=1 keys=2 sequence=w e\nOUTCOME acted=1 keys=2\nPassed\nnative-c/outoflight-229 finished: 1/1 passed\n",
+      "passed": true,
+      "setup": {
+        "timeout": 0,
+        "nofuel": 0,
+        "flasks": 1
+      },
+      "decision": {
+        "acted": 1,
+        "keys": 2
+      },
+      "outcome": {
+        "acted": 1,
+        "keys": 2
+      },
+      "sequence": "w e"
+    },
+    "after": {
+      "raw": "native-c/outoflight-229: starting...\nSETUPSTEP profile\nSETUP light=0 timeout=0 nofuel=0 flasks=1\nSETUP seed=1000 class=Warrior level=1 depth=30 hp=20/20\n  dying_light_starts_maneuvers  MODE dead\nDECISION acted=1 keys=2 sequence=w e\nOUTCOME acted=1 keys=2\nPassed\nnative-c/outoflight-229 finished: 1/1 passed\n",
+      "passed": true,
+      "setup": {
+        "timeout": 0,
+        "nofuel": 0,
+        "flasks": 1
+      },
+      "decision": {
+        "acted": 1,
+        "keys": 2
+      },
+      "outcome": {
+        "acted": 1,
+        "keys": 2
+      },
+      "sequence": "w e"
+    }
+  }
+}

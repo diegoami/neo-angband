@@ -1,0 +1,212 @@
+{
+  "cbug": "outoflight-229",
+  "issue": 229,
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "fix": "54a26b3b3fe4e12ed4d8fc3380219727b48eda2b",
+  "fixtures_ref": "e1638569ea292812dd6633e3968b99f78c18c2f4",
+  "cases": {
+    "before": {
+      "dying": {
+        "exit": 0,
+        "passed": false,
+        "setup": {
+          "timeout": 3,
+          "nofuel": 0,
+          "flasks": 1
+        },
+        "decision": {
+          "acted": 0,
+          "keys": 0
+        },
+        "outcome": {
+          "acted": 0,
+          "keys": 0
+        },
+        "sequence": ""
+      },
+      "lit": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "timeout": 1500,
+          "nofuel": 0,
+          "flasks": 1
+        },
+        "decision": {
+          "acted": 0,
+          "keys": 0
+        },
+        "outcome": {
+          "acted": 0,
+          "keys": 0
+        },
+        "sequence": ""
+      },
+      "everburn": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "timeout": 0,
+          "nofuel": 1,
+          "flasks": 1
+        },
+        "decision": {
+          "acted": 0,
+          "keys": 0
+        },
+        "outcome": {
+          "acted": 0,
+          "keys": 0
+        },
+        "sequence": ""
+      },
+      "dead": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "timeout": 0,
+          "nofuel": 0,
+          "flasks": 1
+        },
+        "decision": {
+          "acted": 1,
+          "keys": 2
+        },
+        "outcome": {
+          "acted": 1,
+          "keys": 2
+        },
+        "sequence": "w e"
+      }
+    },
+    "after": {
+      "dying": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "timeout": 3,
+          "nofuel": 0,
+          "flasks": 1
+        },
+        "decision": {
+          "acted": 1,
+          "keys": 2
+        },
+        "outcome": {
+          "acted": 1,
+          "keys": 2
+        },
+        "sequence": "w e"
+      },
+      "lit": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "timeout": 1500,
+          "nofuel": 0,
+          "flasks": 1
+        },
+        "decision": {
+          "acted": 0,
+          "keys": 0
+        },
+        "outcome": {
+          "acted": 0,
+          "keys": 0
+        },
+        "sequence": ""
+      },
+      "everburn": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "timeout": 0,
+          "nofuel": 1,
+          "flasks": 1
+        },
+        "decision": {
+          "acted": 0,
+          "keys": 0
+        },
+        "outcome": {
+          "acted": 0,
+          "keys": 0
+        },
+        "sequence": ""
+      },
+      "dead": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "timeout": 0,
+          "nofuel": 0,
+          "flasks": 1
+        },
+        "decision": {
+          "acted": 1,
+          "keys": 2
+        },
+        "outcome": {
+          "acted": 1,
+          "keys": 2
+        },
+        "sequence": "w e"
+      }
+    }
+  },
+  "identical_full_logs": [
+    "lit",
+    "everburn",
+    "dead"
+  ],
+  "full_tests": {
+    "before": {
+      "units": "965/965",
+      "frontends": "5/5"
+    },
+    "after": {
+      "units": "965/965",
+      "frontends": "5/5"
+    }
+  },
+  "fail_before": {
+    "dying": "scenario asserts the corrected start; the original does nothing for the dying lantern (acted=0) and fails the suite"
+  },
+  "controls": "lit, everburn, and dead full logs byte-identical before/after (the everburn control proves the NO_FUEL guard against false-triggering on everburning lights)",
+  "render_check": {
+    "tool": "Chrome for Testing headless (--headless=new --dump-dom --virtual-time-budget)",
+    "checks": 20,
+    "asserted_against": "rendered DOM per scenario: explanation, both routine outcomes, raw logs; plus node --check on the generated replay script"
+  },
+  "compiler": "gcc 15.2.0",
+  "cmake": "4.2.3",
+  "browser": "Chrome for Testing chromium-1248",
+  "sha256": {
+    "README.md": "70b8120a808551e5ddf14b2e971f05ba65fc4064e97f846bedeaa4699d7c71ee",
+    "after-alltests.log": "a58dc0782778443784aab17765cec1f959a70a0c306b18620ae4ad8b5673ab25",
+    "after-build.log": "dbc13af196d5f34dcba27c5d1d32a47f572a67687ca99881cd21aa5e0d98d1aa",
+    "after-dead.log": "fd481a0ecc9c1aad374e3afeada1f9df5b023ecf056aa10e497497a4d715b5fb",
+    "after-dying.log": "8edbc2e833ec04d1b4c54f67ee2de72fe2bd4b142e5cf37268e34c754b11526c",
+    "after-everburn.log": "d1cddb75cb98b838d4ea83a7690ca19f1ae348ff7b4a8c04ec3d02ba95ecb43e",
+    "after-lit.log": "a7be42397c6a0ecfdcb79ecd357ba671c11f328fec1c27e8fcb4b3404081c7f3",
+    "after-results.json": "8db3eee5b27fb9a26c2cb4a965fd805a99d54ab721900da936385c6a8a143c45",
+    "after-scenarios.log": "d27cdc2c27bed230d71c64a2d13a8561033f8532ff3167bcc738a7b095478bfa",
+    "before-alltests.log": "15f49451a92bc6c82dc354fae50fd99bbf71d9f9dc7f9f768b1696366a3a8309",
+    "before-build.log": "f04bda32866ec7d2c819e3626bc15bfb4af3547483146450d997beb9b21152aa",
+    "before-dead.log": "fd481a0ecc9c1aad374e3afeada1f9df5b023ecf056aa10e497497a4d715b5fb",
+    "before-dying.log": "d49c07bf7f7c4463204bad2d48cc697131c9ea24bfae4febc6efea4d83da9d04",
+    "before-everburn.log": "d1cddb75cb98b838d4ea83a7690ca19f1ae348ff7b4a8c04ec3d02ba95ecb43e",
+    "before-lit.log": "a7be42397c6a0ecfdcb79ecd357ba671c11f328fec1c27e8fcb4b3404081c7f3",
+    "before-results.json": "1e26c7c1609953cc3fea6f03ffcedb8ee56309ad15d12a8bef2fac546d12efac",
+    "before-scenarios.log": "e022f31c742bae251aa4f56583c6c4044c762d638e1d7df7169124a3edfa833e",
+    "borg.txt": "80738da248ed74e343925e0348fc75da993d8c03ffff03c7bce1a9090005be47",
+    "configure.log": "23b71d2c85fb988c815fe9bfdb014880756ff889bba143058c12556c613d6122",
+    "make_replay.py": "155cfc145fa7112ad4beaaa8206d6ba96f61295add86fe0020b24af233a71168",
+    "replay-data.json": "d544c52f7f67d92374a480032e7e460cc6736047de0ee08d0ded54b2001d79b9",
+    "replay.html": "adf5b8f6369cf98e44154c3d8fd0b65e8166d7ce291189a83c26997af5798270",
+    "reproduce.py": "a0aa2b9044cb2ae31946cebdb65211e127c1f175e794f2d1a0902d0b850afa65",
+    "result.json": "7cc28b9c9930e16184adaadec9a44ee2fe0fbf06c8196dbd6f8edfcd0c4d2000",
+    "run-cases.py": "6d806562ea63cec32691138d5182ce15ba783d2c361917a7ffde18f24e0d92f6",
+    "scenario.c": "dc0d53e252e5382a73fcd6a14f09a04150799624bf7986f68a763ffd880ac03b"
+  }
+}
