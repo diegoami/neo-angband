@@ -1,0 +1,83 @@
+{
+  "two-phase": {
+    "exit": 0,
+    "passed": true,
+    "kills": {
+      "awake": 1,
+      "danger": 16
+    },
+    "morgoth": {
+      "p2": 150,
+      "slot0": 2,
+      "slot1": 2,
+      "n": 0
+    },
+    "launch": {
+      "p2": 128
+    },
+    "outcome": {
+      "p2": 128,
+      "expected_best": 128,
+      "strong": 128,
+      "weak": 16,
+      "tp_other_n": 0
+    },
+    "temp1": {
+      "n": 2
+    },
+    "temp2": {
+      "n": 2
+    }
+  },
+  "no-morgoth-phase": {
+    "exit": 0,
+    "passed": true,
+    "kills": {
+      "awake": 1,
+      "danger": 16
+    },
+    "launch": {
+      "p2": 128
+    },
+    "outcome": {
+      "p2": 128,
+      "expected_best": 128,
+      "strong": 128,
+      "weak": 16,
+      "tp_other_n": 0
+    },
+    "temp2": {
+      "n": 2
+    }
+  },
+  "single": {
+    "exit": 0,
+    "passed": true,
+    "kills": {
+      "awake": 1,
+      "danger": 16
+    },
+    "morgoth": {
+      "p2": 150,
+      "slot0": 1,
+      "slot1": 1,
+      "n": 0
+    },
+    "launch": {
+      "p2": 16
+    },
+    "outcome": {
+      "p2": 16,
+      "expected_best": 16,
+      "strong": 0,
+      "weak": 16,
+      "tp_other_n": 0
+    },
+    "temp1": {
+      "n": 1
+    },
+    "temp2": {
+      "n": 1
+    }
+  }
+}
