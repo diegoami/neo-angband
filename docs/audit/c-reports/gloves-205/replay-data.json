@@ -1,0 +1,122 @@
+{
+  "glove-fa": {
+    "label": "Free-action gauntlets in the pack, none worn",
+    "explanation": "A Warrior past depth 50 carries gauntlets of Free Action while having no free action of its own. The original never considers gloves as armour swaps and picks nothing; the correction picks the gauntlets and records the free-action swap flags.",
+    "before": {
+      "raw": "native-c/gloves-205: starting...\nSETUPSTEP profile\nSETUP gloveslot=4 borg_fa=1 game_fa=1 game_known_fa=1\nSETUP seed=1000 class=Warrior level=1 depth=30 hp=20/20\n  gloves_eligible_for_armour_swap  MODE glove-fa\nSWAPS armour_swap=0 value=-1 free_act=0\nOUTCOME armour_swap=0 free_act=0\nFailed\n    native-c/gloves-205:149: requirement 'armour_swap != 0' failed\nnative-c/gloves-205 finished: 0/1 passed\n",
+      "passed": false,
+      "setup": {
+        "borg_fa": 1,
+        "game_fa": 1,
+        "game_known_fa": 1
+      },
+      "swaps": {
+        "armour_swap": 0,
+        "value": -1,
+        "free_act": 0
+      },
+      "outcome": {
+        "armour_swap": 0,
+        "free_act": 0
+      }
+    },
+    "after": {
+      "raw": "native-c/gloves-205: starting...\nSETUPSTEP profile\nSETUP gloveslot=4 borg_fa=1 game_fa=1 game_known_fa=1\nSETUP seed=1000 class=Warrior level=1 depth=30 hp=20/20\n  gloves_eligible_for_armour_swap  MODE glove-fa\nSWAPS armour_swap=5 value=10609 free_act=1\nOUTCOME armour_swap=1 free_act=1\nPassed\nnative-c/gloves-205 finished: 1/1 passed\n",
+      "passed": true,
+      "setup": {
+        "borg_fa": 1,
+        "game_fa": 1,
+        "game_known_fa": 1
+      },
+      "swaps": {
+        "armour_swap": 5,
+        "value": 10609,
+        "free_act": 1
+      },
+      "outcome": {
+        "armour_swap": 1,
+        "free_act": 1
+      }
+    }
+  },
+  "plain": {
+    "label": "Control: plain gauntlets",
+    "explanation": "Plain gauntlets with no free action are not worth a swap in either version. The complete logs are byte-identical.",
+    "before": {
+      "raw": "native-c/gloves-205: starting...\nSETUPSTEP profile\nSETUP gloveslot=4 borg_fa=0 game_fa=0 game_known_fa=0\nSETUP seed=1000 class=Warrior level=1 depth=30 hp=20/20\n  gloves_eligible_for_armour_swap  MODE plain\nSWAPS armour_swap=0 value=-1 free_act=0\nOUTCOME armour_swap=0 free_act=0\nPassed\nnative-c/gloves-205 finished: 1/1 passed\n",
+      "passed": true,
+      "setup": {
+        "borg_fa": 0,
+        "game_fa": 0,
+        "game_known_fa": 0
+      },
+      "swaps": {
+        "armour_swap": 0,
+        "value": -1,
+        "free_act": 0
+      },
+      "outcome": {
+        "armour_swap": 0,
+        "free_act": 0
+      }
+    },
+    "after": {
+      "raw": "native-c/gloves-205: starting...\nSETUPSTEP profile\nSETUP gloveslot=4 borg_fa=0 game_fa=0 game_known_fa=0\nSETUP seed=1000 class=Warrior level=1 depth=30 hp=20/20\n  gloves_eligible_for_armour_swap  MODE plain\nSWAPS armour_swap=0 value=-1 free_act=0\nOUTCOME armour_swap=0 free_act=0\nPassed\nnative-c/gloves-205 finished: 1/1 passed\n",
+      "passed": true,
+      "setup": {
+        "borg_fa": 0,
+        "game_fa": 0,
+        "game_known_fa": 0
+      },
+      "swaps": {
+        "armour_swap": 0,
+        "value": -1,
+        "free_act": 0
+      },
+      "outcome": {
+        "armour_swap": 0,
+        "free_act": 0
+      }
+    }
+  },
+  "have-fa": {
+    "label": "Control: free action already worn",
+    "explanation": "With free-action gauntlets already worn, the carried pair is not worth a swap in either version \u2014 the free-action reward is gated on lacking it. The complete logs are byte-identical.",
+    "before": {
+      "raw": "native-c/gloves-205: starting...\nSETUPSTEP profile\nSETUP gloveslot=4 borg_fa=1 game_fa=1 game_known_fa=1\nSETUP seed=1000 class=Warrior level=1 depth=30 hp=20/20\n  gloves_eligible_for_armour_swap  MODE have-fa\nSWAPS armour_swap=0 value=-1 free_act=0\nOUTCOME armour_swap=0 free_act=0\nPassed\nnative-c/gloves-205 finished: 1/1 passed\n",
+      "passed": true,
+      "setup": {
+        "borg_fa": 1,
+        "game_fa": 1,
+        "game_known_fa": 1
+      },
+      "swaps": {
+        "armour_swap": 0,
+        "value": -1,
+        "free_act": 0
+      },
+      "outcome": {
+        "armour_swap": 0,
+        "free_act": 0
+      }
+    },
+    "after": {
+      "raw": "native-c/gloves-205: starting...\nSETUPSTEP profile\nSETUP gloveslot=4 borg_fa=1 game_fa=1 game_known_fa=1\nSETUP seed=1000 class=Warrior level=1 depth=30 hp=20/20\n  gloves_eligible_for_armour_swap  MODE have-fa\nSWAPS armour_swap=0 value=-1 free_act=0\nOUTCOME armour_swap=0 free_act=0\nPassed\nnative-c/gloves-205 finished: 1/1 passed\n",
+      "passed": true,
+      "setup": {
+        "borg_fa": 1,
+        "game_fa": 1,
+        "game_known_fa": 1
+      },
+      "swaps": {
+        "armour_swap": 0,
+        "value": -1,
+        "free_act": 0
+      },
+      "outcome": {
+        "armour_swap": 0,
+        "free_act": 0
+      }
+    }
+  }
+}

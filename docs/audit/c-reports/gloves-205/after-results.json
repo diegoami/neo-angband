@@ -1,0 +1,41 @@
+{
+  "glove-fa": {
+    "exit": 0,
+    "passed": true,
+    "swaps": {
+      "armour_swap": 5,
+      "value": 10609,
+      "free_act": 1
+    },
+    "outcome": {
+      "armour_swap": 1,
+      "free_act": 1
+    }
+  },
+  "plain": {
+    "exit": 0,
+    "passed": true,
+    "swaps": {
+      "armour_swap": 0,
+      "value": -1,
+      "free_act": 0
+    },
+    "outcome": {
+      "armour_swap": 0,
+      "free_act": 0
+    }
+  },
+  "have-fa": {
+    "exit": 0,
+    "passed": true,
+    "swaps": {
+      "armour_swap": 0,
+      "value": -1,
+      "free_act": 0
+    },
+    "outcome": {
+      "armour_swap": 0,
+      "free_act": 0
+    }
+  }
+}

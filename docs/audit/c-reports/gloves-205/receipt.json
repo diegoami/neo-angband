@@ -1,0 +1,143 @@
+{
+  "cbug": "gloves-205",
+  "issue": 205,
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "fix": "c52527eed3cf272cb62a16a773f25ed09f6cac36",
+  "fixtures_ref": "9a6927a4f4025d05ec6ec78866c607d56acebe03",
+  "cases": {
+    "before": {
+      "glove-fa": {
+        "exit": 0,
+        "passed": false,
+        "swaps": {
+          "armour_swap": 0,
+          "value": -1,
+          "free_act": 0
+        },
+        "outcome": {
+          "armour_swap": 0,
+          "free_act": 0
+        }
+      },
+      "plain": {
+        "exit": 0,
+        "passed": true,
+        "swaps": {
+          "armour_swap": 0,
+          "value": -1,
+          "free_act": 0
+        },
+        "outcome": {
+          "armour_swap": 0,
+          "free_act": 0
+        }
+      },
+      "have-fa": {
+        "exit": 0,
+        "passed": true,
+        "swaps": {
+          "armour_swap": 0,
+          "value": -1,
+          "free_act": 0
+        },
+        "outcome": {
+          "armour_swap": 0,
+          "free_act": 0
+        }
+      }
+    },
+    "after": {
+      "glove-fa": {
+        "exit": 0,
+        "passed": true,
+        "swaps": {
+          "armour_swap": 5,
+          "value": 10609,
+          "free_act": 1
+        },
+        "outcome": {
+          "armour_swap": 1,
+          "free_act": 1
+        }
+      },
+      "plain": {
+        "exit": 0,
+        "passed": true,
+        "swaps": {
+          "armour_swap": 0,
+          "value": -1,
+          "free_act": 0
+        },
+        "outcome": {
+          "armour_swap": 0,
+          "free_act": 0
+        }
+      },
+      "have-fa": {
+        "exit": 0,
+        "passed": true,
+        "swaps": {
+          "armour_swap": 0,
+          "value": -1,
+          "free_act": 0
+        },
+        "outcome": {
+          "armour_swap": 0,
+          "free_act": 0
+        }
+      }
+    }
+  },
+  "identical_full_logs": [
+    "plain",
+    "have-fa"
+  ],
+  "full_tests": {
+    "before": {
+      "units": "965/965",
+      "frontends": "5/5"
+    },
+    "after": {
+      "units": "965/965",
+      "frontends": "5/5"
+    }
+  },
+  "fail_before": {
+    "glove-fa": "scenario asserts the corrected tracking; the original leaves armour_swap=0 (gloves never considered) and fails the suite"
+  },
+  "controls": "plain and have-fa full logs byte-identical before/after",
+  "render_check": {
+    "tool": "Chrome for Testing headless (--headless=new --dump-dom --virtual-time-budget)",
+    "checks": 18,
+    "asserted_against": "rendered DOM per scenario: explanation, both swap scans, swap label, raw logs; plus node --check on the generated replay script"
+  },
+  "compiler": "gcc 15.2.0",
+  "cmake": "4.2.3",
+  "browser": "Chrome for Testing chromium-1248",
+  "sha256": {
+    "README.md": "795415a22306f311adaa98271f7010e6b5e71a0296ae8a64b3d771e13301c82d",
+    "after-alltests.log": "c7885b9db548827a4378762224d05b5a718ab80a13a152ea994885b7323fcdbe",
+    "after-build.log": "28445c492abcd600af2bb87ef8fa36c799ee96058d65f1731d9ca03528f8bad9",
+    "after-glove-fa.log": "ec2e5e01d753a4968ae8ff03fb24b80799d074e485d5d9d9ecad471d3a2e6bca",
+    "after-have-fa.log": "ac8a25bb4e467fc1507903ceca9b3809e7c84c5f832713fb2eb62775ceaaac5f",
+    "after-plain.log": "3db131aab697ce22e51c41e2b146b508ec3335571d808f993eee1399d9231f8e",
+    "after-results.json": "ad2814888ec95b53ad7088e21d486eefdc6ec472492546f6572044a4495517c0",
+    "after-scenarios.log": "2041555b87b233a4f7ae817b0564e316e832598420a6becb008820d0f9ee2fd3",
+    "before-alltests.log": "2ba0eb47bfe81bdfd9296c7eda0e5617c006a934c4e293e070a6f9205eeb54ff",
+    "before-build.log": "0cebb136c1849290fd977f6f873eb621e957a7c3910110eef8271af6270fc056",
+    "before-glove-fa.log": "d239f1b463dd7d5c9c34e191590cb8e468b9a80124d8e6856099a101177dc02a",
+    "before-have-fa.log": "ac8a25bb4e467fc1507903ceca9b3809e7c84c5f832713fb2eb62775ceaaac5f",
+    "before-plain.log": "3db131aab697ce22e51c41e2b146b508ec3335571d808f993eee1399d9231f8e",
+    "before-results.json": "086be4de0301cc34d69b5c55b1bb819f64af83b000cf2c3fa237af8e9fcce050",
+    "before-scenarios.log": "efa34c1f72d94e4d5c290f0807634b9704802900ed6697f4ec9fcdb494e8b134",
+    "borg.txt": "80738da248ed74e343925e0348fc75da993d8c03ffff03c7bce1a9090005be47",
+    "configure.log": "80c78584fa72d10e0c9117ec0e195d1d3bd409da54b210c091784f3598c94715",
+    "make_replay.py": "3036d482dd5eb064ce5ea85a22359a609d24a468a0710d430ab3fc5d74da580b",
+    "replay-data.json": "bf49e9f66c39dab8949fbee8741c56198519551ba7215d590992433fe6ed18f3",
+    "replay.html": "d37bf903613fc0cbd1f8e1e91c2bf51a94d31536e7d53823d2c937e6bff5108c",
+    "reproduce.py": "9494256900fec7b71bbcc558e9d8b3f15e935a0f12de33085cbbc9a1278d14c4",
+    "result.json": "5055e19ef97c6429bb168253aac2d42bf1ec343108f2cd16df01cb71d650d1fe",
+    "run-cases.py": "0c78182d7725d477e487018108ebb58c25f9eecf93edf4080d0bf6047c9e4944",
+    "scenario.c": "469a7015251aa664789fabce7084477578e789e6b80496f4df99259ed2b8d205"
+  }
+}
