@@ -1,0 +1,65 @@
+{
+  "door-close": {
+    "exit": 0,
+    "passed": false,
+    "setup": {
+      "feat": 1,
+      "flow": 50,
+      "know": 1,
+      "icky": 1
+    },
+    "state": {
+      "flow": 50,
+      "know": 1,
+      "icky": 1,
+      "wizard_light": 1,
+      "detect_walls": 1
+    },
+    "outcome": {
+      "invalidated": 0,
+      "flow255": 0
+    }
+  },
+  "door-open": {
+    "exit": 0,
+    "passed": false,
+    "setup": {
+      "feat": 2,
+      "flow": 50,
+      "know": 1,
+      "icky": 1
+    },
+    "state": {
+      "flow": 50,
+      "know": 1,
+      "icky": 1,
+      "wizard_light": 1,
+      "detect_walls": 1
+    },
+    "outcome": {
+      "invalidated": 0,
+      "flow255": 0
+    }
+  },
+  "no-change": {
+    "exit": 0,
+    "passed": true,
+    "setup": {
+      "feat": 1,
+      "flow": 50,
+      "know": 1,
+      "icky": 1
+    },
+    "state": {
+      "flow": 50,
+      "know": 1,
+      "icky": 1,
+      "wizard_light": 1,
+      "detect_walls": 1
+    },
+    "outcome": {
+      "invalidated": 0,
+      "flow255": 0
+    }
+  }
+}
