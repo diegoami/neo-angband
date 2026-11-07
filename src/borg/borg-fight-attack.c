@@ -1100,11 +1100,6 @@ static int borg_launch_damage_one(int i, int dam, int typ, int ammo_location)
         /* for now ignore the gain in sp */
         if (!(rf_has(r_ptr->flags, RF_UNDEAD)))
             dam = 0;
-        else {
-            int sp_drain = borg.trait[BI_CURSP] - borg.trait[BI_CURSP];
-            if (sp_drain < kill->power)
-                dam = kill->power - sp_drain;
-        }
         break;
 
     case BORG_ATTACK_CURSE:
