@@ -1,0 +1,110 @@
+{
+  "base": "e473720ed88a0f0c7ca66815cef3000eb4a38bc3",
+  "fix": "e890819a6b5ac6e7f7135dcc2b234fcc520b9752",
+  "fixtures_ref": "6cc5ae14af46a8c269bb5ca22609f882791aa485",
+  "cases": {
+    "before": {
+      "stale-hit": {
+        "exit": 0,
+        "passed": false,
+        "setup": {
+          "idx0": 0,
+          "idx1": 1
+        },
+        "danger": {
+          "danger": 0
+        },
+        "outcome": {
+          "danger": 0
+        }
+      },
+      "in-list": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "idx0": 1,
+          "idx1": 0
+        },
+        "danger": {
+          "danger": 0
+        },
+        "outcome": {
+          "danger": 0
+        }
+      },
+      "empty": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "idx0": 0,
+          "idx1": 0
+        },
+        "danger": {
+          "danger": 179
+        },
+        "outcome": {
+          "danger": 1
+        }
+      }
+    },
+    "after": {
+      "stale-hit": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "idx0": 0,
+          "idx1": 1
+        },
+        "danger": {
+          "danger": 179
+        },
+        "outcome": {
+          "danger": 1
+        }
+      },
+      "in-list": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "idx0": 1,
+          "idx1": 0
+        },
+        "danger": {
+          "danger": 0
+        },
+        "outcome": {
+          "danger": 0
+        }
+      },
+      "empty": {
+        "exit": 0,
+        "passed": true,
+        "setup": {
+          "idx0": 0,
+          "idx1": 0
+        },
+        "danger": {
+          "danger": 179
+        },
+        "outcome": {
+          "danger": 1
+        }
+      }
+    }
+  },
+  "identical_full_logs": [
+    "in-list",
+    "empty"
+  ],
+  "full_tests": {
+    "before": {
+      "units": "965/965",
+      "frontends": "5/5"
+    },
+    "after": {
+      "units": "965/965",
+      "frontends": "5/5"
+    }
+  },
+  "fixed_source_sha256": "4569fb9baac1e3a1943a0cba9dc4e87dbe167ed6afab8d78afe41c27283828a9"
+}
