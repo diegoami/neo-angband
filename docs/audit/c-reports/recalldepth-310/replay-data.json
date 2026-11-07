@@ -1,0 +1,134 @@
+{
+  "endgame": {
+    "label": "Endgame: last uniques, recalling from depth 65",
+    "explanation": "A Warrior with a Word of Recall scroll recalls from depth 65 while hunting a unique at that depth; its deepest level reached is 99 and fewer than five uniques are still alive. The branch comment says to reset the recall depth (cleaning up the last uniques for the Morgoth push). The original answers the game's \"Set recall depth?\" prompt with n, against its own comment; the correction answers y.",
+    "before": {
+      "raw": "native-c/recalldepth-310: starting...\nSETUPSTEP profile\nSETUP maxdepth=99 curdepth=65 hunted=65 live_uniques=2\nSETUP seed=1000 class=Warrior level=1 depth=30 hp=20/20 scroll_slot=3\n  endgame_branch_resets_recall_depth  MODE endgame\nDECISION acted=1 keys=6 sequence=<Escape> <Escape> r d n <Escape>\nOUTCOME acted=1 keys=6 reset_y=0 keep_n=1\nFailed\n    native-c/recalldepth-310:174: requirement 'reset_y ? 1 : 0' == '1' failed\n      reset_y ? 1 : 0:                0\n      1:                1\nnative-c/recalldepth-310 finished: 0/1 passed\n",
+      "passed": false,
+      "setup": {
+        "curdepth": 65,
+        "hunted": 65,
+        "live_uniques": 2
+      },
+      "decision": {
+        "acted": 1,
+        "keys": 6
+      },
+      "outcome": {
+        "acted": 1,
+        "keys": 6,
+        "reset_y": 0,
+        "keep_n": 1
+      },
+      "sequence": "<Escape> <Escape> r d n <Escape>"
+    },
+    "after": {
+      "raw": "native-c/recalldepth-310: starting...\nSETUPSTEP profile\nSETUP maxdepth=99 curdepth=65 hunted=65 live_uniques=2\nSETUP seed=1000 class=Warrior level=1 depth=30 hp=20/20 scroll_slot=3\n  endgame_branch_resets_recall_depth  MODE endgame\nDECISION acted=1 keys=6 sequence=<Escape> <Escape> r d y <Escape>\nOUTCOME acted=1 keys=6 reset_y=1 keep_n=0\nPassed\nnative-c/recalldepth-310 finished: 1/1 passed\n",
+      "passed": true,
+      "setup": {
+        "curdepth": 65,
+        "hunted": 65,
+        "live_uniques": 2
+      },
+      "decision": {
+        "acted": 1,
+        "keys": 6
+      },
+      "outcome": {
+        "acted": 1,
+        "keys": 6,
+        "reset_y": 1,
+        "keep_n": 0
+      },
+      "sequence": "<Escape> <Escape> r d y <Escape>"
+    }
+  },
+  "generic": {
+    "label": "Control: generic reset branch (deepest level 60)",
+    "explanation": "The same geometry with the deepest level reached at 60, so the generic reset branch runs instead. Both versions answer y and the complete logs are byte-identical.",
+    "before": {
+      "raw": "native-c/recalldepth-310: starting...\nSETUPSTEP profile\nSETUP maxdepth=60 curdepth=30 hunted=30 live_uniques=2\nSETUP seed=1000 class=Warrior level=1 depth=30 hp=20/20 scroll_slot=3\n  endgame_branch_resets_recall_depth  MODE generic\nDECISION acted=1 keys=6 sequence=<Escape> <Escape> r d y <Escape>\nOUTCOME acted=1 keys=6 reset_y=1 keep_n=0\nPassed\nnative-c/recalldepth-310 finished: 1/1 passed\n",
+      "passed": true,
+      "setup": {
+        "curdepth": 30,
+        "hunted": 30,
+        "live_uniques": 2
+      },
+      "decision": {
+        "acted": 1,
+        "keys": 6
+      },
+      "outcome": {
+        "acted": 1,
+        "keys": 6,
+        "reset_y": 1,
+        "keep_n": 0
+      },
+      "sequence": "<Escape> <Escape> r d y <Escape>"
+    },
+    "after": {
+      "raw": "native-c/recalldepth-310: starting...\nSETUPSTEP profile\nSETUP maxdepth=60 curdepth=30 hunted=30 live_uniques=2\nSETUP seed=1000 class=Warrior level=1 depth=30 hp=20/20 scroll_slot=3\n  endgame_branch_resets_recall_depth  MODE generic\nDECISION acted=1 keys=6 sequence=<Escape> <Escape> r d y <Escape>\nOUTCOME acted=1 keys=6 reset_y=1 keep_n=0\nPassed\nnative-c/recalldepth-310 finished: 1/1 passed\n",
+      "passed": true,
+      "setup": {
+        "curdepth": 30,
+        "hunted": 30,
+        "live_uniques": 2
+      },
+      "decision": {
+        "acted": 1,
+        "keys": 6
+      },
+      "outcome": {
+        "acted": 1,
+        "keys": 6,
+        "reset_y": 1,
+        "keep_n": 0
+      },
+      "sequence": "<Escape> <Escape> r d y <Escape>"
+    }
+  },
+  "mismatch": {
+    "label": "Control: hunted unique far from here",
+    "explanation": "With the hunted unique far from the current depth, the branch that declines to touch recall depth runs. Both versions answer n and the complete logs are byte-identical.",
+    "before": {
+      "raw": "native-c/recalldepth-310: starting...\nSETUPSTEP profile\nSETUP maxdepth=99 curdepth=65 hunted=30 live_uniques=2\nSETUP seed=1000 class=Warrior level=1 depth=30 hp=20/20 scroll_slot=3\n  endgame_branch_resets_recall_depth  MODE mismatch\nDECISION acted=1 keys=6 sequence=<Escape> <Escape> r d n <Escape>\nOUTCOME acted=1 keys=6 reset_y=0 keep_n=1\nPassed\nnative-c/recalldepth-310 finished: 1/1 passed\n",
+      "passed": true,
+      "setup": {
+        "curdepth": 65,
+        "hunted": 30,
+        "live_uniques": 2
+      },
+      "decision": {
+        "acted": 1,
+        "keys": 6
+      },
+      "outcome": {
+        "acted": 1,
+        "keys": 6,
+        "reset_y": 0,
+        "keep_n": 1
+      },
+      "sequence": "<Escape> <Escape> r d n <Escape>"
+    },
+    "after": {
+      "raw": "native-c/recalldepth-310: starting...\nSETUPSTEP profile\nSETUP maxdepth=99 curdepth=65 hunted=30 live_uniques=2\nSETUP seed=1000 class=Warrior level=1 depth=30 hp=20/20 scroll_slot=3\n  endgame_branch_resets_recall_depth  MODE mismatch\nDECISION acted=1 keys=6 sequence=<Escape> <Escape> r d n <Escape>\nOUTCOME acted=1 keys=6 reset_y=0 keep_n=1\nPassed\nnative-c/recalldepth-310 finished: 1/1 passed\n",
+      "passed": true,
+      "setup": {
+        "curdepth": 65,
+        "hunted": 30,
+        "live_uniques": 2
+      },
+      "decision": {
+        "acted": 1,
+        "keys": 6
+      },
+      "outcome": {
+        "acted": 1,
+        "keys": 6,
+        "reset_y": 0,
+        "keep_n": 1
+      },
+      "sequence": "<Escape> <Escape> r d n <Escape>"
+    }
+  }
+}
