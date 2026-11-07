@@ -1,12 +1,16 @@
 import { describe, expect, it, vi } from "vitest";
 import {
   createAgentView,
+  Rng,
   HIST,
+  loadGame,
+  saveGame,
   startGame,
   totalPoints,
   type GameState,
   type HistoryInfo,
   type ObjectInfoExtras,
+  type RngState,
 } from "@rpgm-tools/neo-angband-core";
 import { loadGamePack } from "./pack";
 import { buildRunReport, characterHistory, createRunReports, RUN_REPORT_MESSAGES } from "./run-report";
@@ -109,6 +113,7 @@ describe("buildRunReport", () => {
       depth: state.chunk.depth,
       gold: p.au,
       turn: state.turn,
+      seed: 99,
       score: totalPoints(p),
       scored: true,
       endedAt: 42,
@@ -123,6 +128,60 @@ describe("buildRunReport", () => {
     expect(first.recall?.title).toBeTruthy();
     expect(Object.isFrozen(report.belongings)).toBe(true);
     expect(Object.isFrozen(first)).toBe(true);
+  });
+
+  describe("seed provenance", () => {
+    it("retains the accepted birth stream so a report can recreate the actual world", () => {
+      const pack = loadGamePack();
+      const rng = new Rng(4242);
+      // The birth presenter consumes draws for history and sometimes a name.
+      for (let i = 0; i < 19; i++) rng.randint0(1000);
+      const accepted = rng.getState();
+      const born = startGame(pack, {
+        seed: 4242, rngState: accepted, raceName: "Human", className: "Warrior",
+        roller: "point", birthStats: [18, 10, 10, 16, 14],
+        optionOverrides: { birth_force_descend: true },
+      });
+      const loaded = loadGame(pack, saveGame(born));
+      const report = buildRunReport({
+        state: loaded.state, view: createAgentView(loaded.state), messages: [],
+        key: null, sheet: null, scored: false, endedAt: 0,
+      }) as ReturnType<typeof buildRunReport> & { birthRngState?: RngState };
+      expect(report.birthRngState).toEqual(accepted);
+      const birth = report.birth;
+      expect(report.birthOptions).toMatchObject({ birth_force_descend: true });
+      const replayed = startGame(pack, {
+        seed: report.seed!, rngState: report.birthRngState!,
+        raceName: birth.race, className: birth.cls, roller: "point", birthStats: birth.stats,
+        optionOverrides: report.birthOptions!,
+      });
+      expect(saveGame(replayed)).toEqual(saveGame(born));
+      expect(Object.isFrozen(report.birthRngState)).toBe(true);
+      expect(Object.isFrozen(loaded.state.birthRngState)).toBe(false);
+    });
+
+    it("reports the original game seed after reload, not the new page's random seed", () => {
+      const pack = loadGamePack();
+      const born = startGame(pack, { seed: 4242, depth: 3 });
+      const loaded = loadGame(pack, saveGame(born));
+      const input = {
+        state: loaded.state, view: createAgentView(loaded.state), messages: [],
+        key: null, seed: 9001, sheet: null, scored: false, endedAt: 0,
+      };
+      expect(buildRunReport(input).seed).toBe(4242);
+    });
+
+    it("does not invent an original seed for a legacy save", () => {
+      const pack = loadGamePack();
+      const save = saveGame(startGame(pack, { seed: 4242, depth: 3 })) as ReturnType<typeof saveGame> & { masterSeed?: number };
+      delete save.masterSeed;
+      const loaded = loadGame(pack, save);
+      const input = {
+        state: loaded.state, view: createAgentView(loaded.state), messages: [],
+        key: null, seed: 9001, sheet: null, scored: false, endedAt: 0,
+      };
+      expect(buildRunReport(input)).not.toHaveProperty("seed");
+    });
   });
 
   it("reads a winner and a retirement from the cause and the winner flag", () => {
@@ -162,4 +221,12 @@ describe("createRunReports", () => {
     expect(error).toHaveBeenCalled();
     error.mockRestore();
   });
+});
+
+it("keeps host controller attribution in the immutable run report", () => {
+  const autoplayers = [{ id: "mandos", name: "Mandos", version: "1.0.0", digest: "abc", firstParty: false }];
+  const report = buildRunReport({ state, view: createAgentView(state), messages: [], key: null, sheet: null, scored: false, endedAt: 0, autoplayers });
+  autoplayers[0]!.name = "Changed";
+  expect(report.autoplayers?.[0]?.name).toBe("Mandos");
+  expect(Object.isFrozen(report.autoplayers?.[0])).toBe(true);
 });

@@ -44,6 +44,24 @@ See PLAN for exact baseline/consumer and proposal checks.
 Original upstream credits, licence and legal policies remain in their files.
 [Upstream README](docs/upstream-reference/README.md) retains technical context.
 
+## Current Neo source and build profiles
+
+[Engine integration372](https://github.com/diegoami/neo-angband-tracker/issues/372)
+imports exact upstream06a2321ce30a414df20d1b20d486446e7688171c, the source of
+GitHub desktop `v1.23.0-edge.218`. Registry Core/SDK/content still publish
+`next=1.23.0-beta.3` (`latest=1.22.0`); edge.218 is not an npm package release.
+Source package manifests also retain beta.3 versions, so exact source and
+artifact hashes, not their version strings, identify the new compatibility
+profile. [Pinned integration and consumer recipe](docs/runs/2026-11-07-engine-edge218/README.md).
+
+The accepted input-flush, truthful seed/birth and load-resume corrections are
+now upstream. Optional replay is not made a runtime prerequisite. Public
+Worker controllers and the documented in-process developer opt-in have
+separate capability contracts: Core/harness success does not by itself prove
+stock desktop installation or first-party profile/management access. Consumers
+verify their own named package/plugin/harness profiles; the retained lab is
+not deployed by an engine source merge.
+
 ## C fix consumers and borg-rs intake
 
 [borg-rs](https://github.com/diegoami/borg-rs) posts C defect leads directly to

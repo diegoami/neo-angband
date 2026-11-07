@@ -82,6 +82,7 @@ export interface RunReportInput {
   readonly sheet: CharacterSheetData | null;
   readonly scored: boolean;
   readonly endedAt: number;
+  readonly autoplayers?: RunReport["autoplayers"];
 }
 
 export function buildRunReport(input: RunReportInput): RunReport {
@@ -128,9 +129,15 @@ export function buildRunReport(input: RunReportInput): RunReport {
     depth: state.chunk.depth,
     gold: p.au,
     turn: state.turn,
+    ...(state.masterSeed === undefined ? {} : { seed: state.masterSeed }),
+    ...(state.birthRngState === undefined ? {} : {
+      birthRngState: { ...state.birthRngState, state: [...state.birthRngState.state] },
+    }),
+    ...(state.options === undefined ? {} : { birthOptions: state.options.snapshot().birth }),
     score: totalPoints(p),
     scored: input.scored,
     endedAt: input.endedAt,
+    ...(input.autoplayers ? { autoplayers: structuredClone(input.autoplayers) } : {}),
     history: characterHistory(state),
     messages: input.messages.slice(-RUN_REPORT_MESSAGES).map((m) => ({
       text: m.text,
