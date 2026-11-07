@@ -149,8 +149,9 @@ bool borg_think_dungeon_light(void)
     if (borg.trait[BI_ISHUNGRY] && borg_use_things())
         return true;
 
-    if (!borg.trait[BI_LIGHT]
-        && (borg.trait[BI_LIGHT] <= 0 || borg_items[INVEN_LIGHT].timeout <= 3)
+    if ((!borg.trait[BI_LIGHT]
+        || (borg_items[INVEN_LIGHT].timeout <= 3
+            && !of_has(borg_items[INVEN_LIGHT].flags, OF_NO_FUEL)))
         && borg.trait[BI_CDEPTH] >= 1) {
         enum borg_need need;
 
